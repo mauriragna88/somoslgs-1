@@ -1,0 +1,233 @@
+import Link from 'next/link'
+import Image from 'next/image'
+import { Metadata } from 'next'
+import { createClient } from '@/lib/supabase/server'
+
+export const revalidate = 1800
+
+export const metadata: Metadata = {
+  title: 'Buscar Negocios en Lagos de Moreno',
+  description: 'Encuentra restaurantes, tiendas, servicios y más negocios locales en Lagos de Moreno, Jalisco. Busca por nombre, categoría o ubicación.',
+  openGraph: {
+    title: 'Buscar Negocios en Lagos de Moreno | SomosLagos',
+    description: 'Encuentra restaurantes, tiendas, servicios y más negocios locales en Lagos de Moreno, Jalisco.',
+    url: 'https://www.somoslagos.com.mx/buscar',
+  },
+}
+
+interface SearchParams {
+  q?: string
+  categoria?: string
+}
+
+interface Category {
+  id: string
+  name: string
+  icon: string
+}
+
+interface Business {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  logo_url: string | null
+  phone: string
+  address: string
+  is_active: boolean
+  subscription_tier: string
+  is_featured: boolean
+  category: { id: string; name: string; icon: string } | null
+}
+
+export default async function BuscarPage({
+  searchParams,
+}: {
+  searchParams: SearchParams
+}) {
+  const query = searchParams.q || ''
+  const categoriaId = searchParams.categoria || ''
+
+  const supabase = createClient()
+
+  // Get categories for filter
+  const { data: categories } = await supabase
+    .from('categories')
+    .select('id, name, icon')
+    .order('name') as { data: Category[] | null }
+
+  // Build search query - Premium businesses appear first
+  let businessQuery = supabase
+    .from('businesses')
+    .select(`
+      id,
+      name,
+      slug,
+      description,
+      logo_url,
+      phone,
+      address,
+      is_active,
+      subscription_tier,
+      is_featured,
+      category:categories(id, name, icon)
+    `)
+    .eq('is_active', true)
+    .order('is_featured', { ascending: false })
+    .order('subscription_tier', { ascending: false })
+    .order('name')
+
+  // Apply search filter
+  if (query) {
+    businessQuery = businessQuery.or(`name.ilike.%${query}%,description.ilike.%${query}%`)
+  }
+
+  // Apply category filter
+  if (categoriaId) {
+    businessQuery = businessQuery.eq('category_id', categoriaId)
+  }
+
+  const { data: businesses, error } = await businessQuery.limit(50) as { data: Business[] | null; error: any }
+
+  // error is handled gracefully - empty results shown
+
+  return (
+    <main className="min-h-screen bg-gray-50">
+      {/* Search Header */}
+      <div className="bg-white border-b border-gray-200 py-8">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">Buscar Negocios</h1>
+
+          {/* Search Form */}
+          <form method="GET" className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <input
+                type="text"
+                name="q"
+                defaultValue={query}
+                placeholder="Buscar por nombre o descripción..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            <div className="w-full md:w-64">
+              <select
+                name="categoria"
+                defaultValue={categoriaId}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="">Todas las categorías</option>
+                {categories?.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.icon} {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button
+              type="submit"
+              className="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+            >
+              Buscar
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Results */}
+      <div className="container mx-auto px-4 py-8">
+        {/* Results count */}
+        <div className="mb-6">
+          <p className="text-gray-600">
+            {businesses?.length || 0} negocio{businesses?.length !== 1 ? 's' : ''} encontrado{businesses?.length !== 1 ? 's' : ''}
+            {query && <span> para &ldquo;<strong>{query}</strong>&rdquo;</span>}
+          </p>
+        </div>
+
+        {/* Business Grid */}
+        {businesses && businesses.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {businesses.map((business) => (
+              <Link
+                key={business.id}
+                href={`/negocios/${business.slug}`}
+                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden group"
+              >
+                {/* Image/Logo */}
+                <div className="h-48 bg-gray-200 relative">
+                  {business.logo_url ? (
+                    <Image
+                      src={business.logo_url}
+                      alt={business.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-primary/10">
+                      <span className="text-6xl text-primary font-bold">
+                        {business.name[0].toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                  {/* Category badge */}
+                  {business.category && (
+                    <div className="absolute top-3 left-3 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700">
+                      {business.category.icon} {business.category.name}
+                    </div>
+                  )}
+                  {/* Premium/Featured badge */}
+                  {(business.subscription_tier === 'premium' || business.is_featured) && (
+                    <div className="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-sm font-bold shadow-lg">
+                      ⭐ Destacado
+                    </div>
+                  )}
+                  {business.subscription_tier === 'delivery' && !business.is_featured && (
+                    <div className="absolute top-3 right-3 px-2 py-1 bg-blue-500 text-white rounded-full text-xs font-bold">
+                      🚀 Delivery
+                    </div>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                    {business.name}
+                  </h3>
+                  {business.description && (
+                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                      {business.description}
+                    </p>
+                  )}
+                  {business.address && (
+                    <p className="text-sm text-gray-500 mt-2 flex items-center">
+                      <span className="mr-1">📍</span>
+                      {business.address}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-5xl">🔍</span>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">No se encontraron negocios</h2>
+            <p className="text-gray-600 mb-6">
+              {query
+                ? `No hay negocios que coincidan con "${query}"`
+                : 'No hay negocios disponibles en este momento'}
+            </p>
+            <Link
+              href="/"
+              className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+            >
+              Volver al Inicio
+            </Link>
+          </div>
+        )}
+      </div>
+    </main>
+  )
+}

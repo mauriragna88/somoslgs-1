@@ -1,0 +1,190 @@
+import { NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+import { getUser, isAdmin } from '@/lib/supabase/server'
+import { z } from 'zod'
+
+function getSupabaseAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+}
+
+const updateSchema = z.object({
+  name: z.string().min(1).optional(),
+  description: z.string().nullable().optional(),
+  phone: z.string().min(1).optional(),
+  whatsapp: z.string().nullable().optional(),
+  email: z.string().email().or(z.literal('')).nullable().optional(),
+  address: z.string().min(1).optional(),
+  neighborhood: z.string().nullable().optional(),
+  category_id: z.string().uuid().or(z.literal('')).nullable().optional(),
+  logo_url: z.string().nullable().optional(),
+  is_active: z.boolean().optional(),
+  is_featured: z.boolean().optional(),
+})
+
+interface RouteParams {
+  params: { id: string }
+}
+
+export async function GET(request: Request, { params }: RouteParams) {
+  try {
+    const user = await getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+    const adminCheck = await isAdmin()
+    if (!adminCheck) {
+      return NextResponse.json({ error: 'Solo administradores' }, { status: 403 })
+    }
+
+    const supabase = getSupabaseAdmin()
+
+    const { data: business, error } = await supabase
+      .from('businesses')
+      .select(`
+        *,
+        category:categories(id, name),
+        owner:profiles!businesses_owner_id_fkey(id, full_name, email, phone)
+      `)
+      .eq('id', params.id)
+      .single()
+
+    if (error || !business) {
+      return NextResponse.json({ error: 'Negocio no encontrado' }, { status: 404 })
+    }
+
+    return NextResponse.json(business)
+  } catch (error: any) {
+    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
+  }
+}
+
+export async function PUT(request: Request, { params }: RouteParams) {
+  try {
+    const user = await getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+    const adminCheck = await isAdmin()
+    if (!adminCheck) {
+      return NextResponse.json({ error: 'Solo administradores' }, { status: 403 })
+    }
+
+    const body = await request.json()
+    const validated = updateSchema.parse(body)
+
+    const supabase = getSupabaseAdmin()
+
+    // Build update object
+    const updateData: Record<string, any> = {}
+
+    if (validated.name !== undefined) updateData.name = validated.name
+    if (validated.description !== undefined) updateData.description = validated.description || null
+    if (validated.phone !== undefined) updateData.phone = validated.phone
+    if (validated.whatsapp !== undefined) updateData.whatsapp = validated.whatsapp || null
+    if (validated.email !== undefined) updateData.email = validated.email || null
+    if (validated.address !== undefined) updateData.address = validated.address
+    if (validated.neighborhood !== undefined) updateData.neighborhood = validated.neighborhood || null
+    if (validated.category_id !== undefined) updateData.category_id = validated.category_id || null
+    if (validated.logo_url !== undefined) updateData.logo_url = validated.logo_url || null
+    if (validated.is_active !== undefined) updateData.is_active = validated.is_active
+    if (validated.is_featured !== undefined) updateData.is_featured = validated.is_featured
+
+    const { data: updated, error: updateError } = await supabase
+      .from('businesses')
+      .update(updateData)
+      .eq('id', params.id)
+      .select()
+      .single()
+
+    if (updateError) {
+      return NextResponse.json({ error: 'Error al actualizar negocio' }, { status: 500 })
+    }
+
+    // Log the action
+    try {
+      await supabase.from('audit_logs').insert({
+        user_id: user.id,
+        action: 'edit_business',
+        resource_type: 'business',
+        resource_id: params.id,
+        details: { updated_fields: Object.keys(updateData) },
+      })
+    } catch {
+      // Ignore logging errors
+    }
+
+    return NextResponse.json({ success: true, business: updated })
+  } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: error.errors[0].message }, { status: 400 })
+    }
+    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
+  }
+}
+
+export async function DELETE(request: Request, { params }: RouteParams) {
+  try {
+    const user = await getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+    const adminCheck = await isAdmin()
+    if (!adminCheck) {
+      return NextResponse.json({ error: 'Solo administradores' }, { status: 403 })
+    }
+
+    const supabase = getSupabaseAdmin()
+
+    // Verify business exists
+    const { data: business, error: fetchError } = await supabase
+      .from('businesses')
+      .select('id, name')
+      .eq('id', params.id)
+      .single()
+
+    if (fetchError || !business) {
+      return NextResponse.json({ error: 'Negocio no encontrado' }, { status: 404 })
+    }
+
+    // Cascade delete related records
+    await supabase.from('products').delete().eq('business_id', params.id)
+    await supabase.from('order_items').delete().in(
+      'order_id',
+      (await supabase.from('orders').select('id').eq('business_id', params.id)).data?.map((o: any) => o.id) || []
+    )
+    await supabase.from('orders').delete().eq('business_id', params.id)
+    await supabase.from('transactions').delete().eq('business_id', params.id)
+    await supabase.from('business_photos').delete().eq('business_id', params.id)
+
+    // Delete the business
+    const { error: deleteError } = await supabase
+      .from('businesses')
+      .delete()
+      .eq('id', params.id)
+
+    if (deleteError) {
+      return NextResponse.json({ error: 'Error al eliminar negocio: ' + deleteError.message }, { status: 500 })
+    }
+
+    // Log the action
+    try {
+      await supabase.from('audit_logs').insert({
+        user_id: user.id,
+        action: 'delete_business',
+        resource_type: 'business',
+        resource_id: params.id,
+        details: { business_name: business.name },
+      })
+    } catch {
+      // Ignore logging errors
+    }
+
+    return NextResponse.json({ success: true })
+  } catch (error: any) {
+    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
+  }
+}
