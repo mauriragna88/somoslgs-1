@@ -49,7 +49,7 @@ docs/
 # database schema & migrations
 supabase-schema.sql
 supabase-transactions-table.sql
-supabase/
+/supabase/
 
 # env example (reveals variable names)
 .env.example
