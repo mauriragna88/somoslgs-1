@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 interface Business {
   id: string
@@ -17,7 +18,15 @@ interface BusinessSidebarProps {
 
 export default function BusinessSidebar({ userName, businesses }: BusinessSidebarProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/')
+    router.refresh()
+  }
 
   // Use local state with cookie persistence instead of context to avoid hydration issues
   const [selectedBusinessId, setSelectedBusinessIdState] = useState<string>(
@@ -149,6 +158,12 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
         >
           ← Volver al sitio
         </Link>
+        <button
+          onClick={handleLogout}
+          className="block w-full px-4 py-2 mt-1 text-sm text-center text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+        >
+          Cerrar Sesion
+        </button>
       </div>
     </>
   )
