@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Leaflet Map CSS */
+@import 'leaflet/dist/leaflet.css';
+
 :root {
   --primary: #0F766E;
   --primary-dark: #0D5E58;

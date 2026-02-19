@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import CreateBusinessForm from '@/components/admin/CreateBusinessForm'
 import { createClient } from '@/lib/supabase/server'
 

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
 
 // Fix default marker icon issue in Leaflet + webpack/Next.js
 const DefaultIcon = L.icon({

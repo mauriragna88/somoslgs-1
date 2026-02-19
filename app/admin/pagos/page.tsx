@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { createClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
 import { getUser, isAdmin } from '@/lib/supabase/server'

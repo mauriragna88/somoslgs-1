@@ -439,10 +439,10 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              { value: 'basico', label: 'Basico', price: '$99/mes', features: ['Info basica', 'WhatsApp', 'Ubicacion'] },
-              { value: 'ventas', label: 'Ventas', price: '$200/mes', features: ['Todo lo anterior', 'Productos', 'Transferencias'] },
-              { value: 'delivery', label: 'Delivery', price: '$300/mes', features: ['Todo lo anterior', 'Pasarela', 'Motomandados'] },
-              { value: 'premium', label: 'Premium', price: '$450/mes', features: ['Todo lo anterior', 'Destacado', 'Analytics'] },
+              { value: 'basico', label: 'Basico', price: '$80/mes', features: ['Info basica', 'WhatsApp', 'Ubicacion'] },
+              { value: 'ventas', label: 'Ventas', price: '$150/mes', features: ['Todo lo anterior', 'Productos', 'Transferencias'] },
+              { value: 'delivery', label: 'Delivery', price: '$200/mes', features: ['Todo lo anterior', 'Pasarela', 'Motomandados'] },
+              { value: 'premium', label: 'Premium', price: '$260/mes', features: ['Todo lo anterior', 'Destacado', 'Analytics'] },
             ].map((plan) => (
               <label
                 key={plan.value}

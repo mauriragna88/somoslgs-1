@@ -84,7 +84,7 @@ export function welcomeBusinessEmail(data: {
   email: string
 }) {
   const planPrices: Record<string, string> = {
-    basico: '$99', ventas: '$200', delivery: '$300', premium: '$450'
+    basico: '$80', ventas: '$150', delivery: '$200', premium: '$260'
   }
   return {
     subject: `Bienvenido a SomosLagos - Confirma tus datos`,
@@ -97,7 +97,7 @@ export function welcomeBusinessEmail(data: {
       ${infoTable([
         { label: 'Negocio', value: data.businessName },
         { label: 'Plan', value: data.plan.charAt(0).toUpperCase() + data.plan.slice(1) },
-        { label: 'Precio', value: `${planPrices[data.plan] || '$99'} MXN/mes` },
+        { label: 'Precio', value: `${planPrices[data.plan] || '$80'} MXN/mes` },
         { label: 'Email', value: data.email },
       ])}
       <p style="color:#6b7280;font-size:14px;margin:16px 0 0;">

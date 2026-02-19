@@ -1,12 +1,14 @@
+export const dynamic = 'force-dynamic'
+
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getUser } from '@/lib/supabase/server'
 import { formatCurrency } from '@/lib/utils'
-import dynamic from 'next/dynamic'
+import nextDynamic from 'next/dynamic'
 
-const StatsCharts = dynamic(() => import('@/components/dashboard/StatsCharts'), {
+const StatsCharts = nextDynamic(() => import('@/components/dashboard/StatsCharts'), {
   loading: () => <div className="h-96 bg-gray-50 rounded-xl animate-pulse" />,
   ssr: false,
 })
