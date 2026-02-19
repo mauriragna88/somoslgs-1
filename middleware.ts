@@ -159,6 +159,15 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Prevent browser caching on dynamic pages
+  const noCacheRoutes = ['/admin', '/dashboard', '/profile', '/mis-pedidos']
+  const shouldNoCache = noCacheRoutes.some(route => path.startsWith(route))
+  if (shouldNoCache) {
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+    response.headers.set('Pragma', 'no-cache')
+    response.headers.set('Expires', '0')
+  }
+
   return response
 }
 

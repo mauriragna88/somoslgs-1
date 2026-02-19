@@ -15,6 +15,24 @@ const nextConfig = {
   async headers() {
     return [
       {
+        // Prevent browser caching on dynamic pages (admin, dashboard, profile, etc.)
+        source: '/(admin|dashboard|profile|mis-pedidos)(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
+          },
+        ],
+      },
+      {
         source: '/(.*)',
         headers: [
           {
