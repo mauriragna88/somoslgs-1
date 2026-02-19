@@ -48,7 +48,7 @@ const nextConfig = {
               "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
               "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
               "font-src 'self' fonts.gstatic.com",
-              "img-src 'self' *.supabase.co blob: data:",
+              "img-src 'self' *.supabase.co *.tile.openstreetmap.org unpkg.com blob: data:",
               "connect-src 'self' *.supabase.co wss://*.supabase.co *.conekta.io",
               "frame-src 'self' pay.conekta.com",
               "object-src 'none'",
