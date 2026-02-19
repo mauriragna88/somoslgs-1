@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 import { createClient } from '@supabase/supabase-js'
+import { revalidatePath } from 'next/cache'
 
 function getSupabaseAdmin() {
   return createClient(
@@ -80,6 +81,11 @@ export async function POST(request: Request) {
         )
       }
 
+      // Revalidate cached pages
+      revalidatePath('/admin/negocios')
+      revalidatePath('/')
+      revalidatePath('/buscar')
+
       return NextResponse.json({
         success: true,
         business: businessData,
@@ -157,6 +163,12 @@ export async function POST(request: Request) {
         console.error('Admin create business with owner error:', businessError)
         throw new Error('Error al crear negocio')
       }
+
+      // Revalidate cached pages
+      revalidatePath('/admin/negocios')
+      revalidatePath('/dashboard')
+      revalidatePath('/')
+      revalidatePath('/buscar')
 
       return NextResponse.json({
         success: true,

@@ -1,11 +1,14 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { ORDER_ENABLED_TIERS } from '@/lib/constants'
 import ProductList from '@/components/public/ProductList'
 import PhotoCarousel from '@/components/public/PhotoCarousel'
+
+const MapDisplay = dynamic(() => import('@/components/maps/MapDisplay'), { ssr: false })
 
 export const revalidate = 1800
 
@@ -56,6 +59,8 @@ interface PublicBusiness {
   whatsapp: string | null
   email: string | null
   address: string
+  latitude: number | null
+  longitude: number | null
   subscription_tier: string
   category: { id: string; name: string; icon: string } | null
   // Datos bancarios para pagos por transferencia
@@ -241,6 +246,19 @@ export default async function BusinessPage({ params }: PageProps) {
       {/* Photo Gallery Carousel */}
       {photos.length > 0 && (
         <PhotoCarousel photos={photos} businessName={business.name} />
+      )}
+
+      {/* Map Section */}
+      {business.latitude && business.longitude && (
+        <div className="container mx-auto px-4 py-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Ubicación</h2>
+          <MapDisplay
+            latitude={business.latitude}
+            longitude={business.longitude}
+            businessName={business.name}
+            address={business.address}
+          />
+        </div>
       )}
 
       {/* Content */}

@@ -2,7 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import LogoUpload from '@/components/shared/LogoUpload'
+
+const MapPicker = dynamic(() => import('@/components/maps/MapPicker'), { ssr: false })
 
 interface Business {
   id: string
@@ -15,6 +18,8 @@ interface Business {
   neighborhood: string | null
   category_id: string | null
   logo_url: string | null
+  latitude: number | null
+  longitude: number | null
   is_active: boolean
   is_featured: boolean
   owner_id: string | null
@@ -53,6 +58,8 @@ export default function AdminEditBusinessForm({ business, categories, onAssignOw
     neighborhood: business.neighborhood || '',
     category_id: business.category_id || '',
     logo_url: business.logo_url || '',
+    latitude: business.latitude,
+    longitude: business.longitude,
     is_active: business.is_active,
     is_featured: business.is_featured,
   })
@@ -292,6 +299,18 @@ export default function AdminEditBusinessForm({ business, categories, onAssignOw
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
+      </div>
+
+      {/* Map */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Ubicación en Mapa
+        </label>
+        <MapPicker
+          latitude={formData.latitude}
+          longitude={formData.longitude}
+          onChange={(lat, lng) => setFormData({ ...formData, latitude: lat, longitude: lng })}
+        />
       </div>
 
       <div className="pt-4 flex items-center gap-4">

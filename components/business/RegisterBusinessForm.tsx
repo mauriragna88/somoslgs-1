@@ -28,7 +28,7 @@ const SUBSCRIPTION_PLANS = [
   {
     id: 'basico',
     name: 'Plan Básico',
-    price: '$99',
+    price: '$80',
     period: 'MXN/mes',
     description: 'Presencia en el directorio',
     features: [
@@ -49,7 +49,7 @@ const SUBSCRIPTION_PLANS = [
   {
     id: 'ventas',
     name: 'Plan Ventas',
-    price: '$200',
+    price: '$150',
     period: 'MXN/mes',
     description: 'Vende con catálogo',
     features: [
@@ -71,7 +71,7 @@ const SUBSCRIPTION_PLANS = [
   {
     id: 'delivery',
     name: 'Plan Delivery',
-    price: '$300',
+    price: '$200',
     period: 'MXN/mes',
     description: 'Vende y entrega',
     features: [
@@ -92,7 +92,7 @@ const SUBSCRIPTION_PLANS = [
   {
     id: 'premium',
     name: 'Plan Premium',
-    price: '$450',
+    price: '$260',
     period: 'MXN/mes',
     description: 'Máxima visibilidad',
     features: [

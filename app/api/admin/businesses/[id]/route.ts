@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getUser, isAdmin } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 function getSupabaseAdmin() {
@@ -21,6 +22,8 @@ const updateSchema = z.object({
   neighborhood: z.string().nullable().optional(),
   category_id: z.string().uuid().or(z.literal('')).nullable().optional(),
   logo_url: z.string().nullable().optional(),
+  latitude: z.number().nullable().optional(),
+  longitude: z.number().nullable().optional(),
   is_active: z.boolean().optional(),
   is_featured: z.boolean().optional(),
 })
@@ -90,6 +93,8 @@ export async function PUT(request: Request, { params }: RouteParams) {
     if (validated.neighborhood !== undefined) updateData.neighborhood = validated.neighborhood || null
     if (validated.category_id !== undefined) updateData.category_id = validated.category_id || null
     if (validated.logo_url !== undefined) updateData.logo_url = validated.logo_url || null
+    if (validated.latitude !== undefined) updateData.latitude = validated.latitude
+    if (validated.longitude !== undefined) updateData.longitude = validated.longitude
     if (validated.is_active !== undefined) updateData.is_active = validated.is_active
     if (validated.is_featured !== undefined) updateData.is_featured = validated.is_featured
 
@@ -117,6 +122,11 @@ export async function PUT(request: Request, { params }: RouteParams) {
       // Ignore logging errors
     }
 
+    // Revalidate cached pages
+    revalidatePath('/admin/negocios')
+    revalidatePath('/dashboard')
+    if (updated?.slug) revalidatePath(`/negocios/${updated.slug}`)
+
     return NextResponse.json({ success: true, business: updated })
   } catch (error: any) {
     if (error instanceof z.ZodError) {
@@ -142,7 +152,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     // Verify business exists
     const { data: business, error: fetchError } = await supabase
       .from('businesses')
-      .select('id, name')
+      .select('id, name, owner_id')
       .eq('id', params.id)
       .single()
 
@@ -170,6 +180,23 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: 'Error al eliminar negocio: ' + deleteError.message }, { status: 500 })
     }
 
+    // If the business had an owner, check if they have other businesses
+    // If not, revert their role to customer
+    if (business.owner_id) {
+      const { data: otherBusinesses } = await supabase
+        .from('businesses')
+        .select('id')
+        .eq('owner_id', business.owner_id)
+        .limit(1)
+
+      if (!otherBusinesses || otherBusinesses.length === 0) {
+        await supabase
+          .from('profiles')
+          .update({ role: 'customer' })
+          .eq('id', business.owner_id)
+      }
+    }
+
     // Log the action
     try {
       await supabase.from('audit_logs').insert({
@@ -182,6 +209,12 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     } catch {
       // Ignore logging errors
     }
+
+    // Revalidate cached pages
+    revalidatePath('/admin/negocios')
+    revalidatePath('/dashboard')
+    revalidatePath('/')
+    revalidatePath('/buscar')
 
     return NextResponse.json({ success: true })
   } catch (error: any) {

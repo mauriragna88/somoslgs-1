@@ -18,7 +18,7 @@ interface Business {
 const planDetails: Record<string, { name: string; price: number; features: string[] }> = {
   basico: {
     name: 'Basico',
-    price: 99,
+    price: 80,
     features: [
       'Perfil del negocio en el directorio',
       'Informacion de contacto visible',
@@ -27,7 +27,7 @@ const planDetails: Record<string, { name: string; price: number; features: strin
   },
   ventas: {
     name: 'Ventas',
-    price: 200,
+    price: 150,
     features: [
       'Todo del plan Basico',
       'Catalogo de productos',
@@ -37,7 +37,7 @@ const planDetails: Record<string, { name: string; price: number; features: strin
   },
   delivery: {
     name: 'Delivery',
-    price: 300,
+    price: 200,
     features: [
       'Todo del plan Ventas',
       'Envio a domicilio',
@@ -47,7 +47,7 @@ const planDetails: Record<string, { name: string; price: number; features: strin
   },
   premium: {
     name: 'Premium',
-    price: 450,
+    price: 260,
     features: [
       'Todo del plan Delivery',
       'Posicion destacada en busqueda',

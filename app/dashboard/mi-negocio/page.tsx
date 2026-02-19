@@ -267,6 +267,8 @@ export default async function MiNegocioPage({
             <EditBusinessForm
               business={{
                 ...business,
+                latitude: (business as any).latitude ?? null,
+                longitude: (business as any).longitude ?? null,
                 has_conekta_key: !!business.conekta_private_key,
                 has_mercadopago_key: !!business.mercadopago_access_token,
                 active_payment_gateways: business.active_payment_gateways || [],

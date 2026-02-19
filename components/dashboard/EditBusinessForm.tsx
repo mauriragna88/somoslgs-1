@@ -2,8 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import LogoUpload from '@/components/shared/LogoUpload'
 import PhotoGalleryManager from '@/components/dashboard/PhotoGalleryManager'
+
+const MapPicker = dynamic(() => import('@/components/maps/MapPicker'), { ssr: false })
 import type { BusinessPhoto } from '@/lib/supabase/database.types'
 
 interface Business {
@@ -14,6 +17,8 @@ interface Business {
   whatsapp: string | null
   email: string | null
   address: string
+  latitude: number | null
+  longitude: number | null
   category_id: string | null
   logo_url: string | null
   // Datos bancarios
@@ -60,6 +65,8 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
     whatsapp: business.whatsapp || '',
     email: business.email || '',
     address: business.address,
+    latitude: business.latitude,
+    longitude: business.longitude,
     category_id: business.category_id || '',
     logo_url: business.logo_url || '',
     // Datos bancarios
@@ -266,6 +273,18 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             required
           />
         </div>
+      </div>
+
+      {/* Map */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Ubicación en Mapa
+        </label>
+        <MapPicker
+          latitude={formData.latitude}
+          longitude={formData.longitude}
+          onChange={(lat, lng) => setFormData({ ...formData, latitude: lat, longitude: lng })}
+        />
       </div>
 
       {/* Sección de Datos Bancarios */}

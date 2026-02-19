@@ -13,6 +13,8 @@ const businessUpdateSchema = z.object({
   address: z.string().min(5).optional(),
   category_id: z.string().uuid().optional().nullable().or(z.literal('')),
   logo_url: z.string().url().optional().nullable().or(z.literal('')),
+  latitude: z.number().nullable().optional(),
+  longitude: z.number().nullable().optional(),
   // Datos bancarios para recibir pagos
   bank_name: z.string().max(50).optional().nullable(),
   bank_account_holder: z.string().max(100).optional().nullable(),

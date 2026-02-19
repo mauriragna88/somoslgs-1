@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getUser, isAdmin } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { sendBusinessLinkedEmail } from '@/lib/email/send'
 
@@ -161,6 +162,12 @@ export async function POST(request: Request, { params }: RouteParams) {
       ownerId = profile.id
       ownerInfo = { id: profile.id, email: profile.email, name: profile.full_name }
 
+      // Update user role to business_owner so they can access the dashboard
+      await supabase
+        .from('profiles')
+        .update({ role: 'business_owner' })
+        .eq('id', ownerId)
+
     } else {
       return NextResponse.json({ error: 'Acción no válida' }, { status: 400 })
     }
@@ -210,6 +217,10 @@ export async function POST(request: Request, { params }: RouteParams) {
     } catch {
       // Don't fail the request if email fails
     }
+
+    // Revalidate cached pages
+    revalidatePath('/admin/negocios')
+    revalidatePath('/dashboard')
 
     return NextResponse.json({
       success: true,

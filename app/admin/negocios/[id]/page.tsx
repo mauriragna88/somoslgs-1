@@ -96,7 +96,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
       label: 'Básico',
       color: 'bg-gray-100 text-gray-800',
       nextPlan: 'ventas',
-      price: 99,
+      price: 80,
       suggestions: [
         'Sube al Plan Ventas para agregar productos y recibir pedidos',
         'Podrías aumentar tus ventas 3x con un catálogo en línea',
@@ -107,7 +107,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
       label: 'Ventas',
       color: 'bg-green-100 text-green-800',
       nextPlan: 'delivery',
-      price: 200,
+      price: 150,
       suggestions: [
         'Sube al Plan Delivery para aceptar pagos con tarjeta',
         'Conecta con motomandados para entregas a domicilio',
@@ -118,7 +118,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
       label: 'Delivery',
       color: 'bg-blue-100 text-blue-800',
       nextPlan: 'premium',
-      price: 300,
+      price: 200,
       suggestions: [
         'Sube al Plan Premium para aparecer primero en búsquedas',
         'Obtén estadísticas avanzadas de tu negocio',
@@ -129,7 +129,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
       label: 'Premium',
       color: 'bg-purple-100 text-purple-800',
       nextPlan: null,
-      price: 450,
+      price: 260,
       suggestions: [
         '¡Ya tienes el mejor plan! Aprovecha todas las funciones',
         'Revisa tus estadísticas avanzadas regularmente',
