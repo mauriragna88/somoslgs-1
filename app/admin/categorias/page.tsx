@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { createClient } from '@supabase/supabase-js'
+import { createServiceClient } from '@/lib/supabase/server'
 
 interface BusinessInCategory {
   id: string
@@ -22,16 +22,8 @@ interface CategoryWithBusinesses {
   businesses: BusinessInCategory[]
 }
 
-function getSupabaseAdmin() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  )
-}
-
 export default async function AdminCategoriasPage() {
-  const supabase = getSupabaseAdmin()
+  const supabase = createServiceClient()
 
   // Get all categories with their businesses
   const { data: categories } = await supabase

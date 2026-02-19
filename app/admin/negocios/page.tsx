@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
-import { createClient } from '@supabase/supabase-js'
+import { createServiceClient } from '@/lib/supabase/server'
 import BusinessesTable from '@/components/admin/BusinessesTable'
 
 interface CategoryData {
@@ -51,16 +51,7 @@ interface BusinessForDisplay {
 
 export default async function AdminBusinessesPage() {
   // Use service role client to bypass RLS and get all data
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
-    }
-  )
+  const supabase = createServiceClient()
 
   // Obtener todos los negocios con owner y categoría usando JOIN
   const { data: businesses, error } = await supabase

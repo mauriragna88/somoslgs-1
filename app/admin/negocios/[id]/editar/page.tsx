@@ -2,23 +2,15 @@ export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
+import { createServiceClient } from '@/lib/supabase/server'
 import AdminEditBusinessForm from '@/components/admin/AdminEditBusinessForm'
 
 interface PageProps {
   params: { id: string }
 }
 
-function getSupabaseAdmin() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  )
-}
-
 export default async function AdminEditBusinessPage({ params }: PageProps) {
-  const supabase = getSupabaseAdmin()
+  const supabase = createServiceClient()
 
   const { data: business, error } = await supabase
     .from('businesses')

@@ -1,6 +1,11 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import type { Database } from '@/types/database.types'
+
+// Custom fetch that bypasses Next.js Data Cache
+const noCacheFetch = (url: RequestInfo | URL, options?: RequestInit) =>
+  fetch(url, { ...options, cache: 'no-store' })
 
 export function createClient() {
   const cookieStore = cookies()
@@ -9,6 +14,9 @@ export function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
+      global: {
+        fetch: noCacheFetch,
+      },
       cookies: {
         get(name: string) {
           return cookieStore.get(name)?.value
@@ -95,4 +103,21 @@ export async function hasBusinessAccess(businessId: string): Promise<boolean> {
     .single() as unknown as { data: { owner_id: string } | null }
 
   return business?.owner_id === user.id
+}
+
+// Service role client for admin operations (bypasses RLS, no cache)
+export function createServiceClient() {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+      global: {
+        fetch: noCacheFetch,
+      },
+    }
+  )
 }

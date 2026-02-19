@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import { createClient } from '@supabase/supabase-js'
+import { createServiceClient } from '@/lib/supabase/server'
 import UsersTable from '@/components/admin/UsersTable'
 
 interface UserProfile {
@@ -15,11 +15,7 @@ interface UserProfile {
 
 export default async function AdminUsersPage() {
   // Use service role client to bypass RLS and get ALL users
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  )
+  const supabase = createServiceClient()
 
   // Obtener todos los usuarios
   const { data: users } = await supabase

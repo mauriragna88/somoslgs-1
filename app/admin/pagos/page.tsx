@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import { createClient } from '@supabase/supabase-js'
+import { createServiceClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { getUser, isAdmin } from '@/lib/supabase/server'
 import PaymentApprovalCard from '@/components/admin/PaymentApprovalCard'
@@ -28,11 +28,7 @@ export default async function AdminPagosPage() {
   }
 
   // Use service role client to bypass RLS and get ALL transactions
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  )
+  const supabase = createServiceClient()
 
   // Get all transactions with business and user info
   const { data: transactions } = await supabase

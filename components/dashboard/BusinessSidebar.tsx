@@ -118,6 +118,7 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
             <Link
               key={item.href}
               href={item.href}
+              prefetch={false}
               className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                 isActive
                   ? 'bg-primary text-white'

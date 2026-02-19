@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
+import { createServiceClient } from '@/lib/supabase/server'
 import { formatCurrency, formatDaysRemaining } from '@/lib/utils'
 import BusinessDetailActions from '@/components/admin/BusinessDetailActions'
 
@@ -28,16 +28,8 @@ interface ProductData {
   is_available: boolean
 }
 
-function getSupabaseAdmin() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  )
-}
-
 export default async function BusinessDetailPage({ params }: PageProps) {
-  const supabase = getSupabaseAdmin()
+  const supabase = createServiceClient()
 
   // Get business with all details
   const { data: business, error } = await supabase
