@@ -1,9 +1,9 @@
+/* Leaflet Map CSS - must be before tailwind directives */
+@import 'leaflet/dist/leaflet.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Leaflet Map CSS */
-@import 'leaflet/dist/leaflet.css';
 
 :root {
   --primary: #0F766E;
