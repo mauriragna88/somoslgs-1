@@ -274,43 +274,43 @@ export default async function EstadisticasPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white rounded-xl shadow-sm p-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-sm">Ingresos Totales</span>
-            <span className="text-2xl">💰</span>
+            <span className="text-gray-500 text-xs sm:text-sm">Ingresos</span>
+            <span className="text-xl sm:text-2xl">💰</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900">{formatCurrency(totalRevenue)}</p>
-          <p className="text-sm text-gray-500 mt-1">{completedOrders.length} pedidos completados</p>
+          <p className="text-xl sm:text-3xl font-bold text-gray-900">{formatCurrency(totalRevenue)}</p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">{completedOrders.length} completados</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-sm">Esta Semana</span>
-            <span className="text-2xl">📈</span>
+            <span className="text-gray-500 text-xs sm:text-sm">Semana</span>
+            <span className="text-xl sm:text-2xl">📈</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900">{formatCurrency(thisWeekRevenue)}</p>
-          <p className={`text-sm mt-1 ${Number(revenueGrowth) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {Number(revenueGrowth) >= 0 ? '↑' : '↓'} {Math.abs(Number(revenueGrowth))}% vs semana anterior
+          <p className="text-xl sm:text-3xl font-bold text-gray-900">{formatCurrency(thisWeekRevenue)}</p>
+          <p className={`text-xs sm:text-sm mt-1 ${Number(revenueGrowth) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {Number(revenueGrowth) >= 0 ? '↑' : '↓'} {Math.abs(Number(revenueGrowth))}%
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-sm">Ticket Promedio</span>
-            <span className="text-2xl">🎫</span>
+            <span className="text-gray-500 text-xs sm:text-sm">Promedio</span>
+            <span className="text-xl sm:text-2xl">🎫</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900">{formatCurrency(avgTicket)}</p>
-          <p className="text-sm text-gray-500 mt-1">por pedido</p>
+          <p className="text-xl sm:text-3xl font-bold text-gray-900">{formatCurrency(avgTicket)}</p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">por pedido</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-sm">Productos</span>
-            <span className="text-2xl">📦</span>
+            <span className="text-gray-500 text-xs sm:text-sm">Productos</span>
+            <span className="text-xl sm:text-2xl">📦</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900">{products.length}</p>
-          <p className="text-sm text-gray-500 mt-1">{products.filter(p => p.is_available).length} disponibles</p>
+          <p className="text-xl sm:text-3xl font-bold text-gray-900">{products.length}</p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">{products.filter(p => p.is_available).length} disponibles</p>
         </div>
       </div>
 
@@ -323,40 +323,30 @@ export default async function EstadisticasPage() {
         orderStatusData={orderStatusData}
       />
 
-      {/* Top Products Table */}
+      {/* Top Products */}
       <div className="mt-8 bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="p-4 border-b border-gray-200">
           <h3 className="font-bold text-gray-900">🏆 Productos Más Vendidos</h3>
         </div>
         {topProducts.length > 0 ? (
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Producto</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Unidades</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ingresos</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {topProducts.map((product, index) => (
-                <tr key={product.name} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <span className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                      index === 0 ? 'bg-yellow-500' :
-                      index === 1 ? 'bg-gray-400' :
-                      index === 2 ? 'bg-orange-400' : 'bg-gray-300'
-                    }`}>
-                      {index + 1}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 font-medium text-gray-900">{product.name}</td>
-                  <td className="px-6 py-4 text-right text-gray-600">{product.quantity}</td>
-                  <td className="px-6 py-4 text-right font-bold text-green-600">{formatCurrency(product.revenue)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="divide-y divide-gray-200">
+            {topProducts.map((product, index) => (
+              <div key={product.name} className="flex items-center gap-3 px-4 py-3">
+                <span className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 ${
+                  index === 0 ? 'bg-yellow-500' :
+                  index === 1 ? 'bg-gray-400' :
+                  index === 2 ? 'bg-orange-400' : 'bg-gray-300'
+                }`}>
+                  {index + 1}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-gray-900 truncate">{product.name}</p>
+                  <p className="text-xs text-gray-500">{product.quantity} unidades</p>
+                </div>
+                <span className="font-bold text-green-600 text-sm flex-shrink-0">{formatCurrency(product.revenue)}</span>
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="p-8 text-center text-gray-500">
             <p>No hay datos de ventas aún</p>

@@ -66,15 +66,15 @@ export default async function ProductsPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Productos</h1>
-          <p className="text-gray-600 mt-1">Gestiona el catálogo de tu negocio</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Productos</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Gestiona el catálogo de tu negocio</p>
         </div>
         {canManageProducts && (
           <Link
             href="/dashboard/productos/nuevo"
-            className="px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+            className="px-4 py-2 sm:px-6 sm:py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-sm sm:text-base text-center"
           >
             + Agregar Producto
           </Link>

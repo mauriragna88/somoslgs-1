@@ -63,48 +63,46 @@ export default async function AdminCategoriasPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Categorías</h1>
-          <p className="text-gray-600 mt-1">Negocios organizados por categoría</p>
-        </div>
+      <div className="mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Categorías</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">Negocios organizados por categoría</p>
       </div>
 
       {/* Stats by Plan */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-4">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">⭐</span>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-3 sm:p-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-xl sm:text-3xl">⭐</span>
             <div>
-              <p className="text-3xl font-bold text-purple-700">{premiumCount}</p>
-              <p className="text-sm text-purple-600">Premium ($450)</p>
+              <p className="text-xl sm:text-3xl font-bold text-purple-700">{premiumCount}</p>
+              <p className="text-xs sm:text-sm text-purple-600">Premium</p>
             </div>
           </div>
         </div>
-        <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🚀</span>
+        <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 sm:p-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-xl sm:text-3xl">🚀</span>
             <div>
-              <p className="text-3xl font-bold text-blue-700">{deliveryCount}</p>
-              <p className="text-sm text-blue-600">Delivery ($300)</p>
+              <p className="text-xl sm:text-3xl font-bold text-blue-700">{deliveryCount}</p>
+              <p className="text-xs sm:text-sm text-blue-600">Delivery</p>
             </div>
           </div>
         </div>
-        <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🛍️</span>
+        <div className="bg-green-50 border-2 border-green-200 rounded-xl p-3 sm:p-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-xl sm:text-3xl">🛍️</span>
             <div>
-              <p className="text-3xl font-bold text-green-700">{ventasCount}</p>
-              <p className="text-sm text-green-600">Ventas ($200)</p>
+              <p className="text-xl sm:text-3xl font-bold text-green-700">{ventasCount}</p>
+              <p className="text-xs sm:text-sm text-green-600">Ventas</p>
             </div>
           </div>
         </div>
-        <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-4">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">📋</span>
+        <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-3 sm:p-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-xl sm:text-3xl">📋</span>
             <div>
-              <p className="text-3xl font-bold text-gray-700">{basicoCount}</p>
-              <p className="text-sm text-gray-600">Básico ($99)</p>
+              <p className="text-xl sm:text-3xl font-bold text-gray-700">{basicoCount}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Básico</p>
             </div>
           </div>
         </div>
@@ -115,22 +113,23 @@ export default async function AdminCategoriasPage() {
         {categoriesWithBusinesses.map((category) => (
           <div key={category.id} className="bg-white rounded-xl shadow-sm overflow-hidden">
             {/* Category Header */}
-            <div className="p-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-3xl">{category.icon || '📦'}</span>
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">{category.name}</h2>
-                  <p className="text-sm text-gray-500">{category.businesses.length} negocios</p>
+            <div className="p-4 bg-gray-50 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <span className="text-2xl sm:text-3xl">{category.icon || '📦'}</span>
+                  <div>
+                    <h2 className="text-base sm:text-xl font-bold text-gray-900">{category.name}</h2>
+                    <p className="text-xs sm:text-sm text-gray-500">{category.businesses.length} negocios</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                {/* Count by plan in this category */}
-                <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full">
-                  {category.businesses.filter(b => b.subscription_tier === 'premium').length} Premium
-                </span>
-                <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full">
-                  {category.businesses.filter(b => b.subscription_tier === 'delivery').length} Delivery
-                </span>
+                <div className="hidden sm:flex items-center gap-2">
+                  <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full">
+                    {category.businesses.filter(b => b.subscription_tier === 'premium').length} Premium
+                  </span>
+                  <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full">
+                    {category.businesses.filter(b => b.subscription_tier === 'delivery').length} Delivery
+                  </span>
+                </div>
               </div>
             </div>
 

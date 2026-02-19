@@ -144,15 +144,15 @@ export default async function MiNegocioPage({
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Mi Negocio</h1>
-          <p className="text-gray-600">Gestiona la información de {business.name}</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Mi Negocio</h1>
+          <p className="text-sm text-gray-600">Gestiona la información de {business.name}</p>
         </div>
         <Link
           href={`/negocios/${business.slug}`}
           target="_blank"
-          className="px-4 py-2 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg transition-colors"
+          className="px-4 py-2 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg transition-colors text-sm text-center"
         >
           Ver Perfil Público →
         </Link>

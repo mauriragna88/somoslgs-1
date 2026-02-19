@@ -82,18 +82,18 @@ export default function UsersTable({ users }: UsersTableProps) {
     <>
       {/* Filters */}
       <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             type="text"
             placeholder="Buscar por nombre o email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
           />
           <select
             value={filterRole}
             onChange={(e) => setFilterRole(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
           >
             <option value="">Todos los roles</option>
             <option value="admin">Administrador</option>
@@ -104,30 +104,70 @@ export default function UsersTable({ users }: UsersTableProps) {
         </div>
       </div>
 
-      {/* Users Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      {/* Mobile Cards View */}
+      <div className="lg:hidden space-y-3">
+        {filteredUsers.length > 0 ? (
+          filteredUsers.map((user) => (
+            <div key={user.id} className="bg-white rounded-xl shadow-sm p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 min-w-0">
+                  {user.avatar_url ? (
+                    <Image
+                      src={user.avatar_url}
+                      alt={user.full_name}
+                      width={40}
+                      height={40}
+                      className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
+                      {user.full_name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="font-semibold text-gray-900 truncate">{user.full_name}</p>
+                    <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                  </div>
+                </div>
+                {user.role !== 'admin' && (
+                  <button
+                    onClick={() => openDeleteModal(user)}
+                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg flex-shrink-0"
+                  >
+                    🗑️
+                  </button>
+                )}
+              </div>
+              <div className="flex items-center gap-2 mt-2 ml-[52px]">
+                <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${roleColors[user.role] || 'bg-gray-100 text-gray-800'}`}>
+                  {roleLabels[user.role] || user.role}
+                </span>
+                {user.phone && <span className="text-xs text-gray-500">{user.phone}</span>}
+                <span className="text-xs text-gray-400">{new Date(user.created_at).toLocaleDateString('es-MX')}</span>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white rounded-xl shadow-sm p-8 text-center text-gray-500">
+            {searchTerm || filterRole
+              ? 'No se encontraron usuarios con los filtros aplicados'
+              : 'No hay usuarios registrados'}
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden lg:block bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Usuario
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Teléfono
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rol
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Fecha de Registro
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Acciones
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registro</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -137,21 +177,10 @@ export default function UsersTable({ users }: UsersTableProps) {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         {user.avatar_url ? (
-                          <Image
-                            src={user.avatar_url}
-                            alt={user.full_name}
-                            width={40}
-                            height={40}
-                            className="w-10 h-10 rounded-full object-cover"
-                          />
+                          <Image src={user.avatar_url} alt={user.full_name} width={40} height={40} className="w-10 h-10 rounded-full object-cover" />
                         ) : (
                           <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-semibold">
-                            {user.full_name
-                              .split(' ')
-                              .map((n) => n[0])
-                              .join('')
-                              .toUpperCase()
-                              .slice(0, 2)}
+                            {user.full_name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)}
                           </div>
                         )}
                         <div className="ml-4">
@@ -159,33 +188,17 @@ export default function UsersTable({ users }: UsersTableProps) {
                         </div>
                       </div>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.phone || 'N/A'}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{user.email}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{user.phone || 'N/A'}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                          roleColors[user.role] || 'bg-gray-100 text-gray-800'
-                        }`}
-                      >
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${roleColors[user.role] || 'bg-gray-100 text-gray-800'}`}>
                         {roleLabels[user.role] || user.role}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(user.created_at).toLocaleDateString('es-MX')}
-                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(user.created_at).toLocaleDateString('es-MX')}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       {user.role !== 'admin' ? (
-                        <button
-                          onClick={() => openDeleteModal(user)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Eliminar usuario"
-                        >
-                          🗑️
-                        </button>
+                        <button onClick={() => openDeleteModal(user)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Eliminar usuario">🗑️</button>
                       ) : (
                         <span className="text-xs text-gray-400">-</span>
                       )}
@@ -195,9 +208,7 @@ export default function UsersTable({ users }: UsersTableProps) {
               ) : (
                 <tr>
                   <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
-                    {searchTerm || filterRole
-                      ? 'No se encontraron usuarios con los filtros aplicados'
-                      : 'No hay usuarios registrados'}
+                    {searchTerm || filterRole ? 'No se encontraron usuarios con los filtros aplicados' : 'No hay usuarios registrados'}
                   </td>
                 </tr>
               )}

@@ -47,47 +47,47 @@ export default async function AdminPagosPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Gestión de Pagos</h1>
-        <p className="text-gray-600 mt-2">
-          Revisa y aprueba los comprobantes de pago de suscripciones
+      <div className="mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Gestión de Pagos</h1>
+        <p className="text-gray-600 mt-1 text-sm sm:text-base">
+          Revisa y aprueba los comprobantes de pago
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
+      <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-8">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 sm:p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-yellow-700 font-medium">Pagos Pendientes</p>
-              <p className="text-3xl font-bold text-yellow-900 mt-1">{pendingTransactions.length}</p>
+              <p className="text-xs sm:text-sm text-yellow-700 font-medium">Pendientes</p>
+              <p className="text-2xl sm:text-3xl font-bold text-yellow-900 mt-1">{pendingTransactions.length}</p>
             </div>
-            <div className="w-12 h-12 bg-yellow-200 rounded-full flex items-center justify-center">
-              <span className="text-2xl">⏳</span>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-200 rounded-full flex items-center justify-center">
+              <span className="text-xl sm:text-2xl">⏳</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+        <div className="bg-green-50 border border-green-200 rounded-xl p-4 sm:p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-green-700 font-medium">Pagos Aprobados</p>
-              <p className="text-3xl font-bold text-green-900 mt-1">{approvedTransactions.length}</p>
+              <p className="text-xs sm:text-sm text-green-700 font-medium">Aprobados</p>
+              <p className="text-2xl sm:text-3xl font-bold text-green-900 mt-1">{approvedTransactions.length}</p>
             </div>
-            <div className="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center">
-              <span className="text-2xl">✓</span>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-200 rounded-full flex items-center justify-center">
+              <span className="text-xl sm:text-2xl">✓</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 sm:p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-red-700 font-medium">Pagos Rechazados</p>
-              <p className="text-3xl font-bold text-red-900 mt-1">{rejectedTransactions.length}</p>
+              <p className="text-xs sm:text-sm text-red-700 font-medium">Rechazados</p>
+              <p className="text-2xl sm:text-3xl font-bold text-red-900 mt-1">{rejectedTransactions.length}</p>
             </div>
-            <div className="w-12 h-12 bg-red-200 rounded-full flex items-center justify-center">
-              <span className="text-2xl">✗</span>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-200 rounded-full flex items-center justify-center">
+              <span className="text-xl sm:text-2xl">✗</span>
             </div>
           </div>
         </div>
@@ -116,7 +116,31 @@ export default async function AdminPagosPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Pagos Aprobados Recientemente
           </h2>
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          {/* Mobile Cards */}
+          <div className="lg:hidden space-y-3">
+            {approvedTransactions.slice(0, 10).map((transaction) => (
+              <div key={transaction.id} className="bg-white rounded-xl shadow-sm p-4">
+                <div className="flex items-center justify-between mb-2">
+                  {/* @ts-ignore */}
+                  <p className="font-semibold text-gray-900">{transaction.businesses?.name}</p>
+                  <span className="px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded capitalize">{transaction.subscription_tier}</span>
+                </div>
+                <div className="space-y-1 text-sm">
+                  {/* @ts-ignore */}
+                  <p className="text-gray-600">{transaction.profiles?.full_name}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-gray-900">${transaction.amount.toLocaleString('es-MX')} MXN</span>
+                    <span className="text-gray-400">{new Date(transaction.created_at).toLocaleDateString('es-MX')}</span>
+                  </div>
+                  {transaction.proof_url && (
+                    <a href={transaction.proof_url} target="_blank" rel="noopener noreferrer" className="text-primary text-sm">Ver comprobante</a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Desktop Table */}
+          <div className="hidden lg:block bg-white rounded-xl shadow-sm overflow-hidden">
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
@@ -131,10 +155,8 @@ export default async function AdminPagosPage() {
               <tbody className="divide-y divide-gray-200">
                 {approvedTransactions.slice(0, 10).map((transaction) => (
                   <tr key={transaction.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {/* @ts-ignore */}
-                      <p className="font-medium text-gray-900">{transaction.businesses?.name}</p>
-                    </td>
+                    {/* @ts-ignore */}
+                    <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{transaction.businesses?.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {/* @ts-ignore */}
                       <p className="text-sm text-gray-900">{transaction.profiles?.full_name}</p>
@@ -142,26 +164,13 @@ export default async function AdminPagosPage() {
                       <p className="text-xs text-gray-500">{transaction.profiles?.email}</p>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded capitalize">
-                        {transaction.subscription_tier}
-                      </span>
+                      <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded capitalize">{transaction.subscription_tier}</span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">
-                      ${transaction.amount.toLocaleString('es-MX')} MXN
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(transaction.created_at).toLocaleDateString('es-MX')}
-                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">${transaction.amount.toLocaleString('es-MX')} MXN</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(transaction.created_at).toLocaleDateString('es-MX')}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {transaction.proof_url && (
-                        <a
-                          href={transaction.proof_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary hover:text-primary-dark text-sm"
-                        >
-                          Ver
-                        </a>
+                        <a href={transaction.proof_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark text-sm">Ver</a>
                       )}
                     </td>
                   </tr>

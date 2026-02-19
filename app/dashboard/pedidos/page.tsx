@@ -296,17 +296,25 @@ export default async function OrdersPage({
                 className="bg-white rounded-xl shadow-sm overflow-hidden"
               >
                 {/* Order Header */}
-                <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
+                <div className="p-4 border-b border-gray-100">
+                  <div className="flex items-start justify-between mb-2">
                     <div>
                       <p className="font-bold text-gray-900">#{order.order_number}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs sm:text-sm text-gray-500">
                         {new Date(order.created_at).toLocaleString('es-MX', {
                           dateStyle: 'short',
                           timeStyle: 'short'
                         })}
                       </p>
                     </div>
+                    <div className="text-right">
+                      <p className="text-lg sm:text-xl font-bold text-primary">{formatCurrency(order.total)}</p>
+                      <p className="text-xs sm:text-sm text-gray-500">
+                        {order.delivery_type === 'delivery' ? '🚚 Entrega' : '🏪 Recoger'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
                     <OrderStatusBadge status={order.status} />
                     {/* Payment method badge */}
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -351,12 +359,6 @@ export default async function OrdersPage({
                         }
                       </span>
                     )}
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xl font-bold text-primary">{formatCurrency(order.total)}</p>
-                    <p className="text-sm text-gray-500">
-                      {order.delivery_type === 'delivery' ? '🚚 Entrega' : '🏪 Recoger'}
-                    </p>
                   </div>
                 </div>
 
@@ -473,7 +475,7 @@ export default async function OrdersPage({
 
                 {/* Totals */}
                 <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
-                  <div className="flex justify-end gap-6 text-sm">
+                  <div className="flex flex-wrap justify-end gap-x-4 gap-y-1 text-xs sm:text-sm">
                     <span>Subtotal: {formatCurrency(order.subtotal)}</span>
                     <span>Envío: {formatCurrency(order.delivery_fee)}</span>
                     <span>Servicio: {formatCurrency(order.service_fee)}</span>
