@@ -111,21 +111,21 @@ export default async function AdminBusinessesPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Negocios</h1>
-          <p className="text-gray-600 mt-1">Gestiona todos los negocios registrados</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Negocios</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">Gestiona todos los negocios registrados</p>
         </div>
         <Link
           href="/admin/negocios/nuevo"
-          className="px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+          className="px-4 py-2.5 sm:px-6 sm:py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-center text-sm sm:text-base"
         >
           + Agregar Negocio
         </Link>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4 mb-6">
         <div className="bg-white rounded-xl shadow-sm p-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">

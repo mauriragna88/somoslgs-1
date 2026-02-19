@@ -14,9 +14,9 @@ const DefaultIcon = L.icon({
   shadowSize: [41, 41],
 })
 
-// Lagos de Moreno default center
-const LAGOS_CENTER: [number, number] = [21.3545, -102.3432]
-const DEFAULT_ZOOM = 15
+// Lagos de Moreno zona centro (Plaza Principal / Parroquia de la Asunción)
+const LAGOS_CENTER: [number, number] = [21.3528, -102.3444]
+const DEFAULT_ZOOM = 16
 
 interface MapPickerProps {
   latitude?: number | null

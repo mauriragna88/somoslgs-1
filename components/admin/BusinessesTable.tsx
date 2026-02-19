@@ -118,53 +118,197 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
     }
   }
 
+  const getPlanBadgeClasses = (tier: string) => {
+    switch (tier) {
+      case 'premium': return 'bg-purple-100 text-purple-800'
+      case 'delivery': return 'bg-blue-100 text-blue-800'
+      case 'ventas': return 'bg-green-100 text-green-800'
+      default: return 'bg-gray-100 text-gray-800'
+    }
+  }
+
   return (
     <>
       {/* Filters */}
       <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3">
           <input
             type="text"
             placeholder="Buscar por nombre, dueño o email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
           />
-          <select
-            value={filterPlan}
-            onChange={(e) => setFilterPlan(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            <option value="">Todos los planes</option>
-            <option value="basico">Básico</option>
-            <option value="ventas">Ventas</option>
-            <option value="delivery">Delivery</option>
-            <option value="premium">Premium</option>
-          </select>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            <option value="">Todos los estados</option>
-            <option value="active">Activo</option>
-            <option value="inactive">Inactivo</option>
-            <option value="no_owner">Sin dueño</option>
-          </select>
-          <select
-            value={filterPayment}
-            onChange={(e) => setFilterPayment(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            <option value="">Todos (pago/cortesia)</option>
-            <option value="paying">De pago</option>
-            <option value="courtesy">Cortesia</option>
-          </select>
+          <div className="flex gap-2 flex-wrap">
+            <select
+              value={filterPlan}
+              onChange={(e) => setFilterPlan(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+            >
+              <option value="">Plan</option>
+              <option value="basico">Básico</option>
+              <option value="ventas">Ventas</option>
+              <option value="delivery">Delivery</option>
+              <option value="premium">Premium</option>
+            </select>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+            >
+              <option value="">Estado</option>
+              <option value="active">Activo</option>
+              <option value="inactive">Inactivo</option>
+              <option value="no_owner">Sin dueño</option>
+            </select>
+            <select
+              value={filterPayment}
+              onChange={(e) => setFilterPayment(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+            >
+              <option value="">Pago</option>
+              <option value="paying">De pago</option>
+              <option value="courtesy">Cortesia</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Businesses Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      {/* Mobile Cards View */}
+      <div className="lg:hidden space-y-4">
+        {filteredBusinesses.length > 0 ? (
+          filteredBusinesses.map((business) => {
+            const daysInfo = formatDaysRemaining(business.subscription_expires_at)
+            return (
+              <div key={business.id} className="bg-white rounded-xl shadow-sm p-4">
+                {/* Business header */}
+                <div className="flex items-center gap-3 mb-3">
+                  {business.logo_url ? (
+                    <Image
+                      src={business.logo_url}
+                      alt={business.name}
+                      width={48}
+                      height={48}
+                      className="w-12 h-12 rounded-lg object-cover"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                      <span className="text-gray-500 font-semibold text-lg">
+                        {business.name[0].toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-gray-900 truncate">{business.name}</h3>
+                    <p className="text-sm text-gray-500">{business.category?.name || 'Sin categoría'}</p>
+                  </div>
+                  <span
+                    className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                      business.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}
+                  >
+                    {business.is_active ? 'Activo' : 'Inactivo'}
+                  </span>
+                </div>
+
+                {/* Info rows */}
+                <div className="space-y-2 mb-3 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-500">Dueño:</span>
+                    {business.owner ? (
+                      <span className="text-gray-900 font-medium">{business.owner.full_name}</span>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setSelectedBusiness(business)
+                          setShowAssignOwnerModal(true)
+                        }}
+                        className="text-amber-600 font-medium"
+                      >
+                        Sin dueño - Asignar
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-500">Plan:</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`px-2 py-0.5 text-xs font-semibold rounded-full capitalize ${getPlanBadgeClasses(business.subscription_tier)}`}>
+                        {business.subscription_tier}
+                      </span>
+                      {business.is_courtesy && (
+                        <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-teal-100 text-teal-800">
+                          Cortesia
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-500">Suscripción:</span>
+                    <span className={`font-medium ${daysInfo.color}`}>{daysInfo.text}</span>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => openSubscriptionModal(business)}
+                      className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg"
+                      title="Suscripción"
+                    >
+                      🎁
+                    </button>
+                    {(business.phone || business.owner?.phone) && (
+                      <button
+                        onClick={() => openWhatsAppModal(business)}
+                        className="p-2 text-green-600 hover:bg-green-50 rounded-lg"
+                        title="WhatsApp"
+                      >
+                        💬
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Link
+                      href={`/admin/negocios/${business.id}`}
+                      className="p-2 text-primary hover:bg-primary/10 rounded-lg"
+                      title="Ver"
+                    >
+                      👁️
+                    </Link>
+                    <Link
+                      href={`/admin/negocios/${business.id}/editar`}
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                      title="Editar"
+                    >
+                      ✏️
+                    </Link>
+                    <button
+                      onClick={() => openDeleteModal(business)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                      title="Eliminar"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )
+          })
+        ) : (
+          <div className="bg-white rounded-xl shadow-sm p-8 text-center text-gray-500">
+            <p className="font-medium mb-1">No hay negocios</p>
+            <p className="text-sm">
+              {searchTerm || filterPlan || filterStatus || filterPayment
+                ? 'No se encontraron negocios con los filtros aplicados'
+                : 'Comienza agregando tu primer negocio'}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden lg:block bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
@@ -193,7 +337,6 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
               {filteredBusinesses.length > 0 ? (
                 filteredBusinesses.map((business) => {
                   const daysInfo = formatDaysRemaining(business.subscription_expires_at)
-                  const daysRemaining = getDaysRemaining(business.subscription_expires_at)
 
                   return (
                     <tr key={business.id} className="hover:bg-gray-50">
@@ -251,15 +394,7 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-1.5">
                           <span
-                            className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${
-                              business.subscription_tier === 'premium'
-                                ? 'bg-purple-100 text-purple-800'
-                                : business.subscription_tier === 'delivery'
-                                ? 'bg-blue-100 text-blue-800'
-                                : business.subscription_tier === 'ventas'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-gray-100 text-gray-800'
-                            }`}
+                            className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${getPlanBadgeClasses(business.subscription_tier)}`}
                           >
                             {business.subscription_tier}
                           </span>
@@ -295,7 +430,6 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right">
                         <div className="flex items-center justify-end gap-1">
-                          {/* Quick Actions */}
                           <button
                             onClick={() => openSubscriptionModal(business)}
                             className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
