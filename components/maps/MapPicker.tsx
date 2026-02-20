@@ -91,7 +91,7 @@ export default function MapPicker({ latitude, longitude, onChange }: MapPickerPr
     <div>
       <div
         ref={mapRef}
-        className="w-full h-[300px] rounded-lg border border-gray-300 z-0"
+        className="w-full h-64 sm:h-80 md:h-[300px] rounded-lg border border-gray-300 z-0"
       />
       <p className="text-xs text-gray-500 mt-1">
         {coords

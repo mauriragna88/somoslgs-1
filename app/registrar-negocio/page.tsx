@@ -6,7 +6,7 @@ import RegisterBusinessForm from '@/components/business/RegisterBusinessForm'
 
 export const metadata: Metadata = {
   title: 'Registrar mi Negocio',
-  description: 'Registra tu negocio en SomosLagos y llega a miles de clientes en Lagos de Moreno, Jalisco. Planes desde $99 MXN/mes.',
+  description: 'Registra tu negocio en SomosLagos y llega a miles de clientes en Lagos de Moreno, Jalisco. Planes desde $80 MXN/mes.',
   openGraph: {
     title: 'Registrar mi Negocio | SomosLagos',
     description: 'Registra tu negocio en SomosLagos y llega a miles de clientes en Lagos de Moreno.',
@@ -52,7 +52,7 @@ export default async function RegistrarNegocioPage() {
 
         {!user ? (
           /* Usuario NO está logueado */
-          <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
+          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-12 text-center">
             <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-5xl">🔐</span>
             </div>
@@ -93,7 +93,7 @@ export default async function RegistrarNegocioPage() {
                   <span className="text-2xl">✓</span>
                   <div>
                     <p className="font-semibold text-gray-900">Elegir tu plan</p>
-                    <p className="text-sm text-gray-600">Desde $50 USD/mes</p>
+                    <p className="text-sm text-gray-600">Desde $80 MXN/mes</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">

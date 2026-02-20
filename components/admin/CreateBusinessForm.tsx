@@ -73,6 +73,12 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
       if (!formData.businessName || !formData.phone || !formData.whatsapp || !formData.address) {
         throw new Error('Complete los datos del negocio')
       }
+      if (!/^\d{10}$/.test(formData.phone)) {
+        throw new Error('El telefono del negocio debe tener 10 digitos')
+      }
+      if (!/^\d{10}$/.test(formData.whatsapp)) {
+        throw new Error('El WhatsApp debe tener 10 digitos')
+      }
 
       // Crear el negocio mediante API
       const response = await fetch('/api/admin/businesses', {

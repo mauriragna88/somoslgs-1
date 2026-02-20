@@ -83,14 +83,14 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
         </div>
       ) : !paymentMethod ? (
         /* Seleccion de metodo de pago */
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {/* Opcion 1: Transferencia Bancaria */}
           <button
             onClick={() => setPaymentMethod('transfer')}
-            className="bg-white rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-lg transition-all p-8 text-left"
+            className="bg-white rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-lg transition-all p-4 sm:p-6 md:p-8 text-left"
           >
             <div className="flex items-start gap-4">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-3xl">🏦</span>
               </div>
               <div className="flex-1">
@@ -129,13 +129,13 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
           {/* Opcion 2: Pago con Tarjeta (Conekta) */}
           <button
             onClick={() => setPaymentMethod('conekta')}
-            className="bg-white rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-lg transition-all p-8 text-left relative overflow-hidden"
+            className="bg-white rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-lg transition-all p-4 sm:p-6 md:p-8 text-left relative overflow-hidden"
           >
             <div className="absolute top-4 right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
               INSTANTANEO
             </div>
             <div className="flex items-start gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-400 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-indigo-400 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-3xl">💳</span>
               </div>
               <div className="flex-1">
@@ -174,10 +174,10 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
           {/* Opcion 3: Acordar pago en persona */}
           <button
             onClick={() => setPaymentMethod('agreement')}
-            className="bg-white rounded-xl border-2 border-gray-200 hover:border-amber-400 hover:shadow-lg transition-all p-8 text-left"
+            className="bg-white rounded-xl border-2 border-gray-200 hover:border-amber-400 hover:shadow-lg transition-all p-4 sm:p-6 md:p-8 text-left"
           >
             <div className="flex items-start gap-4">
-              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-3xl">🤝</span>
               </div>
               <div className="flex-1">

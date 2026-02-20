@@ -50,7 +50,8 @@ export const useCartStore = create<CartState>()(
         // Check if adding from a different business
         const currentBusinessId = get().getCurrentBusinessId()
         if (currentBusinessId && currentBusinessId !== item.business_id) {
-          // Clear cart if switching businesses
+          const confirmed = window.confirm('Tu carrito tiene productos de otro negocio. ¿Deseas vaciarlo para agregar de este negocio?')
+          if (!confirmed) return
           set({ items: [] })
         }
 

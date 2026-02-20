@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
     if (authError) {
 
-      if (authError.message.includes('already been registered')) {
+      if (authError.message.includes('already been registered') || (authError as any).code === 'user_already_exists') {
         return NextResponse.json({ error: 'Este email ya está registrado' }, { status: 400 })
       }
       return NextResponse.json({ error: 'Error al crear usuario' }, { status: 500 })

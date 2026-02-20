@@ -107,6 +107,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (submitting) return
     setFormError('')
 
     if (!formData.payment_method) {
@@ -486,7 +487,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
-              <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
                 <span className="text-3xl">💵</span>
               </div>
               <div>
@@ -509,7 +510,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
-            <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="text-3xl">📱</span>
             </div>
             <div>
@@ -527,7 +528,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
           {conektaEnabled ? (
             belowCardMinimum ? (
               <div className="w-full p-4 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center gap-4">
-                <div className="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
                   <span className="text-3xl">💳</span>
                 </div>
                 <div>
@@ -554,7 +555,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
-                <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
                   <span className="text-3xl">💳</span>
                 </div>
                 <div>
@@ -569,7 +570,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
           ) : (
             !mercadoPagoEnabled && (
               <div className="w-full p-4 rounded-xl border-2 border-gray-200 flex items-center gap-4 opacity-60 cursor-not-allowed">
-                <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
                   <span className="text-3xl">💳</span>
                 </div>
                 <div>
@@ -598,7 +599,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
-              <div className="w-14 h-14 bg-[#009ee3]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#009ee3]/10 rounded-xl flex items-center justify-center flex-shrink-0">
                 <span className="text-3xl">💳</span>
               </div>
               <div>

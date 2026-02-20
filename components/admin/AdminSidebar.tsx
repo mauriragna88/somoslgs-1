@@ -15,6 +15,7 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleLogout = async () => {
+    if (!confirm('¿Seguro que quieres cerrar sesion?')) return
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push('/')
