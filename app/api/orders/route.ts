@@ -23,7 +23,7 @@ const orderSchema = z.object({
   customer_email: z.string().email().optional(),
   delivery_address: z.string().optional(),
   notes: z.string().optional(),
-  payment_method: z.enum(['cash', 'card', 'transfer']).default('cash'),
+  payment_method: z.enum(['cash', 'card', 'transfer', 'mercadopago']).default('cash'),
   payment_receipt_url: z.string().url().optional(),
 })
 
@@ -143,6 +143,23 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Error al crear los productos del pedido' }, { status: 500 })
     }
 
+    // Deduct stock for each product
+    for (const item of validatedData.items) {
+      const { data: product } = await supabase
+        .from('products')
+        .select('stock')
+        .eq('id', item.product_id)
+        .single()
+
+      if (product && product.stock !== null) {
+        const newStock = Math.max(0, product.stock - item.quantity)
+        await supabase
+          .from('products')
+          .update({ stock: newStock })
+          .eq('id', item.product_id)
+      }
+    }
+
     // Store customer info
     const { error: customerError } = await supabase
       .from('order_customers')
@@ -194,6 +211,11 @@ export async function POST(request: Request) {
       },
     })
 
+    // Generate WhatsApp notification URL for customer
+    const whatsappNotifyUrl = business.whatsapp
+      ? `https://wa.me/52${business.whatsapp}?text=${encodeURIComponent(`Hola ${business.name}, acabo de hacer el pedido #${orderNumber} por $${total} en SomosLagos. ¿Me confirman?`)}`
+      : null
+
     return NextResponse.json({
       success: true,
       order: {
@@ -202,6 +224,7 @@ export async function POST(request: Request) {
         total,
         business_name: business.name,
         business_whatsapp: business.whatsapp,
+        whatsapp_notify_url: whatsappNotifyUrl,
         dashboard_order_url: orderLink,
       }
     }, { status: 201 })

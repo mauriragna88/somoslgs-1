@@ -64,7 +64,7 @@ export default async function OrdersPage({
 
   const activeFilter = searchParams.filter || 'all'
 
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const selectedBusinessId = cookieStore.get('selected_business_id')?.value
 
   const supabase = createClient()

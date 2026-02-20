@@ -11,6 +11,7 @@ interface Product {
   price: number
   images: string[] | null
   image_url: string | null
+  stock: number | null
 }
 
 interface ProductListProps {
@@ -47,6 +48,7 @@ export default function ProductList({
       name: product.name,
       price: product.price,
       image_url: imageUrl,
+      max_stock: product.stock,
     })
   }
 

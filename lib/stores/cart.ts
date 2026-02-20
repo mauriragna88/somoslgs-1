@@ -13,6 +13,7 @@ export interface CartItem {
   price: number
   quantity: number
   image_url: string | null
+  max_stock: number | null
   selected_options?: Record<string, string>
 }
 
@@ -64,9 +65,11 @@ export const useCartStore = create<CartState>()(
         )
 
         if (existingIndex > -1) {
-          // Update quantity
+          // Update quantity with stock validation
           const newItems = [...items]
-          newItems[existingIndex].quantity += quantity
+          const newQty = newItems[existingIndex].quantity + quantity
+          const maxStock = newItems[existingIndex].max_stock
+          newItems[existingIndex].quantity = maxStock !== null ? Math.min(newQty, maxStock) : newQty
           set({ items: newItems })
         } else {
           // Add new item
@@ -92,9 +95,11 @@ export const useCartStore = create<CartState>()(
           return
         }
 
-        const newItems = get().items.map(item =>
-          item.id === itemId ? { ...item, quantity } : item
-        )
+        const newItems = get().items.map(item => {
+          if (item.id !== itemId) return item
+          const cappedQty = item.max_stock !== null ? Math.min(quantity, item.max_stock) : quantity
+          return { ...item, quantity: cappedQty }
+        })
         set({ items: newItems })
       },
 

@@ -115,10 +115,29 @@ export async function PUT(
       return NextResponse.json({ error: 'No tienes permiso para modificar este pedido' }, { status: 403 })
     }
 
+    // Valid status transitions
+    const validTransitions: Record<string, string[]> = {
+      pending: ['confirmed', 'preparing', 'cancelled'],
+      confirmed: ['preparing', 'cancelled'],
+      preparing: ['ready', 'cancelled'],
+      ready: ['delivering', 'completed', 'cancelled'],
+      delivering: ['completed', 'cancelled'],
+      completed: [],
+      cancelled: [],
+    }
+
     // Build update object
     const updateData: Record<string, any> = {}
 
     if (validatedData.status) {
+      const currentStatus = order.status as string
+      const allowed = validTransitions[currentStatus] || []
+      if (!allowed.includes(validatedData.status)) {
+        return NextResponse.json(
+          { error: `No se puede cambiar de "${currentStatus}" a "${validatedData.status}"` },
+          { status: 400 }
+        )
+      }
       updateData.status = validatedData.status
 
       // Set timestamps based on status

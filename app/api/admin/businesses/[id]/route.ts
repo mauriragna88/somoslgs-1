@@ -161,14 +161,21 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     }
 
     // Cascade delete related records
-    await supabase.from('products').delete().eq('business_id', params.id)
-    await supabase.from('order_items').delete().in(
-      'order_id',
-      (await supabase.from('orders').select('id').eq('business_id', params.id)).data?.map((o: any) => o.id) || []
-    )
+    // Get order IDs first for sub-table cleanup
+    const { data: orderIds } = await supabase.from('orders').select('id').eq('business_id', params.id)
+    const ids = orderIds?.map((o: any) => o.id) || []
+    if (ids.length > 0) {
+      await supabase.from('order_items').delete().in('order_id', ids)
+      await supabase.from('order_customers').delete().in('order_id', ids)
+    }
     await supabase.from('orders').delete().eq('business_id', params.id)
+    await supabase.from('products').delete().eq('business_id', params.id)
     await supabase.from('transactions').delete().eq('business_id', params.id)
     await supabase.from('business_photos').delete().eq('business_id', params.id)
+    await supabase.from('reviews').delete().eq('business_id', params.id)
+    await supabase.from('delivery_men').delete().eq('business_id', params.id)
+    await supabase.from('subscriptions').delete().eq('business_id', params.id)
+    await supabase.from('notifications').delete().eq('business_id', params.id)
 
     // Delete the business
     const { error: deleteError } = await supabase

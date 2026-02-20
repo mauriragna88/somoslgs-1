@@ -28,6 +28,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
   const [error, setError] = useState('')
 
   // Password change state
+  const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordSaving, setPasswordSaving] = useState(false)
@@ -91,6 +92,10 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
     setPasswordError('')
 
     try {
+      if (!currentPassword) {
+        throw new Error('Ingresa tu contrasena actual')
+      }
+
       if (newPassword !== confirmPassword) {
         throw new Error('Las contrasenas no coinciden')
       }
@@ -99,6 +104,17 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
       passwordSchema.parse(newPassword)
 
       const supabase = createClient()
+
+      // Verify current password first
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: profile.email,
+        password: currentPassword,
+      })
+
+      if (signInError) {
+        throw new Error('Contrasena actual incorrecta')
+      }
+
       const { error: updateError } = await supabase.auth.updateUser({
         password: newPassword,
       })
@@ -108,6 +124,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
       }
 
       setPasswordMessage('Contrasena actualizada correctamente')
+      setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
     } catch (err) {
@@ -250,6 +267,22 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
               {passwordError}
             </div>
           )}
+
+          <div>
+            <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              Contrasena actual
+            </label>
+            <input
+              id="currentPassword"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              placeholder="••••••••"
+              required
+              disabled={passwordSaving}
+            />
+          </div>
 
           <div>
             <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">

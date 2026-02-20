@@ -46,15 +46,15 @@ export async function GET(request: Request) {
         .single()
 
       if (!existingProfile) {
-        // Create profile for new OAuth user
+        // Create profile for new OAuth user (upsert to prevent race condition on double-click)
         const metadata = data.user.user_metadata
-        await supabaseAdmin.from('profiles').insert({
+        await supabaseAdmin.from('profiles').upsert({
           id: data.user.id,
           email: data.user.email || '',
           full_name: metadata?.full_name || metadata?.name || 'Usuario',
           phone: metadata?.phone || null,
           role: 'customer',
-        })
+        }, { onConflict: 'id' })
 
         // New user without phone → redirect to complete profile
         if (!metadata?.phone) {
