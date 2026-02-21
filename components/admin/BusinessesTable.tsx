@@ -307,188 +307,176 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
         )}
       </div>
 
-      {/* Desktop Table View */}
+      {/* Desktop Table View - NO horizontal scroll */}
       <div className="hidden lg:block bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Negocio
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Dueño
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Plan
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Suscripción
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Estado
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Acciones
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredBusinesses.length > 0 ? (
-                filteredBusinesses.map((business) => {
-                  const daysInfo = formatDaysRemaining(business.subscription_expires_at)
+        <table className="w-full table-fixed">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="w-[22%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Negocio
+              </th>
+              <th className="w-[22%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Dueño
+              </th>
+              <th className="w-[13%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Plan
+              </th>
+              <th className="w-[15%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Suscripcion
+              </th>
+              <th className="w-[8%] px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Estado
+              </th>
+              <th className="w-[20%] px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-100">
+            {filteredBusinesses.length > 0 ? (
+              filteredBusinesses.map((business) => {
+                const daysInfo = formatDaysRemaining(business.subscription_expires_at)
 
-                  return (
-                    <tr key={business.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          {business.logo_url ? (
-                            <Image
-                              src={business.logo_url}
-                              alt={business.name}
-                              width={40}
-                              height={40}
-                              className="w-10 h-10 rounded-lg object-cover"
-                            />
-                          ) : (
-                            <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
-                              <span className="text-gray-500 font-semibold">
-                                {business.name[0].toUpperCase()}
-                              </span>
-                            </div>
-                          )}
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{business.name}</div>
-                            <div className="text-sm text-gray-500">{business.category?.name || 'Sin categoría'}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        {business.owner ? (
-                          <>
-                            <div className="text-sm font-medium text-gray-900">
-                              {business.owner.full_name}
-                            </div>
-                            <div className="text-sm text-gray-500">{business.owner.email}</div>
-                            {business.owner.phone && (
-                              <div className="text-xs text-blue-600">{business.owner.phone}</div>
-                            )}
-                          </>
+                return (
+                  <tr key={business.id} className="hover:bg-gray-50">
+                    <td className="px-3 py-3">
+                      <div className="flex items-center gap-2 min-w-0">
+                        {business.logo_url ? (
+                          <Image
+                            src={business.logo_url}
+                            alt={business.name}
+                            width={32}
+                            height={32}
+                            className="w-8 h-8 rounded-lg object-cover flex-shrink-0"
+                          />
                         ) : (
-                          <div className="flex items-center gap-2">
-                            <span className="px-2 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-800">
-                              Sin dueño
+                          <div className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span className="text-gray-500 font-semibold text-xs">
+                              {business.name[0].toUpperCase()}
                             </span>
-                            <button
-                              onClick={() => {
-                                setSelectedBusiness(business)
-                                setShowAssignOwnerModal(true)
-                              }}
-                              className="text-xs text-primary hover:underline font-medium"
-                            >
-                              Asignar
-                            </button>
                           </div>
                         )}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-1.5">
-                          <span
-                            className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${getPlanBadgeClasses(business.subscription_tier)}`}
-                          >
-                            {business.subscription_tier}
-                          </span>
-                          {business.is_courtesy && (
-                            <span className="px-2 py-1 text-xs font-semibold rounded-full bg-teal-100 text-teal-800">
-                              Cortesia
-                            </span>
-                          )}
+                        <div className="min-w-0">
+                          <div className="text-sm font-medium text-gray-900 truncate">{business.name}</div>
+                          <div className="text-xs text-gray-400 truncate">{business.category?.name || 'Sin cat.'}</div>
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div>
-                          <span className={`text-sm font-medium ${daysInfo.color}`}>
-                            {daysInfo.text}
-                          </span>
-                          {business.subscription_expires_at && (
-                            <p className="text-xs text-gray-400">
-                              {new Date(business.subscription_expires_at).toLocaleDateString('es-MX')}
-                            </p>
-                          )}
+                      </div>
+                    </td>
+                    <td className="px-3 py-3">
+                      {business.owner ? (
+                        <div className="min-w-0">
+                          <div className="text-sm font-medium text-gray-900 truncate">
+                            {business.owner.full_name}
+                          </div>
+                          <div className="text-xs text-gray-400 truncate">{business.owner.email}</div>
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                            business.is_active
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setSelectedBusiness(business)
+                            setShowAssignOwnerModal(true)
+                          }}
+                          className="px-2 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors"
                         >
-                          {business.is_active ? 'Activo' : 'Inactivo'}
+                          Sin dueño
+                        </button>
+                      )}
+                    </td>
+                    <td className="px-3 py-3">
+                      <div className="flex flex-col gap-1">
+                        <span
+                          className={`inline-block w-fit px-2 py-0.5 text-xs font-semibold rounded-full capitalize ${getPlanBadgeClasses(business.subscription_tier)}`}
+                        >
+                          {business.subscription_tier}
                         </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right">
-                        <div className="flex items-center justify-end gap-1">
+                        {business.is_courtesy && (
+                          <span className="inline-block w-fit px-2 py-0.5 text-xs font-semibold rounded-full bg-teal-100 text-teal-800">
+                            Cortesia
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-3 py-3">
+                      <span className={`text-xs font-medium ${daysInfo.color}`}>
+                        {daysInfo.text}
+                      </span>
+                      {business.subscription_expires_at && (
+                        <p className="text-xs text-gray-400">
+                          {new Date(business.subscription_expires_at).toLocaleDateString('es-MX')}
+                        </p>
+                      )}
+                    </td>
+                    <td className="px-2 py-3">
+                      <span
+                        className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
+                          business.is_active
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}
+                      >
+                        {business.is_active ? 'Activo' : 'Inact.'}
+                      </span>
+                    </td>
+                    <td className="px-2 py-3 text-right">
+                      <div className="flex items-center justify-end gap-0.5">
+                        <button
+                          onClick={() => openSubscriptionModal(business)}
+                          className="p-1.5 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                          title="Suscripcion"
+                        >
+                          🎁
+                        </button>
+                        {(business.phone || business.owner?.phone) && (
                           <button
-                            onClick={() => openSubscriptionModal(business)}
-                            className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                            title="Gestionar suscripción"
+                            onClick={() => openWhatsAppModal(business)}
+                            className="p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            title="WhatsApp"
                           >
-                            🎁
+                            💬
                           </button>
-                          {(business.phone || business.owner?.phone) && (
-                            <button
-                              onClick={() => openWhatsAppModal(business)}
-                              className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                              title="Enviar WhatsApp"
-                            >
-                              💬
-                            </button>
-                          )}
-                          <Link
-                            href={`/admin/negocios/${business.id}`}
-                            className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                            title="Ver detalles"
-                          >
-                            👁️
-                          </Link>
-                          <Link
-                            href={`/admin/negocios/${business.id}/editar`}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                            title="Editar"
-                          >
-                            ✏️
-                          </Link>
-                          <button
-                            onClick={() => openDeleteModal(business)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                            title="Eliminar"
-                          >
-                            🗑️
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })
-              ) : (
-                <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center">
-                    <div className="text-gray-500">
-                      <p className="text-lg font-medium mb-2">No hay negocios</p>
-                      <p className="text-sm">
-                        {searchTerm || filterPlan || filterStatus || filterPayment
-                          ? 'No se encontraron negocios con los filtros aplicados'
-                          : 'Comienza agregando tu primer negocio'}
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                        )}
+                        <Link
+                          href={`/admin/negocios/${business.id}`}
+                          className="p-1.5 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                          title="Ver"
+                        >
+                          👁️
+                        </Link>
+                        <Link
+                          href={`/admin/negocios/${business.id}/editar`}
+                          className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="Editar"
+                        >
+                          ✏️
+                        </Link>
+                        <button
+                          onClick={() => openDeleteModal(business)}
+                          className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Eliminar"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })
+            ) : (
+              <tr>
+                <td colSpan={6} className="px-3 py-12 text-center">
+                  <div className="text-gray-500">
+                    <p className="text-lg font-medium mb-2">No hay negocios</p>
+                    <p className="text-sm">
+                      {searchTerm || filterPlan || filterStatus || filterPayment
+                        ? 'No se encontraron negocios con los filtros aplicados'
+                        : 'Comienza agregando tu primer negocio'}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Results count */}
