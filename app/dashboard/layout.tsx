@@ -33,8 +33,8 @@ export default async function DashboardLayout({
   // Obtener negocios del dueño
   const { data: businesses } = await supabase
     .from('businesses')
-    .select('id, name, logo_url, subscription_tier, is_active, whatsapp')
-    .eq('owner_id', user.id) as { data: { id: string; name: string; logo_url: string | null; subscription_tier: string; is_active: boolean; whatsapp: string | null }[] | null }
+    .select('id, name, logo_url, subscription_tier, is_active, whatsapp, business_type')
+    .eq('owner_id', user.id) as { data: { id: string; name: string; logo_url: string | null; subscription_tier: string; is_active: boolean; whatsapp: string | null; business_type: 'productos' | 'servicios' | 'ambos' }[] | null }
 
   return (
     <div className="flex h-screen bg-gray-50">

@@ -13,6 +13,7 @@ const productSchema = z.object({
   sku: z.string().max(50).optional().nullable(),
   images: z.array(z.string()).optional(),
   is_available: z.boolean().default(true),
+  type: z.enum(['producto', 'servicio']).default('producto'),
 })
 
 export async function POST(request: Request) {
@@ -68,6 +69,7 @@ export async function POST(request: Request) {
       sku: validatedData.sku || null,
       images: validatedData.images || [],
       is_available: validatedData.is_available,
+      type: validatedData.type,
     }
 
     // Create product

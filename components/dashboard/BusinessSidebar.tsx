@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -9,6 +10,7 @@ interface Business {
   id: string
   name: string
   logo_url: string | null
+  business_type?: 'productos' | 'servicios' | 'ambos'
 }
 
 interface BusinessSidebarProps {
@@ -68,9 +70,14 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
     window.location.reload()
   }
 
+  const selectedBusiness = businesses.find(b => b.id === selectedBusinessId) || businesses[0]
+  const bType = selectedBusiness?.business_type || 'productos'
+  const catalogLabel = bType === 'servicios' ? 'Servicios' : bType === 'ambos' ? 'Productos y Servicios' : 'Productos'
+  const catalogIcon = bType === 'servicios' ? '🔧' : '📦'
+
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { href: '/dashboard/productos', label: 'Productos', icon: '📦' },
+    { href: '/dashboard/productos', label: catalogLabel, icon: catalogIcon },
     { href: '/dashboard/pedidos', label: 'Pedidos', icon: '🛒' },
     { href: '/dashboard/estadisticas', label: 'Estadísticas', icon: '📈' },
     { href: '/dashboard/mi-negocio', label: 'Mi Negocio', icon: '🏪' },
@@ -79,20 +86,24 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
   const sidebarContent = (
     <>
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-        <Link href="/dashboard" className="flex items-center space-x-2">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">S</span>
-          </div>
+      <div className="p-5 border-b border-slate-700/50 flex items-center justify-between">
+        <Link href="/dashboard" className="flex items-center space-x-3">
+          <Image
+            src="/logo.png"
+            alt="SomosLagos"
+            width={36}
+            height={36}
+            className="w-9 h-9"
+          />
           <div>
-            <h1 className="text-lg font-bold text-gray-900">Mi Dashboard</h1>
-            <p className="text-xs text-gray-500">SomosLagos</p>
+            <h1 className="text-base font-bold text-white">Mi Dashboard</h1>
+            <p className="text-xs text-slate-400">SomosLagos</p>
           </div>
         </Link>
         {/* Close button - mobile only */}
         <button
           onClick={() => setIsOpen(false)}
-          className="lg:hidden p-2 text-gray-500 hover:text-gray-700"
+          className="lg:hidden p-2 text-slate-400 hover:text-white"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -102,17 +113,17 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
 
       {/* Business Selector */}
       {businesses.length > 0 && (
-        <div className="p-4 border-b border-gray-200">
-          <label className="block text-xs font-medium text-gray-500 uppercase mb-2">
+        <div className="p-3 border-b border-slate-700/50">
+          <label className="block text-xs font-medium text-slate-400 uppercase mb-2 px-1">
             Negocio Activo
           </label>
           <select
             value={selectedBusinessId || ''}
             onChange={(e) => setSelectedBusinessId(e.target.value)}
-            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 bg-white/5 border border-slate-600 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {businesses.map((business) => (
-              <option key={business.id} value={business.id}>
+              <option key={business.id} value={business.id} className="text-secondary">
                 {business.name}
               </option>
             ))}
@@ -121,7 +132,7 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
       )}
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-3 space-y-1">
         {navItems.map((item) => {
           const isActive = pathname === item.href
           return (
@@ -129,39 +140,39 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
               key={item.href}
               href={item.href}
               prefetch={false}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+              className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl transition-all ${
                 isActive
-                  ? 'bg-primary text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
+                  ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/20'
+                  : 'text-slate-300 hover:bg-white/5 hover:text-white'
               }`}
             >
-              <span className="text-xl">{item.icon}</span>
-              <span className="font-medium">{item.label}</span>
+              <span className="text-lg">{item.icon}</span>
+              <span className="font-medium text-sm">{item.label}</span>
             </Link>
           )
         })}
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-gray-200">
-        <div className="flex items-center space-x-3 px-4 py-3">
-          <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-semibold">
+      <div className="p-3 border-t border-slate-700/50">
+        <div className="flex items-center space-x-3 px-3 py-3">
+          <div className="w-9 h-9 bg-gradient-to-br from-accent to-accent-dark text-secondary rounded-full flex items-center justify-center font-bold text-xs">
             {userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
           </div>
-          <div className="flex-1">
-            <p className="text-sm font-medium text-gray-900">{userName}</p>
-            <p className="text-xs text-gray-500">Dueño de Negocio</p>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-white truncate">{userName}</p>
+            <p className="text-xs text-slate-400">Dueño de Negocio</p>
           </div>
         </div>
         <Link
           href="/"
-          className="block w-full px-4 py-2 text-sm text-center text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+          className="block w-full px-4 py-2 text-sm text-center text-slate-300 hover:bg-white/5 hover:text-white rounded-lg transition-colors"
         >
           ← Volver al sitio
         </Link>
         <button
           onClick={handleLogout}
-          className="block w-full px-4 py-2 mt-1 text-sm text-center text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="block w-full px-4 py-2 mt-1 text-sm text-center text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-lg transition-colors"
         >
           Cerrar Sesion
         </button>
@@ -194,7 +205,7 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
       <div
         className={`
           fixed lg:static inset-y-0 left-0 z-50
-          w-64 bg-white border-r border-gray-200 flex flex-col
+          w-64 bg-secondary border-r border-slate-700/50 flex flex-col
           transform transition-transform duration-200 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}

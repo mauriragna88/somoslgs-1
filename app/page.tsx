@@ -101,112 +101,131 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-secondary via-secondary-light to-primary overflow-hidden">
-        {/* Background decorations */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-72 h-72 sm:w-[500px] sm:h-[500px] bg-primary-light/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 sm:w-96 sm:h-96 bg-accent/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
-          <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-warm/10 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2"></div>
-        </div>
+      {/* Hero Section with Lagos de Moreno background */}
+      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+        {/* Background Photo */}
+        <Image
+          src="/lagos-hero.jpg"
+          alt="Lagos de Moreno"
+          fill
+          className="object-cover"
+          priority
+          quality={85}
+        />
+        {/* Dark overlay with gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary/80 via-secondary/70 to-secondary/90"></div>
+        {/* Accent glow */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-accent/10 to-transparent"></div>
 
-        <div className="relative container mx-auto px-4 py-16 md:py-24">
+        <div className="relative container mx-auto px-4 py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
             {/* Logo in hero */}
-            <div className="flex justify-center mb-6">
-              <Image
-                src="/logo.png"
-                alt="SomosLagos"
-                width={100}
-                height={100}
-                className="w-20 h-20 md:w-24 md:h-24 drop-shadow-2xl"
-                priority
-              />
+            <div className="flex justify-center mb-8">
+              <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+                <Image
+                  src="/logo.png"
+                  alt="SomosLagos"
+                  width={80}
+                  height={80}
+                  className="w-16 h-16 md:w-20 md:h-20"
+                  priority
+                />
+              </div>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-              Todo lo que buscas en{' '}
-              <span className="text-accent-light">Lagos de Moreno</span>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white mb-5 leading-tight tracking-tight">
+              Descubre{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent">Lagos de Moreno</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Descubre negocios locales, pide productos y conecta con tu comunidad
+            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light">
+              Conecta con negocios locales, explora servicios y apoya a tu comunidad
             </p>
 
             {/* Search */}
-            <div className="max-w-2xl mx-auto mb-10">
+            <div className="max-w-2xl mx-auto mb-12">
               <SearchForm />
             </div>
 
-            {/* Social Proof Metrics */}
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-              <div className="text-center">
-                <p className="text-2xl md:text-3xl font-bold text-white">25+</p>
-                <p className="text-sm text-gray-400">Negocios activos</p>
+            {/* Social Proof Metrics - glass cards */}
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
+                <p className="text-2xl md:text-3xl font-bold text-accent">25+</p>
+                <p className="text-xs text-white/60 uppercase tracking-wider mt-1">Negocios</p>
               </div>
-              <div className="text-center">
-                <p className="text-2xl md:text-3xl font-bold text-white">{catCount}+</p>
-                <p className="text-sm text-gray-400">Categorias</p>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
+                <p className="text-2xl md:text-3xl font-bold text-primary-light">{catCount}+</p>
+                <p className="text-xs text-white/60 uppercase tracking-wider mt-1">Categorias</p>
               </div>
-              <div className="text-center">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
                 <p className="text-2xl md:text-3xl font-bold text-white">100%</p>
-                <p className="text-sm text-gray-400">Gratis para explorar</p>
+                <p className="text-xs text-white/60 uppercase tracking-wider mt-1">Gratis</p>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Bottom wave */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+            <path d="M0 80H1440V40C1440 40 1320 0 1200 0C1080 0 960 40 840 40C720 40 600 0 480 0C360 0 240 40 120 40C60 40 0 20 0 20V80Z" fill="white"/>
+          </svg>
         </div>
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-secondary mb-2">Explora por categoria</h2>
-            <p className="text-gray-500">Encuentra exactamente lo que necesitas</p>
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Categorias</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">Explora por categoria</h2>
+            <p className="text-gray-500 max-w-lg mx-auto">Encuentra exactamente lo que necesitas entre nuestras categorias de negocios</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
             {categories && categories.length > 0 ? (
               categories.map((category) => (
                 <Link
                   key={category.id}
                   href={`/buscar?categoria=${category.id}`}
-                  className="group p-5 bg-gradient-to-br from-gray-50 to-white rounded-2xl hover:from-primary/5 hover:to-accent/5 hover:shadow-lg transition-all border border-gray-100 hover:border-primary/20"
+                  className="group flex flex-col items-center p-5 bg-white rounded-2xl hover:shadow-xl transition-all border border-gray-100 hover:border-accent/30 hover:-translate-y-1"
                 >
-                  <div className="text-4xl mb-3">{category.icon || '📦'}</div>
-                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-sm">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <span className="text-3xl">{category.icon || '📦'}</span>
+                  </div>
+                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-xs text-center leading-tight">
                     {category.name}
                   </h3>
                 </Link>
               ))
             ) : (
               <>
-                <Link href="/buscar?q=restaurantes" className="group p-5 bg-gradient-to-br from-gray-50 to-white rounded-2xl hover:from-primary/5 hover:to-accent/5 hover:shadow-lg transition-all border border-gray-100 hover:border-primary/20">
-                  <div className="text-4xl mb-3">🍔</div>
-                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-sm">Restaurantes</h3>
+                <Link href="/buscar?q=restaurantes" className="group flex flex-col items-center p-5 bg-white rounded-2xl hover:shadow-xl transition-all border border-gray-100 hover:border-accent/30 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><span className="text-3xl">🍔</span></div>
+                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-xs text-center">Restaurantes</h3>
                 </Link>
-                <Link href="/buscar?q=tiendas" className="group p-5 bg-gradient-to-br from-gray-50 to-white rounded-2xl hover:from-primary/5 hover:to-accent/5 hover:shadow-lg transition-all border border-gray-100 hover:border-primary/20">
-                  <div className="text-4xl mb-3">🛒</div>
-                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-sm">Tiendas</h3>
+                <Link href="/buscar?q=tiendas" className="group flex flex-col items-center p-5 bg-white rounded-2xl hover:shadow-xl transition-all border border-gray-100 hover:border-accent/30 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><span className="text-3xl">🛒</span></div>
+                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-xs text-center">Tiendas</h3>
                 </Link>
-                <Link href="/buscar?q=servicios" className="group p-5 bg-gradient-to-br from-gray-50 to-white rounded-2xl hover:from-primary/5 hover:to-accent/5 hover:shadow-lg transition-all border border-gray-100 hover:border-primary/20">
-                  <div className="text-4xl mb-3">🔧</div>
-                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-sm">Servicios</h3>
+                <Link href="/buscar?q=servicios" className="group flex flex-col items-center p-5 bg-white rounded-2xl hover:shadow-xl transition-all border border-gray-100 hover:border-accent/30 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><span className="text-3xl">🔧</span></div>
+                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-xs text-center">Servicios</h3>
                 </Link>
-                <Link href="/buscar?q=profesionales" className="group p-5 bg-gradient-to-br from-gray-50 to-white rounded-2xl hover:from-primary/5 hover:to-accent/5 hover:shadow-lg transition-all border border-gray-100 hover:border-primary/20">
-                  <div className="text-4xl mb-3">👔</div>
-                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-sm">Profesionales</h3>
+                <Link href="/buscar?q=profesionales" className="group flex flex-col items-center p-5 bg-white rounded-2xl hover:shadow-xl transition-all border border-gray-100 hover:border-accent/30 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><span className="text-3xl">👔</span></div>
+                  <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors text-xs text-center">Profesionales</h3>
                 </Link>
               </>
             )}
           </div>
 
-          <div className="text-center mt-8">
+          <div className="text-center mt-10">
             <Link
               href="/categorias"
-              className="inline-flex items-center text-primary hover:text-primary-dark font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-secondary/5 hover:bg-secondary/10 text-secondary font-semibold rounded-full transition-colors"
             >
               Ver todas las categorias
-              <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
@@ -216,19 +235,20 @@ export default async function Home() {
 
       {/* Featured Businesses */}
       {featuredBusinesses && featuredBusinesses.length > 0 && (
-        <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
+        <section className="py-20 bg-surface">
           <div className="container mx-auto px-4">
-            <div className="flex items-end justify-between mb-10">
+            <div className="flex items-end justify-between mb-12">
               <div>
-                <h2 className="text-3xl font-bold text-secondary mb-2">Negocios Destacados</h2>
+                <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full mb-4">Destacados</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-2">Negocios Destacados</h2>
                 <p className="text-gray-500">Los mejores negocios de Lagos de Moreno</p>
               </div>
               <Link
                 href="/buscar"
-                className="hidden sm:inline-flex items-center text-primary hover:text-primary-dark font-medium transition-colors"
+                className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-secondary font-medium rounded-full hover:shadow-md transition-all"
               >
                 Ver todos
-                <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
@@ -239,53 +259,55 @@ export default async function Home() {
                 <Link
                   key={business.id}
                   href={`/negocios/${business.slug}`}
-                  className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-gray-100 hover:border-primary/20"
+                  className="group bg-white rounded-2xl hover:shadow-2xl transition-all overflow-hidden border border-gray-100 hover:border-transparent hover:-translate-y-1"
                 >
-                  {/* Top accent bar */}
-                  <div className="h-1.5 bg-gradient-to-r from-primary via-accent to-primary"></div>
+                  {/* Gradient top */}
+                  <div className="h-1 bg-gradient-to-r from-primary via-accent to-warm"></div>
 
                   <div className="p-6">
                     <div className="flex items-start gap-4">
                       {business.logo_url ? (
-                        <div className="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 shadow-md border-2 border-gray-100 relative">
+                        <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 ring-2 ring-gray-100 relative">
                           <Image
                             src={business.logo_url}
                             alt={business.name}
                             fill
-                            sizes="64px"
+                            sizes="56px"
                             className="object-cover"
                           />
                         </div>
                       ) : (
-                        <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md">
-                          <span className="text-2xl text-white font-bold">
+                        <div className="w-14 h-14 bg-gradient-to-br from-secondary to-secondary-light rounded-xl flex items-center justify-center flex-shrink-0">
+                          <span className="text-xl text-white font-bold">
                             {business.name[0].toUpperCase()}
                           </span>
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-secondary group-hover:text-primary transition-colors truncate mb-1 text-lg">
+                        <h3 className="font-bold text-secondary group-hover:text-primary transition-colors truncate mb-1">
                           {business.name}
                         </h3>
                         {business.category && (
-                          <span className="inline-flex items-center text-xs text-accent-dark bg-accent/10 px-2.5 py-0.5 rounded-full mb-2 font-medium">
+                          <span className="inline-flex items-center text-xs text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full mb-2">
                             {business.category.icon} {business.category.name}
                           </span>
                         )}
-                        <p className="text-sm text-gray-600 line-clamp-2">
+                        <p className="text-sm text-gray-500 line-clamp-2">
                           {business.description || 'Visita este negocio para conocer mas'}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="px-6 py-3 bg-gradient-to-r from-gray-50 to-primary/5 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-sm text-primary font-semibold group-hover:underline">
+                  <div className="px-6 py-3 border-t border-gray-50 flex items-center justify-between">
+                    <span className="text-sm text-primary font-semibold">
                       Ver negocio
                     </span>
-                    <svg className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+                      <svg className="w-4 h-4 text-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -294,10 +316,10 @@ export default async function Home() {
             <div className="text-center mt-8 sm:hidden">
               <Link
                 href="/buscar"
-                className="inline-flex items-center text-primary hover:text-primary-dark font-medium transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors"
               >
                 Ver todos los negocios
-                <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
@@ -307,52 +329,61 @@ export default async function Home() {
       )}
 
       {/* CTA for Business Owners */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto bg-gradient-to-br from-secondary via-secondary-light to-primary rounded-3xl overflow-hidden shadow-2xl">
-            <div className="p-8 md:p-12">
+          <div className="max-w-5xl mx-auto relative overflow-hidden rounded-3xl">
+            {/* Background image reuse */}
+            <Image
+              src="/lagos-hero.jpg"
+              alt=""
+              fill
+              className="object-cover"
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 via-secondary/85 to-primary/80"></div>
+            <div className="relative p-8 md:p-14">
               <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
                   Haz crecer tu negocio
                 </h2>
-                <p className="text-lg text-gray-300 max-w-xl mx-auto">
+                <p className="text-lg text-white/70 max-w-xl mx-auto">
                   Unete a SomosLagos y llega a miles de clientes en Lagos de Moreno
                 </p>
               </div>
 
               <div className="grid md:grid-cols-3 gap-6 mb-10">
-                <div className="text-center p-4">
-                  <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span className="text-3xl">📱</span>
+                <div className="text-center p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
+                  <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <span className="text-2xl">📱</span>
                   </div>
-                  <h3 className="font-semibold text-white mb-1">Presencia Digital</h3>
-                  <p className="text-sm text-gray-300">Tu negocio visible 24/7 en internet</p>
+                  <h3 className="font-semibold text-white mb-1 text-sm">Presencia Digital</h3>
+                  <p className="text-xs text-white/60">Tu negocio visible 24/7</p>
                 </div>
-                <div className="text-center p-4">
-                  <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span className="text-3xl">🎯</span>
+                <div className="text-center p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
+                  <div className="w-12 h-12 bg-primary-light/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <span className="text-2xl">🎯</span>
                   </div>
-                  <h3 className="font-semibold text-white mb-1">Mas Clientes</h3>
-                  <p className="text-sm text-gray-300">Llega a miles de personas en Lagos</p>
+                  <h3 className="font-semibold text-white mb-1 text-sm">Mas Clientes</h3>
+                  <p className="text-xs text-white/60">Miles de personas en Lagos</p>
                 </div>
-                <div className="text-center p-4">
-                  <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span className="text-3xl">💳</span>
+                <div className="text-center p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
+                  <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <span className="text-2xl">💳</span>
                   </div>
-                  <h3 className="font-semibold text-white mb-1">Ventas Online</h3>
-                  <p className="text-sm text-gray-300">Recibe pagos y pedidos en linea</p>
+                  <h3 className="font-semibold text-white mb-1 text-sm">Ventas Online</h3>
+                  <p className="text-xs text-white/60">Pedidos y pagos en linea</p>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link
                   href="/registrar-negocio"
-                  className="bg-accent hover:bg-accent-dark text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg transition-all hover:scale-105"
+                  className="bg-accent hover:bg-accent-dark text-secondary px-10 py-4 rounded-full font-bold text-lg shadow-xl transition-all hover:scale-105 hover:shadow-accent/30"
                 >
                   Registrar mi Negocio
                 </Link>
-                <p className="text-sm text-gray-300">
-                  Planes desde <strong className="text-accent-light text-lg">$80 MXN/mes</strong>
+                <p className="text-sm text-white/60">
+                  Planes desde <strong className="text-accent text-lg">$80/mes</strong>
                 </p>
               </div>
             </div>
@@ -361,50 +392,51 @@ export default async function Home() {
       </section>
 
       {/* Trust Section */}
-      <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+      <section className="py-20 bg-surface">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-secondary mb-2">¿Por que SomosLagos?</h2>
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-1.5 bg-secondary/5 text-secondary text-sm font-semibold rounded-full mb-4">Ventajas</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">¿Por que SomosLagos?</h2>
             <p className="text-gray-500">La plataforma hecha por y para Lagos de Moreno</p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <div className="text-center p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
+            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary/15 to-primary/5 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <h3 className="font-semibold text-secondary mb-1">Seguro</h3>
-              <p className="text-sm text-gray-500">Negocios verificados y pagos protegidos</p>
+              <h3 className="font-bold text-secondary mb-1 text-sm">Seguro</h3>
+              <p className="text-xs text-gray-500">Negocios verificados</p>
             </div>
-            <div className="text-center p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-              <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
+              <div className="w-12 h-12 bg-gradient-to-br from-accent/15 to-accent/5 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 className="font-semibold text-secondary mb-1">Local</h3>
-              <p className="text-sm text-gray-500">100% enfocado en Lagos de Moreno</p>
+              <h3 className="font-bold text-secondary mb-1 text-sm">Local</h3>
+              <p className="text-xs text-gray-500">100% Lagos de Moreno</p>
             </div>
-            <div className="text-center p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary/15 to-primary/5 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="font-semibold text-secondary mb-1">Rapido</h3>
-              <p className="text-sm text-gray-500">Encuentra lo que buscas en segundos</p>
+              <h3 className="font-bold text-secondary mb-1 text-sm">Rapido</h3>
+              <p className="text-xs text-gray-500">Busca en segundos</p>
             </div>
-            <div className="text-center p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-              <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
+              <div className="w-12 h-12 bg-gradient-to-br from-accent/15 to-accent/5 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="font-semibold text-secondary mb-1">Gratis</h3>
-              <p className="text-sm text-gray-500">Explora sin costo, siempre</p>
+              <h3 className="font-bold text-secondary mb-1 text-sm">Gratis</h3>
+              <p className="text-xs text-gray-500">Explora sin costo</p>
             </div>
           </div>
         </div>

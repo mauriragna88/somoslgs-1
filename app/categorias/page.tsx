@@ -51,34 +51,35 @@ export default async function CategoriasPage() {
   }))
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-surface">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 py-8">
+      <div className="bg-white border-b border-gray-100 py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Categorías</h1>
-          <p className="text-gray-600">
-            Explora negocios por categoría en Lagos de Moreno
+          <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-3">Explorar</span>
+          <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-2">Categorias</h1>
+          <p className="text-gray-500">
+            Explora negocios por categoria en Lagos de Moreno
           </p>
         </div>
       </div>
 
       {/* Categories Grid */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-10">
         {categoriesWithCount.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {categoriesWithCount.map((category) => (
               <Link
                 key={category.id}
                 href={`/buscar?categoria=${category.id}`}
-                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 text-center group"
+                className="bg-white rounded-2xl hover:shadow-xl transition-all p-6 text-center group border border-gray-100 hover:border-transparent hover:-translate-y-1"
               >
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <span className="text-4xl">{category.icon || '📁'}</span>
+                <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <span className="text-3xl">{category.icon || '📁'}</span>
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-primary transition-colors">
+                <h3 className="font-bold text-secondary mb-1 group-hover:text-primary transition-colors text-sm">
                   {category.name}
                 </h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-400">
                   {category.businessCount} negocio{category.businessCount !== 1 ? 's' : ''}
                 </p>
               </Link>
@@ -86,30 +87,33 @@ export default async function CategoriasPage() {
           </div>
         ) : (
           <div className="text-center py-16">
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-100">
               <span className="text-5xl">📁</span>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">No hay categorías</h2>
-            <p className="text-gray-600">
-              Las categorías se agregarán pronto
+            <h2 className="text-2xl font-bold text-secondary mb-2">No hay categorias</h2>
+            <p className="text-gray-500">
+              Las categorias se agregaran pronto
             </p>
           </div>
         )}
       </div>
 
       {/* CTA Banner */}
-      <div className="container mx-auto px-4 pb-8">
-        <div className="bg-gradient-to-r from-primary to-primary-dark rounded-xl p-8 text-center text-white">
-          <h2 className="text-2xl font-bold mb-2">¿No encuentras lo que buscas?</h2>
-          <p className="text-white/90 mb-6">
-            Prueba nuestra búsqueda avanzada o contáctanos
-          </p>
-          <Link
-            href="/buscar"
-            className="inline-block px-8 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-gray-100 transition-colors"
-          >
-            Ir a Búsqueda
-          </Link>
+      <div className="container mx-auto px-4 pb-10">
+        <div className="bg-gradient-to-r from-secondary via-secondary-light to-primary rounded-2xl p-8 text-center text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div className="relative">
+            <h2 className="text-2xl font-bold mb-2">¿No encuentras lo que buscas?</h2>
+            <p className="text-white/70 mb-6">
+              Prueba nuestra busqueda avanzada
+            </p>
+            <Link
+              href="/buscar"
+              className="inline-block px-8 py-3 bg-accent text-secondary font-bold rounded-full hover:bg-accent-dark transition-colors shadow-lg"
+            >
+              Ir a Busqueda
+            </Link>
+          </div>
         </div>
       </div>
     </main>

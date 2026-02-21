@@ -111,8 +111,8 @@ export default function Header() {
               className="w-10 h-10 md:w-11 md:h-11"
               priority
             />
-            <span className="text-xl font-bold text-secondary hidden sm:inline">
-              SomosLagos
+            <span className="text-xl font-bold hidden sm:inline">
+              <span className="text-secondary">Somos</span><span className="text-primary">Lagos</span>
             </span>
           </Link>
 
@@ -230,7 +230,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/registro"
-                  className="px-5 py-2 text-sm font-semibold bg-primary hover:bg-primary-dark text-white rounded-full transition-colors shadow-sm"
+                  className="px-5 py-2 text-sm font-semibold bg-gradient-to-r from-primary to-primary-dark text-white rounded-full transition-all shadow-sm hover:shadow-md hover:scale-105"
                 >
                   Registrarse
                 </Link>

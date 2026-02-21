@@ -11,6 +11,7 @@ interface ProductsBusiness {
   id: string
   name: string
   subscription_tier: string
+  business_type: 'productos' | 'servicios' | 'ambos'
 }
 
 interface Product {
@@ -36,7 +37,7 @@ export default async function ProductsPage() {
   // Obtener negocios del dueño
   const { data: businesses } = await supabase
     .from('businesses')
-    .select('id, name, subscription_tier')
+    .select('id, name, subscription_tier, business_type')
     .eq('owner_id', user.id) as { data: ProductsBusiness[] | null }
 
   // Obtener el negocio seleccionado de las cookies
@@ -63,12 +64,17 @@ export default async function ProductsPage() {
     products = data || []
   }
 
+  const bType = selectedBusiness?.business_type || 'productos'
+  const pageTitle = bType === 'servicios' ? 'Servicios' : bType === 'ambos' ? 'Productos y Servicios' : 'Productos'
+  const addLabel = bType === 'servicios' ? '+ Agregar Servicio' : bType === 'ambos' ? '+ Agregar' : '+ Agregar Producto'
+  const emptyIcon = bType === 'servicios' ? '🔧' : '📦'
+
   return (
     <div>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Productos</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{pageTitle}</h1>
           <p className="text-sm sm:text-base text-gray-600 mt-1">Gestiona el catálogo de tu negocio</p>
         </div>
         {canManageProducts && (
@@ -76,7 +82,7 @@ export default async function ProductsPage() {
             href="/dashboard/productos/nuevo"
             className="px-4 py-2 sm:px-6 sm:py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-sm sm:text-base text-center"
           >
-            + Agregar Producto
+            {addLabel}
           </Link>
         )}
       </div>
@@ -195,20 +201,22 @@ export default async function ProductsPage() {
               ))}
             </div>
           ) : (
-            /* No hay productos */
+            /* No hay productos/servicios */
             <div className="bg-white rounded-xl shadow-sm p-12 text-center">
               <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-5xl">📦</span>
+                <span className="text-5xl">{emptyIcon}</span>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">No tienes productos</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                {bType === 'servicios' ? 'No tienes servicios' : bType === 'ambos' ? 'No tienes productos ni servicios' : 'No tienes productos'}
+              </h2>
               <p className="text-gray-600 mb-6">
-                Comienza agregando tu primer producto al catálogo
+                {bType === 'servicios' ? 'Comienza agregando tu primer servicio' : 'Comienza agregando tu primer producto al catálogo'}
               </p>
               <Link
                 href="/dashboard/productos/nuevo"
                 className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
               >
-                + Agregar Primer Producto
+                {bType === 'servicios' ? '+ Agregar Primer Servicio' : '+ Agregar Primer Producto'}
               </Link>
             </div>
           )}

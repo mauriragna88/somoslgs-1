@@ -12,6 +12,7 @@ const productUpdateSchema = z.object({
   sku: z.string().max(50).optional().nullable(),
   images: z.array(z.string()).optional(),
   is_available: z.boolean().optional(),
+  type: z.enum(['producto', 'servicio']).optional(),
 })
 
 // Helper to create supabase client with service role

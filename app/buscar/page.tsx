@@ -100,30 +100,30 @@ export default async function BuscarPage({
   // error is handled gracefully - empty results shown
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-surface">
       {/* Search Header */}
-      <div className="bg-white border-b border-gray-200 py-8">
+      <div className="bg-white border-b border-gray-100 py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Buscar Negocios</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-6">Buscar Negocios</h1>
 
           {/* Search Form */}
-          <form method="GET" className="flex flex-col md:flex-row gap-4">
+          <form method="GET" className="flex flex-col md:flex-row gap-3">
             <div className="flex-1">
               <input
                 type="text"
                 name="q"
                 defaultValue={query}
-                placeholder="Buscar por nombre o descripción..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Buscar por nombre o descripcion..."
+                className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               />
             </div>
             <div className="w-full md:w-64">
               <select
                 name="categoria"
                 defaultValue={categoriaId}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               >
-                <option value="">Todas las categorías</option>
+                <option value="">Todas las categorias</option>
                 {categories?.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.icon} {cat.name}
@@ -133,7 +133,7 @@ export default async function BuscarPage({
             </div>
             <button
               type="submit"
-              className="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+              className="px-8 py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20"
             >
               Buscar
             </button>
@@ -158,13 +158,13 @@ export default async function BuscarPage({
               <Link
                 key={business.id}
                 href={`/negocios/${business.slug}`}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden group border border-gray-100 hover:border-primary/20"
+                className="bg-white rounded-2xl hover:shadow-2xl transition-all overflow-hidden group border border-gray-100 hover:border-transparent hover:-translate-y-1"
               >
                 {/* Top accent */}
-                <div className="h-1 bg-gradient-to-r from-primary via-accent to-primary"></div>
+                <div className="h-1 bg-gradient-to-r from-primary via-accent to-warm"></div>
 
                 {/* Image/Logo */}
-                <div className="h-48 bg-gray-100 relative overflow-hidden">
+                <div className="h-48 bg-surface relative overflow-hidden">
                   {business.logo_url ? (
                     <Image
                       src={business.logo_url}
@@ -174,8 +174,8 @@ export default async function BuscarPage({
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
-                      <span className="text-6xl text-primary font-bold">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/5 to-primary/5">
+                      <span className="text-6xl text-secondary/30 font-bold">
                         {business.name[0].toUpperCase()}
                       </span>
                     </div>
@@ -188,12 +188,12 @@ export default async function BuscarPage({
                   )}
                   {/* Premium/Featured badge */}
                   {(business.subscription_tier === 'premium' || business.is_featured) && (
-                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-white rounded-full text-xs font-bold shadow-lg">
+                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold shadow-lg">
                       &#11088; Destacado
                     </div>
                   )}
                   {business.subscription_tier === 'delivery' && !business.is_featured && (
-                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-primary text-white rounded-full text-xs font-bold shadow-lg">
+                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-secondary text-white rounded-full text-xs font-bold shadow-lg">
                       &#128640; Delivery
                     </div>
                   )}
@@ -201,16 +201,16 @@ export default async function BuscarPage({
 
                 {/* Content */}
                 <div className="p-5">
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors">
+                  <h3 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
                     {business.name}
                   </h3>
                   {business.description && (
-                    <p className="text-sm text-gray-600 mt-1.5 line-clamp-2">
+                    <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">
                       {business.description}
                     </p>
                   )}
                   {business.address && (
-                    <p className="text-sm text-gray-500 mt-2.5 flex items-center">
+                    <p className="text-sm text-gray-400 mt-2.5 flex items-center">
                       <span className="mr-1.5 text-accent">&#128205;</span>
                       {business.address}
                     </p>
@@ -218,11 +218,13 @@ export default async function BuscarPage({
                 </div>
 
                 {/* Footer */}
-                <div className="px-5 py-3 bg-gradient-to-r from-gray-50 to-primary/5 border-t border-gray-100 flex items-center justify-between">
+                <div className="px-5 py-3 border-t border-gray-50 flex items-center justify-between">
                   <span className="text-sm text-primary font-semibold">Ver negocio</span>
-                  <svg className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                  <div className="w-7 h-7 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
+                    <svg className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </div>
               </Link>
             ))}

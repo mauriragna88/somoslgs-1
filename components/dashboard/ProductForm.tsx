@@ -14,6 +14,7 @@ const productSchema = z.object({
   sku: z.string().max(50).optional().nullable(),
   images: z.array(z.string()).optional(),
   is_available: z.boolean().default(true),
+  type: z.enum(['producto', 'servicio']).default('producto'),
 })
 
 type ProductFormData = z.infer<typeof productSchema>
@@ -21,6 +22,7 @@ type ProductFormData = z.infer<typeof productSchema>
 interface ProductFormProps {
   businessId: string
   categories: Array<{ id: string; name: string }>
+  businessType?: 'productos' | 'servicios' | 'ambos'
   product?: {
     id: string
     name: string
@@ -31,14 +33,18 @@ interface ProductFormProps {
     sku?: string | null
     images?: string[]
     is_available: boolean
+    type?: 'producto' | 'servicio'
   }
 }
 
-export default function ProductForm({ businessId, categories, product }: ProductFormProps) {
+export default function ProductForm({ businessId, categories, businessType = 'productos', product }: ProductFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [imageUrl, setImageUrl] = useState(product?.images?.[0] || '')
+
+  // Determine default item type based on businessType
+  const defaultType = businessType === 'servicios' ? 'servicio' : 'producto'
 
   const [formData, setFormData] = useState<ProductFormData>({
     name: product?.name || '',
@@ -49,7 +55,10 @@ export default function ProductForm({ businessId, categories, product }: Product
     sku: product?.sku || '',
     images: product?.images || [],
     is_available: product?.is_available ?? true,
+    type: product?.type || defaultType,
   })
+
+  const isService = formData.type === 'servicio'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -57,17 +66,14 @@ export default function ProductForm({ businessId, categories, product }: Product
     setError('')
 
     try {
-      // Add image URL to images array if provided
-      // Convert empty strings to null for optional fields
       const productData = {
         ...formData,
         images: imageUrl ? [imageUrl] : [],
         category: formData.category || null,
-        sku: formData.sku || null,
-        stock: formData.stock || 0,
+        sku: isService ? null : (formData.sku || null),
+        stock: isService ? null : (formData.stock || 0),
       }
 
-      // Validate
       const validatedData = productSchema.parse(productData)
 
       const url = product
@@ -88,7 +94,7 @@ export default function ProductForm({ businessId, categories, product }: Product
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Error al guardar el producto')
+        throw new Error(data.error || `Error al guardar el ${isService ? 'servicio' : 'producto'}`)
       }
 
       router.push('/dashboard/productos')
@@ -99,7 +105,7 @@ export default function ProductForm({ businessId, categories, product }: Product
       } else if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError('Error al guardar el producto')
+        setError(`Error al guardar el ${isService ? 'servicio' : 'producto'}`)
       }
     } finally {
       setLoading(false)
@@ -114,35 +120,70 @@ export default function ProductForm({ businessId, categories, product }: Product
         </div>
       )}
 
+      {/* Toggle producto/servicio for "ambos" type businesses */}
+      {businessType === 'ambos' && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Tipo
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => setFormData({ ...formData, type: 'producto' })}
+              className={`p-3 border-2 rounded-xl text-center transition-all ${
+                formData.type === 'producto'
+                  ? 'border-primary bg-primary/5 text-primary'
+                  : 'border-gray-200 hover:border-gray-300 text-gray-700'
+              }`}
+            >
+              <span className="text-xl block mb-1">📦</span>
+              <span className="text-sm font-medium">Producto</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setFormData({ ...formData, type: 'servicio' })}
+              className={`p-3 border-2 rounded-xl text-center transition-all ${
+                formData.type === 'servicio'
+                  ? 'border-primary bg-primary/5 text-primary'
+                  : 'border-gray-200 hover:border-gray-300 text-gray-700'
+              }`}
+            >
+              <span className="text-xl block mb-1">🔧</span>
+              <span className="text-sm font-medium">Servicio</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Nombre del Producto *
+          {isService ? 'Nombre del Servicio' : 'Nombre del Producto'} *
         </label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Ej: Tacos al Pastor"
+          placeholder={isService ? 'Ej: Corte de cabello' : 'Ej: Tacos al Pastor'}
           required
         />
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Descripción *
+          {isService ? 'Describe tu servicio' : 'Descripción'} *
         </label>
         <textarea
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Describe tu producto..."
+          placeholder={isService ? 'Describe en qué consiste tu servicio...' : 'Describe tu producto...'}
           rows={4}
           required
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className={`grid grid-cols-1 ${isService ? '' : 'sm:grid-cols-2'} gap-4`}>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Precio (MXN) *
@@ -158,21 +199,23 @@ export default function ProductForm({ businessId, categories, product }: Product
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Stock
-          </label>
-          <input
-            type="number"
-            value={formData.stock || 0}
-            onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="0"
-          />
-        </div>
+        {!isService && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Stock
+            </label>
+            <input
+              type="number"
+              value={formData.stock || 0}
+              onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="0"
+            />
+          </div>
+        )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className={`grid grid-cols-1 ${isService ? '' : 'sm:grid-cols-2'} gap-4`}>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Categoría (Opcional)
@@ -191,18 +234,20 @@ export default function ProductForm({ businessId, categories, product }: Product
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            SKU (Opcional)
-          </label>
-          <input
-            type="text"
-            value={formData.sku || ''}
-            onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="SKU-001"
-          />
-        </div>
+        {!isService && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              SKU (Opcional)
+            </label>
+            <input
+              type="text"
+              value={formData.sku || ''}
+              onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="SKU-001"
+            />
+          </div>
+        )}
       </div>
 
       <ImageUpload
@@ -219,7 +264,7 @@ export default function ProductForm({ businessId, categories, product }: Product
           className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
         />
         <label htmlFor="is_available" className="ml-2 text-sm text-gray-700">
-          Producto disponible
+          {isService ? 'Servicio disponible' : 'Producto disponible'}
         </label>
       </div>
 
@@ -229,7 +274,12 @@ export default function ProductForm({ businessId, categories, product }: Product
           disabled={loading}
           className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
         >
-          {loading ? 'Guardando...' : product ? 'Actualizar Producto' : 'Crear Producto'}
+          {loading
+            ? 'Guardando...'
+            : product
+              ? `Actualizar ${isService ? 'Servicio' : 'Producto'}`
+              : `Crear ${isService ? 'Servicio' : 'Producto'}`
+          }
         </button>
         <button
           type="button"

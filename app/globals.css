@@ -6,10 +6,10 @@
 @tailwind utilities;
 
 :root {
-  --primary: #0F766E;
-  --primary-dark: #0D5E58;
-  --primary-light: #99F6E4;
-  --secondary: #1E293B;
+  --primary: #0D9488;
+  --primary-dark: #0F766E;
+  --primary-light: #5EEAD4;
+  --secondary: #0F172A;
   --accent: #F59E0B;
   --accent-dark: #D97706;
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -48,20 +49,24 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
   const sidebarContent = (
     <>
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-        <Link href="/admin" className="flex items-center space-x-2">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">S</span>
-          </div>
+      <div className="p-5 border-b border-slate-700/50 flex items-center justify-between">
+        <Link href="/admin" className="flex items-center space-x-3">
+          <Image
+            src="/logo.png"
+            alt="SomosLagos"
+            width={36}
+            height={36}
+            className="w-9 h-9"
+          />
           <div>
-            <h1 className="text-lg font-bold text-gray-900">Admin Panel</h1>
-            <p className="text-xs text-gray-500">SomosLagos</p>
+            <h1 className="text-base font-bold text-white">Admin Panel</h1>
+            <p className="text-xs text-slate-400">SomosLagos</p>
           </div>
         </Link>
         {/* Close button - mobile only */}
         <button
           onClick={() => setIsOpen(false)}
-          className="lg:hidden p-2 text-gray-500 hover:text-gray-700"
+          className="lg:hidden p-2 text-slate-400 hover:text-white"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -70,7 +75,7 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-3 space-y-1">
         {navItems.map((item) => {
           const isActive = pathname === item.href
           return (
@@ -78,39 +83,39 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
               key={item.href}
               href={item.href}
               prefetch={false}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+              className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl transition-all ${
                 isActive
-                  ? 'bg-primary text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
+                  ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/20'
+                  : 'text-slate-300 hover:bg-white/5 hover:text-white'
               }`}
             >
-              <span className="text-xl">{item.icon}</span>
-              <span className="font-medium">{item.label}</span>
+              <span className="text-lg">{item.icon}</span>
+              <span className="font-medium text-sm">{item.label}</span>
             </Link>
           )
         })}
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-gray-200">
-        <div className="flex items-center space-x-3 px-4 py-3">
-          <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-semibold">
+      <div className="p-3 border-t border-slate-700/50">
+        <div className="flex items-center space-x-3 px-3 py-3">
+          <div className="w-9 h-9 bg-gradient-to-br from-accent to-accent-dark text-secondary rounded-full flex items-center justify-center font-bold text-xs">
             {userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
           </div>
-          <div className="flex-1">
-            <p className="text-sm font-medium text-gray-900">{userName}</p>
-            <p className="text-xs text-gray-500">Administrador</p>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-white truncate">{userName}</p>
+            <p className="text-xs text-slate-400">Administrador</p>
           </div>
         </div>
         <Link
           href="/"
-          className="block w-full px-4 py-2 text-sm text-center text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+          className="block w-full px-4 py-2 text-sm text-center text-slate-300 hover:bg-white/5 hover:text-white rounded-lg transition-colors"
         >
           ← Volver al sitio
         </Link>
         <button
           onClick={handleLogout}
-          className="block w-full px-4 py-2 mt-1 text-sm text-center text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="block w-full px-4 py-2 mt-1 text-sm text-center text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-lg transition-colors"
         >
           Cerrar Sesion
         </button>
@@ -143,7 +148,7 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
       <div
         className={`
           fixed lg:static inset-y-0 left-0 z-50
-          w-64 bg-white border-r border-gray-200 flex flex-col
+          w-64 bg-secondary border-r border-slate-700/50 flex flex-col
           transform transition-transform duration-200 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}

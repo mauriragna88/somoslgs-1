@@ -10,6 +10,7 @@ interface NuevoBusiness {
   id: string
   name: string
   subscription_tier: string
+  business_type: 'productos' | 'servicios' | 'ambos'
 }
 
 interface FormCategory {
@@ -58,19 +59,24 @@ export default async function NuevoProductoPage() {
     .select('*')
     .order('name') as { data: FormCategory[] | null }
 
+  const bType = (selectedBusiness as any).business_type || 'productos'
+  const titleLabel = bType === 'servicios' ? 'Nuevo Servicio' : bType === 'ambos' ? 'Nuevo Producto o Servicio' : 'Nuevo Producto'
+  const subtitleLabel = bType === 'servicios'
+    ? `Agrega un nuevo servicio a ${selectedBusiness.name}`
+    : `Agrega un nuevo producto a tu catálogo de ${selectedBusiness.name}`
+
   return (
     <div className="p-6">
       <div className="max-w-3xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Nuevo Producto</h1>
-          <p className="text-gray-600 mt-2">
-            Agrega un nuevo producto a tu catálogo de {selectedBusiness.name}
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900">{titleLabel}</h1>
+          <p className="text-gray-600 mt-2">{subtitleLabel}</p>
         </div>
 
         <ProductForm
           businessId={selectedBusiness.id}
           categories={categories || []}
+          businessType={bType}
         />
       </div>
     </div>

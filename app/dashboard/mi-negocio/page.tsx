@@ -25,6 +25,7 @@ interface Business {
   is_active: boolean
   category_id: string | null
   category: { id: string; name: string; icon: string } | null
+  business_type: 'productos' | 'servicios' | 'ambos'
   // Datos bancarios
   bank_name: string | null
   bank_account_holder: string | null

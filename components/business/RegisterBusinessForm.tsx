@@ -15,6 +15,7 @@ const businessSchema = z.object({
   email: z.string().email('Email inválido').optional().or(z.literal('')),
   subscription_tier: z.enum(['basico', 'ventas', 'delivery', 'premium']),
   logo_url: z.string().url().optional().or(z.literal('')),
+  business_type: z.enum(['productos', 'servicios', 'ambos']).default('productos'),
 })
 
 type BusinessFormData = z.infer<typeof businessSchema>
@@ -127,6 +128,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
     email: '',
     subscription_tier: 'basico',
     logo_url: '',
+    business_type: 'productos',
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -143,6 +145,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...validatedData,
+          business_type: formData.business_type,
           ...(adminFreeActivation && { admin_free_activation: true }),
         }),
       })
@@ -342,6 +345,34 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="negocio@ejemplo.com"
               />
+            </div>
+
+            {/* Tipo de negocio */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Tipo de negocio *
+              </label>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { value: 'productos' as const, label: 'Vendo productos', icon: '📦' },
+                  { value: 'servicios' as const, label: 'Ofrezco servicios', icon: '🔧' },
+                  { value: 'ambos' as const, label: 'Ambos', icon: '📦🔧' },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, business_type: option.value })}
+                    className={`p-4 border-2 rounded-xl text-center transition-all ${
+                      formData.business_type === option.value
+                        ? 'border-primary bg-primary/5 text-primary'
+                        : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                    }`}
+                  >
+                    <span className="text-2xl block mb-1">{option.icon}</span>
+                    <span className="text-sm font-medium">{option.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <button

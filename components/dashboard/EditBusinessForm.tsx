@@ -26,6 +26,8 @@ interface Business {
   bank_account_holder: string | null
   bank_account_number: string | null
   bank_clabe: string | null
+  // Tipo de negocio
+  business_type: 'productos' | 'servicios' | 'ambos'
   // Configuración pagos con tarjeta
   payment_mode: 'platform' | 'direct' | null
   has_conekta_key: boolean
@@ -69,6 +71,8 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
     longitude: business.longitude,
     category_id: business.category_id || '',
     logo_url: business.logo_url || '',
+    // Tipo de negocio
+    business_type: business.business_type || 'productos',
     // Datos bancarios
     bank_name: business.bank_name || '',
     bank_account_holder: business.bank_account_holder || '',
@@ -218,6 +222,34 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
           rows={3}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
         />
+      </div>
+
+      {/* Tipo de negocio */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Tipo de negocio
+        </label>
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { value: 'productos' as const, label: 'Productos', icon: '📦' },
+            { value: 'servicios' as const, label: 'Servicios', icon: '🔧' },
+            { value: 'ambos' as const, label: 'Ambos', icon: '📦🔧' },
+          ].map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => setFormData({ ...formData, business_type: option.value })}
+              className={`p-3 border-2 rounded-xl text-center transition-all ${
+                formData.business_type === option.value
+                  ? 'border-primary bg-primary/5 text-primary'
+                  : 'border-gray-200 hover:border-gray-300 text-gray-700'
+              }`}
+            >
+              <span className="text-xl block mb-1">{option.icon}</span>
+              <span className="text-xs font-medium">{option.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

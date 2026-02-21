@@ -38,6 +38,9 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
     whatsapp: '',
     email: '',
 
+    // Tipo de negocio
+    businessType: 'productos' as 'productos' | 'servicios' | 'ambos',
+
     // Suscripción
     subscriptionTier: 'basico' as 'basico' | 'ventas' | 'delivery' | 'premium',
     subscriptionDays: 30,
@@ -101,6 +104,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
             phone: formData.phone,
             whatsapp: formData.whatsapp,
             email: formData.email,
+            businessType: formData.businessType,
             subscriptionTier: formData.subscriptionTier,
             subscriptionDays: formData.subscriptionDays,
             isFree: formData.isFree,
@@ -387,6 +391,34 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               />
+            </div>
+          </div>
+
+          {/* Tipo de negocio */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              Tipo de negocio
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { value: 'productos' as const, label: 'Vende productos', icon: '📦' },
+                { value: 'servicios' as const, label: 'Ofrece servicios', icon: '🔧' },
+                { value: 'ambos' as const, label: 'Ambos', icon: '📦🔧' },
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, businessType: option.value })}
+                  className={`p-4 border-2 rounded-xl text-center transition-all ${
+                    formData.businessType === option.value
+                      ? 'border-primary bg-primary/5 text-primary'
+                      : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                  }`}
+                >
+                  <span className="text-2xl block mb-1">{option.icon}</span>
+                  <span className="text-sm font-medium">{option.label}</span>
+                </button>
+              ))}
             </div>
           </div>
 

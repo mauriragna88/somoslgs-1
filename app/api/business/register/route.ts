@@ -15,6 +15,7 @@ const businessSchema = z.object({
   email: z.string().email().optional().or(z.literal('')),
   subscription_tier: z.enum(['basico', 'ventas', 'delivery', 'premium']),
   logo_url: z.string().url().optional().or(z.literal('')),
+  business_type: z.enum(['productos', 'servicios', 'ambos']).default('productos'),
   admin_free_activation: z.boolean().optional(),
 })
 
@@ -98,6 +99,7 @@ export async function POST(request: Request) {
         whatsapp: validatedData.whatsapp || validatedData.phone,
         email: validatedData.email || null,
         logo_url: validatedData.logo_url || null,
+        business_type: validatedData.business_type,
         subscription_tier: validatedData.subscription_tier,
         ...(isAdminFree
           ? {
