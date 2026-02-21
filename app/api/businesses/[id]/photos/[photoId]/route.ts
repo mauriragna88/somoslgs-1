@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { getUser } from '@/lib/supabase/server'
+import { getUser, isAdmin } from '@/lib/supabase/server'
 
 function getSupabaseAdmin() {
   return createClient(
@@ -33,7 +33,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'Negocio no encontrado' }, { status: 404 })
     }
 
-    if (business.owner_id !== user.id) {
+    const userIsAdmin = await isAdmin()
+    if (business.owner_id !== user.id && !userIsAdmin) {
       return NextResponse.json({ error: 'No tienes permiso' }, { status: 403 })
     }
 

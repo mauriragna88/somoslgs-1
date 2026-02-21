@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { getUser } from '@/lib/supabase/server'
+import { getUser, isAdmin } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { GALLERY_PHOTO_LIMITS, type SubscriptionTier } from '@/lib/constants'
 
@@ -66,13 +66,14 @@ export async function POST(
       return NextResponse.json({ error: 'Negocio no encontrado' }, { status: 404 })
     }
 
-    if (business.owner_id !== user.id) {
+    const userIsAdmin = await isAdmin()
+    if (business.owner_id !== user.id && !userIsAdmin) {
       return NextResponse.json({ error: 'No tienes permiso' }, { status: 403 })
     }
 
-    // Check photo limit
+    // Check photo limit (admins get 25)
     const tier = business.subscription_tier as SubscriptionTier
-    const limit = GALLERY_PHOTO_LIMITS[tier] || 10
+    const limit = userIsAdmin ? 25 : (GALLERY_PHOTO_LIMITS[tier] || 10)
 
     const { count } = await supabase
       .from('business_photos')
@@ -81,7 +82,7 @@ export async function POST(
 
     if ((count || 0) >= limit) {
       return NextResponse.json(
-        { error: `Has alcanzado el limite de ${limit} fotos para tu plan ${tier}` },
+        { error: `Has alcanzado el limite de ${limit} fotos` },
         { status: 400 }
       )
     }

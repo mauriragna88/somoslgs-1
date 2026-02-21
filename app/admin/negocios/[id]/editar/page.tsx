@@ -32,6 +32,13 @@ export default async function AdminEditBusinessPage({ params }: PageProps) {
     .is('parent_id', null)
     .order('name')
 
+  // Get photos for gallery
+  const { data: photos } = await supabase
+    .from('business_photos')
+    .select('*')
+    .eq('business_id', params.id)
+    .order('display_order', { ascending: true })
+
   // Normalize owner (Supabase may return array for relation)
   const owner = Array.isArray(business.owner) ? business.owner[0] || null : business.owner
 
@@ -59,6 +66,7 @@ export default async function AdminEditBusinessPage({ params }: PageProps) {
             is_featured: business.is_featured ?? false,
           }}
           categories={categories || []}
+          photos={photos || []}
         />
       </div>
     </div>

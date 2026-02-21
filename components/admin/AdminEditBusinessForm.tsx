@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import LogoUpload from '@/components/shared/LogoUpload'
+import PhotoGalleryManager from '@/components/dashboard/PhotoGalleryManager'
+import type { BusinessPhoto } from '@/lib/supabase/database.types'
 
 const MapPicker = dynamic(() => import('@/components/maps/MapPicker'), { ssr: false })
 
@@ -29,10 +31,11 @@ interface Business {
 interface AdminEditBusinessFormProps {
   business: Business
   categories: Array<{ id: string; name: string }>
+  photos?: BusinessPhoto[]
   onAssignOwner?: () => void
 }
 
-export default function AdminEditBusinessForm({ business, categories, onAssignOwner }: AdminEditBusinessFormProps) {
+export default function AdminEditBusinessForm({ business, categories, photos = [], onAssignOwner }: AdminEditBusinessFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
@@ -182,6 +185,16 @@ export default function AdminEditBusinessForm({ business, categories, onAssignOw
           onUpload={(url) => setFormData({ ...formData, logo_url: url })}
           onRemove={() => setFormData({ ...formData, logo_url: '' })}
           size="lg"
+        />
+      </div>
+
+      {/* Photo Gallery */}
+      <div className="pb-4 border-b border-gray-200">
+        <PhotoGalleryManager
+          businessId={business.id}
+          initialPhotos={photos}
+          photoLimit={25}
+          subscriptionTier="admin"
         />
       </div>
 
