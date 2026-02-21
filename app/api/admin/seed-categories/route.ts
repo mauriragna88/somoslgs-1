@@ -57,10 +57,17 @@ const categories = [
   { name: 'Eventos y Fiestas', slug: 'eventos-fiestas', icon: '🎉', display_order: 45 },
   { name: 'Escuelas y Cursos', slug: 'escuelas-cursos', icon: '🎓', display_order: 46 },
   { name: 'Deportes y Recreación', slug: 'deportes-recreacion', icon: '⚽', display_order: 47 },
+  // Pueblo Mágico / Antojitos
+  { name: 'Elotes y Esquites', slug: 'elotes-esquites', icon: '🌽', display_order: 48 },
+  { name: 'Antojitos Mexicanos', slug: 'antojitos-mexicanos', icon: '🫔', display_order: 49 },
+  { name: 'Micheladas y Bebidas', slug: 'micheladas-bebidas', icon: '🍹', display_order: 50 },
+  { name: 'Decoraciones y Fiestas', slug: 'decoraciones-fiestas', icon: '🎊', display_order: 51 },
+  { name: 'Uñas y Belleza', slug: 'unas-belleza', icon: '💅', display_order: 52 },
+  { name: 'Dulcerías', slug: 'dulcerias', icon: '🍬', display_order: 53 },
   // Otros
-  { name: 'Gasolineras', slug: 'gasolineras', icon: '⛽', display_order: 48 },
-  { name: 'Funerarias', slug: 'funerarias', icon: '🕊️', display_order: 49 },
-  { name: 'Otros', slug: 'otros', icon: '📦', display_order: 50 },
+  { name: 'Gasolineras', slug: 'gasolineras', icon: '⛽', display_order: 54 },
+  { name: 'Funerarias', slug: 'funerarias', icon: '🕊️', display_order: 55 },
+  { name: 'Otros', slug: 'otros', icon: '📦', display_order: 56 },
 ]
 
 export async function POST() {
