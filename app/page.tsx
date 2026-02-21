@@ -118,7 +118,7 @@ export default async function Home() {
             {/* Social Proof Metrics */}
             <div className="flex flex-wrap justify-center gap-8 md:gap-12">
               <div className="text-center">
-                <p className="text-2xl md:text-3xl font-bold text-white">50+</p>
+                <p className="text-2xl md:text-3xl font-bold text-white">25+</p>
                 <p className="text-sm text-gray-400">Negocios activos</p>
               </div>
               <div className="text-center">
