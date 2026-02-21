@@ -106,9 +106,9 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="SomosLagos"
-              width={36}
-              height={36}
-              className="rounded-lg"
+              width={44}
+              height={44}
+              className="w-10 h-10 md:w-11 md:h-11"
               priority
             />
             <span className="text-xl font-bold text-secondary hidden sm:inline">

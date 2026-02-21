@@ -158,20 +158,23 @@ export default async function BuscarPage({
               <Link
                 key={business.id}
                 href={`/negocios/${business.slug}`}
-                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden group"
+                className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden group border border-gray-100 hover:border-primary/20"
               >
+                {/* Top accent */}
+                <div className="h-1 bg-gradient-to-r from-primary via-accent to-primary"></div>
+
                 {/* Image/Logo */}
-                <div className="h-48 bg-gray-200 relative">
+                <div className="h-48 bg-gray-100 relative overflow-hidden">
                   {business.logo_url ? (
                     <Image
                       src={business.logo_url}
                       alt={business.name}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-primary/10">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
                       <span className="text-6xl text-primary font-bold">
                         {business.name[0].toUpperCase()}
                       </span>
@@ -179,39 +182,47 @@ export default async function BuscarPage({
                   )}
                   {/* Category badge */}
                   {business.category && (
-                    <div className="absolute top-3 left-3 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700">
+                    <div className="absolute top-3 left-3 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700 shadow-sm">
                       {business.category.icon} {business.category.name}
                     </div>
                   )}
                   {/* Premium/Featured badge */}
                   {(business.subscription_tier === 'premium' || business.is_featured) && (
-                    <div className="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-sm font-bold shadow-lg">
-                      ⭐ Destacado
+                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-white rounded-full text-xs font-bold shadow-lg">
+                      &#11088; Destacado
                     </div>
                   )}
                   {business.subscription_tier === 'delivery' && !business.is_featured && (
-                    <div className="absolute top-3 right-3 px-2 py-1 bg-blue-500 text-white rounded-full text-xs font-bold">
-                      🚀 Delivery
+                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-primary text-white rounded-full text-xs font-bold shadow-lg">
+                      &#128640; Delivery
                     </div>
                   )}
                 </div>
 
                 {/* Content */}
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                <div className="p-5">
+                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors">
                     {business.name}
                   </h3>
                   {business.description && (
-                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                    <p className="text-sm text-gray-600 mt-1.5 line-clamp-2">
                       {business.description}
                     </p>
                   )}
                   {business.address && (
-                    <p className="text-sm text-gray-500 mt-2 flex items-center">
-                      <span className="mr-1">📍</span>
+                    <p className="text-sm text-gray-500 mt-2.5 flex items-center">
+                      <span className="mr-1.5 text-accent">&#128205;</span>
                       {business.address}
                     </p>
                   )}
+                </div>
+
+                {/* Footer */}
+                <div className="px-5 py-3 bg-gradient-to-r from-gray-50 to-primary/5 border-t border-gray-100 flex items-center justify-between">
+                  <span className="text-sm text-primary font-semibold">Ver negocio</span>
+                  <svg className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </div>
               </Link>
             ))}

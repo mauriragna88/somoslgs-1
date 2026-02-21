@@ -11,15 +11,21 @@ const config: Config = {
       colors: {
         primary: {
           DEFAULT: '#0F766E',
-          dark: '#0D5E58',
-          light: '#99F6E4',
+          dark: '#0A5C56',
+          light: '#5EEAD4',
         },
         secondary: {
-          DEFAULT: '#1E293B',
+          DEFAULT: '#1A3A4A',
+          light: '#2B5566',
         },
         accent: {
-          DEFAULT: '#F59E0B',
-          dark: '#D97706',
+          DEFAULT: '#C67A3C',
+          dark: '#A86230',
+          light: '#E8A66A',
+        },
+        warm: {
+          DEFAULT: '#D4956B',
+          light: '#F5E6D8',
         },
       },
     },
