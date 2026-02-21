@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import SmartSearch from '@/components/SmartSearch'
 import type { User } from '@supabase/supabase-js'
 
 interface Profile {
@@ -18,7 +19,6 @@ export default function Header() {
   const [showMenu, setShowMenu] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -81,15 +81,6 @@ export default function Header() {
     router.refresh()
   }
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      router.push(`/buscar?q=${encodeURIComponent(searchQuery.trim())}`)
-      setSearchQuery('')
-      setMobileMenuOpen(false)
-    }
-  }
-
   const getDashboardLink = () => {
     if (profile?.role === 'admin') return '/admin'
     if (profile?.role === 'business_owner') return '/dashboard'
@@ -120,25 +111,9 @@ export default function Header() {
           </Link>
 
           {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8">
-            <div className="relative w-full">
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Buscar negocios, productos..."
-                className="w-full pl-10 pr-4 py-2 bg-gray-100 border border-transparent rounded-full text-sm focus:outline-none focus:bg-white focus:border-primary/30 focus:ring-2 focus:ring-primary/10 transition-all"
-              />
-            </div>
-          </form>
+          <div className="hidden md:block flex-1 max-w-md mx-8">
+            <SmartSearch variant="header" />
+          </div>
 
           {/* Desktop Nav + Auth */}
           <div className="hidden md:flex items-center space-x-1">
@@ -290,25 +265,7 @@ export default function Header() {
         <div className="md:hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
           <div className="container mx-auto px-4 py-4 space-y-3">
             {/* Mobile Search */}
-            <form onSubmit={handleSearch}>
-              <div className="relative">
-                <svg
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Buscar negocios, productos..."
-                  className="w-full pl-10 pr-4 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all"
-                />
-              </div>
-            </form>
+            <SmartSearch variant="mobile" onNavigate={() => setMobileMenuOpen(false)} />
 
             {/* Mobile Nav Links */}
             <nav className="space-y-1">

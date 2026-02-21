@@ -77,9 +77,17 @@ export default async function BuscarPage({
     .order('subscription_tier', { ascending: false })
     .order('name')
 
-  // Apply search filter
+  // Apply search filter - split into words for smarter matching
   if (query) {
-    businessQuery = businessQuery.or(`name.ilike.%${query}%,description.ilike.%${query}%`)
+    const words = query.toLowerCase().split(/\s+/).filter((w: string) => w.length >= 2)
+    if (words.length > 0) {
+      const orConditions = words.map((word: string) =>
+        `name.ilike.%${word}%,description.ilike.%${word}%`
+      ).join(',')
+      businessQuery = businessQuery.or(orConditions)
+    } else {
+      businessQuery = businessQuery.or(`name.ilike.%${query}%,description.ilike.%${query}%`)
+    }
   }
 
   // Apply category filter

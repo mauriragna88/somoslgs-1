@@ -324,7 +324,7 @@ export default async function Home() {
                   Registrar mi Negocio
                 </Link>
                 <p className="text-sm text-gray-300">
-                  Planes desde <strong className="text-accent text-lg">$99 MXN/mes</strong>
+                  Planes desde <strong className="text-accent text-lg">$80 MXN/mes</strong>
                 </p>
               </div>
             </div>
