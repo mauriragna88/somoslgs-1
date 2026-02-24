@@ -35,8 +35,12 @@ export default function MapPicker({ latitude, longitude, onChange }: MapPickerPr
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return
 
-    // Always center on Lagos de Moreno city view
-    const map = L.map(mapRef.current).setView(LAGOS_CENTER, DEFAULT_ZOOM)
+    // Center on existing pin if available, otherwise default to Lagos de Moreno
+    const center: [number, number] = coords
+      ? [coords.lat, coords.lng]
+      : LAGOS_CENTER
+    const zoom = coords ? 16 : DEFAULT_ZOOM
+    const map = L.map(mapRef.current).setView(center, zoom)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
