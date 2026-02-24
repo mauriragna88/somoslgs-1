@@ -51,10 +51,25 @@ export default function MapDisplay({ latitude, longitude, businessName, address 
     }
   }, [latitude, longitude, businessName, address])
 
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
+
   return (
-    <div
-      ref={mapRef}
-      className="w-full h-[300px] rounded-lg border border-gray-200 z-0"
-    />
+    <div>
+      <div
+        ref={mapRef}
+        className="w-full h-[300px] rounded-xl border border-gray-200 z-0"
+      />
+      <a
+        href={googleMapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium text-sm rounded-lg transition-colors"
+      >
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+        Abrir en Google Maps
+      </a>
+    </div>
   )
 }
