@@ -123,7 +123,7 @@ async function sendWhatsApp(opts: SendWhatsAppOptions): Promise<void> {
 // TIER-BASED NOTIFICATION
 // ============================================
 
-type SubscriptionTier = 'basico' | 'ventas' | 'delivery' | 'premium'
+type SubscriptionTier = 'gratis' | 'pro' | 'avanzado'
 
 interface NotifyByTierOptions {
   tier: SubscriptionTier
@@ -145,10 +145,10 @@ export async function notifyByTier(opts: NotifyByTierOptions): Promise<void> {
   const { tier, phone, message, businessId, orderId, userId, type } = opts
   const supabase = getSupabaseAdmin()
 
-  if (tier === 'premium' || tier === 'delivery') {
+  if (tier === 'avanzado') {
     // Envío automático
     await sendWhatsApp({ phone, message, businessId, orderId, userId, type })
-  } else if (tier === 'ventas') {
+  } else if (tier === 'pro') {
     // Guardar como pending_manual con wa.me link
     const waLink = generateWaMeLink(phone, message)
     await supabase.from('notifications').insert({
@@ -208,7 +208,7 @@ export async function notifyBusinessNewOrder(orderData: OrderData): Promise<void
       `💰 *Total: $${orderData.total}*\n\n` +
       `👉 *Acepta el pedido aquí:*\n${orderLink}`
 
-    const tier = (orderData.subscription_tier || 'basico') as SubscriptionTier
+    const tier = (orderData.subscription_tier || 'gratis') as SubscriptionTier
 
     await notifyByTier({
       tier,

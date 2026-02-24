@@ -212,7 +212,7 @@ export async function POST(request: Request, { params }: RouteParams) {
         ownerName: ownerInfo.name,
         ownerEmail: ownerInfo.email,
         businessName: business.name,
-        plan: bizData?.subscription_tier || 'basico',
+        plan: bizData?.subscription_tier || 'gratis',
       })
     } catch {
       // Don't fail the request if email fails

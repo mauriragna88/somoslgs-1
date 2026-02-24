@@ -9,6 +9,7 @@ import { getUser } from '@/lib/supabase/server'
 import { formatCurrency, formatDaysRemaining } from '@/lib/utils'
 import { GALLERY_PHOTO_LIMITS, type SubscriptionTier } from '@/lib/constants'
 import EditBusinessForm from '@/components/dashboard/EditBusinessForm'
+import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 
 interface Business {
   id: string
@@ -36,6 +37,7 @@ interface Business {
   conekta_private_key: string | null
   mercadopago_access_token: string | null
   active_payment_gateways: string[] | null
+  business_hours: any
 }
 
 interface OrderStat {
@@ -136,10 +138,9 @@ export default async function MiNegocioPage({
   const daysInfo = formatDaysRemaining(business.subscription_expires_at)
 
   const planFeatures: Record<string, string[]> = {
-    basico: ['Listado en directorio', 'Perfil básico', 'Contacto WhatsApp'],
-    ventas: ['Todo de Básico', 'Catálogo de productos', 'Pedidos online', 'Pago por transferencia'],
-    delivery: ['Todo de Ventas', 'Pasarela de pago', 'WhatsApp automático', 'Motomandados'],
-    premium: ['Todo de Delivery', 'Negocio destacado', 'Soporte prioritario', 'Estadísticas avanzadas'],
+    gratis: ['Listado en directorio', 'Perfil básico', 'Contacto WhatsApp'],
+    pro: ['Todo de Gratis', 'Catálogo de productos', 'Pedidos online', 'Pago por transferencia'],
+    avanzado: ['Todo de Pro', 'Negocio destacado', 'Soporte prioritario', 'Estadísticas avanzadas'],
   }
 
   return (
@@ -181,13 +182,15 @@ export default async function MiNegocioPage({
                 </div>
               )}
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-gray-900">{business.name}</h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-gray-900">{business.name}</h2>
+                  <OpenClosedBadge businessHours={business.business_hours} />
+                </div>
                 <p className="text-gray-600 text-sm">{business.category?.name || 'Sin categoría'}</p>
                 <div className="flex flex-wrap gap-2 mt-2">
                   <span className={`px-3 py-1 text-xs font-semibold rounded-full capitalize ${
-                    business.subscription_tier === 'premium' ? 'bg-purple-100 text-purple-800' :
-                    business.subscription_tier === 'delivery' ? 'bg-blue-100 text-blue-800' :
-                    business.subscription_tier === 'ventas' ? 'bg-green-100 text-green-800' :
+                    business.subscription_tier === 'avanzado' ? 'bg-purple-100 text-purple-800' :
+                    business.subscription_tier === 'pro' ? 'bg-green-100 text-green-800' :
                     'bg-gray-100 text-gray-800'
                   }`}>
                     Plan {business.subscription_tier}
@@ -297,7 +300,7 @@ export default async function MiNegocioPage({
                 </li>
               ))}
             </ul>
-            {business.subscription_tier !== 'premium' && (
+            {business.subscription_tier !== 'avanzado' && (
               <Link
                 href="/dashboard/pago"
                 className="block mt-4 w-full py-2 bg-primary hover:bg-primary-dark text-white text-center font-medium rounded-lg transition-colors"

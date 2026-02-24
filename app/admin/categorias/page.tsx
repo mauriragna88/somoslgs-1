@@ -48,16 +48,14 @@ export default async function AdminCategoriasPage() {
   }))
 
   // Stats
-  const premiumCount = (allBusinesses || []).filter(b => b.subscription_tier === 'premium').length
-  const deliveryCount = (allBusinesses || []).filter(b => b.subscription_tier === 'delivery').length
-  const ventasCount = (allBusinesses || []).filter(b => b.subscription_tier === 'ventas').length
-  const basicoCount = (allBusinesses || []).filter(b => b.subscription_tier === 'basico').length
+  const avanzadoCount = (allBusinesses || []).filter(b => b.subscription_tier === 'avanzado').length
+  const proCount = (allBusinesses || []).filter(b => b.subscription_tier === 'pro').length
+  const gratisCount = (allBusinesses || []).filter(b => b.subscription_tier === 'gratis').length
 
   const planColors: Record<string, string> = {
-    premium: 'bg-purple-100 text-purple-800 border-purple-300',
-    delivery: 'bg-blue-100 text-blue-800 border-blue-300',
-    ventas: 'bg-green-100 text-green-800 border-green-300',
-    basico: 'bg-gray-100 text-gray-800 border-gray-300',
+    avanzado: 'bg-purple-100 text-purple-800 border-purple-300',
+    pro: 'bg-green-100 text-green-800 border-green-300',
+    gratis: 'bg-gray-100 text-gray-800 border-gray-300',
   }
 
   return (
@@ -69,22 +67,13 @@ export default async function AdminCategoriasPage() {
       </div>
 
       {/* Stats by Plan */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+      <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
         <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-3 sm:p-4">
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="text-xl sm:text-3xl">⭐</span>
             <div>
-              <p className="text-xl sm:text-3xl font-bold text-purple-700">{premiumCount}</p>
-              <p className="text-xs sm:text-sm text-purple-600">Premium</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 sm:p-4">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <span className="text-xl sm:text-3xl">🚀</span>
-            <div>
-              <p className="text-xl sm:text-3xl font-bold text-blue-700">{deliveryCount}</p>
-              <p className="text-xs sm:text-sm text-blue-600">Delivery</p>
+              <p className="text-xl sm:text-3xl font-bold text-purple-700">{avanzadoCount}</p>
+              <p className="text-xs sm:text-sm text-purple-600">Avanzado</p>
             </div>
           </div>
         </div>
@@ -92,8 +81,8 @@ export default async function AdminCategoriasPage() {
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="text-xl sm:text-3xl">🛍️</span>
             <div>
-              <p className="text-xl sm:text-3xl font-bold text-green-700">{ventasCount}</p>
-              <p className="text-xs sm:text-sm text-green-600">Ventas</p>
+              <p className="text-xl sm:text-3xl font-bold text-green-700">{proCount}</p>
+              <p className="text-xs sm:text-sm text-green-600">Pro</p>
             </div>
           </div>
         </div>
@@ -101,8 +90,8 @@ export default async function AdminCategoriasPage() {
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="text-xl sm:text-3xl">📋</span>
             <div>
-              <p className="text-xl sm:text-3xl font-bold text-gray-700">{basicoCount}</p>
-              <p className="text-xs sm:text-sm text-gray-600">Básico</p>
+              <p className="text-xl sm:text-3xl font-bold text-gray-700">{gratisCount}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Gratis</p>
             </div>
           </div>
         </div>
@@ -124,10 +113,10 @@ export default async function AdminCategoriasPage() {
                 </div>
                 <div className="hidden sm:flex items-center gap-2">
                   <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full">
-                    {category.businesses.filter(b => b.subscription_tier === 'premium').length} Premium
+                    {category.businesses.filter(b => b.subscription_tier === 'avanzado').length} Avanzado
                   </span>
-                  <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full">
-                    {category.businesses.filter(b => b.subscription_tier === 'delivery').length} Delivery
+                  <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">
+                    {category.businesses.filter(b => b.subscription_tier === 'pro').length} Pro
                   </span>
                 </div>
               </div>
@@ -142,7 +131,7 @@ export default async function AdminCategoriasPage() {
                       key={business.id}
                       href={`/admin/negocios/${business.id}`}
                       className={`p-3 rounded-lg border-2 transition-all hover:shadow-md ${
-                        planColors[business.subscription_tier] || planColors.basico
+                        planColors[business.subscription_tier] || planColors.gratis
                       } ${!business.is_active ? 'opacity-50' : ''}`}
                     >
                       <div className="flex items-center gap-3">

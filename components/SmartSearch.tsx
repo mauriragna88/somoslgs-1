@@ -204,7 +204,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-semibold text-gray-900 truncate">{biz.name}</p>
-                    {(biz.is_featured || biz.subscription_tier === 'premium') && (
+                    {(biz.is_featured || biz.subscription_tier === 'avanzado') && (
                       <span className="text-xs text-amber-500">&#11088;</span>
                     )}
                   </div>

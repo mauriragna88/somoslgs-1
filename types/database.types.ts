@@ -89,7 +89,8 @@ export interface Database {
           longitude: number | null
           logo_url: string | null
           cover_url: string | null
-          subscription_tier: 'basico' | 'ventas' | 'delivery' | 'premium'
+          business_type: 'productos' | 'servicios' | 'ambos'
+          subscription_tier: 'gratis' | 'pro' | 'avanzado'
           subscription_status: 'active' | 'inactive' | 'suspended'
           subscription_started_at: string | null
           subscription_expires_at: string | null
@@ -124,7 +125,8 @@ export interface Database {
           longitude?: number | null
           logo_url?: string | null
           cover_url?: string | null
-          subscription_tier?: 'basico' | 'ventas' | 'delivery' | 'premium'
+          business_type?: 'productos' | 'servicios' | 'ambos'
+          subscription_tier?: 'gratis' | 'pro' | 'avanzado'
           subscription_status?: 'active' | 'inactive' | 'suspended'
           subscription_started_at?: string | null
           subscription_expires_at?: string | null
@@ -152,7 +154,8 @@ export interface Database {
           website?: string | null
           logo_url?: string | null
           cover_url?: string | null
-          subscription_tier?: 'basico' | 'ventas' | 'delivery' | 'premium'
+          business_type?: 'productos' | 'servicios' | 'ambos'
+          subscription_tier?: 'gratis' | 'pro' | 'avanzado'
           subscription_status?: 'active' | 'inactive' | 'suspended'
           business_hours?: Json | null
           is_active?: boolean

@@ -16,7 +16,7 @@ function getSupabaseAdmin() {
 const subscriptionCheckoutSchema = z.object({
   type: z.literal('subscription'),
   business_id: z.string().uuid(),
-  tier: z.enum(['basico', 'ventas', 'delivery', 'premium']),
+  tier: z.enum(['pro', 'avanzado']),
   amount: z.number().positive(),
   months: z.number().int().positive().default(1),
 })

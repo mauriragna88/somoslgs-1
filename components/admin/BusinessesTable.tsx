@@ -120,9 +120,8 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
 
   const getPlanBadgeClasses = (tier: string) => {
     switch (tier) {
-      case 'premium': return 'bg-purple-100 text-purple-800'
-      case 'delivery': return 'bg-blue-100 text-blue-800'
-      case 'ventas': return 'bg-green-100 text-green-800'
+      case 'avanzado': return 'bg-purple-100 text-purple-800'
+      case 'pro': return 'bg-green-100 text-green-800'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
@@ -146,10 +145,9 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
             >
               <option value="">Plan</option>
-              <option value="basico">Básico</option>
-              <option value="ventas">Ventas</option>
-              <option value="delivery">Delivery</option>
-              <option value="premium">Premium</option>
+              <option value="gratis">Gratis</option>
+              <option value="pro">Pro</option>
+              <option value="avanzado">Avanzado</option>
             </select>
             <select
               value={filterStatus}

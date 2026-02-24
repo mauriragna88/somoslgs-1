@@ -93,7 +93,7 @@ export default function ExpiringBusinessActions({
           business={{
             id: businessId,
             name: businessName,
-            subscription_tier: 'basico', // Will be fetched by modal if needed
+            subscription_tier: 'gratis', // Will be fetched by modal if needed
             subscription_status: 'active',
             subscription_expires_at: null,
             whatsapp: phone || undefined,

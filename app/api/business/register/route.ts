@@ -13,10 +13,11 @@ const businessSchema = z.object({
   phone: z.string().regex(/^\d{10}$/),
   whatsapp: z.string().regex(/^\d{10}$/).optional().or(z.literal('')),
   email: z.string().email().optional().or(z.literal('')),
-  subscription_tier: z.enum(['basico', 'ventas', 'delivery', 'premium']),
+  subscription_tier: z.enum(['gratis', 'pro', 'avanzado']),
   logo_url: z.string().url().optional().or(z.literal('')),
   business_type: z.enum(['productos', 'servicios', 'ambos']).default('productos'),
   admin_free_activation: z.boolean().optional(),
+  business_hours: z.any().optional().nullable(),
 })
 
 export async function POST(request: Request) {
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
 
     // Server-side verification: only admins can use free activation
     const isAdminFree = validatedData.admin_free_activation === true && profile.role === 'admin'
+    const isFreeTier = validatedData.subscription_tier === 'gratis'
 
     // Generate unique slug
     let slug = slugify(validatedData.name)
@@ -100,13 +102,14 @@ export async function POST(request: Request) {
         email: validatedData.email || null,
         logo_url: validatedData.logo_url || null,
         business_type: validatedData.business_type,
+        business_hours: validatedData.business_hours || null,
         subscription_tier: validatedData.subscription_tier,
-        ...(isAdminFree
+        ...((isFreeTier || isAdminFree)
           ? {
               subscription_status: 'active',
               is_active: true,
               subscription_started_at: now,
-              subscription_expires_at: oneYearLater,
+              ...(isFreeTier ? {} : { subscription_expires_at: oneYearLater }),
             }
           : {
               subscription_status: 'inactive',
@@ -146,7 +149,9 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       business,
-      message: 'Negocio registrado exitosamente. Estamos revisando tu solicitud y te contactaremos pronto con las instrucciones de pago.'
+      message: isFreeTier
+        ? '¡Negocio registrado exitosamente! Tu negocio ya está activo en el directorio.'
+        : 'Negocio registrado exitosamente. Estamos revisando tu solicitud y te contactaremos pronto con las instrucciones de pago.'
     }, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {

@@ -14,14 +14,14 @@ const DefaultIcon = L.icon({
   shadowSize: [41, 41],
 })
 
-// Lagos de Moreno zona centro (Plaza Principal / Parroquia de la Asunción)
-const LAGOS_CENTER: [number, number] = [21.3528, -102.3444]
-const DEFAULT_ZOOM = 16
+// Lagos de Moreno - vista de la ciudad completa
+const LAGOS_CENTER: [number, number] = [21.3580, -102.3450]
+const DEFAULT_ZOOM = 13
 
 interface MapPickerProps {
   latitude?: number | null
   longitude?: number | null
-  onChange: (lat: number, lng: number) => void
+  onChange: (lat: number | null, lng: number | null) => void
 }
 
 export default function MapPicker({ latitude, longitude, onChange }: MapPickerProps) {
@@ -35,18 +35,15 @@ export default function MapPicker({ latitude, longitude, onChange }: MapPickerPr
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return
 
-    const center: [number, number] = coords
-      ? [coords.lat, coords.lng]
-      : LAGOS_CENTER
-
-    const map = L.map(mapRef.current).setView(center, DEFAULT_ZOOM)
+    // Always center on Lagos de Moreno city view
+    const map = L.map(mapRef.current).setView(LAGOS_CENTER, DEFAULT_ZOOM)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 19,
     }).addTo(map)
 
-    // Add existing marker if coordinates exist
+    // Add existing marker if coordinates exist (but don't change the map center)
     if (coords) {
       const marker = L.marker([coords.lat, coords.lng], { icon: DefaultIcon, draggable: true }).addTo(map)
       marker.on('dragend', () => {
@@ -89,15 +86,58 @@ export default function MapPicker({ latitude, longitude, onChange }: MapPickerPr
 
   return (
     <div>
-      <div
-        ref={mapRef}
-        className="w-full h-64 sm:h-80 md:h-[300px] rounded-lg border border-gray-300 z-0"
-      />
-      <p className="text-xs text-gray-500 mt-1">
-        {coords
-          ? `Ubicación: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`
-          : 'Haz clic en el mapa para marcar la ubicación de tu negocio'}
-      </p>
+      <div className="relative">
+        <div
+          ref={mapRef}
+          className="w-full h-64 sm:h-80 md:h-[300px] rounded-lg border border-gray-300 z-0"
+        />
+        {/* Overlay hint when no pin placed */}
+        {!coords && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[400]">
+            <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg px-5 py-4 text-center max-w-[280px] animate-pulse">
+              <div className="text-3xl mb-2">📍</div>
+              <p className="text-sm font-semibold text-gray-800">
+                Toca el mapa para colocar tu pin
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Puedes moverlo arrastrándolo después
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+      {coords && (
+        <div className="flex items-center gap-2 mt-2">
+          <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full">
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Pin colocado
+          </span>
+          <span className="text-xs text-gray-400">
+            {coords.lat.toFixed(6)}, {coords.lng.toFixed(6)}
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              if (markerRef.current && mapInstanceRef.current) {
+                mapInstanceRef.current.removeLayer(markerRef.current)
+                markerRef.current = null
+              }
+              setCoords(null)
+              onChange(null, null)
+            }}
+            className="text-xs text-red-500 hover:text-red-700 font-medium ml-auto"
+          >
+            Quitar pin
+          </button>
+        </div>
+      )}
+      {!coords && (
+        <p className="text-xs text-gray-500 mt-1">
+          Toca o haz clic en el mapa para marcar la ubicación de tu negocio
+        </p>
+      )}
     </div>
   )
 }

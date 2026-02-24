@@ -4,6 +4,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 import LogoUpload from '@/components/shared/LogoUpload'
+import BusinessHoursEditor from '@/components/shared/BusinessHoursEditor'
+import { DEFAULT_BUSINESS_HOURS } from '@/lib/constants'
+import type { BusinessHours } from '@/lib/constants'
 
 const businessSchema = z.object({
   name: z.string().min(3, 'El nombre debe tener al menos 3 caracteres').max(100),
@@ -13,7 +16,7 @@ const businessSchema = z.object({
   phone: z.string().regex(/^\d{10}$/, 'El teléfono debe tener 10 dígitos'),
   whatsapp: z.string().regex(/^\d{10}$/, 'El WhatsApp debe tener 10 dígitos').optional().or(z.literal('')),
   email: z.string().email('Email inválido').optional().or(z.literal('')),
-  subscription_tier: z.enum(['basico', 'ventas', 'delivery', 'premium']),
+  subscription_tier: z.enum(['gratis', 'pro', 'avanzado']),
   logo_url: z.string().url().optional().or(z.literal('')),
   business_type: z.enum(['productos', 'servicios', 'ambos']).default('productos'),
 })
@@ -27,87 +30,70 @@ interface RegisterBusinessFormProps {
 
 const SUBSCRIPTION_PLANS = [
   {
-    id: 'basico',
-    name: 'Plan Básico',
-    price: '$80',
-    period: 'MXN/mes',
+    id: 'gratis',
+    name: 'Plan Gratis',
+    price: '$0',
+    period: '',
     description: 'Presencia en el directorio',
     features: [
       'Nombre de tu negocio en el buscador',
-      'Dirección y ubicación',
+      'Dirección y ubicación en el mapa',
       'Número de WhatsApp para contacto',
       'Horarios de atención',
+      'Hasta 5 fotos de tu negocio',
     ],
     notIncluded: [
       'Catálogo de productos',
       'Recibir pedidos',
       'Pagos en línea',
     ],
-    icon: '📋',
+    icon: '🆓',
     color: 'from-gray-500 to-gray-600',
     popular: false,
+    isFree: true,
   },
   {
-    id: 'ventas',
-    name: 'Plan Ventas',
-    price: '$150',
+    id: 'pro',
+    name: 'Plan Pro',
+    price: '$100',
     period: 'MXN/mes',
-    description: 'Vende con catálogo',
+    description: 'Vende con catálogo y pedidos',
     features: [
-      'Todo del Plan Básico',
+      'Todo del Plan Gratis',
       'Catálogo de productos ilimitado',
       'Recibir pedidos en línea',
-      'Pago por transferencia bancaria',
+      'Pagos por transferencia y tarjeta',
       'Verificar pagos desde tu panel',
-      'Fotos de productos',
+      'Hasta 15 fotos de tu negocio',
     ],
     notIncluded: [
-      'Pasarela de pago (tarjeta)',
-      'Envío a domicilio',
+      'Posición destacada en búsquedas',
+      'Estadísticas avanzadas',
     ],
     icon: '🛍️',
     color: 'from-green-500 to-green-600',
     popular: true,
+    isFree: false,
   },
   {
-    id: 'delivery',
-    name: 'Plan Delivery',
-    price: '$200',
+    id: 'avanzado',
+    name: 'Plan Avanzado',
+    price: '$180',
     period: 'MXN/mes',
-    description: 'Vende y entrega',
+    description: 'Máxima visibilidad y control',
     features: [
-      'Todo del Plan Ventas',
-      'Pasarela de pago (tarjeta)',
-      'WhatsApp automático al cliente',
-      'Opción de envío a domicilio',
-      'Conexión con motomandados',
-      'Notificaciones en tiempo real',
-    ],
-    notIncluded: [
-      'Aparecer destacado',
-    ],
-    icon: '🚀',
-    color: 'from-blue-500 to-blue-600',
-    popular: false,
-  },
-  {
-    id: 'premium',
-    name: 'Plan Premium',
-    price: '$260',
-    period: 'MXN/mes',
-    description: 'Máxima visibilidad',
-    features: [
-      'Todo del Plan Delivery',
+      'Todo del Plan Pro',
       'Aparecer primero en búsquedas',
-      'Insignia de negocio destacado',
-      'Estadísticas avanzadas',
+      'Insignia de negocio verificado',
+      'Estadísticas avanzadas de visitas',
       'Soporte prioritario',
-      'Promociones y cupones',
+      'Hasta 20 fotos de tu negocio',
     ],
     notIncluded: [],
     icon: '⭐',
-    color: 'from-orange-500 to-red-600',
+    color: 'from-purple-500 to-pink-600',
     popular: false,
+    isFree: false,
   },
 ]
 
@@ -126,10 +112,15 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
     phone: '',
     whatsapp: '',
     email: '',
-    subscription_tier: 'basico',
+    subscription_tier: 'gratis',
     logo_url: '',
     business_type: 'productos',
   })
+
+  const [businessHours, setBusinessHours] = useState<BusinessHours>(DEFAULT_BUSINESS_HOURS)
+
+  const selectedPlan = SUBSCRIPTION_PLANS.find(p => p.id === formData.subscription_tier)
+  const isFreePlan = selectedPlan?.isFree ?? true
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -146,6 +137,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
         body: JSON.stringify({
           ...validatedData,
           business_type: formData.business_type,
+          business_hours: businessHours,
           ...(adminFreeActivation && { admin_free_activation: true }),
         }),
       })
@@ -156,8 +148,12 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
         throw new Error(data.error || 'Error al registrar el negocio')
       }
 
-      // Redirect: admin free goes to dashboard, others to payment
-      router.push(adminFreeActivation ? '/dashboard' : '/dashboard/pago')
+      // Redirect: free plan or admin free goes to dashboard, paid plans to payment
+      if (isFreePlan || adminFreeActivation) {
+        router.push('/dashboard')
+      } else {
+        router.push('/dashboard/pago')
+      }
       router.refresh()
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -375,6 +371,9 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
               </div>
             </div>
 
+            {/* Horarios de Atención */}
+            <BusinessHoursEditor value={businessHours} onChange={setBusinessHours} />
+
             <button
               type="button"
               onClick={handleNext}
@@ -388,14 +387,14 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Elige tu Plan de Suscripción
+                Elige tu Plan
               </h2>
               <p className="text-gray-600">
-                Selecciona el plan que mejor se adapte a las necesidades de tu negocio
+                Puedes empezar gratis y actualizar cuando quieras
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
               {SUBSCRIPTION_PLANS.map((plan) => (
                 <div
                   key={plan.id}
@@ -414,13 +413,27 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                     </div>
                   )}
 
+                  {plan.isFree && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <span className="bg-gradient-to-r from-primary to-primary-dark text-white px-4 py-1 rounded-full text-xs font-bold">
+                        GRATIS
+                      </span>
+                    </div>
+                  )}
+
                   <div className="text-center mb-4">
                     <span className="text-5xl mb-3 block">{plan.icon}</span>
                     <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
                     <p className="text-sm text-gray-600 mb-3">{plan.description}</p>
                     <div className="mb-2">
-                      <span className="text-3xl font-bold text-primary">{plan.price}</span>
-                      <span className="text-gray-600 text-sm ml-1">{plan.period}</span>
+                      {plan.isFree ? (
+                        <span className="text-3xl font-bold text-primary">Gratis</span>
+                      ) : (
+                        <>
+                          <span className="text-3xl font-bold text-primary">{plan.price}</span>
+                          <span className="text-gray-600 text-sm ml-1">{plan.period}</span>
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -464,11 +477,20 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
               </label>
             )}
 
-            {!adminFreeActivation && (
+            {!isFreePlan && !adminFreeActivation && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <p className="text-sm text-blue-900">
                   <strong>💡 Nota:</strong> Después de registrar tu negocio, recibirás las instrucciones de pago
                   y tu negocio quedará activo una vez confirmado el pago.
+                </p>
+              </div>
+            )}
+
+            {isFreePlan && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                <p className="text-sm text-green-900">
+                  <strong>✨ ¡Genial!</strong> Tu negocio se activará inmediatamente sin costo.
+                  Puedes actualizar tu plan en cualquier momento desde tu panel.
                 </p>
               </div>
             )}
@@ -486,7 +508,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                 disabled={loading}
                 className="flex-1 bg-primary hover:bg-primary-dark text-white py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Registrando...' : 'Registrar mi Negocio'}
+                {loading ? 'Registrando...' : isFreePlan ? 'Registrar mi Negocio Gratis' : 'Registrar mi Negocio'}
               </button>
             </div>
           </div>

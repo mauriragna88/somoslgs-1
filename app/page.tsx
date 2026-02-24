@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import SearchForm from '@/components/home/SearchForm'
+import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 
 export const revalidate = 3600
 
@@ -20,6 +21,7 @@ interface FeaturedBusiness {
   address: string | null
   subscription_tier: string
   is_featured: boolean
+  business_hours: any
   category: { name: string; icon: string } | null
 }
 
@@ -43,12 +45,12 @@ export default async function Home() {
   const { data: featuredBusinesses } = await supabase
     .from('businesses')
     .select(`
-      id, name, slug, description, logo_url, address, subscription_tier, is_featured,
+      id, name, slug, description, logo_url, address, subscription_tier, is_featured, business_hours,
       category:categories(name, icon)
     `)
     .eq('is_active', true)
     .eq('subscription_status', 'active')
-    .in('subscription_tier', ['premium', 'delivery'])
+    .in('subscription_tier', ['avanzado'])
     .order('is_featured', { ascending: false })
     .order('subscription_tier', { ascending: false })
     .limit(6) as { data: FeaturedBusiness[] | null }
@@ -284,9 +286,12 @@ export default async function Home() {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-secondary group-hover:text-primary transition-colors truncate mb-1">
-                          {business.name}
-                        </h3>
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-bold text-secondary group-hover:text-primary transition-colors truncate">
+                            {business.name}
+                          </h3>
+                          <OpenClosedBadge businessHours={business.business_hours} />
+                        </div>
                         {business.category && (
                           <span className="inline-flex items-center text-xs text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full mb-2">
                             {business.category.icon} {business.category.name}
@@ -380,10 +385,10 @@ export default async function Home() {
                   href="/registrar-negocio"
                   className="bg-accent hover:bg-accent-dark text-secondary px-10 py-4 rounded-full font-bold text-lg shadow-xl transition-all hover:scale-105 hover:shadow-accent/30"
                 >
-                  Registrar mi Negocio
+                  Registrar mi Negocio GRATIS
                 </Link>
                 <p className="text-sm text-white/60">
-                  Planes desde <strong className="text-accent text-lg">$80/mes</strong>
+                  <strong className="text-accent text-lg">100% Gratis</strong> — sin costo de registro
                 </p>
               </div>
             </div>

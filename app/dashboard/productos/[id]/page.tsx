@@ -52,7 +52,7 @@ export default async function EditarProductoPage({ params }: { params: { id: str
 
   // Check if plan allows products
   // @ts-ignore - businesses is from join
-  const canManageProducts = ['ventas', 'delivery', 'premium'].includes(product.businesses.subscription_tier)
+  const canManageProducts = ['pro', 'avanzado'].includes(product.businesses.subscription_tier)
 
   if (!canManageProducts) {
     redirect('/dashboard/productos')

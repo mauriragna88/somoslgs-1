@@ -86,41 +86,30 @@ export default async function BusinessDetailPage({ params }: PageProps) {
     suggestions: string[]
     price: number
   }> = {
-    basico: {
-      label: 'Básico',
+    gratis: {
+      label: 'Gratis',
       color: 'bg-gray-100 text-gray-800',
-      nextPlan: 'ventas',
-      price: 80,
+      nextPlan: 'pro',
+      price: 0,
       suggestions: [
-        'Sube al Plan Ventas para agregar productos y recibir pedidos',
+        'Sube al Plan Pro para agregar productos y recibir pedidos',
         'Podrías aumentar tus ventas 3x con un catálogo en línea',
         'Tus clientes podrían ordenar directo desde el directorio',
       ]
     },
-    ventas: {
-      label: 'Ventas',
+    pro: {
+      label: 'Pro',
       color: 'bg-green-100 text-green-800',
-      nextPlan: 'delivery',
+      nextPlan: 'avanzado',
       price: 150,
       suggestions: [
-        'Sube al Plan Delivery para aceptar pagos con tarjeta',
-        'Conecta con motomandados para entregas a domicilio',
-        'Envía WhatsApp automático a tus clientes con su pedido',
-      ]
-    },
-    delivery: {
-      label: 'Delivery',
-      color: 'bg-blue-100 text-blue-800',
-      nextPlan: 'premium',
-      price: 200,
-      suggestions: [
-        'Sube al Plan Premium para aparecer primero en búsquedas',
+        'Sube al Plan Avanzado para aparecer primero en búsquedas',
         'Obtén estadísticas avanzadas de tu negocio',
-        'Destaca sobre tu competencia con la insignia Premium',
+        'Destaca sobre tu competencia con la insignia Avanzado',
       ]
     },
-    premium: {
-      label: 'Premium',
+    avanzado: {
+      label: 'Avanzado',
       color: 'bg-purple-100 text-purple-800',
       nextPlan: null,
       price: 260,
@@ -132,7 +121,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
     },
   }
 
-  const currentPlanInfo = planInfo[business.subscription_tier] || planInfo.basico
+  const currentPlanInfo = planInfo[business.subscription_tier] || planInfo.gratis
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -345,8 +334,8 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               <div className="p-8 text-center text-gray-500">
                 <span className="text-4xl block mb-2">📦</span>
                 <p>No hay productos</p>
-                {business.subscription_tier === 'basico' && (
-                  <p className="text-sm mt-2">Necesita Plan Ventas o superior</p>
+                {business.subscription_tier === 'gratis' && (
+                  <p className="text-sm mt-2">Necesita Plan Pro o superior</p>
                 )}
               </div>
             )}

@@ -50,7 +50,7 @@ export default async function ProductsPage() {
     : businesses?.[0]
 
   // Verificar que el plan permita productos
-  const canManageProducts = selectedBusiness && ['ventas', 'delivery', 'premium'].includes(selectedBusiness.subscription_tier)
+  const canManageProducts = selectedBusiness && ['pro', 'avanzado'].includes(selectedBusiness.subscription_tier)
 
   // Obtener productos si tiene permiso
   let products: Product[] = []
@@ -102,33 +102,33 @@ export default async function ProductsPage() {
           <p className="text-gray-600 mb-6">
             Tu plan actual <strong className="capitalize">{selectedBusiness.subscription_tier}</strong> no incluye la gestión de productos.
             <br />
-            Actualiza al plan <strong>Ventas</strong> para desbloquear esta función.
+            Actualiza al plan <strong>Pro</strong> para desbloquear esta función.
           </p>
           <div className="flex flex-col md:flex-row justify-center gap-4">
             <div className="bg-green-50 border-2 border-green-500 rounded-lg p-4 text-left">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">🛍️</span>
-                <h3 className="font-semibold text-gray-900">Plan Ventas</h3>
+                <h3 className="font-semibold text-gray-900">Plan Pro</h3>
               </div>
-              <p className="text-2xl font-bold text-green-600 mb-2">$200/mes</p>
+              <p className="text-2xl font-bold text-green-600 mb-2">$100/mes</p>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li>✓ Catálogo de productos</li>
                 <li>✓ Recibe pedidos en línea</li>
-                <li>✓ Pago por transferencia</li>
+                <li>✓ Pagos por transferencia y tarjeta</li>
                 <li>✓ Panel de ventas</li>
               </ul>
             </div>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-left">
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-left">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">🚀</span>
-                <h3 className="font-semibold text-gray-900">Plan Delivery</h3>
+                <span className="text-2xl">⭐</span>
+                <h3 className="font-semibold text-gray-900">Plan Avanzado</h3>
               </div>
-              <p className="text-2xl font-bold text-blue-600 mb-2">$300/mes</p>
+              <p className="text-2xl font-bold text-purple-600 mb-2">$180/mes</p>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>✓ Todo lo de Ventas</li>
-                <li>✓ Pasarela de pago</li>
-                <li>✓ WhatsApp automático</li>
-                <li>✓ Motomandados</li>
+                <li>✓ Todo lo de Pro</li>
+                <li>✓ Posición destacada</li>
+                <li>✓ Estadísticas avanzadas</li>
+                <li>✓ Badge verificado</li>
               </ul>
             </div>
           </div>

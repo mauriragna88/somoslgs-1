@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     }
 
     // Check if plan allows products
-    const canManageProducts = ['ventas', 'delivery', 'premium'].includes(business.subscription_tier)
+    const canManageProducts = ['pro', 'avanzado'].includes(business.subscription_tier)
     if (!canManageProducts) {
       return NextResponse.json({
         error: 'Tu plan actual no incluye gestión de productos. Actualiza tu suscripción.'

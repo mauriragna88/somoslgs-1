@@ -27,6 +27,7 @@ const businessUpdateSchema = z.object({
   // MercadoPago
   mercadopago_access_token: z.string().max(200).optional().nullable().or(z.literal('')),
   active_payment_gateways: z.array(z.enum(['conekta', 'mercadopago'])).optional(),
+  business_hours: z.any().optional().nullable(),
 })
 
 function getSupabaseAdmin() {

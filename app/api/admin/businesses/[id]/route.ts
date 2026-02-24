@@ -26,6 +26,7 @@ const updateSchema = z.object({
   longitude: z.number().nullable().optional(),
   is_active: z.boolean().optional(),
   is_featured: z.boolean().optional(),
+  business_hours: z.any().optional().nullable(),
 })
 
 interface RouteParams {
@@ -97,6 +98,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
     if (validated.longitude !== undefined) updateData.longitude = validated.longitude
     if (validated.is_active !== undefined) updateData.is_active = validated.is_active
     if (validated.is_featured !== undefined) updateData.is_featured = validated.is_featured
+    if (validated.business_hours !== undefined) updateData.business_hours = validated.business_hours
 
     const { data: updated, error: updateError } = await supabase
       .from('businesses')

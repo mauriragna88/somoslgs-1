@@ -15,7 +15,7 @@ function getSupabaseAdmin() {
 const transferSchema = z.object({
   business_id: z.string().uuid(),
   amount: z.number().positive(),
-  subscription_tier: z.enum(['basico', 'ventas', 'delivery', 'premium']),
+  subscription_tier: z.enum(['pro', 'avanzado']),
   proof_url: z.string().url().optional(),
   proof_notes: z.string().optional(),
   subscription_months: z.number().int().positive().default(1),

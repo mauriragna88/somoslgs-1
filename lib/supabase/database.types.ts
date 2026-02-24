@@ -75,7 +75,8 @@ export interface Business {
   website: string | null
   facebook_url: string | null
   instagram_url: string | null
-  subscription_tier: 'basico' | 'ventas' | 'delivery' | 'premium'
+  business_type: 'productos' | 'servicios' | 'ambos'
+  subscription_tier: 'gratis' | 'pro' | 'avanzado'
   subscription_status: 'active' | 'suspended' | 'expired'
   subscription_started_at: string | null
   subscription_expires_at: string | null

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
+import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 
 export const revalidate = 1800
 
@@ -37,6 +38,7 @@ interface Business {
   is_active: boolean
   subscription_tier: string
   is_featured: boolean
+  business_hours: any
   category: { id: string; name: string; icon: string } | null
 }
 
@@ -70,6 +72,7 @@ export default async function BuscarPage({
       is_active,
       subscription_tier,
       is_featured,
+      business_hours,
       category:categories(id, name, icon)
     `)
     .eq('is_active', true)
@@ -186,24 +189,22 @@ export default async function BuscarPage({
                       {business.category.icon} {business.category.name}
                     </div>
                   )}
-                  {/* Premium/Featured badge */}
-                  {(business.subscription_tier === 'premium' || business.is_featured) && (
+                  {/* Avanzado/Featured badge */}
+                  {(business.subscription_tier === 'avanzado' || business.is_featured) && (
                     <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold shadow-lg">
                       &#11088; Destacado
-                    </div>
-                  )}
-                  {business.subscription_tier === 'delivery' && !business.is_featured && (
-                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-secondary text-white rounded-full text-xs font-bold shadow-lg">
-                      &#128640; Delivery
                     </div>
                   )}
                 </div>
 
                 {/* Content */}
                 <div className="p-5">
-                  <h3 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
-                    {business.name}
-                  </h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
+                      {business.name}
+                    </h3>
+                    <OpenClosedBadge businessHours={business.business_hours} />
+                  </div>
                   {business.description && (
                     <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">
                       {business.description}

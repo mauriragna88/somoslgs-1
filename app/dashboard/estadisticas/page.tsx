@@ -75,7 +75,7 @@ export default async function EstadisticasPage() {
   const currentBusiness = businesses.find(b => b.id === currentBusinessId)!
 
   // Check if business has premium plan
-  const hasPremiumStats = currentBusiness.subscription_tier === 'premium'
+  const hasPremiumStats = currentBusiness.subscription_tier === 'avanzado'
 
   if (!hasPremiumStats) {
     return (
@@ -115,14 +115,14 @@ export default async function EstadisticasPage() {
 
           <div className="bg-white/20 rounded-xl p-4 mb-6">
             <p className="text-sm mb-2">Esta función está disponible en el</p>
-            <p className="text-2xl font-bold">Plan Premium - $450/mes</p>
+            <p className="text-2xl font-bold">Plan Avanzado - $180/mes</p>
           </div>
 
           <Link
             href="/dashboard/suscripcion"
             className="inline-flex items-center px-8 py-4 bg-white text-purple-600 font-bold rounded-xl hover:bg-gray-100 transition-colors shadow-lg"
           >
-            ⭐ Actualizar a Premium
+            ⭐ Actualizar a Avanzado
           </Link>
         </div>
       </div>
@@ -266,7 +266,7 @@ export default async function EstadisticasPage() {
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-gray-900">Estadísticas</h1>
             <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm font-bold rounded-full">
-              ⭐ Premium
+              ⭐ Avanzado
             </span>
           </div>
           <p className="text-gray-600">{currentBusiness.name}</p>

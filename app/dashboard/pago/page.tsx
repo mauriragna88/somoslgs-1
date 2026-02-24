@@ -80,10 +80,8 @@ export default async function PagoPage() {
 
   // Calculate amount based on plan (precios accesibles para Lagos de Moreno)
   const planPrices: Record<string, number> = {
-    basico: 80,
-    ventas: 150,
-    delivery: 200,
-    premium: 260,
+    pro: 100,
+    avanzado: 180,
   }
 
   const amount = planPrices[typedBusiness.subscription_tier] || 99

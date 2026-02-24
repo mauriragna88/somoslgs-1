@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import LogoUpload from '@/components/shared/LogoUpload'
 import PhotoGalleryManager from '@/components/dashboard/PhotoGalleryManager'
+import BusinessHoursEditor from '@/components/shared/BusinessHoursEditor'
+import { DEFAULT_BUSINESS_HOURS } from '@/lib/constants'
+import type { BusinessHours } from '@/lib/constants'
 import type { BusinessPhoto } from '@/lib/supabase/database.types'
 
 const MapPicker = dynamic(() => import('@/components/maps/MapPicker'), { ssr: false })
@@ -26,6 +29,7 @@ interface Business {
   is_featured: boolean
   owner_id: string | null
   owner?: { id: string; full_name: string; email: string; phone: string | null } | null
+  business_hours: BusinessHours | null
 }
 
 interface AdminEditBusinessFormProps {
@@ -67,6 +71,10 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
     is_featured: business.is_featured,
   })
 
+  const [businessHours, setBusinessHours] = useState<BusinessHours>(
+    business.business_hours || DEFAULT_BUSINESS_HOURS
+  )
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -76,7 +84,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
       const response = await fetch(`/api/admin/businesses/${business.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, business_hours: businessHours }),
       })
 
       const data = await response.json()
@@ -182,8 +190,9 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
       <div className="pb-4 border-b border-gray-200">
         <LogoUpload
           currentLogo={formData.logo_url || null}
-          onUpload={(url) => setFormData({ ...formData, logo_url: url })}
-          onRemove={() => setFormData({ ...formData, logo_url: '' })}
+          saveEndpoint={`/api/admin/businesses/${business.id}`}
+          onUpload={(url) => setFormData(prev => ({ ...prev, logo_url: url }))}
+          onRemove={() => setFormData(prev => ({ ...prev, logo_url: '' }))}
           size="lg"
         />
       </div>
@@ -322,9 +331,12 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
         <MapPicker
           latitude={formData.latitude}
           longitude={formData.longitude}
-          onChange={(lat, lng) => setFormData({ ...formData, latitude: lat, longitude: lng })}
+          onChange={(lat, lng) => setFormData(prev => ({ ...prev, latitude: lat, longitude: lng }))}
         />
       </div>
+
+      {/* Horarios de Atención */}
+      <BusinessHoursEditor value={businessHours} onChange={setBusinessHours} />
 
       <div className="pt-4 flex items-center gap-4">
         <button

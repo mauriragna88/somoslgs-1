@@ -5,8 +5,11 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { ORDER_ENABLED_TIERS } from '@/lib/constants'
+import type { BusinessHours } from '@/lib/constants'
 import ProductList from '@/components/public/ProductList'
 import PhotoCarousel from '@/components/public/PhotoCarousel'
+import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
+import BusinessHoursDisplay from '@/components/public/BusinessHoursDisplay'
 
 const MapDisplay = dynamic(() => import('@/components/maps/MapDisplay'), { ssr: false })
 
@@ -68,6 +71,7 @@ interface PublicBusiness {
   bank_account_holder: string | null
   bank_account_number: string | null
   bank_clabe: string | null
+  business_hours: BusinessHours | null
 }
 
 export default async function BusinessPage({ params }: PageProps) {
@@ -89,7 +93,7 @@ export default async function BusinessPage({ params }: PageProps) {
   }
 
   // Get products if business has the right plan
-  const canShowProducts = ['ventas', 'delivery', 'premium'].includes(business.subscription_tier)
+  const canShowProducts = ['pro', 'avanzado'].includes(business.subscription_tier)
   let products: any[] = []
 
   if (canShowProducts) {
@@ -200,7 +204,10 @@ export default async function BusinessPage({ params }: PageProps) {
                   </span>
                 )}
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{business.name}</h1>
+              <div className="flex items-center gap-3 mb-2">
+                <h1 className="text-3xl font-bold text-gray-900">{business.name}</h1>
+                <OpenClosedBadge businessHours={business.business_hours} size="md" />
+              </div>
               {business.description && (
                 <p className="text-gray-600 mb-4">{business.description}</p>
               )}
@@ -258,6 +265,13 @@ export default async function BusinessPage({ params }: PageProps) {
             businessName={business.name}
             address={business.address}
           />
+        </div>
+      )}
+
+      {/* Hours Section */}
+      {business.business_hours && (
+        <div className="container mx-auto px-4 py-6">
+          <BusinessHoursDisplay hours={business.business_hours} />
         </div>
       )}
 

@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/server'
 import { formatDaysRemaining } from '@/lib/utils'
 import BankDataAlert from '@/components/dashboard/BankDataAlert'
 import UpgradeBanner from '@/components/dashboard/UpgradeBanner'
+import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 
 interface DashboardBusiness {
   id: string
@@ -20,6 +21,7 @@ interface DashboardBusiness {
   is_active: boolean
   category: { name: string } | null
   bank_clabe: string | null
+  business_hours: any
 }
 
 export default async function BusinessDashboard() {
@@ -85,17 +87,15 @@ export default async function BusinessDashboard() {
   }
 
   const planLabels: Record<string, string> = {
-    basico: 'Básico',
-    ventas: 'Ventas',
-    delivery: 'Delivery',
-    premium: 'Premium',
+    gratis: 'Gratis',
+    pro: 'Pro',
+    avanzado: 'Avanzado',
   }
 
   const planColors: Record<string, string> = {
-    basico: 'bg-gray-100 text-gray-800',
-    ventas: 'bg-green-100 text-green-800',
-    delivery: 'bg-blue-100 text-blue-800',
-    premium: 'bg-purple-100 text-purple-800',
+    gratis: 'bg-gray-100 text-gray-800',
+    pro: 'bg-green-100 text-green-800',
+    avanzado: 'bg-purple-100 text-purple-800',
   }
 
   return (
@@ -162,7 +162,7 @@ export default async function BusinessDashboard() {
           {/* Bank Data Alert for businesses with orders capability */}
           {(() => {
             const businessesNeedingBankData = businesses.filter(b =>
-              ['ventas', 'delivery', 'premium'].includes(b.subscription_tier) && !b.bank_clabe
+              ['pro', 'avanzado'].includes(b.subscription_tier) && !b.bank_clabe
             )
 
             if (businessesNeedingBankData.length === 0) return null
@@ -181,7 +181,7 @@ export default async function BusinessDashboard() {
           })()}
 
           {/* Upgrade Banner - Show for non-premium plans */}
-          {selectedBusiness && selectedBusiness.subscription_tier !== 'premium' && (
+          {selectedBusiness && selectedBusiness.subscription_tier !== 'avanzado' && (
             <UpgradeBanner
               currentPlan={selectedBusiness.subscription_tier}
               businessName={selectedBusiness.name}
@@ -273,7 +273,10 @@ export default async function BusinessDashboard() {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{business.name}</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{business.name}</h3>
+                        <OpenClosedBadge businessHours={business.business_hours} />
+                      </div>
                       <p className="text-sm text-gray-500">{business.category?.name || 'Sin categoría'}</p>
                       <div className="flex flex-wrap items-center gap-1.5 mt-1">
                         <span

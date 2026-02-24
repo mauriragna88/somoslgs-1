@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import LogoUpload from '@/components/shared/LogoUpload'
 import PhotoGalleryManager from '@/components/dashboard/PhotoGalleryManager'
+import BusinessHoursEditor from '@/components/shared/BusinessHoursEditor'
+import { DEFAULT_BUSINESS_HOURS } from '@/lib/constants'
+import type { BusinessHours } from '@/lib/constants'
 
 const MapPicker = dynamic(() => import('@/components/maps/MapPicker'), { ssr: false })
 import type { BusinessPhoto } from '@/lib/supabase/database.types'
@@ -33,6 +36,7 @@ interface Business {
   has_conekta_key: boolean
   has_mercadopago_key: boolean
   active_payment_gateways: string[]
+  business_hours: BusinessHours | null
 }
 
 interface EditBusinessFormProps {
@@ -82,6 +86,10 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
     payment_mode: business.payment_mode || 'platform',
   })
 
+  const [businessHours, setBusinessHours] = useState<BusinessHours>(
+    business.business_hours || DEFAULT_BUSINESS_HOURS
+  )
+
   const [conektaKey, setConektaKey] = useState('')
   const [showKeyInput, setShowKeyInput] = useState(false)
   const [mercadoPagoKey, setMercadoPagoKey] = useState('')
@@ -96,6 +104,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
     try {
       const submitData: Record<string, any> = { ...formData }
       submitData.active_payment_gateways = activeGateways
+      submitData.business_hours = businessHours
       // Only send conekta key if user entered a new one
       if (conektaKey.trim()) {
         submitData.conekta_private_key = conektaKey.trim()
@@ -161,8 +170,9 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
       <div className="pb-4 border-b border-gray-200">
         <LogoUpload
           currentLogo={formData.logo_url || null}
-          onUpload={(url) => setFormData({ ...formData, logo_url: url })}
-          onRemove={() => setFormData({ ...formData, logo_url: '' })}
+          saveEndpoint={`/api/businesses/${business.id}`}
+          onUpload={(url) => setFormData(prev => ({ ...prev, logo_url: url }))}
+          onRemove={() => setFormData(prev => ({ ...prev, logo_url: '' }))}
           size="lg"
         />
       </div>
@@ -315,9 +325,12 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
         <MapPicker
           latitude={formData.latitude}
           longitude={formData.longitude}
-          onChange={(lat, lng) => setFormData({ ...formData, latitude: lat, longitude: lng })}
+          onChange={(lat, lng) => setFormData(prev => ({ ...prev, latitude: lat, longitude: lng }))}
         />
       </div>
+
+      {/* Horarios de Atención */}
+      <BusinessHoursEditor value={businessHours} onChange={setBusinessHours} />
 
       {/* Sección de Datos Bancarios */}
       <div className="border-t border-gray-200 pt-6 mt-6">

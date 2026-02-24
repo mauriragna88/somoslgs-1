@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 interface LogoUploadProps {
   currentLogo?: string | null
+  /** API endpoint to save logo_url immediately (e.g. /api/businesses/123) */
+  saveEndpoint?: string
   onUpload: (url: string) => void
   onRemove?: () => void
   size?: 'sm' | 'md' | 'lg'
@@ -18,6 +20,7 @@ const sizeClasses = {
 
 export default function LogoUpload({
   currentLogo,
+  saveEndpoint,
   onUpload,
   onRemove,
   size = 'md',
@@ -26,6 +29,12 @@ export default function LogoUpload({
   const [preview, setPreview] = useState<string | null>(currentLogo || null)
   const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // Keep latest callback in ref so async code always calls the current version
+  const onUploadRef = useRef(onUpload)
+  useEffect(() => {
+    onUploadRef.current = onUpload
+  }, [onUpload])
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null)
@@ -78,8 +87,19 @@ export default function LogoUpload({
         .from('business-images')
         .getPublicUrl(filePath)
 
-      onUpload(publicUrl)
+      // Update parent state using ref (always latest callback)
+      onUploadRef.current(publicUrl)
       setPreview(publicUrl)
+
+      // If saveEndpoint is provided, save logo_url directly to DB
+      // This ensures the logo persists even if the form isn't submitted
+      if (saveEndpoint) {
+        await fetch(saveEndpoint, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ logo_url: publicUrl }),
+        })
+      }
     } catch (err: any) {
       console.error('Error uploading logo:', err)
       setError('Error al subir la imagen. Intenta de nuevo.')
@@ -93,11 +113,19 @@ export default function LogoUpload({
     }
   }
 
-  const handleRemove = () => {
+  const handleRemove = async () => {
     setPreview(null)
     onRemove?.()
     if (inputRef.current) {
       inputRef.current.value = ''
+    }
+    // Also remove from DB immediately
+    if (saveEndpoint) {
+      await fetch(saveEndpoint, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ logo_url: '' }),
+      })
     }
   }
 

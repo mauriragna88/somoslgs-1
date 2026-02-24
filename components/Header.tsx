@@ -184,8 +184,8 @@ export default function Header() {
                           className="flex items-center px-4 py-2.5 text-sm text-primary font-semibold hover:bg-primary/5 transition-colors"
                           onClick={() => setShowMenu(false)}
                         >
-                          <span className="mr-3">🚀</span>
-                          Registra tu Negocio
+                          <span className="mr-3">✨</span>
+                          Registra tu Negocio GRATIS
                         </Link>
                       )}
 
@@ -330,7 +330,7 @@ export default function Header() {
                       className="block px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary/5 rounded-lg transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      🚀 Registra tu Negocio
+                      ✨ Registra tu Negocio GRATIS
                     </Link>
                   )}
                   <button

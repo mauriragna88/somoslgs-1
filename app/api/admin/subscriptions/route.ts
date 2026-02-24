@@ -7,7 +7,7 @@ const subscriptionUpdateSchema = z.object({
   business_id: z.string().uuid(),
   action: z.enum(['add_days', 'change_tier', 'suspend', 'activate', 'pause', 'resume', 'set_expiration']),
   days: z.number().int().min(1).max(365).optional(),
-  tier: z.enum(['basico', 'ventas', 'delivery', 'premium']).optional(),
+  tier: z.enum(['gratis', 'pro', 'avanzado']).optional(),
   expiration_date: z.string().optional(),
   notes: z.string().optional(),
 })

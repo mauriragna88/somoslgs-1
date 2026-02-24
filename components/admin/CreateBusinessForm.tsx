@@ -3,6 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { slugify } from '@/lib/utils'
+import BusinessHoursEditor from '@/components/shared/BusinessHoursEditor'
+import { DEFAULT_BUSINESS_HOURS } from '@/lib/constants'
+import type { BusinessHours } from '@/lib/constants'
 
 interface Category {
   id: string
@@ -42,10 +45,12 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
     businessType: 'productos' as 'productos' | 'servicios' | 'ambos',
 
     // Suscripción
-    subscriptionTier: 'basico' as 'basico' | 'ventas' | 'delivery' | 'premium',
+    subscriptionTier: 'gratis' as 'gratis' | 'pro' | 'avanzado',
     subscriptionDays: 30,
     isFree: false,
   })
+
+  const [businessHours, setBusinessHours] = useState<BusinessHours>(DEFAULT_BUSINESS_HOURS)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -108,6 +113,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
             subscriptionTier: formData.subscriptionTier,
             subscriptionDays: formData.subscriptionDays,
             isFree: formData.isFree,
+            businessHours: businessHours,
           },
         }),
       })
@@ -422,6 +428,9 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
             </div>
           </div>
 
+          {/* Horarios de Atención */}
+          <BusinessHoursEditor value={businessHours} onChange={setBusinessHours} />
+
           <div className="flex justify-between">
             {!skipOwner && (
               <button
@@ -477,10 +486,9 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              { value: 'basico', label: 'Basico', price: '$80/mes', features: ['Info basica', 'WhatsApp', 'Ubicacion'] },
-              { value: 'ventas', label: 'Ventas', price: '$150/mes', features: ['Todo lo anterior', 'Productos', 'Transferencias'] },
-              { value: 'delivery', label: 'Delivery', price: '$200/mes', features: ['Todo lo anterior', 'Pasarela', 'Motomandados'] },
-              { value: 'premium', label: 'Premium', price: '$260/mes', features: ['Todo lo anterior', 'Destacado', 'Analytics'] },
+              { value: 'gratis', label: 'Gratis', price: '$0', features: ['Info basica', 'WhatsApp', 'Ubicacion', '5 fotos'] },
+              { value: 'pro', label: 'Pro', price: '$100/mes', features: ['Todo lo anterior', 'Productos', 'Pedidos', 'Pagos'] },
+              { value: 'avanzado', label: 'Avanzado', price: '$180/mes', features: ['Todo lo anterior', 'Destacado', 'Analytics', 'Badge'] },
             ].map((plan) => (
               <label
                 key={plan.value}

@@ -84,7 +84,7 @@ export function welcomeBusinessEmail(data: {
   email: string
 }) {
   const planPrices: Record<string, string> = {
-    basico: '$80', ventas: '$150', delivery: '$200', premium: '$260'
+    gratis: 'Gratis', pro: '$100', avanzado: '$180'
   }
   return {
     subject: `Bienvenido a SomosLagos - Confirma tus datos`,

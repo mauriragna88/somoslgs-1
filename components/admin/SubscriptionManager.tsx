@@ -37,10 +37,9 @@ interface HistoryEntry {
 }
 
 const tierOptions = [
-  { value: 'basico', label: 'Básico', price: '$80/mes', features: ['Listado en directorio', 'Perfil básico', 'WhatsApp de contacto'] },
-  { value: 'ventas', label: 'Ventas', price: '$150/mes', features: ['Todo de Básico', 'Catálogo de productos', 'Pedidos online', 'Pago por transferencia'] },
-  { value: 'delivery', label: 'Delivery', price: '$200/mes', features: ['Todo de Ventas', 'Pasarela de pago', 'WhatsApp automático', 'Motomandados'] },
-  { value: 'premium', label: 'Premium', price: '$260/mes', features: ['Todo de Delivery', 'Destacado en búsquedas', 'Estadísticas avanzadas', 'Soporte VIP'] },
+  { value: 'gratis', label: 'Gratis', price: '$0', features: ['Listado en directorio', 'Perfil básico', 'WhatsApp de contacto', 'Hasta 5 fotos'] },
+  { value: 'pro', label: 'Pro', price: '$100/mes', features: ['Todo de Gratis', 'Catálogo de productos', 'Pedidos online', 'Pagos transferencia y tarjeta'] },
+  { value: 'avanzado', label: 'Avanzado', price: '$180/mes', features: ['Todo de Pro', 'Destacado en búsquedas', 'Estadísticas avanzadas', 'Badge verificado'] },
 ]
 
 const daysOptions = [

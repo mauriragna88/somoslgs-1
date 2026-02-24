@@ -17,44 +17,40 @@ interface Business {
   status: string
 }
 
-const planDetails: Record<string, { name: string; price: number; features: string[] }> = {
-  basico: {
-    name: 'Basico',
-    price: 80,
+const planDetails: Record<string, { name: string; price: number; features: string[]; isFree?: boolean }> = {
+  gratis: {
+    name: 'Gratis',
+    price: 0,
+    isFree: true,
     features: [
       'Perfil del negocio en el directorio',
       'Informacion de contacto visible',
       'Ubicacion en mapa',
+      'Horarios de atencion',
+      'Hasta 5 fotos',
     ],
   },
-  ventas: {
-    name: 'Ventas',
-    price: 150,
+  pro: {
+    name: 'Pro',
+    price: 100,
     features: [
-      'Todo del plan Basico',
-      'Catalogo de productos',
+      'Todo del plan Gratis',
+      'Catalogo de productos ilimitado',
       'Recepcion de pedidos en linea',
-      'Notificaciones de pedidos',
+      'Pagos por transferencia y tarjeta',
+      'Hasta 15 fotos',
     ],
   },
-  delivery: {
-    name: 'Delivery',
-    price: 200,
+  avanzado: {
+    name: 'Avanzado',
+    price: 180,
     features: [
-      'Todo del plan Ventas',
-      'Envio a domicilio',
-      'Seguimiento de pedidos',
-      'Estadisticas de ventas',
-    ],
-  },
-  premium: {
-    name: 'Premium',
-    price: 260,
-    features: [
-      'Todo del plan Delivery',
-      'Posicion destacada en busqueda',
-      'Badge verificado',
+      'Todo del plan Pro',
+      'Posicion destacada en busquedas',
+      'Insignia de negocio verificado',
+      'Estadisticas avanzadas',
       'Soporte prioritario',
+      'Hasta 20 fotos',
     ],
   },
 }
@@ -83,7 +79,7 @@ export default async function SuscripcionPage() {
     redirect('/dashboard')
   }
 
-  const currentPlan = planDetails[business.subscription_tier] || planDetails.basico
+  const currentPlan = planDetails[business.subscription_tier] || planDetails.gratis
   const expiration = formatDaysRemaining(business.subscription_expires_at)
 
   return (
@@ -114,8 +110,8 @@ export default async function SuscripcionPage() {
               )}
             </div>
             <p className="text-3xl font-bold text-primary">
-              ${currentPlan.price}
-              <span className="text-base font-normal text-gray-500">/mes</span>
+              {currentPlan.isFree ? 'Gratis' : `$${currentPlan.price}`}
+              {!currentPlan.isFree && <span className="text-base font-normal text-gray-500">/mes</span>}
             </p>
           </div>
 
@@ -195,7 +191,7 @@ export default async function SuscripcionPage() {
       {/* All Plans */}
       <div className="mb-8">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Todos los Planes</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {Object.entries(planDetails).map(([key, plan]) => {
             const isCurrent = key === business.subscription_tier
             return (
@@ -214,11 +210,11 @@ export default async function SuscripcionPage() {
                 )}
                 <h3 className="font-bold text-gray-900">{plan.name}</h3>
                 <p className="text-2xl font-bold text-primary mb-3">
-                  ${plan.price}
-                  <span className="text-sm font-normal text-gray-500">/mes</span>
+                  {plan.isFree ? 'Gratis' : `$${plan.price}`}
+                  {!plan.isFree && <span className="text-sm font-normal text-gray-500">/mes</span>}
                 </p>
                 <ul className="space-y-1">
-                  {plan.features.slice(0, 3).map((f, i) => (
+                  {plan.features.slice(0, 4).map((f, i) => (
                     <li key={i} className="text-xs text-gray-600 flex items-start gap-1">
                       <span className="text-green-500 mt-0.5">✓</span>
                       {f}

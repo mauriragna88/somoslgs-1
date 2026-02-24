@@ -8,45 +8,31 @@ interface UpgradeBannerProps {
 }
 
 const UPGRADE_MESSAGES = {
-  basico: {
-    title: '¿Quieres vender más?',
-    subtitle: 'Sube al Plan Ventas',
+  gratis: {
+    title: '¿Quieres vender en línea?',
+    subtitle: 'Sube al Plan Pro',
     features: [
       'Catálogo de productos ilimitado',
       'Recibe pedidos en línea',
-      'Acepta pagos por transferencia',
+      'Pagos por transferencia y tarjeta',
       'Panel de gestión de ventas',
     ],
-    price: '$150',
-    targetPlan: 'ventas',
+    price: '$100',
+    targetPlan: 'pro',
     gradient: 'from-green-500 to-emerald-600',
     icon: '🛍️',
   },
-  ventas: {
-    title: '¡Lleva tu negocio al siguiente nivel!',
-    subtitle: 'Sube al Plan Delivery',
+  pro: {
+    title: '¡Destaca tu negocio!',
+    subtitle: 'Sube al Plan Avanzado',
     features: [
-      'Pasarela de pago con tarjeta',
-      'WhatsApp automático al cliente',
-      'Conexión con motomandados',
-      'Envío a domicilio',
-    ],
-    price: '$200',
-    targetPlan: 'delivery',
-    gradient: 'from-blue-500 to-indigo-600',
-    icon: '🚀',
-  },
-  delivery: {
-    title: '¡Sé el primero en las búsquedas!',
-    subtitle: 'Sube al Plan Premium',
-    features: [
-      'Aparece destacado en búsquedas',
+      'Aparece primero en búsquedas',
       'Insignia de negocio verificado',
       'Estadísticas avanzadas',
       'Soporte prioritario VIP',
     ],
-    price: '$260',
-    targetPlan: 'premium',
+    price: '$180',
+    targetPlan: 'avanzado',
     gradient: 'from-purple-500 to-pink-600',
     icon: '⭐',
   },
@@ -55,8 +41,8 @@ const UPGRADE_MESSAGES = {
 export default function UpgradeBanner({ currentPlan, businessName }: UpgradeBannerProps) {
   const upgrade = UPGRADE_MESSAGES[currentPlan as keyof typeof UPGRADE_MESSAGES]
 
-  // No mostrar banner si ya es premium
-  if (!upgrade || currentPlan === 'premium') {
+  // No mostrar banner si ya es avanzado
+  if (!upgrade || currentPlan === 'avanzado') {
     return null
   }
 

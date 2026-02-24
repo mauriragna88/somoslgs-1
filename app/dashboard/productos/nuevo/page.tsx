@@ -47,7 +47,7 @@ export default async function NuevoProductoPage() {
   }
 
   // Check if plan allows products
-  const canManageProducts = ['ventas', 'delivery', 'premium'].includes(selectedBusiness.subscription_tier)
+  const canManageProducts = ['pro', 'avanzado'].includes(selectedBusiness.subscription_tier)
 
   if (!canManageProducts) {
     redirect('/dashboard/productos')
