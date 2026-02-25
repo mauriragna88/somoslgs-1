@@ -31,6 +31,8 @@ export async function GET(request: NextRequest) {
       address,
       subscription_tier,
       is_featured,
+      rating,
+      total_reviews,
       category:categories(id, name, icon)
     `)
     .eq('is_active', true)
@@ -56,6 +58,8 @@ export async function GET(request: NextRequest) {
       address,
       subscription_tier,
       is_featured,
+      rating,
+      total_reviews,
       category:categories(id, name, icon)
     `)
     .eq('is_active', true)

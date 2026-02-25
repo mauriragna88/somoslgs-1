@@ -10,6 +10,9 @@ import ProductList from '@/components/public/ProductList'
 import PhotoCarousel from '@/components/public/PhotoCarousel'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import BusinessHoursDisplay from '@/components/public/BusinessHoursDisplay'
+import BannerDisplay from '@/components/ads/BannerDisplay'
+import ReviewsSection from '@/components/reviews/ReviewsSection'
+import type { Review } from '@/types/reviews'
 
 const MapDisplay = dynamic(() => import('@/components/maps/MapDisplay'), { ssr: false })
 
@@ -72,6 +75,9 @@ interface PublicBusiness {
   bank_account_number: string | null
   bank_clabe: string | null
   business_hours: BusinessHours | null
+  owner_id: string
+  rating: number
+  total_reviews: number
 }
 
 export default async function BusinessPage({ params }: PageProps) {
@@ -116,6 +122,16 @@ export default async function BusinessPage({ params }: PageProps) {
 
   const photos = galleryPhotos || []
 
+  // Get initial reviews
+  const { data: reviewsData } = await supabase
+    .from('reviews')
+    .select('id, business_id, user_id, rating, comment, response, responded_at, created_at, profile:profiles(full_name, avatar_url)')
+    .eq('business_id', business.id)
+    .order('created_at', { ascending: false })
+    .limit(10) as unknown as { data: Review[] | null }
+
+  const initialReviews = reviewsData || []
+
   // JSON-LD structured data
   const businessJsonLd = {
     '@context': 'https://schema.org',
@@ -133,6 +149,15 @@ export default async function BusinessPage({ params }: PageProps) {
         addressLocality: 'Lagos de Moreno',
         addressRegion: 'Jalisco',
         addressCountry: 'MX',
+      },
+    }),
+    ...(business.total_reviews > 0 && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: business.rating,
+        reviewCount: business.total_reviews,
+        bestRating: 5,
+        worstRating: 1,
       },
     }),
   }
@@ -331,6 +356,22 @@ export default async function BusinessPage({ params }: PageProps) {
             </div>
           </div>
         )}
+
+        {/* Reviews Section */}
+        <div className="mt-8">
+          <ReviewsSection
+            businessId={business.id}
+            ownerId={business.owner_id}
+            rating={business.rating}
+            totalReviews={business.total_reviews}
+            initialReviews={initialReviews}
+          />
+        </div>
+
+        {/* Banner: Business Sidebar */}
+        <div className="mt-8">
+          <BannerDisplay placement="business_sidebar" />
+        </div>
 
         {/* Back Link */}
         <div className="mt-8 text-center">

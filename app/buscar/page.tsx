@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
+import StarRating from '@/components/reviews/StarRating'
+import BannerDisplay from '@/components/ads/BannerDisplay'
 
 export const revalidate = 1800
 
@@ -39,6 +41,8 @@ interface Business {
   subscription_tier: string
   is_featured: boolean
   business_hours: any
+  rating: number
+  total_reviews: number
   category: { id: string; name: string; icon: string } | null
 }
 
@@ -73,6 +77,8 @@ export default async function BuscarPage({
       subscription_tier,
       is_featured,
       business_hours,
+      rating,
+      total_reviews,
       category:categories(id, name, icon)
     `)
     .eq('is_active', true)
@@ -142,6 +148,11 @@ export default async function BuscarPage({
             </button>
           </form>
         </div>
+      </div>
+
+      {/* Banner: Search Top */}
+      <div className="container mx-auto px-4 pt-6">
+        <BannerDisplay placement="search_top" />
       </div>
 
       {/* Results */}
@@ -215,6 +226,11 @@ export default async function BuscarPage({
                       <span className="mr-1.5 text-accent">&#128205;</span>
                       {business.address}
                     </p>
+                  )}
+                  {business.total_reviews > 0 && (
+                    <div className="mt-2">
+                      <StarRating value={business.rating} count={business.total_reviews} size="sm" />
+                    </div>
                   )}
                 </div>
 

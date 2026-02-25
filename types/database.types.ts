@@ -370,3 +370,21 @@ export interface Database {
     }
   }
 }
+
+// Banner type for advertising system
+export interface Banner {
+  id: string
+  title: string
+  description: string | null
+  display_mode: 'image_only' | 'image_text'
+  image_url: string
+  link_url: string | null
+  placement: string
+  is_active: boolean
+  start_date: string
+  end_date: string | null
+  impressions: number
+  clicks: number
+  created_at: string
+  updated_at: string
+}

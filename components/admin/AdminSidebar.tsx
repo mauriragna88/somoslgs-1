@@ -44,6 +44,7 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
     { href: '/admin/usuarios', label: 'Usuarios', icon: '👥' },
     { href: '/admin/pagos', label: 'Pagos', icon: '💳' },
     { href: '/admin/categorias', label: 'Categorías', icon: '📂' },
+    { href: '/admin/publicidad', label: 'Publicidad', icon: '📢' },
   ]
 
   const sidebarContent = (

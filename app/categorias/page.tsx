@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
+import BannerDisplay from '@/components/ads/BannerDisplay'
 
 export const revalidate = 3600
 
@@ -61,6 +62,11 @@ export default async function CategoriasPage() {
             Explora negocios por categoria en Lagos de Moreno
           </p>
         </div>
+      </div>
+
+      {/* Banner: Categories Top */}
+      <div className="container mx-auto px-4 pt-6">
+        <BannerDisplay placement="categories_top" />
       </div>
 
       {/* Categories Grid */}

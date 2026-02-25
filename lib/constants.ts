@@ -73,3 +73,20 @@ export const GALLERY_PHOTO_LIMITS: Record<SubscriptionTier, number> = {
   pro: 15,
   avanzado: 20,
 }
+
+// --- Publicidad / Banners ---
+export const BANNER_PLACEMENTS = [
+  'home_top', 'home_middle', 'search_top',
+  'search_sidebar', 'business_sidebar', 'categories_top'
+] as const
+
+export type BannerPlacement = (typeof BANNER_PLACEMENTS)[number]
+
+export const BANNER_PLACEMENT_LABELS: Record<BannerPlacement, string> = {
+  home_top: 'Inicio - Superior',
+  home_middle: 'Inicio - Medio',
+  search_top: 'Búsqueda - Superior',
+  search_sidebar: 'Búsqueda - Lateral',
+  business_sidebar: 'Negocio - Lateral',
+  categories_top: 'Categorías - Superior',
+}

@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import SearchForm from '@/components/home/SearchForm'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
+import StarRating from '@/components/reviews/StarRating'
+import BannerDisplay from '@/components/ads/BannerDisplay'
 
 export const revalidate = 3600
 
@@ -22,6 +24,8 @@ interface FeaturedBusiness {
   subscription_tier: string
   is_featured: boolean
   business_hours: any
+  rating: number
+  total_reviews: number
   category: { name: string; icon: string } | null
 }
 
@@ -45,7 +49,7 @@ export default async function Home() {
   const { data: featuredBusinesses } = await supabase
     .from('businesses')
     .select(`
-      id, name, slug, description, logo_url, address, subscription_tier, is_featured, business_hours,
+      id, name, slug, description, logo_url, address, subscription_tier, is_featured, business_hours, rating, total_reviews,
       category:categories(name, icon)
     `)
     .eq('is_active', true)
@@ -174,6 +178,11 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Banner: Home Top */}
+      <div className="container mx-auto px-4 py-6">
+        <BannerDisplay placement="home_top" />
+      </div>
+
       {/* Categories Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
@@ -234,6 +243,11 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Banner: Home Middle */}
+      <div className="container mx-auto px-4 py-6">
+        <BannerDisplay placement="home_middle" />
+      </div>
 
       {/* Featured Businesses */}
       {featuredBusinesses && featuredBusinesses.length > 0 && (
@@ -300,6 +314,11 @@ export default async function Home() {
                         <p className="text-sm text-gray-500 line-clamp-2">
                           {business.description || 'Visita este negocio para conocer mas'}
                         </p>
+                        {business.total_reviews > 0 && (
+                          <div className="mt-1.5">
+                            <StarRating value={business.rating} count={business.total_reviews} size="sm" />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
