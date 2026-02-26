@@ -84,6 +84,7 @@ export default function PhotoCarousel({ photos, businessName }: PhotoCarouselPro
         >
           {/* Close button */}
           <button
+            aria-label="Cerrar galeria"
             onClick={() => setLightboxOpen(false)}
             className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors z-10"
           >
@@ -93,7 +94,7 @@ export default function PhotoCarousel({ photos, businessName }: PhotoCarouselPro
           </button>
 
           {/* Counter */}
-          <div className="absolute top-4 left-4 text-white/70 text-sm font-medium">
+          <div className="absolute top-4 left-4 text-white/90 text-sm font-medium">
             {activeIndex + 1} / {photos.length}
           </div>
 
@@ -116,6 +117,7 @@ export default function PhotoCarousel({ photos, businessName }: PhotoCarouselPro
           {photos.length > 1 && (
             <>
               <button
+                aria-label="Foto anterior"
                 onClick={(e) => { e.stopPropagation(); goTo(activeIndex - 1) }}
                 disabled={activeIndex === 0}
                 className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white disabled:opacity-0 transition-all"
@@ -125,6 +127,7 @@ export default function PhotoCarousel({ photos, businessName }: PhotoCarouselPro
                 </svg>
               </button>
               <button
+                aria-label="Siguiente foto"
                 onClick={(e) => { e.stopPropagation(); goTo(activeIndex + 1) }}
                 disabled={activeIndex === photos.length - 1}
                 className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white disabled:opacity-0 transition-all"
@@ -142,6 +145,7 @@ export default function PhotoCarousel({ photos, businessName }: PhotoCarouselPro
               {photos.map((photo, i) => (
                 <button
                   key={photo.id}
+                  aria-label={`Ver foto ${i + 1}`}
                   onClick={(e) => { e.stopPropagation(); goTo(i) }}
                   className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden relative transition-all duration-200 ${
                     i === activeIndex

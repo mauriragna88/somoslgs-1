@@ -242,6 +242,7 @@ export default function Header() {
           <div className="flex items-center space-x-2 md:hidden">
             <Link
               href="/buscar"
+              aria-label="Buscar"
               className="p-2 text-gray-600 hover:text-primary rounded-lg hover:bg-gray-100 transition-colors"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -250,6 +251,7 @@ export default function Header() {
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Cerrar menu' : 'Abrir menu'}
               className="p-2 text-gray-600 hover:text-primary rounded-lg hover:bg-gray-100 transition-colors"
             >
               {mobileMenuOpen ? (

@@ -66,6 +66,7 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
         </Link>
         {/* Close button - mobile only */}
         <button
+          aria-label="Cerrar menu"
           onClick={() => setIsOpen(false)}
           className="lg:hidden p-2 text-slate-400 hover:text-white"
         >

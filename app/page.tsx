@@ -156,15 +156,15 @@ export default async function Home() {
             <div className="flex flex-wrap justify-center gap-4 md:gap-6">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
                 <p className="text-2xl md:text-3xl font-bold text-accent">25+</p>
-                <p className="text-xs text-white/60 uppercase tracking-wider mt-1">Negocios</p>
+                <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Negocios</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
                 <p className="text-2xl md:text-3xl font-bold text-primary-light">{catCount}+</p>
-                <p className="text-xs text-white/60 uppercase tracking-wider mt-1">Categorias</p>
+                <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Categorias</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
                 <p className="text-2xl md:text-3xl font-bold text-white">100%</p>
-                <p className="text-xs text-white/60 uppercase tracking-wider mt-1">Gratis</p>
+                <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Gratis</p>
               </div>
             </div>
           </div>
@@ -370,7 +370,7 @@ export default async function Home() {
                 <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
                   Haz crecer tu negocio
                 </h2>
-                <p className="text-lg text-white/70 max-w-xl mx-auto">
+                <p className="text-lg text-white/80 max-w-xl mx-auto">
                   Unete a SomosLagos y llega a miles de clientes en Lagos de Moreno
                 </p>
               </div>
@@ -381,21 +381,21 @@ export default async function Home() {
                     <span className="text-2xl">📱</span>
                   </div>
                   <h3 className="font-semibold text-white mb-1 text-sm">Presencia Digital</h3>
-                  <p className="text-xs text-white/60">Tu negocio visible 24/7</p>
+                  <p className="text-xs text-white/80">Tu negocio visible 24/7</p>
                 </div>
                 <div className="text-center p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
                   <div className="w-12 h-12 bg-primary-light/20 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <span className="text-2xl">🎯</span>
                   </div>
                   <h3 className="font-semibold text-white mb-1 text-sm">Mas Clientes</h3>
-                  <p className="text-xs text-white/60">Miles de personas en Lagos</p>
+                  <p className="text-xs text-white/80">Miles de personas en Lagos</p>
                 </div>
                 <div className="text-center p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
                   <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <span className="text-2xl">💳</span>
                   </div>
                   <h3 className="font-semibold text-white mb-1 text-sm">Ventas Online</h3>
-                  <p className="text-xs text-white/60">Pedidos y pagos en linea</p>
+                  <p className="text-xs text-white/80">Pedidos y pagos en linea</p>
                 </div>
               </div>
 
@@ -406,7 +406,7 @@ export default async function Home() {
                 >
                   Registrar mi Negocio GRATIS
                 </Link>
-                <p className="text-sm text-white/60">
+                <p className="text-sm text-white/80">
                   <strong className="text-accent text-lg">100% Gratis</strong> — sin costo de registro
                 </p>
               </div>

@@ -211,9 +211,9 @@ export default async function BuscarPage({
                 {/* Content */}
                 <div className="p-5">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
+                    <h2 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
                       {business.name}
-                    </h3>
+                    </h2>
                     <OpenClosedBadge businessHours={business.business_hours} />
                   </div>
                   {business.description && (

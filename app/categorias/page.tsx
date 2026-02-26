@@ -110,7 +110,7 @@ export default async function CategoriasPage() {
           <div className="absolute top-0 right-0 w-40 h-40 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
           <div className="relative">
             <h2 className="text-2xl font-bold mb-2">¿No encuentras lo que buscas?</h2>
-            <p className="text-white/70 mb-6">
+            <p className="text-white/80 mb-6">
               Prueba nuestra busqueda avanzada
             </p>
             <Link

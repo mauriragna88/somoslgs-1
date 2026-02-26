@@ -92,7 +92,7 @@ export default function UpgradeBanner({ currentPlan, businessName }: UpgradeBann
               </svg>
             </Link>
 
-            <p className="text-white/60 text-xs text-center md:text-right">
+            <p className="text-white/80 text-xs text-center md:text-right">
               Cancela cuando quieras
             </p>
           </div>
