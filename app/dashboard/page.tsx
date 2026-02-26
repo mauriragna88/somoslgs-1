@@ -8,6 +8,7 @@ import { formatDaysRemaining } from '@/lib/utils'
 import BankDataAlert from '@/components/dashboard/BankDataAlert'
 import UpgradeBanner from '@/components/dashboard/UpgradeBanner'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
+import BusinessQR from '@/components/dashboard/BusinessQR'
 
 interface DashboardBusiness {
   id: string
@@ -361,6 +362,16 @@ export default async function BusinessDashboard() {
               <span className="text-3xl group-hover:scale-110 transition-transform">📈</span>
             </Link>
           </div>
+
+          {/* QR Code */}
+          {selectedBusiness && (
+            <div className="mt-8">
+              <BusinessQR
+                businessName={selectedBusiness.name}
+                businessSlug={selectedBusiness.slug}
+              />
+            </div>
+          )}
         </>
       ) : (
         /* No tiene negocios */

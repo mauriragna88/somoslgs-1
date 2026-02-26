@@ -4,6 +4,7 @@ import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import StarRating from '@/components/reviews/StarRating'
+import FavoriteButton from '@/components/shared/FavoriteButton'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 
 export const revalidate = 1800
@@ -21,6 +22,8 @@ export const metadata: Metadata = {
 interface SearchParams {
   q?: string
   categoria?: string
+  colonia?: string
+  orden?: string
 }
 
 interface Category {
@@ -37,6 +40,7 @@ interface Business {
   logo_url: string | null
   phone: string
   address: string
+  neighborhood: string | null
   is_active: boolean
   subscription_tier: string
   is_featured: boolean
@@ -53,6 +57,8 @@ export default async function BuscarPage({
 }) {
   const query = searchParams.q || ''
   const categoriaId = searchParams.categoria || ''
+  const colonia = searchParams.colonia || ''
+  const orden = searchParams.orden || ''
 
   const supabase = createClient()
 
@@ -62,7 +68,21 @@ export default async function BuscarPage({
     .select('id, name, icon')
     .order('name') as { data: Category[] | null }
 
-  // Build search query - Premium businesses appear first
+  // Get unique neighborhoods for filter
+  const { data: neighborhoodData } = await supabase
+    .from('businesses')
+    .select('neighborhood')
+    .eq('is_active', true)
+    .not('neighborhood', 'is', null)
+    .order('neighborhood') as { data: { neighborhood: string }[] | null }
+
+  const neighborhoods = Array.from(new Set(
+    (neighborhoodData || [])
+      .map(b => b.neighborhood)
+      .filter((n): n is string => !!n && n.trim() !== '')
+  ))
+
+  // Build search query
   let businessQuery = supabase
     .from('businesses')
     .select(`
@@ -73,6 +93,7 @@ export default async function BuscarPage({
       logo_url,
       phone,
       address,
+      neighborhood,
       is_active,
       subscription_tier,
       is_featured,
@@ -82,9 +103,20 @@ export default async function BuscarPage({
       category:categories(id, name, icon)
     `)
     .eq('is_active', true)
-    .order('is_featured', { ascending: false })
-    .order('subscription_tier', { ascending: false })
-    .order('name')
+
+  // Apply sort order
+  if (orden === 'rating') {
+    businessQuery = businessQuery
+      .order('rating', { ascending: false })
+      .order('total_reviews', { ascending: false })
+      .order('name')
+  } else {
+    // Default: featured first, then by tier, then name
+    businessQuery = businessQuery
+      .order('is_featured', { ascending: false })
+      .order('subscription_tier', { ascending: false })
+      .order('name')
+  }
 
   // Apply search filter - split into words for smarter matching
   if (query) {
@@ -104,6 +136,11 @@ export default async function BuscarPage({
     businessQuery = businessQuery.eq('category_id', categoriaId)
   }
 
+  // Apply neighborhood filter
+  if (colonia) {
+    businessQuery = businessQuery.eq('neighborhood', colonia)
+  }
+
   const { data: businesses, error } = await businessQuery.limit(50) as { data: Business[] | null; error: any }
 
   // error is handled gracefully - empty results shown
@@ -116,36 +153,64 @@ export default async function BuscarPage({
           <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-6">Buscar Negocios</h1>
 
           {/* Search Form */}
-          <form method="GET" className="flex flex-col md:flex-row gap-3">
-            <div className="flex-1">
-              <input
-                type="text"
-                name="q"
-                defaultValue={query}
-                placeholder="Buscar por nombre o descripcion..."
-                className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-              />
-            </div>
-            <div className="w-full md:w-64">
-              <select
-                name="categoria"
-                defaultValue={categoriaId}
-                className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+          <form method="GET" className="space-y-3">
+            <div className="flex flex-col md:flex-row gap-3">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  name="q"
+                  defaultValue={query}
+                  placeholder="Buscar por nombre o descripcion..."
+                  className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                />
+              </div>
+              <div className="w-full md:w-52">
+                <select
+                  name="categoria"
+                  defaultValue={categoriaId}
+                  className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                >
+                  <option value="">Todas las categorias</option>
+                  {categories?.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.icon} {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button
+                type="submit"
+                className="px-8 py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20"
               >
-                <option value="">Todas las categorias</option>
-                {categories?.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.icon} {cat.name}
-                  </option>
-                ))}
-              </select>
+                Buscar
+              </button>
             </div>
-            <button
-              type="submit"
-              className="px-8 py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20"
-            >
-              Buscar
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              {neighborhoods.length > 0 && (
+                <div className="w-full sm:w-52">
+                  <select
+                    name="colonia"
+                    defaultValue={colonia}
+                    className="w-full px-4 py-2.5 bg-surface border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  >
+                    <option value="">Todas las colonias</option>
+                    {neighborhoods.map((n) => (
+                      <option key={n} value={n}>{n}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              <div className="w-full sm:w-52">
+                <select
+                  name="orden"
+                  defaultValue={orden}
+                  className="w-full px-4 py-2.5 bg-surface border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                >
+                  <option value="">Ordenar: Destacados primero</option>
+                  <option value="rating">Ordenar: Mejor calificados</option>
+                </select>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -206,6 +271,10 @@ export default async function BuscarPage({
                       &#11088; Destacado
                     </div>
                   )}
+                  {/* Favorite button */}
+                  <div className="absolute bottom-3 right-3">
+                    <FavoriteButton businessId={business.id} />
+                  </div>
                 </div>
 
                 {/* Content */}
