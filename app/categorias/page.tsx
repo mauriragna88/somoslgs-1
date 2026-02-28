@@ -49,7 +49,7 @@ export default async function CategoriasPage() {
   const categoriesWithCount = (categories || []).map((cat) => ({
     ...cat,
     businessCount: countMap.get(cat.id) || 0,
-  }))
+  })).sort((a, b) => b.businessCount - a.businessCount)
 
   return (
     <main className="min-h-screen bg-surface">

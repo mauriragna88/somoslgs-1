@@ -62,19 +62,37 @@ export default async function BuscarPage({
 
   const supabase = createClient()
 
-  // Get categories for filter
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('id, name, icon')
-    .order('name') as { data: Category[] | null }
+  // Get categories + business counts + neighborhoods in parallel
+  const [{ data: categories }, { data: businessCategoryData }, { data: neighborhoodData }] = await Promise.all([
+    supabase
+      .from('categories')
+      .select('id, name, icon')
+      .order('name') as unknown as Promise<{ data: Category[] | null }>,
+    supabase
+      .from('businesses')
+      .select('category_id')
+      .eq('is_active', true) as unknown as Promise<{ data: { category_id: string }[] | null }>,
+    supabase
+      .from('businesses')
+      .select('neighborhood')
+      .eq('is_active', true)
+      .not('neighborhood', 'is', null)
+      .order('neighborhood') as unknown as Promise<{ data: { neighborhood: string }[] | null }>,
+  ])
 
-  // Get unique neighborhoods for filter
-  const { data: neighborhoodData } = await supabase
-    .from('businesses')
-    .select('neighborhood')
-    .eq('is_active', true)
-    .not('neighborhood', 'is', null)
-    .order('neighborhood') as { data: { neighborhood: string }[] | null }
+  // Count businesses per category
+  const categoryCountMap = new Map<string, number>()
+  ;(businessCategoryData || []).forEach((b) => {
+    if (b.category_id) {
+      categoryCountMap.set(b.category_id, (categoryCountMap.get(b.category_id) || 0) + 1)
+    }
+  })
+
+  // Categories with count, sorted by count descending
+  const categoriesWithCount = (categories || []).map((cat) => ({
+    ...cat,
+    businessCount: categoryCountMap.get(cat.id) || 0,
+  })).sort((a, b) => b.businessCount - a.businessCount)
 
   const neighborhoods = Array.from(new Set(
     (neighborhoodData || [])
@@ -220,120 +238,173 @@ export default async function BuscarPage({
         <BannerDisplay placement="search_top" />
       </div>
 
-      {/* Results */}
+      {/* Results + Sidebar */}
       <div className="container mx-auto px-4 py-8">
-        {/* Results count */}
-        <div className="mb-6">
-          <p className="text-gray-600">
-            {businesses?.length || 0} negocio{businesses?.length !== 1 ? 's' : ''} encontrado{businesses?.length !== 1 ? 's' : ''}
-            {query && <span> para &ldquo;<strong>{query}</strong>&rdquo;</span>}
-          </p>
-        </div>
-
-        {/* Business Grid */}
-        {businesses && businesses.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {businesses.map((business) => (
-              <Link
-                key={business.id}
-                href={`/negocios/${business.slug}`}
-                className="bg-white rounded-2xl hover:shadow-2xl transition-all overflow-hidden group border border-gray-100 hover:border-transparent hover:-translate-y-1"
-              >
-                {/* Top accent */}
-                <div className="h-1 bg-gradient-to-r from-primary via-accent to-warm"></div>
-
-                {/* Image/Logo */}
-                <div className="h-48 bg-surface relative overflow-hidden">
-                  {business.logo_url ? (
-                    <Image
-                      src={business.logo_url}
-                      alt={business.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/5 to-primary/5">
-                      <span className="text-6xl text-secondary/30 font-bold">
-                        {business.name[0].toUpperCase()}
-                      </span>
-                    </div>
-                  )}
-                  {/* Category badge */}
-                  {business.category && (
-                    <div className="absolute top-3 left-3 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700 shadow-sm">
-                      {business.category.icon} {business.category.name}
-                    </div>
-                  )}
-                  {/* Avanzado/Featured badge */}
-                  {(business.subscription_tier === 'avanzado' || business.is_featured) && (
-                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold shadow-lg">
-                      &#11088; Destacado
-                    </div>
-                  )}
-                  {/* Favorite button */}
-                  <div className="absolute bottom-3 right-3">
-                    <FavoriteButton businessId={business.id} />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
-                      {business.name}
-                    </h2>
-                    <OpenClosedBadge businessHours={business.business_hours} />
-                  </div>
-                  {business.description && (
-                    <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">
-                      {business.description}
-                    </p>
-                  )}
-                  {business.address && (
-                    <p className="text-sm text-gray-400 mt-2.5 flex items-center">
-                      <span className="mr-1.5 text-accent">&#128205;</span>
-                      {business.address}
-                    </p>
-                  )}
-                  {business.total_reviews > 0 && (
-                    <div className="mt-2">
-                      <StarRating value={business.rating} count={business.total_reviews} size="sm" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Footer */}
-                <div className="px-5 py-3 border-t border-gray-50 flex items-center justify-between">
-                  <span className="text-sm text-primary font-semibold">Ver negocio</span>
-                  <div className="w-7 h-7 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
-                    <svg className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-5xl">🔍</span>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Results Column */}
+          <div className="lg:col-span-3">
+            {/* Results count */}
+            <div className="mb-6">
+              <p className="text-gray-600">
+                {businesses?.length || 0} negocio{businesses?.length !== 1 ? 's' : ''} encontrado{businesses?.length !== 1 ? 's' : ''}
+                {query && <span> para &ldquo;<strong>{query}</strong>&rdquo;</span>}
+              </p>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">No se encontraron negocios</h2>
-            <p className="text-gray-600 mb-6">
-              {query
-                ? `No hay negocios que coincidan con "${query}"`
-                : 'No hay negocios disponibles en este momento'}
-            </p>
-            <Link
-              href="/"
-              className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
-            >
-              Volver al Inicio
-            </Link>
+
+            {/* Business Grid */}
+            {businesses && businesses.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {businesses.map((business) => (
+                  <Link
+                    key={business.id}
+                    href={`/negocios/${business.slug}`}
+                    className="bg-white rounded-2xl hover:shadow-2xl transition-all overflow-hidden group border border-gray-100 hover:border-transparent hover:-translate-y-1"
+                  >
+                    {/* Top accent */}
+                    <div className="h-1 bg-gradient-to-r from-primary via-accent to-warm"></div>
+
+                    {/* Image/Logo */}
+                    <div className="h-48 bg-surface relative overflow-hidden">
+                      {business.logo_url ? (
+                        <Image
+                          src={business.logo_url}
+                          alt={business.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/5 to-primary/5">
+                          <span className="text-6xl text-secondary/30 font-bold">
+                            {business.name[0].toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                      {/* Category badge */}
+                      {business.category && (
+                        <div className="absolute top-3 left-3 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700 shadow-sm">
+                          {business.category.icon} {business.category.name}
+                        </div>
+                      )}
+                      {/* Avanzado/Featured badge */}
+                      {(business.subscription_tier === 'avanzado' || business.is_featured) && (
+                        <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold shadow-lg">
+                          &#11088; Destacado
+                        </div>
+                      )}
+                      {/* Favorite button */}
+                      <div className="absolute bottom-3 right-3">
+                        <FavoriteButton businessId={business.id} />
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-5">
+                      <div className="flex items-center gap-2">
+                        <h2 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
+                          {business.name}
+                        </h2>
+                        <OpenClosedBadge businessHours={business.business_hours} />
+                      </div>
+                      {business.description && (
+                        <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">
+                          {business.description}
+                        </p>
+                      )}
+                      {business.address && (
+                        <p className="text-sm text-gray-400 mt-2.5 flex items-center">
+                          <span className="mr-1.5 text-accent">&#128205;</span>
+                          {business.address}
+                        </p>
+                      )}
+                      {business.total_reviews > 0 && (
+                        <div className="mt-2">
+                          <StarRating value={business.rating} count={business.total_reviews} size="sm" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Footer */}
+                    <div className="px-5 py-3 border-t border-gray-50 flex items-center justify-between">
+                      <span className="text-sm text-primary font-semibold">Ver negocio</span>
+                      <div className="w-7 h-7 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
+                        <svg className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-16">
+                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-5xl">🔍</span>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">No se encontraron negocios</h2>
+                <p className="text-gray-600 mb-6">
+                  {query
+                    ? `No hay negocios que coincidan con "${query}"`
+                    : 'No hay negocios disponibles en este momento'}
+                </p>
+                <Link
+                  href="/"
+                  className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                >
+                  Volver al Inicio
+                </Link>
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Sidebar - Categories (desktop only) */}
+          <aside className="hidden lg:block lg:col-span-1">
+            <div className="bg-white rounded-2xl border border-gray-100 p-5 sticky top-24">
+              <h3 className="font-bold text-secondary mb-4 text-sm uppercase tracking-wide">Categorias</h3>
+              <nav className="space-y-1">
+                <Link
+                  href={`/buscar${query ? `?q=${encodeURIComponent(query)}` : ''}${colonia ? `${query ? '&' : '?'}colonia=${encodeURIComponent(colonia)}` : ''}${orden ? `${query || colonia ? '&' : '?'}orden=${orden}` : ''}`}
+                  className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors ${
+                    !categoriaId
+                      ? 'bg-primary/10 text-primary font-bold'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <span>Todas</span>
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${!categoriaId ? 'bg-primary/20 text-primary' : 'bg-gray-100 text-gray-500'}`}>
+                    {businessCategoryData?.length || 0}
+                  </span>
+                </Link>
+                {categoriesWithCount.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/buscar?categoria=${cat.id}${query ? `&q=${encodeURIComponent(query)}` : ''}${colonia ? `&colonia=${encodeURIComponent(colonia)}` : ''}${orden ? `&orden=${orden}` : ''}`}
+                    className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors ${
+                      categoriaId === cat.id
+                        ? 'bg-primary/10 text-primary font-bold'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
+                  >
+                    <span className="truncate">
+                      <span className="mr-1.5">{cat.icon}</span>
+                      {cat.name}
+                    </span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ml-2 ${
+                      categoriaId === cat.id ? 'bg-primary/20 text-primary' : 'bg-gray-100 text-gray-500'
+                    }`}>
+                      {cat.businessCount}
+                    </span>
+                  </Link>
+                ))}
+              </nav>
+            </div>
+
+            {/* Banner: Search Sidebar */}
+            <div className="mt-6">
+              <BannerDisplay placement="search_sidebar" />
+            </div>
+          </aside>
+        </div>
       </div>
     </main>
   )
