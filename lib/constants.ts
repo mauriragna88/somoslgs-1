@@ -74,10 +74,46 @@ export const GALLERY_PHOTO_LIMITS: Record<SubscriptionTier, number> = {
   avanzado: 20,
 }
 
+// --- Marketplace ---
+export const MARKETPLACE_PHOTO_LIMIT = 8
+export const MARKETPLACE_LISTING_DAYS = 30
+export const MARKETPLACE_FEATURED_PRICE = 25 // MXN por 7 días
+export const MARKETPLACE_FEATURED_DAYS = 7
+
+export const MARKETPLACE_CONDITIONS = {
+  nuevo: 'Nuevo',
+  seminuevo: 'Seminuevo',
+  usado: 'Usado',
+} as const
+
+export const MARKETPLACE_PRICE_TYPES = {
+  fijo: 'Precio fijo',
+  negociable: 'Negociable',
+  gratis: 'Gratis',
+  intercambio: 'Intercambio',
+} as const
+
+export const MARKETPLACE_REPORT_REASONS = {
+  spam: 'Spam o publicación repetida',
+  fraude: 'Posible fraude o estafa',
+  contenido_inapropiado: 'Contenido inapropiado',
+  articulo_prohibido: 'Artículo prohibido',
+  otro: 'Otro motivo',
+} as const
+
+export const BANNED_WORDS = [
+  'arma', 'armas', 'pistola', 'rifle', 'escopeta', 'municion', 'balas',
+  'droga', 'drogas', 'marihuana', 'mota', 'coca', 'cristal', 'meta',
+  'pornografia', 'porno', 'xxx', 'escort', 'sexo',
+  'falsificado', 'pirata', 'clonado', 'replica',
+  'organo', 'organos', 'rinon',
+] as const
+
 // --- Publicidad / Banners ---
 export const BANNER_PLACEMENTS = [
   'home_top', 'home_middle', 'search_top',
-  'search_sidebar', 'business_sidebar', 'categories_top'
+  'search_sidebar', 'business_sidebar', 'categories_top',
+  'marketplace_top', 'marketplace_sidebar'
 ] as const
 
 export type BannerPlacement = (typeof BANNER_PLACEMENTS)[number]
@@ -89,4 +125,6 @@ export const BANNER_PLACEMENT_LABELS: Record<BannerPlacement, string> = {
   search_sidebar: 'Búsqueda - Lateral',
   business_sidebar: 'Negocio - Lateral',
   categories_top: 'Categorías - Superior',
+  marketplace_top: 'Marketplace - Superior',
+  marketplace_sidebar: 'Marketplace - Lateral',
 }

@@ -2,19 +2,22 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import StarRating from '@/components/reviews/StarRating'
 import FavoriteButton from '@/components/shared/FavoriteButton'
 import BannerDisplay from '@/components/ads/BannerDisplay'
+import ListingCard from '@/components/marketplace/ListingCard'
+import type { MarketplaceListing } from '@/types/database.types'
 
 export const revalidate = 1800
 
 export const metadata: Metadata = {
-  title: 'Buscar Negocios en Lagos de Moreno',
-  description: 'Encuentra restaurantes, tiendas, servicios y más negocios locales en Lagos de Moreno, Jalisco. Busca por nombre, categoría o ubicación.',
+  title: 'Buscar en Lagos de Moreno',
+  description: 'Encuentra negocios, restaurantes, tiendas, servicios y artículos en venta en Lagos de Moreno, Jalisco.',
   openGraph: {
-    title: 'Buscar Negocios en Lagos de Moreno | SomosLagos',
-    description: 'Encuentra restaurantes, tiendas, servicios y más negocios locales en Lagos de Moreno, Jalisco.',
+    title: 'Buscar en Lagos de Moreno | SomosLagos',
+    description: 'Encuentra negocios y artículos en Lagos de Moreno, Jalisco.',
     url: 'https://www.somoslagos.com.mx/buscar',
   },
 }
@@ -24,6 +27,7 @@ interface SearchParams {
   categoria?: string
   colonia?: string
   orden?: string
+  tipo?: string
 }
 
 interface Category {
@@ -59,8 +63,10 @@ export default async function BuscarPage({
   const categoriaId = searchParams.categoria || ''
   const colonia = searchParams.colonia || ''
   const orden = searchParams.orden || ''
+  const tipo = searchParams.tipo || 'negocios'
 
   const supabase = createClient()
+  const serviceSupabase = createServiceClient()
 
   // Get categories + business counts + neighborhoods in parallel
   const [{ data: categories }, { data: businessCategoryData }, { data: neighborhoodData }] = await Promise.all([
@@ -161,17 +167,61 @@ export default async function BuscarPage({
 
   const { data: businesses, error } = await businessQuery.limit(50) as { data: Business[] | null; error: any }
 
-  // error is handled gracefully - empty results shown
+  // Marketplace listings (only fetch when tab is marketplace)
+  let marketplaceListings: MarketplaceListing[] = []
+  if (tipo === 'marketplace') {
+    let mkQuery = serviceSupabase
+      .from('marketplace_listings')
+      .select('*, category:marketplace_categories(*)')
+      .eq('status', 'active')
+      .gte('expires_at', new Date().toISOString())
+      .order('is_featured', { ascending: false })
+      .order('created_at', { ascending: false })
+
+    if (query) {
+      const words = query.toLowerCase().split(/\s+/).filter((w: string) => w.length >= 2)
+      if (words.length > 0) {
+        const orCond = words.map((word: string) =>
+          `title.ilike.%${word}%,description.ilike.%${word}%`
+        ).join(',')
+        mkQuery = mkQuery.or(orCond)
+      }
+    }
+
+    const { data: mkData } = await mkQuery.limit(40)
+    marketplaceListings = (mkData || []) as MarketplaceListing[]
+  }
 
   return (
     <main className="min-h-screen bg-surface">
       {/* Search Header */}
       <div className="bg-white border-b border-gray-100 py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-6">Buscar Negocios</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-4">Buscar</h1>
+
+          {/* Tabs */}
+          <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-6 w-fit">
+            <Link
+              href={`/buscar?tipo=negocios${query ? `&q=${encodeURIComponent(query)}` : ''}`}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                tipo === 'negocios' ? 'bg-white text-secondary shadow-sm' : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Negocios
+            </Link>
+            <Link
+              href={`/buscar?tipo=marketplace${query ? `&q=${encodeURIComponent(query)}` : ''}`}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                tipo === 'marketplace' ? 'bg-white text-secondary shadow-sm' : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Marketplace
+            </Link>
+          </div>
 
           {/* Search Form */}
           <form method="GET" className="space-y-3">
+            <input type="hidden" name="tipo" value={tipo} />
             <div className="flex flex-col md:flex-row gap-3">
               <div className="flex-1">
                 <input
@@ -243,117 +293,160 @@ export default async function BuscarPage({
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Results Column */}
           <div className="lg:col-span-3">
-            {/* Results count */}
-            <div className="mb-6">
-              <p className="text-gray-600">
-                {businesses?.length || 0} negocio{businesses?.length !== 1 ? 's' : ''} encontrado{businesses?.length !== 1 ? 's' : ''}
-                {query && <span> para &ldquo;<strong>{query}</strong>&rdquo;</span>}
-              </p>
-            </div>
-
-            {/* Business Grid */}
-            {businesses && businesses.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {businesses.map((business) => (
+            {tipo === 'marketplace' ? (
+              <>
+                {/* Marketplace Results */}
+                <div className="mb-6 flex items-center justify-between">
+                  <p className="text-gray-600">
+                    {marketplaceListings.length} artículo{marketplaceListings.length !== 1 ? 's' : ''}
+                    {query && <span> para &ldquo;<strong>{query}</strong>&rdquo;</span>}
+                  </p>
                   <Link
-                    key={business.id}
-                    href={`/negocios/${business.slug}`}
-                    className="bg-white rounded-2xl hover:shadow-2xl transition-all overflow-hidden group border border-gray-100 hover:border-transparent hover:-translate-y-1"
+                    href="/marketplace"
+                    className="text-sm text-primary font-medium hover:underline"
                   >
-                    {/* Top accent */}
-                    <div className="h-1 bg-gradient-to-r from-primary via-accent to-warm"></div>
-
-                    {/* Image/Logo */}
-                    <div className="h-48 bg-surface relative overflow-hidden">
-                      {business.logo_url ? (
-                        <Image
-                          src={business.logo_url}
-                          alt={business.name}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/5 to-primary/5">
-                          <span className="text-6xl text-secondary/30 font-bold">
-                            {business.name[0].toUpperCase()}
-                          </span>
-                        </div>
-                      )}
-                      {/* Category badge */}
-                      {business.category && (
-                        <div className="absolute top-3 left-3 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700 shadow-sm">
-                          {business.category.icon} {business.category.name}
-                        </div>
-                      )}
-                      {/* Avanzado/Featured badge */}
-                      {(business.subscription_tier === 'avanzado' || business.is_featured) && (
-                        <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold shadow-lg">
-                          &#11088; Destacado
-                        </div>
-                      )}
-                      {/* Favorite button */}
-                      <div className="absolute bottom-3 right-3">
-                        <FavoriteButton businessId={business.id} />
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-5">
-                      <div className="flex items-center gap-2">
-                        <h2 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
-                          {business.name}
-                        </h2>
-                        <OpenClosedBadge businessHours={business.business_hours} />
-                      </div>
-                      {business.description && (
-                        <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">
-                          {business.description}
-                        </p>
-                      )}
-                      {business.address && (
-                        <p className="text-sm text-gray-400 mt-2.5 flex items-center">
-                          <span className="mr-1.5 text-accent">&#128205;</span>
-                          {business.address}
-                        </p>
-                      )}
-                      {business.total_reviews > 0 && (
-                        <div className="mt-2">
-                          <StarRating value={business.rating} count={business.total_reviews} size="sm" />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Footer */}
-                    <div className="px-5 py-3 border-t border-gray-50 flex items-center justify-between">
-                      <span className="text-sm text-primary font-semibold">Ver negocio</span>
-                      <div className="w-7 h-7 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
-                        <svg className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </div>
-                    </div>
+                    Ver marketplace completo →
                   </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-16">
-                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-5xl">🔍</span>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">No se encontraron negocios</h2>
-                <p className="text-gray-600 mb-6">
-                  {query
-                    ? `No hay negocios que coincidan con "${query}"`
-                    : 'No hay negocios disponibles en este momento'}
-                </p>
-                <Link
-                  href="/"
-                  className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
-                >
-                  Volver al Inicio
-                </Link>
-              </div>
+
+                {marketplaceListings.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {marketplaceListings.map((listing) => (
+                      <ListingCard key={listing.id} listing={listing} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-16">
+                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <span className="text-5xl">🛍️</span>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">No hay artículos</h2>
+                    <p className="text-gray-600 mb-6">
+                      {query ? `No hay artículos que coincidan con "${query}"` : 'No hay artículos en el marketplace'}
+                    </p>
+                    <Link
+                      href="/marketplace/publicar"
+                      className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                    >
+                      Publicar artículo
+                    </Link>
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                {/* Business Results */}
+                <div className="mb-6">
+                  <p className="text-gray-600">
+                    {businesses?.length || 0} negocio{businesses?.length !== 1 ? 's' : ''} encontrado{businesses?.length !== 1 ? 's' : ''}
+                    {query && <span> para &ldquo;<strong>{query}</strong>&rdquo;</span>}
+                  </p>
+                </div>
+
+                {businesses && businesses.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {businesses.map((business) => (
+                      <Link
+                        key={business.id}
+                        href={`/negocios/${business.slug}`}
+                        className="bg-white rounded-2xl hover:shadow-2xl transition-all overflow-hidden group border border-gray-100 hover:border-transparent hover:-translate-y-1"
+                      >
+                        {/* Top accent */}
+                        <div className="h-1 bg-gradient-to-r from-primary via-accent to-warm"></div>
+
+                        {/* Image/Logo */}
+                        <div className="h-48 bg-surface relative overflow-hidden">
+                          {business.logo_url ? (
+                            <Image
+                              src={business.logo_url}
+                              alt={business.name}
+                              fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/5 to-primary/5">
+                              <span className="text-6xl text-secondary/30 font-bold">
+                                {business.name[0].toUpperCase()}
+                              </span>
+                            </div>
+                          )}
+                          {/* Category badge */}
+                          {business.category && (
+                            <div className="absolute top-3 left-3 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700 shadow-sm">
+                              {business.category.icon} {business.category.name}
+                            </div>
+                          )}
+                          {/* Avanzado/Featured badge */}
+                          {(business.subscription_tier === 'avanzado' || business.is_featured) && (
+                            <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold shadow-lg">
+                              &#11088; Destacado
+                            </div>
+                          )}
+                          {/* Favorite button */}
+                          <div className="absolute bottom-3 right-3">
+                            <FavoriteButton businessId={business.id} />
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="p-5">
+                          <div className="flex items-center gap-2">
+                            <h2 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
+                              {business.name}
+                            </h2>
+                            <OpenClosedBadge businessHours={business.business_hours} />
+                          </div>
+                          {business.description && (
+                            <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">
+                              {business.description}
+                            </p>
+                          )}
+                          {business.address && (
+                            <p className="text-sm text-gray-400 mt-2.5 flex items-center">
+                              <span className="mr-1.5 text-accent">&#128205;</span>
+                              {business.address}
+                            </p>
+                          )}
+                          {business.total_reviews > 0 && (
+                            <div className="mt-2">
+                              <StarRating value={business.rating} count={business.total_reviews} size="sm" />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Footer */}
+                        <div className="px-5 py-3 border-t border-gray-50 flex items-center justify-between">
+                          <span className="text-sm text-primary font-semibold">Ver negocio</span>
+                          <div className="w-7 h-7 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
+                            <svg className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-16">
+                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <span className="text-5xl">🔍</span>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">No se encontraron negocios</h2>
+                    <p className="text-gray-600 mb-6">
+                      {query
+                        ? `No hay negocios que coincidan con "${query}"`
+                        : 'No hay negocios disponibles en este momento'}
+                    </p>
+                    <Link
+                      href="/"
+                      className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                    >
+                      Volver al Inicio
+                    </Link>
+                  </div>
+                )}
+              </>
             )}
           </div>
 

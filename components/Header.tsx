@@ -126,6 +126,9 @@ export default function Header() {
             <Link href="/categorias" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
               Categorias
             </Link>
+            <Link href="/marketplace" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
+              Marketplace
+            </Link>
             {user && (
               <Link href="/mis-pedidos" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
                 Mis Pedidos
@@ -290,6 +293,13 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Explorar Negocios
+              </Link>
+              <Link
+                href="/marketplace"
+                className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Marketplace
               </Link>
               {user && (
                 <Link

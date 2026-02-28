@@ -19,6 +19,7 @@ export const IMAGE_PRESETS = {
   product: { maxWidth: 800, maxHeight: 800, quality: 0.85 },
   gallery: { maxWidth: 1200, maxHeight: 1200, quality: 0.85 },
   banner: { maxWidth: 1200, maxHeight: 600, quality: 0.85 },
+  marketplace: { maxWidth: 1024, maxHeight: 1024, quality: 0.85 },
 } as const
 
 /**

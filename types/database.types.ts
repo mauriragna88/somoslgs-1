@@ -401,6 +401,53 @@ export interface Banner {
   updated_at: string
 }
 
+// Marketplace types
+export interface MarketplaceCategory {
+  id: string
+  name: string
+  icon: string | null
+  slug: string
+  display_order: number
+  created_at: string
+}
+
+export interface MarketplaceListing {
+  id: string
+  seller_id: string
+  title: string
+  description: string | null
+  price: number
+  price_type: 'fijo' | 'negociable' | 'gratis' | 'intercambio'
+  condition: 'nuevo' | 'seminuevo' | 'usado'
+  category_id: string | null
+  images: string[]
+  location: string | null
+  whatsapp: string
+  status: 'active' | 'sold' | 'reserved' | 'expired' | 'removed'
+  is_featured: boolean
+  featured_until: string | null
+  views: number
+  expires_at: string | null
+  created_at: string
+  updated_at: string
+  // Joined fields
+  category?: MarketplaceCategory | null
+  seller?: { full_name: string; created_at: string } | null
+}
+
+export interface Report {
+  id: string
+  reporter_id: string
+  item_type: 'marketplace_listing' | 'review' | 'business'
+  item_id: string
+  reason: 'spam' | 'fraude' | 'contenido_inapropiado' | 'articulo_prohibido' | 'otro'
+  details: string | null
+  status: 'pending' | 'reviewed' | 'resolved' | 'dismissed'
+  reviewed_by: string | null
+  reviewed_at: string | null
+  created_at: string
+}
+
 // Blog post type
 export interface BlogPost {
   id: string
