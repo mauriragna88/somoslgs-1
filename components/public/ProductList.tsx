@@ -12,6 +12,7 @@ interface Product {
   images: string[] | null
   image_url: string | null
   stock: number | null
+  type?: 'producto' | 'servicio'
 }
 
 interface ProductListProps {
@@ -88,7 +89,7 @@ export default function ProductList({
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
-                    <span className="text-3xl">📦</span>
+                    <span className="text-3xl">{product.type === 'servicio' ? '🔧' : '📦'}</span>
                   </div>
                 </div>
               )}
@@ -139,7 +140,7 @@ export default function ProductList({
                 )
               ) : businessWhatsapp ? (
                 <a
-                  href={`https://wa.me/52${businessWhatsapp}?text=Hola, me interesa el producto: ${product.name} (${formatCurrency(product.price)})`}
+                  href={`https://wa.me/52${businessWhatsapp}?text=Hola, me interesa ${product.type === 'servicio' ? 'el servicio' : 'el producto'}: ${product.name} (${formatCurrency(product.price)})`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-xl transition-colors text-center"

@@ -28,6 +28,13 @@ const businessUpdateSchema = z.object({
   mercadopago_access_token: z.string().max(200).optional().nullable().or(z.literal('')),
   active_payment_gateways: z.array(z.enum(['conekta', 'mercadopago'])).optional(),
   business_hours: z.any().optional().nullable(),
+  // Portada y website
+  cover_url: z.string().url().optional().nullable().or(z.literal('')),
+  website: z.string().url().optional().nullable().or(z.literal('')),
+  // Redes sociales
+  facebook_url: z.string().url().optional().nullable().or(z.literal('')),
+  instagram_url: z.string().url().optional().nullable().or(z.literal('')),
+  tiktok_url: z.string().url().optional().nullable().or(z.literal('')),
 })
 
 function getSupabaseAdmin() {
@@ -97,7 +104,7 @@ export async function PUT(
 
     // Normalize empty strings to null for nullable fields
     const cleanData = { ...validatedData } as Record<string, any>
-    const nullableFields = ['category_id', 'logo_url', 'email', 'bank_name', 'bank_account_holder', 'bank_account_number', 'bank_clabe', 'conekta_private_key', 'mercadopago_access_token']
+    const nullableFields = ['category_id', 'logo_url', 'cover_url', 'email', 'website', 'bank_name', 'bank_account_holder', 'bank_account_number', 'bank_clabe', 'conekta_private_key', 'mercadopago_access_token', 'facebook_url', 'instagram_url', 'tiktok_url']
     for (const field of nullableFields) {
       if (field in cleanData && cleanData[field] === '') {
         cleanData[field] = null

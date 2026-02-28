@@ -47,6 +47,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.5,
     },
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/descubre`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.8,
+    },
   ]
 
   // Fetch all active businesses
@@ -66,5 +78,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   )
 
-  return [...staticRoutes, ...businessRoutes]
+  // Fetch published blog posts
+  const { data: blogPosts } = await supabase
+    .from('blog_posts')
+    .select('slug, updated_at, published_at')
+    .eq('status', 'published')
+
+  const blogRoutes: MetadataRoute.Sitemap = (blogPosts || []).map(
+    (post: any) => ({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: post.updated_at
+        ? new Date(post.updated_at)
+        : new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })
+  )
+
+  return [...staticRoutes, ...businessRoutes, ...blogRoutes]
 }

@@ -23,6 +23,7 @@ interface Product {
   is_active: boolean
   is_available: boolean
   stock_quantity: number | null
+  type: 'producto' | 'servicio'
 }
 
 export default async function ProductsPage() {
@@ -158,7 +159,15 @@ export default async function ProductsPage() {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        <span className="text-6xl">📦</span>
+                        <span className="text-6xl">{product.type === 'servicio' ? '🔧' : '📦'}</span>
+                      </div>
+                    )}
+                    {/* Type badge */}
+                    {bType === 'ambos' && (
+                      <div className="absolute top-2 left-2">
+                        <span className={`px-2 py-1 text-xs font-semibold rounded ${product.type === 'servicio' ? 'bg-blue-500 text-white' : 'bg-amber-500 text-white'}`}>
+                          {product.type === 'servicio' ? '🔧 Servicio' : '📦 Producto'}
+                        </span>
                       </div>
                     )}
                     {!product.is_available && (

@@ -102,7 +102,7 @@ export default function BannerDisplay({ placement, className = '' }: BannerDispl
 
             {/* Contenido de texto */}
             <div className="flex-1 p-4 sm:p-5 flex flex-col justify-center">
-              <h3 className="font-bold text-secondary text-base sm:text-lg leading-tight mb-1 group-hover:text-primary transition-colors">
+              <h3 className="font-bold text-secondary text-base sm:text-lg leading-tight mb-1 group-hover:text-primary transition-colors line-clamp-1">
                 {banner.title}
               </h3>
               {banner.description && (

@@ -27,6 +27,11 @@ const updateSchema = z.object({
   is_active: z.boolean().optional(),
   is_featured: z.boolean().optional(),
   business_hours: z.any().optional().nullable(),
+  cover_url: z.string().nullable().optional(),
+  website: z.string().nullable().optional(),
+  facebook_url: z.string().nullable().optional(),
+  instagram_url: z.string().nullable().optional(),
+  tiktok_url: z.string().nullable().optional(),
 })
 
 interface RouteParams {
@@ -99,6 +104,11 @@ export async function PUT(request: Request, { params }: RouteParams) {
     if (validated.is_active !== undefined) updateData.is_active = validated.is_active
     if (validated.is_featured !== undefined) updateData.is_featured = validated.is_featured
     if (validated.business_hours !== undefined) updateData.business_hours = validated.business_hours
+    if (validated.cover_url !== undefined) updateData.cover_url = validated.cover_url || null
+    if (validated.website !== undefined) updateData.website = validated.website || null
+    if (validated.facebook_url !== undefined) updateData.facebook_url = validated.facebook_url || null
+    if (validated.instagram_url !== undefined) updateData.instagram_url = validated.instagram_url || null
+    if (validated.tiktok_url !== undefined) updateData.tiktok_url = validated.tiktok_url || null
 
     const { data: updated, error: updateError } = await supabase
       .from('businesses')

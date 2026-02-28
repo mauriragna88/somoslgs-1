@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { optimizeImage, IMAGE_PRESETS } from '@/lib/image-utils'
 
 interface ImageUploadProps {
   onUploadComplete: (url: string) => void
@@ -24,25 +25,28 @@ export default function ImageUpload({ onUploadComplete, currentImage }: ImageUpl
       return
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setError('La imagen debe ser menor a 5MB')
+    // Validate file size (max 15MB before optimization)
+    if (file.size > 15 * 1024 * 1024) {
+      setError('La imagen debe ser menor a 15MB')
       return
     }
 
     try {
       setUploading(true)
+
+      // Optimize image before uploading
+      const optimized = await optimizeImage(file, IMAGE_PRESETS.product)
+
       const supabase = createClient()
 
       // Generate unique filename
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`
+      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.jpg`
       const filePath = `products/${fileName}`
 
-      // Upload to Supabase Storage
+      // Upload optimized file to Supabase Storage
       const { data, error: uploadError } = await supabase.storage
         .from('business-images')
-        .upload(filePath, file, {
+        .upload(filePath, optimized, {
           cacheControl: '3600',
           upsert: false
         })
@@ -118,7 +122,7 @@ export default function ImageUpload({ onUploadComplete, currentImage }: ImageUpl
       )}
 
       <p className="text-xs text-gray-500 mt-2">
-        PNG, JPG o WEBP (máx. 5MB)
+        PNG, JPG o WEBP. Se optimiza automaticamente.
       </p>
     </div>
   )

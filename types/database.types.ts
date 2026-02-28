@@ -102,6 +102,9 @@ export interface Database {
           is_featured: boolean
           accepts_delivery: boolean
           accepts_online_payment: boolean
+          facebook_url: string | null
+          instagram_url: string | null
+          tiktok_url: string | null
           created_at: string
           updated_at: string
         }
@@ -138,6 +141,9 @@ export interface Database {
           is_featured?: boolean
           accepts_delivery?: boolean
           accepts_online_payment?: boolean
+          facebook_url?: string | null
+          instagram_url?: string | null
+          tiktok_url?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -161,6 +167,9 @@ export interface Database {
           is_active?: boolean
           accepts_delivery?: boolean
           accepts_online_payment?: boolean
+          facebook_url?: string | null
+          instagram_url?: string | null
+          tiktok_url?: string | null
           updated_at?: string
         }
       }
@@ -179,6 +188,7 @@ export interface Database {
           options: Json | null
           category: string | null
           tags: string[] | null
+          type: 'producto' | 'servicio'
           is_available: boolean
           display_order: number
           created_at: string
@@ -198,6 +208,7 @@ export interface Database {
           options?: Json | null
           category?: string | null
           tags?: string[] | null
+          type?: 'producto' | 'servicio'
           is_available?: boolean
           display_order?: number
           created_at?: string
@@ -215,6 +226,7 @@ export interface Database {
           options?: Json | null
           category?: string | null
           tags?: string[] | null
+          type?: 'producto' | 'servicio'
           is_available?: boolean
           display_order?: number
           updated_at?: string
@@ -385,6 +397,25 @@ export interface Banner {
   end_date: string | null
   impressions: number
   clicks: number
+  created_at: string
+  updated_at: string
+}
+
+// Blog post type
+export interface BlogPost {
+  id: string
+  author_id: string | null
+  title: string
+  slug: string
+  excerpt: string | null
+  content: string
+  featured_image_url: string | null
+  category: string
+  tags: string[] | null
+  status: 'draft' | 'published'
+  published_at: string | null
+  view_count: number
+  is_featured: boolean
   created_at: string
   updated_at: string
 }

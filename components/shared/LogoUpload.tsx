@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { optimizeImage, IMAGE_PRESETS } from '@/lib/image-utils'
 
 interface LogoUploadProps {
   currentLogo?: string | null
@@ -47,9 +48,9 @@ export default function LogoUpload({
       return
     }
 
-    // Validate file size (max 2MB)
-    if (file.size > 2 * 1024 * 1024) {
-      setError('La imagen debe ser menor a 2MB')
+    // Validate file size (max 15MB before optimization)
+    if (file.size > 15 * 1024 * 1024) {
+      setError('La imagen debe ser menor a 15MB')
       return
     }
 
@@ -63,17 +64,20 @@ export default function LogoUpload({
     // Upload to Supabase
     try {
       setUploading(true)
+
+      // Optimize image before uploading
+      const optimized = await optimizeImage(file, IMAGE_PRESETS.logo)
+
       const supabase = createClient()
 
       // Generate unique filename
-      const fileExt = file.name.split('.').pop()?.toLowerCase()
-      const fileName = `logo-${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+      const fileName = `logo-${Date.now()}-${Math.random().toString(36).substring(2)}.jpg`
       const filePath = `logos/${fileName}`
 
-      // Upload file
+      // Upload optimized file
       const { error: uploadError } = await supabase.storage
         .from('business-images')
-        .upload(filePath, file, {
+        .upload(filePath, optimized, {
           cacheControl: '3600',
           upsert: false,
         })
@@ -196,8 +200,7 @@ export default function LogoUpload({
         <div className="text-sm text-gray-500">
           <p className="font-medium text-gray-700">Logo del negocio</p>
           <p>JPG, PNG o GIF</p>
-          <p>Maximo 2MB</p>
-          <p>Recomendado: 400x400px</p>
+          <p>Se optimiza automaticamente</p>
         </div>
       </div>
 

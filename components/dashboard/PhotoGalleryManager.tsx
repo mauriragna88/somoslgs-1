@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { optimizeImage, IMAGE_PRESETS } from '@/lib/image-utils'
 import type { BusinessPhoto } from '@/lib/supabase/database.types'
 
 interface PhotoGalleryManagerProps {
@@ -17,8 +18,8 @@ interface UploadingPhoto {
   file: File
 }
 
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+const MAX_FILE_SIZE = 15 * 1024 * 1024 // 15MB (before optimization)
 
 export default function PhotoGalleryManager({
   businessId,
@@ -53,13 +54,13 @@ export default function PhotoGalleryManager({
 
     // Validate each file
     for (const file of fileArray) {
-      if (!ACCEPTED_TYPES.includes(file.type)) {
-        setError('Solo se permiten imagenes JPG, PNG o WEBP')
+      if (!file.type.startsWith('image/')) {
+        setError('Solo se permiten imagenes')
         if (inputRef.current) inputRef.current.value = ''
         return
       }
       if (file.size > MAX_FILE_SIZE) {
-        setError(`"${file.name}" excede el limite de 5MB`)
+        setError(`"${file.name}" excede el limite de 15MB`)
         if (inputRef.current) inputRef.current.value = ''
         return
       }
@@ -83,17 +84,19 @@ export default function PhotoGalleryManager({
 
   const uploadPhoto = async (item: UploadingPhoto) => {
     try {
+      // Optimize image before uploading
+      const optimized = await optimizeImage(item.file, IMAGE_PRESETS.gallery)
+
       const supabase = createClient()
 
       // Generate unique path
-      const fileExt = item.file.name.split('.').pop()?.toLowerCase() || 'jpg'
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.jpg`
       const storagePath = `gallery/${businessId}/${fileName}`
 
-      // Upload to storage
+      // Upload optimized file to storage
       const { error: uploadError } = await supabase.storage
         .from('business-images')
-        .upload(storagePath, item.file, {
+        .upload(storagePath, optimized, {
           cacheControl: '3600',
           upsert: false,
         })
@@ -269,14 +272,14 @@ export default function PhotoGalleryManager({
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept="image/*"
         multiple
         onChange={handleFilesSelect}
         className="hidden"
       />
 
       <p className="text-xs text-gray-400">
-        JPG, PNG o WEBP. Maximo 5MB por foto. Plan {subscriptionTier}: hasta {photoLimit} fotos.
+        Se optimizan automaticamente. Plan {subscriptionTier}: hasta {photoLimit} fotos.
       </p>
     </div>
   )

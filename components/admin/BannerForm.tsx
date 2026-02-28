@@ -204,11 +204,13 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
         <input
           type="text"
           value={title}
-          onChange={e => setTitle(e.target.value)}
+          onChange={e => setTitle(e.target.value.slice(0, 60))}
+          maxLength={60}
           placeholder={displayMode === 'image_only' ? 'Ej: Banner Devogatec Marzo' : 'Ej: Devogatec - Desarrollo Web'}
           className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
           required
         />
+        <p className="text-xs text-gray-400 mt-1 text-right">{title.length}/60</p>
       </div>
 
       {/* Description - only for image_text mode */}
@@ -217,11 +219,13 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
           <label className="block text-sm font-medium text-gray-700 mb-1">Descripcion</label>
           <textarea
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={e => setDescription(e.target.value.slice(0, 120))}
+            maxLength={120}
             placeholder="Ej: Creamos tu pagina web, app o tienda en linea. Cotiza gratis."
             rows={2}
             className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm resize-none"
           />
+          <p className="text-xs text-gray-400 mt-1 text-right">{description.length}/120</p>
         </div>
       )}
 

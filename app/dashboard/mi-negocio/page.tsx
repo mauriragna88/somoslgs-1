@@ -278,6 +278,11 @@ export default async function MiNegocioPage({
                 has_conekta_key: !!business.conekta_private_key,
                 has_mercadopago_key: !!business.mercadopago_access_token,
                 active_payment_gateways: business.active_payment_gateways || [],
+                cover_url: (business as any).cover_url ?? null,
+                website: (business as any).website ?? null,
+                facebook_url: (business as any).facebook_url ?? null,
+                instagram_url: (business as any).instagram_url ?? null,
+                tiktok_url: (business as any).tiktok_url ?? null,
               }}
               categories={categories || []}
               initialPhotos={businessPhotos || []}
