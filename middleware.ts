@@ -8,16 +8,32 @@ const ALLOWED_ORIGINS = [
 ]
 
 export async function middleware(request: NextRequest) {
-  // CORS validation for API routes
+  // CORS + CSRF validation for API routes
   const origin = request.headers.get('origin')
   const path = request.nextUrl.pathname
 
+  // Webhook paths that come from external servers (no origin header)
+  const isWebhook = path.startsWith('/api/conekta/webhook') ||
+    path.startsWith('/api/mercadopago/webhook') ||
+    path.startsWith('/api/notifications/whatsapp')
+
   if (path.startsWith('/api/')) {
-    // Allow webhooks without origin (server-to-server)
-    if (path.startsWith('/api/conekta/webhook') || path.startsWith('/api/mercadopago/webhook') || path.startsWith('/api/notifications/whatsapp')) {
-      // Webhooks come from external servers, no origin header
-    } else if (origin && !ALLOWED_ORIGINS.includes(origin)) {
-      return NextResponse.json({ error: 'No permitido' }, { status: 403 })
+    if (!isWebhook) {
+      // Block requests with unknown origin
+      if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+        return NextResponse.json({ error: 'No permitido' }, { status: 403 })
+      }
+
+      // CSRF: Mutation requests (POST/PUT/DELETE) MUST have a valid origin header
+      const isMutation = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(request.method)
+      if (isMutation && !origin) {
+        // Allow if referer matches our domain (same-origin form submissions)
+        const referer = request.headers.get('referer')
+        const isValidReferer = referer && ALLOWED_ORIGINS.some(o => referer.startsWith(o))
+        if (!isValidReferer) {
+          return NextResponse.json({ error: 'Solicitud no autorizada' }, { status: 403 })
+        }
+      }
     }
 
     // Handle preflight requests

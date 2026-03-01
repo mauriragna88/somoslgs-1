@@ -1,11 +1,25 @@
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
+import { checkRateLimit, getClientIP } from '@/lib/security'
 
 export async function POST(request: Request) {
   try {
+    // Rate limiting to prevent metric inflation
+    const ip = getClientIP(request)
+    const rateCheck = checkRateLimit(`banner-track:${ip}`, 60, 60000) // 60 tracks per minute
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ success: true }) // Silent fail, don't reveal rate limiting
+    }
+
     const { bannerId, type } = await request.json()
 
     if (!bannerId || !type || !['impression', 'click'].includes(type)) {
+      return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
+    }
+
+    // Validate bannerId format (UUID)
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!uuidRegex.test(bannerId)) {
       return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
     }
 
@@ -31,7 +45,7 @@ export async function POST(request: Request) {
       .eq('id', bannerId)
 
     return NextResponse.json({ success: true })
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }

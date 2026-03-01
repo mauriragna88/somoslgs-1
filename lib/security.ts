@@ -91,6 +91,18 @@ export function sanitizeText(text: string): string {
 }
 
 /**
+ * Sanitiza texto para uso en filtros PostgREST (.or(), .ilike())
+ * Escapa caracteres que pueden romper la sintaxis de filtros
+ */
+export function sanitizeSearchQuery(text: string): string {
+  return text
+    .replace(/[\\%_().,'"]/g, '') // Remueve chars especiales de PostgREST/SQL LIKE
+    .replace(/\s+/g, ' ')         // Normaliza espacios
+    .trim()
+    .slice(0, 100)                // Limita largo
+}
+
+/**
  * Sanitiza HTML (para descripciones que permiten formato básico)
  * Solo permite tags seguros
  */
@@ -165,6 +177,22 @@ export function checkRateLimit(
 }
 
 /**
+ * Obtiene la IP real del request (Vercel/Cloudflare compatible)
+ * Prioriza headers confiables sobre x-forwarded-for (spoofable)
+ */
+export function getClientIP(request: Request): string {
+  // x-real-ip es seteado por Vercel/nginx y es más confiable
+  const realIp = request.headers.get('x-real-ip')
+  if (realIp) return realIp.trim()
+
+  // Fallback a x-forwarded-for (primer IP es la del cliente)
+  const forwarded = request.headers.get('x-forwarded-for')
+  if (forwarded) return forwarded.split(',')[0]?.trim() || 'unknown'
+
+  return 'unknown'
+}
+
+/**
  * Rate limit específico para login (más restrictivo)
  */
 export function checkLoginRateLimit(identifier: string) {
@@ -176,6 +204,27 @@ export function checkLoginRateLimit(identifier: string) {
  */
 export function checkRegisterRateLimit(identifier: string) {
   return checkRateLimit(identifier, 3, 3600000) // 3 registros por hora
+}
+
+/**
+ * Rate limit para crear artículos en marketplace
+ */
+export function checkMarketplaceRateLimit(identifier: string) {
+  return checkRateLimit(identifier, 10, 3600000) // 10 artículos por hora
+}
+
+/**
+ * Rate limit para uploads
+ */
+export function checkUploadRateLimit(identifier: string) {
+  return checkRateLimit(identifier, 30, 3600000) // 30 uploads por hora
+}
+
+/**
+ * Rate limit para reportes
+ */
+export function checkReportRateLimit(identifier: string) {
+  return checkRateLimit(identifier, 10, 3600000) // 10 reportes por hora
 }
 
 // Limpiar entradas expiradas cada 10 minutos

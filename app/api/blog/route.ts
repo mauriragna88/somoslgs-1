@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     if (error) throw error
 
     return NextResponse.json((posts as BlogPost[]) || [])
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }

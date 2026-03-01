@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
+import { sanitizeSearchQuery } from '@/lib/security'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -11,11 +12,17 @@ export async function GET(request: NextRequest) {
 
   const supabase = createServiceClient()
 
-  // Split query into words for smarter matching
-  const words = query.toLowerCase().split(/\s+/).filter(w => w.length >= 2)
+  // Sanitize and split query into words for smarter matching
+  const sanitized = sanitizeSearchQuery(query)
+  if (!sanitized || sanitized.length < 2) {
+    return NextResponse.json([])
+  }
+  const words = sanitized.toLowerCase().split(/\s+/).filter(w => w.length >= 2)
+  if (words.length === 0) {
+    return NextResponse.json([])
+  }
 
   // Build OR conditions: each word matches name, description, or category name
-  // This allows "tacos pastor" to match a business with "tacos" in name and "pastor" in description
   const orConditions = words.map(word =>
     `name.ilike.%${word}%,description.ilike.%${word}%`
   ).join(',')
@@ -63,7 +70,7 @@ export async function GET(request: NextRequest) {
       category:categories(id, name, icon)
     `)
     .eq('is_active', true)
-    .filter('category.name', 'ilike', `%${query}%`)
+    .filter('category.name', 'ilike', `%${sanitized}%`)
     .order('is_featured', { ascending: false })
     .limit(5)
 

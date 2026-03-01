@@ -32,8 +32,8 @@ export async function GET() {
     if (error) throw error
 
     return NextResponse.json(banners as Banner[])
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
 
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     if (error) throw error
 
     return NextResponse.json(banner)
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }

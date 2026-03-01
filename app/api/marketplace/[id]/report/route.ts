@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getUser, createServiceClient } from '@/lib/supabase/server'
+import { checkReportRateLimit, getClientIP } from '@/lib/security'
 
 const reportSchema = z.object({
   reason: z.enum(['spam', 'fraude', 'contenido_inapropiado', 'articulo_prohibido', 'otro']),
@@ -15,6 +16,16 @@ export async function POST(
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  }
+
+  // Rate limiting
+  const ip = getClientIP(request)
+  const rateLimit = checkReportRateLimit(`report:${ip}`)
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Demasiados reportes. Intenta más tarde.' },
+      { status: 429 }
+    )
   }
 
   try {

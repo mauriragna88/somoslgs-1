@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { isAdmin, createServiceClient } from '@/lib/supabase/server'
+import { sanitizeSearchQuery } from '@/lib/security'
 
 // GET: List marketplace listings for admin (with reports)
 export async function GET(request: Request) {
@@ -61,7 +62,10 @@ export async function GET(request: Request) {
     .order('created_at', { ascending: false })
 
   if (search) {
-    query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`)
+    const sanitized = sanitizeSearchQuery(search)
+    if (sanitized.length >= 2) {
+      query = query.or(`title.ilike.%${sanitized}%,description.ilike.%${sanitized}%`)
+    }
   }
 
   const { data, error } = await query.limit(100)

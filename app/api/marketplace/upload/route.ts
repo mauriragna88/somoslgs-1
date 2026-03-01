@@ -1,12 +1,23 @@
 import { NextResponse } from 'next/server'
 import { getUser, createServiceClient } from '@/lib/supabase/server'
 import { MARKETPLACE_PHOTO_LIMIT } from '@/lib/constants'
+import { checkUploadRateLimit, getClientIP } from '@/lib/security'
 
 // POST: Upload marketplace image
 export async function POST(request: Request) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  }
+
+  // Rate limiting
+  const ip = getClientIP(request)
+  const rateLimit = checkUploadRateLimit(`upload:${ip}`)
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Demasiadas subidas. Intenta más tarde.' },
+      { status: 429 }
+    )
   }
 
   try {
@@ -18,9 +29,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No se proporcionó archivo' }, { status: 400 })
     }
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      return NextResponse.json({ error: 'Solo se permiten imágenes' }, { status: 400 })
+    // Validate file type by MIME and extension
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+    const allowedExts = ['jpg', 'jpeg', 'png', 'webp', 'gif']
+    const fileExt = (file.name.split('.').pop() || '').toLowerCase()
+
+    if (!allowedMimes.includes(file.type) || !allowedExts.includes(fileExt)) {
+      return NextResponse.json({ error: 'Solo se permiten imágenes (JPG, PNG, WEBP, GIF)' }, { status: 400 })
+    }
+
+    // Prevent path traversal in filename
+    if (file.name.includes('..') || file.name.includes('/') || file.name.includes('\\')) {
+      return NextResponse.json({ error: 'Nombre de archivo inválido' }, { status: 400 })
     }
 
     // Max 5MB
@@ -51,8 +71,10 @@ export async function POST(request: Request) {
 
     const supabase = createServiceClient()
     const timestamp = Date.now()
-    const ext = file.name.split('.').pop() || 'jpg'
-    const path = `marketplace/${user.id}/${timestamp}.${ext}`
+    // Use MIME-derived extension, not user-provided filename extension
+    const mimeToExt: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' }
+    const safeExt = mimeToExt[file.type] || 'jpg'
+    const path = `marketplace/${user.id}/${timestamp}.${safeExt}`
 
     const buffer = Buffer.from(await file.arrayBuffer())
 

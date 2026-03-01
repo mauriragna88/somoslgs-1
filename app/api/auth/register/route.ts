@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { z } from 'zod'
-import { checkRegisterRateLimit } from '@/lib/security'
+import { checkRegisterRateLimit, getClientIP } from '@/lib/security'
 import { sendWelcomeAccountEmail } from '@/lib/email/send'
 
 // Schema de validación
@@ -15,7 +15,7 @@ const registerSchema = z.object({
 export async function POST(request: Request) {
   try {
     // Rate limiting por IP
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const ip = getClientIP(request)
     const rateLimit = checkRegisterRateLimit(ip)
     if (!rateLimit.allowed) {
       return NextResponse.json(

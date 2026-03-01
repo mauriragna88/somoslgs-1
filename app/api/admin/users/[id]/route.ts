@@ -72,14 +72,14 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       .eq('id', params.id)
 
     if (deleteProfileError) {
-      return NextResponse.json({ error: 'Error al eliminar perfil: ' + deleteProfileError.message }, { status: 500 })
+      return NextResponse.json({ error: 'Error al eliminar perfil' }, { status: 500 })
     }
 
     // Delete from Supabase Auth
     const { error: deleteAuthError } = await supabase.auth.admin.deleteUser(params.id)
 
     if (deleteAuthError) {
-      return NextResponse.json({ error: 'Error al eliminar usuario de auth: ' + deleteAuthError.message }, { status: 500 })
+      return NextResponse.json({ error: 'Error al eliminar usuario' }, { status: 500 })
     }
 
     // Log the action

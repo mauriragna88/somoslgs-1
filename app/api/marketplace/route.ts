@@ -4,6 +4,7 @@ import { getUser } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { moderateText } from '@/lib/moderation'
 import { MARKETPLACE_LISTING_DAYS } from '@/lib/constants'
+import { checkMarketplaceRateLimit, getClientIP, sanitizeSearchQuery } from '@/lib/security'
 
 const listingSchema = z.object({
   title: z.string().min(5, 'El título debe tener al menos 5 caracteres').max(100),
@@ -75,7 +76,8 @@ export async function GET(request: Request) {
   }
 
   if (search) {
-    const words = search.toLowerCase().split(/\s+/).filter((w: string) => w.length >= 2)
+    const sanitized = sanitizeSearchQuery(search)
+    const words = sanitized.toLowerCase().split(/\s+/).filter((w: string) => w.length >= 2)
     if (words.length > 0) {
       const orConditions = words.map((word: string) =>
         `title.ilike.%${word}%,description.ilike.%${word}%`
@@ -112,6 +114,16 @@ export async function POST(request: Request) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  }
+
+  // Rate limiting
+  const ip = getClientIP(request)
+  const rateLimit = checkMarketplaceRateLimit(`marketplace:${ip}`)
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Demasiados artículos publicados. Intenta más tarde.' },
+      { status: 429 }
+    )
   }
 
   try {
