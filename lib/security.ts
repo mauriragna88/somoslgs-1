@@ -24,7 +24,7 @@ export const emailSchema = z
 // Schema para Password
 export const passwordSchema = z
   .string()
-  .min(8, 'La contraseña debe tener al menos 8 caracteres')
+  .min(12, 'La contraseña debe tener al menos 12 caracteres')
   .max(100, 'Contraseña muy larga')
   .regex(/[a-z]/, 'Debe contener al menos una letra minúscula')
   .regex(/[A-Z]/, 'Debe contener al menos una letra mayúscula')

@@ -244,7 +244,7 @@ function RegisterForm() {
                 disabled={loading}
               />
               <p className="mt-1 text-xs text-gray-500">
-                Mínimo 8 caracteres, debe incluir mayúsculas, minúsculas, números y símbolos
+                Mínimo 12 caracteres, debe incluir mayúsculas, minúsculas, números y símbolos
               </p>
             </div>
 

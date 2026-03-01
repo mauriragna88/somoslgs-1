@@ -4,6 +4,7 @@ import { getUser } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { slugify } from '@/lib/utils'
 import { sendWelcomeEmail } from '@/lib/email/send'
+import { checkRateLimit, getClientIP } from '@/lib/security'
 
 const businessSchema = z.object({
   name: z.string().min(3).max(100),
@@ -26,6 +27,13 @@ export async function POST(request: Request) {
 
     if (!user) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    // Rate limiting: 3 business registrations per hour
+    const ip = getClientIP(request)
+    const rateCheck = checkRateLimit(`biz-register:${ip}`, 3, 3600000)
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ error: 'Demasiados intentos. Intenta más tarde.' }, { status: 429 })
     }
 
     const body = await request.json()

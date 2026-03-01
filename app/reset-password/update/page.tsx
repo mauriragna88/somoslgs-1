@@ -136,7 +136,7 @@ export default function UpdatePasswordPage() {
                 disabled={loading}
               />
               <p className="text-xs text-gray-400 mt-1">
-                Mínimo 8 caracteres, mayúsculas, minúsculas, números y símbolos
+                Mínimo 12 caracteres, mayúsculas, minúsculas, números y símbolos
               </p>
             </div>
 

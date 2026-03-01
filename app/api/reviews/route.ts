@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getUser, createServiceClient } from '@/lib/supabase/server'
+import { checkRateLimit, getClientIP } from '@/lib/security'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -35,6 +36,13 @@ export async function POST(request: Request) {
     const user = await getUser()
     if (!user) {
       return NextResponse.json({ error: 'Debes iniciar sesion para dejar tu opinion' }, { status: 401 })
+    }
+
+    // Rate limiting: 10 reviews per hour
+    const ip = getClientIP(request)
+    const rateCheck = checkRateLimit(`review:${ip}`, 10, 3600000)
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ error: 'Demasiadas opiniones. Intenta más tarde.' }, { status: 429 })
     }
 
     const body = await request.json()

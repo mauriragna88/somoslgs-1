@@ -2,6 +2,31 @@ import { NextResponse } from 'next/server'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 import { createClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
+import { z } from 'zod'
+
+const adminBusinessSchema = z.object({
+  name: z.string().min(2, 'Nombre muy corto').max(100),
+  slug: z.string().min(2).max(100),
+  categoryId: z.string().uuid().nullable().optional(),
+  description: z.string().max(500).nullable().optional(),
+  address: z.string().min(5, 'Dirección muy corta').max(200),
+  neighborhood: z.string().max(100).nullable().optional(),
+  phone: z.string().regex(/^\d{10}$/, 'Teléfono debe tener 10 dígitos'),
+  whatsapp: z.string().regex(/^\d{10}$/, 'WhatsApp debe tener 10 dígitos'),
+  email: z.string().email().or(z.literal('')).nullable().optional(),
+  businessType: z.enum(['productos', 'servicios', 'ambos']).default('productos'),
+  businessHours: z.any().nullable().optional(),
+  subscriptionTier: z.enum(['gratis', 'pro', 'avanzado']).default('gratis'),
+  subscriptionDays: z.number().int().min(1).max(365).optional(),
+  isFree: z.boolean().optional(),
+})
+
+const adminOwnerSchema = z.object({
+  email: z.string().email('Email inválido'),
+  password: z.string().min(8, 'Contraseña muy corta'),
+  name: z.string().min(2, 'Nombre muy corto').max(100),
+  phone: z.string().optional(),
+})
 
 function getSupabaseAdmin() {
   return createClient(
@@ -34,12 +59,18 @@ export async function POST(request: Request) {
     // Use admin client for mutations
     const supabase = getSupabaseAdmin()
 
-    // Obtener datos del request
-    const { owner, business } = await request.json()
+    // Obtener y validar datos del request
+    const body = await request.json()
+    const { owner, business: rawBusiness } = body
 
-    // Validaciones del negocio (siempre requeridas)
-    if (!business.name || !business.phone || !business.whatsapp || !business.address) {
-      return NextResponse.json({ error: 'Datos del negocio incompletos' }, { status: 400 })
+    let business
+    try {
+      business = adminBusinessSchema.parse(rawBusiness)
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return NextResponse.json({ error: err.errors[0].message }, { status: 400 })
+      }
+      return NextResponse.json({ error: 'Datos del negocio inválidos' }, { status: 400 })
     }
 
     // Calcular fecha de expiración
@@ -96,18 +127,24 @@ export async function POST(request: Request) {
     }
 
     // --- Flujo CON dueño ---
-    if (!owner.password || !owner.name) {
-      return NextResponse.json({ error: 'Datos del dueño incompletos' }, { status: 400 })
+    let validatedOwner
+    try {
+      validatedOwner = adminOwnerSchema.parse(owner)
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return NextResponse.json({ error: err.errors[0].message }, { status: 400 })
+      }
+      return NextResponse.json({ error: 'Datos del dueño inválidos' }, { status: 400 })
     }
 
     // Paso 1: Crear usuario en Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-      email: owner.email,
-      password: owner.password,
+      email: validatedOwner.email,
+      password: validatedOwner.password,
       email_confirm: true,
       user_metadata: {
-        full_name: owner.name,
-        phone: owner.phone,
+        full_name: validatedOwner.name,
+        phone: validatedOwner.phone,
       },
     })
 
@@ -126,9 +163,9 @@ export async function POST(request: Request) {
       // Paso 2: Crear perfil en la tabla profiles
       const { error: profileError } = await supabase.from('profiles').insert({
         id: ownerId,
-        email: owner.email,
-        full_name: owner.name,
-        phone: owner.phone || null,
+        email: validatedOwner.email,
+        full_name: validatedOwner.name,
+        phone: validatedOwner.phone || null,
         role: 'business_owner',
       })
 
@@ -177,7 +214,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         business: businessData,
-        owner: { id: ownerId, email: owner.email, name: owner.name },
+        owner: { id: ownerId, email: validatedOwner.email, name: validatedOwner.name },
       })
     } catch (error: any) {
       // Si algo falla después de crear el usuario, intentar eliminarlo (rollback)

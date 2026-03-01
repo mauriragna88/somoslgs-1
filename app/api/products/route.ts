@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getUser } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { checkRateLimit, getClientIP } from '@/lib/security'
 
 const productSchema = z.object({
   business_id: z.string().uuid(),
@@ -21,6 +22,13 @@ export async function POST(request: Request) {
     const user = await getUser()
     if (!user) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    // Rate limiting: 30 products per hour
+    const ip = getClientIP(request)
+    const rateCheck = checkRateLimit(`product:${ip}`, 30, 3600000)
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ error: 'Demasiados productos creados. Intenta más tarde.' }, { status: 429 })
     }
 
     const body = await request.json()

@@ -18,6 +18,12 @@ export async function middleware(request: NextRequest) {
     path.startsWith('/api/notifications/whatsapp')
 
   if (path.startsWith('/api/')) {
+    // Reject oversized requests (10MB max, upload routes get 5MB limit in their own handlers)
+    const contentLength = request.headers.get('content-length')
+    if (contentLength && parseInt(contentLength) > 10 * 1024 * 1024) {
+      return NextResponse.json({ error: 'Solicitud muy grande' }, { status: 413 })
+    }
+
     if (!isWebhook) {
       // Block requests with unknown origin
       if (origin && !ALLOWED_ORIGINS.includes(origin)) {

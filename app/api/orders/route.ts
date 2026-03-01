@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getUser } from '@/lib/supabase/server'
-import { checkRateLimit } from '@/lib/security'
+import { checkRateLimit, getClientIP } from '@/lib/security'
 import { ORDER_ENABLED_TIERS } from '@/lib/constants'
 import { notifyBusinessNewOrder } from '@/lib/whatsapp'
 import { z } from 'zod'
@@ -44,7 +44,7 @@ function generateOrderNumber(): string {
 export async function POST(request: Request) {
   try {
     // Rate limit: 5 orders per 10 minutes per IP (prevents spam from guests)
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const ip = getClientIP(request)
     const { allowed, remaining } = checkRateLimit(`order:${ip}`, 5, 600000)
     if (!allowed) {
       return NextResponse.json(

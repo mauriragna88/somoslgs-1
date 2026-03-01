@@ -7,7 +7,7 @@ import { sendWelcomeAccountEmail } from '@/lib/email/send'
 // Schema de validación
 const registerSchema = z.object({
   email: z.string().email('Email inválido'),
-  password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres'),
+  password: z.string().min(12, 'La contraseña debe tener al menos 12 caracteres'),
   fullName: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
   phone: z.string().regex(/^\d{10}$/, 'El teléfono debe tener 10 dígitos').optional().or(z.literal('')),
 })

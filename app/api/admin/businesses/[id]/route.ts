@@ -196,7 +196,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       .eq('id', params.id)
 
     if (deleteError) {
-      return NextResponse.json({ error: 'Error al eliminar negocio: ' + deleteError.message }, { status: 500 })
+      return NextResponse.json({ error: 'Error al eliminar negocio' }, { status: 500 })
     }
 
     // If the business had an owner, check if they have other businesses
