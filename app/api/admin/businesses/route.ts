@@ -74,10 +74,16 @@ export async function POST(request: Request) {
     }
 
     // Calcular fecha de expiración
+    // Plan gratis = sin expiración (null)
     const isFree = business.isFree === true
-    const days = Number(business.subscriptionDays) || 30
-    const expiresAt = new Date()
-    expiresAt.setDate(expiresAt.getDate() + days)
+    const isGratis = business.subscriptionTier === 'gratis'
+    let expiresAt: Date | null = null
+
+    if (!isGratis) {
+      const days = Number(business.subscriptionDays) || 30
+      expiresAt = new Date()
+      expiresAt.setDate(expiresAt.getDate() + days)
+    }
 
     // --- Flujo SIN dueño ---
     if (!owner || !owner.email) {
@@ -99,7 +105,7 @@ export async function POST(request: Request) {
           subscription_tier: business.subscriptionTier || 'gratis',
           subscription_status: 'active',
           subscription_started_at: new Date().toISOString(),
-          subscription_expires_at: expiresAt.toISOString(),
+          subscription_expires_at: expiresAt ? expiresAt.toISOString() : null,
           is_courtesy: isFree,
           is_active: true,
         })
@@ -193,7 +199,7 @@ export async function POST(request: Request) {
           subscription_tier: business.subscriptionTier || 'gratis',
           subscription_status: 'active',
           subscription_started_at: new Date().toISOString(),
-          subscription_expires_at: expiresAt.toISOString(),
+          subscription_expires_at: expiresAt ? expiresAt.toISOString() : null,
           is_courtesy: isFree,
           is_active: true,
         })

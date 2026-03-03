@@ -527,33 +527,43 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
             ))}
           </div>
 
-          {/* Selector de dias */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Duracion de la suscripcion
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {[10, 20, 30, 45, 60, 75, 90].map((days) => (
-                <button
-                  key={days}
-                  type="button"
-                  onClick={() => setFormData({ ...formData, subscriptionDays: days })}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold border-2 transition-all ${
-                    formData.subscriptionDays === days
-                      ? 'border-primary bg-primary text-white'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  {days} dias
-                </button>
-              ))}
+          {/* Selector de dias - solo para planes de pago (pro/avanzado) */}
+          {formData.subscriptionTier !== 'gratis' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Duracion de la suscripcion
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {[10, 20, 30, 45, 60, 75, 90].map((days) => (
+                  <button
+                    key={days}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, subscriptionDays: days })}
+                    className={`px-4 py-2 rounded-lg text-sm font-semibold border-2 transition-all ${
+                      formData.subscriptionDays === days
+                        ? 'border-primary bg-primary text-white'
+                        : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    {days} dias
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                {formData.isFree
+                  ? `El negocio tendra ${formData.subscriptionDays} dias de cortesia`
+                  : `El negocio tendra ${formData.subscriptionDays} dias antes de que expire su suscripcion`}
+              </p>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
-              {formData.isFree
-                ? `El negocio tendra ${formData.subscriptionDays} dias de cortesia`
-                : `El negocio tendra ${formData.subscriptionDays} dias antes de que expire su suscripcion`}
-            </p>
-          </div>
+          )}
+
+          {formData.subscriptionTier === 'gratis' && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <p className="text-sm text-blue-800 font-medium">
+                El plan Gratis es permanente e indefinido. No tiene fecha de expiracion.
+              </p>
+            </div>
+          )}
 
           <div className="flex justify-between">
             <button
