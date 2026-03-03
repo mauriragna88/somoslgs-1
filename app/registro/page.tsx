@@ -19,6 +19,7 @@ function RegisterForm() {
     fullName: '',
     phone: '',
   })
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
@@ -266,10 +267,32 @@ function RegisterForm() {
               />
             </div>
 
+            {/* Legal checkbox */}
+            <div className="flex items-start gap-3">
+              <input
+                id="acceptTerms"
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-1 h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+                disabled={loading}
+              />
+              <label htmlFor="acceptTerms" className="text-sm text-gray-600">
+                He leido y acepto el{' '}
+                <Link href="/aviso-de-privacidad" target="_blank" className="text-primary hover:text-primary-dark font-medium underline">
+                  Aviso de Privacidad
+                </Link>{' '}
+                y los{' '}
+                <Link href="/terminos" target="_blank" className="text-primary hover:text-primary-dark font-medium underline">
+                  Terminos y Condiciones
+                </Link>
+              </label>
+            </div>
+
             {/* Submit button */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || !acceptedTerms}
               className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Creando cuenta...' : 'Crear Cuenta'}

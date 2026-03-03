@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { sanitizeSearchQuery } from '@/lib/security'
+import { stemSpanish } from '@/lib/utils'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -22,10 +23,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json([])
   }
 
-  // Build OR conditions: each word matches name, description, or category name
-  const orConditions = words.map(word =>
-    `name.ilike.%${word}%,description.ilike.%${word}%`
-  ).join(',')
+  // Build OR conditions: stem each word for plural/singular matching
+  const orConditions = words.map(word => {
+    const stem = stemSpanish(word)
+    return `name.ilike.%${stem}%,description.ilike.%${stem}%`
+  }).join(',')
 
   const { data: businesses, error } = await supabase
     .from('businesses')
@@ -70,7 +72,7 @@ export async function GET(request: NextRequest) {
       category:categories(id, name, icon)
     `)
     .eq('is_active', true)
-    .filter('category.name', 'ilike', `%${sanitized}%`)
+    .filter('category.name', 'ilike', `%${stemSpanish(sanitized)}%`)
     .order('is_featured', { ascending: false })
     .limit(5)
 

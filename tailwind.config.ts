@@ -33,6 +33,9 @@ const config: Config = {
           dark: '#F1F5F9',
         },
       },
+      animation: {
+        'fade-in-up': 'fadeInUp 0.6s ease-out both',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },

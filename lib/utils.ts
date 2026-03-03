@@ -75,6 +75,29 @@ export function getDaysRemaining(expiresAt: string | Date | null | undefined): n
 /**
  * Formatea los días restantes para mostrar al usuario
  */
+/**
+ * Stemming básico para español - normaliza plurales para búsquedas
+ * "restaurantes" → "restaurant", "tacos" → "taco", "servicios" → "servicio"
+ */
+export function stemSpanish(word: string): string {
+  const w = word.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+
+  // Quitar "es" final si la palabra tiene más de 4 caracteres
+  if (w.length > 4 && w.endsWith('es')) {
+    // "restaurantes" → "restaurant", "servicios" no entra aquí
+    // Excepciones: no quitar "es" si queda una palabra muy corta
+    const stem = w.slice(0, -2)
+    if (stem.length >= 3) return stem
+  }
+
+  // Quitar "s" final si la palabra tiene más de 3 caracteres
+  if (w.length > 3 && w.endsWith('s')) {
+    return w.slice(0, -1)
+  }
+
+  return w
+}
+
 export function formatDaysRemaining(expiresAt: string | Date | null | undefined): {
   text: string
   color: string

@@ -6,6 +6,7 @@ import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import StarRating from '@/components/reviews/StarRating'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import PremiumSlider from '@/components/shared/PremiumSlider'
+import AnimatedCounter from '@/components/shared/AnimatedCounter'
 import type { BlogPost } from '@/types/database.types'
 
 export const revalidate = 3600
@@ -153,7 +154,7 @@ export default async function Home() {
         <div className="relative container mx-auto px-4 py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
             {/* Logo in hero */}
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-8 animate-fade-in-up">
               <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
                 <Image
                   src="/logo.png"
@@ -166,31 +167,37 @@ export default async function Home() {
               </div>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white mb-5 leading-tight tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white mb-5 leading-tight tracking-tight animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
               Descubre{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent">Lagos de Moreno</span>
             </h1>
-            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light">
+            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               Conecta con negocios locales, explora servicios y apoya a tu comunidad
             </p>
 
             {/* Search */}
-            <div className="max-w-2xl mx-auto mb-12">
+            <div className="max-w-2xl mx-auto mb-12 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>
               <SearchForm />
             </div>
 
-            {/* Social Proof Metrics - glass cards */}
+            {/* Social Proof Metrics - glass cards with animated counters */}
             <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
-                <p className="text-2xl md:text-3xl font-bold text-accent">25+</p>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10 animate-fade-in-up">
+                <p className="text-2xl md:text-3xl font-bold text-accent">
+                  <AnimatedCounter target={25} suffix="+" />
+                </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Negocios</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
-                <p className="text-2xl md:text-3xl font-bold text-primary-light">{catCount}+</p>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+                <p className="text-2xl md:text-3xl font-bold text-primary-light">
+                  <AnimatedCounter target={catCount} suffix="+" />
+                </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Categorias</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
-                <p className="text-2xl md:text-3xl font-bold text-white">100%</p>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                <p className="text-2xl md:text-3xl font-bold text-white">
+                  <AnimatedCounter target={100} suffix="%" />
+                </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Gratis</p>
               </div>
             </div>
@@ -220,9 +227,9 @@ export default async function Home() {
                   <Link
                     key={category.id}
                     href={`/buscar?categoria=${category.id}`}
-                    className="group flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-gray-200 hover:border-primary/30 hover:shadow-md transition-all"
+                    className="group flex items-center gap-2 px-5 py-3 bg-white rounded-full border border-gray-200 hover:border-primary/30 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 transition-all duration-300"
                   >
-                    <span className="text-lg">{category.icon || '📦'}</span>
+                    <span className="text-xl group-hover:scale-110 transition-transform duration-300">{category.icon || '📦'}</span>
                     <span className="font-medium text-sm text-secondary group-hover:text-primary transition-colors">
                       {category.name}
                     </span>
@@ -656,7 +663,7 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Trust Section */}
+      {/* Trust Section - with animated counters */}
       <section className="py-20 bg-surface">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -665,43 +672,132 @@ export default async function Home() {
             <p className="text-gray-500">La plataforma hecha por y para Lagos de Moreno</p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
-            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary/15 to-primary/5 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          {/* Counters row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-12">
+            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
+              <div className="w-14 h-14 bg-gradient-to-br from-primary/15 to-primary/5 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
-              <h3 className="font-bold text-secondary mb-1 text-sm">Seguro</h3>
-              <p className="text-xs text-gray-500">Negocios verificados</p>
+              <p className="text-2xl font-bold text-primary mb-1">
+                <AnimatedCounter target={25} suffix="+" />
+              </p>
+              <h3 className="font-bold text-secondary mb-1 text-sm">Negocios</h3>
+              <p className="text-xs text-gray-500">Verificados y activos</p>
             </div>
-            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-accent/15 to-accent/5 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
+              <div className="w-14 h-14 bg-gradient-to-br from-accent/15 to-accent/5 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-7 h-7 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                 </svg>
               </div>
-              <h3 className="font-bold text-secondary mb-1 text-sm">Local</h3>
-              <p className="text-xs text-gray-500">100% Lagos de Moreno</p>
+              <p className="text-2xl font-bold text-accent-dark mb-1">
+                <AnimatedCounter target={catCount} suffix="+" />
+              </p>
+              <h3 className="font-bold text-secondary mb-1 text-sm">Categorias</h3>
+              <p className="text-xs text-gray-500">Para todo lo que necesitas</p>
             </div>
-            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary/15 to-primary/5 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
+              <div className="w-14 h-14 bg-gradient-to-br from-primary/15 to-primary/5 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="font-bold text-secondary mb-1 text-sm">Rapido</h3>
-              <p className="text-xs text-gray-500">Busca en segundos</p>
+              <p className="text-2xl font-bold text-primary mb-1">24/7</p>
+              <h3 className="font-bold text-secondary mb-1 text-sm">Siempre Activo</h3>
+              <p className="text-xs text-gray-500">Busca en cualquier momento</p>
             </div>
-            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-accent/15 to-accent/5 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
+              <div className="w-14 h-14 bg-gradient-to-br from-accent/15 to-accent/5 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-7 h-7 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
+              <p className="text-2xl font-bold text-accent-dark mb-1">
+                <AnimatedCounter target={100} suffix="%" />
+              </p>
               <h3 className="font-bold text-secondary mb-1 text-sm">Gratis</h3>
-              <p className="text-xs text-gray-500">Explora sin costo</p>
+              <p className="text-xs text-gray-500">Sin costo de registro</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full mb-4">Testimonios</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">Lo que dicen nuestros usuarios</h2>
+            <p className="text-gray-500">Negocios que ya son parte de SomosLagos</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div className="bg-surface rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="text-sm text-gray-600 mb-4 italic">
+                &ldquo;Desde que registre mi negocio en SomosLagos, me llegan clientes nuevos cada semana. Es como tener un anuncio permanente en todo Lagos.&rdquo;
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">MR</span>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-secondary">Maria Rodriguez</p>
+                  <p className="text-xs text-gray-500">Restaurante La Casona</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-surface rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="text-sm text-gray-600 mb-4 italic">
+                &ldquo;Lo mejor es que es gratis y muy facil de usar. En 5 minutos ya tenia mi negocio publicado con fotos, horarios y mapa. Muy recomendable.&rdquo;
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-accent to-accent-dark rounded-full flex items-center justify-center">
+                  <span className="text-secondary font-bold text-sm">JL</span>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-secondary">Jose Luis Hernandez</p>
+                  <p className="text-xs text-gray-500">Taller Mecanico JL</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-surface rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="text-sm text-gray-600 mb-4 italic">
+                &ldquo;Mis clientes ahora me encuentran facilmente. El plan Pro me permite recibir pedidos y eso ha aumentado mis ventas. SomosLagos es lo que Lagos necesitaba.&rdquo;
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">AG</span>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-secondary">Ana Garcia</p>
+                  <p className="text-xs text-gray-500">Estetica Bella Lagos</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import ListingCard from '@/components/marketplace/ListingCard'
 import MarketplaceSidebar from '@/components/marketplace/MarketplaceSidebar'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import { MARKETPLACE_CONDITIONS } from '@/lib/constants'
+import { stemSpanish } from '@/lib/utils'
 import type { MarketplaceCategory, MarketplaceListing } from '@/types/database.types'
 
 export const revalidate = 300
@@ -94,9 +95,10 @@ export default async function MarketplacePage({
   if (query) {
     const words = query.toLowerCase().split(/\s+/).filter((w: string) => w.length >= 2)
     if (words.length > 0) {
-      const orConditions = words.map((word: string) =>
-        `title.ilike.%${word}%,description.ilike.%${word}%`
-      ).join(',')
+      const orConditions = words.map((word: string) => {
+        const stem = stemSpanish(word)
+        return `title.ilike.%${stem}%,description.ilike.%${stem}%`
+      }).join(',')
       listingsQuery = listingsQuery.or(orConditions)
     }
   }
@@ -234,22 +236,52 @@ export default async function MarketplacePage({
                 ))}
               </div>
             ) : (
-              <div className="text-center py-16">
-                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-5xl">🛍️</span>
+              <div className="text-center py-16 animate-fade-in-up">
+                {/* Shopping bag icon */}
+                <div className="w-28 h-28 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-14 h-14 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">No hay artículos</h2>
-                <p className="text-gray-600 mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  {query ? 'Sin resultados' : '¡Se el primero en publicar!'}
+                </h2>
+                <p className="text-gray-500 mb-8 max-w-md mx-auto">
                   {query
-                    ? `No hay artículos que coincidan con "${query}"`
-                    : 'Sé el primero en publicar un artículo'}
+                    ? `No encontramos articulos para "${query}". Intenta con otras palabras.`
+                    : 'El marketplace esta listo para ti. Publica lo que ya no uses y dale una segunda vida.'}
                 </p>
                 <Link
                   href="/marketplace/publicar"
-                  className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 hover:scale-105"
                 >
-                  Publicar artículo
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  Publicar mi primer articulo
                 </Link>
+
+                {/* Quick benefits */}
+                <div className="flex flex-wrap justify-center gap-6 mt-10 text-sm text-gray-500">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    100% Gratis
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Facil y rapido
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Contacto directo
+                  </div>
+                </div>
               </div>
             )}
           </div>

@@ -64,6 +64,11 @@ const categories = [
   { name: 'Decoraciones y Fiestas', slug: 'decoraciones-fiestas', icon: '🎊', display_order: 51 },
   { name: 'Uñas y Belleza', slug: 'unas-belleza', icon: '💅', display_order: 52 },
   { name: 'Dulcerías', slug: 'dulcerias', icon: '🍬', display_order: 53 },
+  // Más Comida
+  { name: 'Alitas', slug: 'alitas', icon: '🍗', display_order: 57 },
+  { name: 'Hamburguesas', slug: 'hamburguesas', icon: '🍔', display_order: 58 },
+  // Viajes
+  { name: 'Agencias de Viajes', slug: 'agencias-de-viajes', icon: '✈️', display_order: 59 },
   // Otros
   { name: 'Gasolineras', slug: 'gasolineras', icon: '⛽', display_order: 54 },
   { name: 'Funerarias', slug: 'funerarias', icon: '🕊️', display_order: 55 },

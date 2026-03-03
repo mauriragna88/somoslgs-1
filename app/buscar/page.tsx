@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/server'
+import { stemSpanish } from '@/lib/utils'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import StarRating from '@/components/reviews/StarRating'
 import FavoriteButton from '@/components/shared/FavoriteButton'
@@ -142,16 +143,18 @@ export default async function BuscarPage({
       .order('name')
   }
 
-  // Apply search filter - split into words for smarter matching
+  // Apply search filter - split into words and stem for plural/singular matching
   if (query) {
     const words = query.toLowerCase().split(/\s+/).filter((w: string) => w.length >= 2)
     if (words.length > 0) {
-      const orConditions = words.map((word: string) =>
-        `name.ilike.%${word}%,description.ilike.%${word}%`
-      ).join(',')
+      const orConditions = words.map((word: string) => {
+        const stem = stemSpanish(word)
+        return `name.ilike.%${stem}%,description.ilike.%${stem}%`
+      }).join(',')
       businessQuery = businessQuery.or(orConditions)
     } else {
-      businessQuery = businessQuery.or(`name.ilike.%${query}%,description.ilike.%${query}%`)
+      const stem = stemSpanish(query)
+      businessQuery = businessQuery.or(`name.ilike.%${stem}%,description.ilike.%${stem}%`)
     }
   }
 
@@ -181,9 +184,10 @@ export default async function BuscarPage({
     if (query) {
       const words = query.toLowerCase().split(/\s+/).filter((w: string) => w.length >= 2)
       if (words.length > 0) {
-        const orCond = words.map((word: string) =>
-          `title.ilike.%${word}%,description.ilike.%${word}%`
-        ).join(',')
+        const orCond = words.map((word: string) => {
+          const stem = stemSpanish(word)
+          return `title.ilike.%${stem}%,description.ilike.%${stem}%`
+        }).join(',')
         mkQuery = mkQuery.or(orCond)
       }
     }
@@ -195,7 +199,7 @@ export default async function BuscarPage({
   return (
     <main className="min-h-screen bg-surface">
       {/* Search Header */}
-      <div className="bg-white border-b border-gray-100 py-8">
+      <div className="bg-gradient-to-br from-white to-surface border-b border-gray-100 py-8">
         <div className="container mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-4">Buscar</h1>
 
@@ -219,8 +223,8 @@ export default async function BuscarPage({
             </Link>
           </div>
 
-          {/* Search Form */}
-          <form method="GET" className="space-y-3">
+          {/* Search Form - glassmorphism */}
+          <form method="GET" className="space-y-3 backdrop-blur-md bg-white/70 border border-white/20 rounded-2xl p-4 shadow-sm">
             <input type="hidden" name="tipo" value={tipo} />
             <div className="flex flex-col md:flex-row gap-3">
               <div className="flex-1">

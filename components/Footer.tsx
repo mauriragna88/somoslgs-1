@@ -57,14 +57,34 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* For Business */}
+          {/* For Business + Legal */}
           <div>
             <h4 className="font-semibold text-white mb-4 text-sm">Para negocios</h4>
             <ul className="space-y-3 text-sm">
               <li><Link href="/registrar-negocio" className="text-slate-400 hover:text-accent transition-colors">Registrar negocio</Link></li>
               <li><Link href="/login" className="text-slate-400 hover:text-accent transition-colors">Iniciar sesion</Link></li>
             </ul>
+            <h4 className="font-semibold text-white mb-3 mt-6 text-sm">Legal</h4>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="/aviso-de-privacidad" className="text-slate-400 hover:text-accent transition-colors">Aviso de Privacidad</Link></li>
+              <li><Link href="/terminos" className="text-slate-400 hover:text-accent transition-colors">Terminos y Condiciones</Link></li>
+            </ul>
           </div>
+        </div>
+
+        {/* CTA Banner - Registra tu negocio */}
+        <div className="mb-8 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl p-6 border border-white/10 text-center">
+          <h4 className="text-white font-bold text-lg mb-2">¿Tienes un negocio en Lagos de Moreno?</h4>
+          <p className="text-slate-400 text-sm mb-4">Registralo GRATIS y llega a mas clientes</p>
+          <Link
+            href="/registrar-negocio"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent hover:bg-accent-dark text-secondary font-bold rounded-full text-sm transition-all hover:scale-105 shadow-lg shadow-accent/20"
+          >
+            Registrar mi Negocio GRATIS
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
 
         <div className="border-t border-slate-700/50 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -72,22 +92,13 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} SomosLagos. Todos los derechos reservados.
           </p>
 
-          {/* Devogatec credit */}
           <a
             href="https://www.facebook.com/devogatec/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-slate-400 transition-colors"
           >
-            <span className="text-xs text-slate-500">Desarrollado por</span>
-            <Image
-              src="/logod.jpg"
-              alt="Devogatec"
-              width={24}
-              height={24}
-              className="w-6 h-6 rounded"
-            />
-            <span className="text-xs text-slate-400 font-medium">Devogatec</span>
+            Desarrollado por Devogatec
           </a>
         </div>
       </div>
