@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
 import { formatCurrency, formatDaysRemaining } from '@/lib/utils'
 import BusinessDetailActions from '@/components/admin/BusinessDetailActions'
+import BusinessQR from '@/components/dashboard/BusinessQR'
 
 interface PageProps {
   params: { id: string }
@@ -446,6 +447,9 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               </div>
             )}
           </div>
+
+          {/* QR Code */}
+          <BusinessQR businessName={business.name} businessSlug={business.slug} />
 
           {/* Upgrade Suggestions */}
           {currentPlanInfo.nextPlan && (
