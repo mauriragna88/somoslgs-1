@@ -12,6 +12,7 @@ import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import BusinessHoursDisplay from '@/components/public/BusinessHoursDisplay'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import FavoriteButton from '@/components/shared/FavoriteButton'
+import ViewTracker from '@/components/shared/ViewTracker'
 import ReviewsSection from '@/components/reviews/ReviewsSection'
 import type { Review } from '@/types/reviews'
 
@@ -517,6 +518,9 @@ export default async function BusinessPage({ params }: PageProps) {
           </Link>
         </div>
       </div>
+
+      {/* Analytics: track page view */}
+      <ViewTracker businessId={business.id} />
     </main>
   )
 }

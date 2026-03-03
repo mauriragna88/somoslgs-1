@@ -7,6 +7,12 @@ import { createServiceClient } from '@/lib/supabase/server'
 import { formatCurrency, formatDaysRemaining } from '@/lib/utils'
 import BusinessDetailActions from '@/components/admin/BusinessDetailActions'
 import BusinessQR from '@/components/dashboard/BusinessQR'
+import nextDynamic from 'next/dynamic'
+
+const AdminViewsCharts = nextDynamic(() => import('@/components/admin/AdminViewsCharts'), {
+  loading: () => <div className="h-96 bg-gray-50 rounded-xl animate-pulse" />,
+  ssr: false,
+})
 
 interface PageProps {
   params: { id: string }
@@ -62,6 +68,78 @@ export default async function BusinessDetailPage({ params }: PageProps) {
     .eq('business_id', params.id)
     .order('created_at', { ascending: false })
     .limit(10)
+
+  // Get views data (last 30 days + this month count)
+  const now = new Date()
+  const thirtyDaysAgo = new Date(now)
+  thirtyDaysAgo.setDate(now.getDate() - 30)
+  const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+
+  const [viewsLast30Result, viewsThisMonthResult] = await Promise.all([
+    supabase
+      .from('business_views')
+      .select('created_at, ip_hash, referrer, user_agent')
+      .eq('business_id', params.id)
+      .gte('created_at', thirtyDaysAgo.toISOString())
+      .order('created_at', { ascending: true }),
+    supabase
+      .from('business_views')
+      .select('id', { count: 'exact', head: true })
+      .eq('business_id', params.id)
+      .gte('created_at', firstOfMonth.toISOString()),
+  ])
+
+  const viewsLast30 = viewsLast30Result.data || []
+  const viewsThisMonth = viewsThisMonthResult.count || 0
+  const totalViews = business.total_views || 0
+
+  // Views by day (last 30 days)
+  const last30DaysArr = Array.from({ length: 30 }, (_, i) => {
+    const d = new Date()
+    d.setDate(d.getDate() - (29 - i))
+    return d.toISOString().split('T')[0]
+  })
+
+  const viewsByDay = last30DaysArr.map(day => {
+    const dayViews = viewsLast30.filter((v: any) => v.created_at.split('T')[0] === day)
+    const uniqueIps = new Set(dayViews.map((v: any) => v.ip_hash))
+    return { date: day, visitas: dayViews.length, unicos: uniqueIps.size }
+  })
+
+  // Top referrers
+  const referrerCounts: Record<string, number> = {}
+  viewsLast30.forEach((v: any) => {
+    let source = 'Directo'
+    if (v.referrer) {
+      if (v.referrer.includes('/buscar')) source = 'Buscador'
+      else if (v.referrer.includes('/categorias')) source = 'Categorias'
+      else if (v.referrer.includes('somoslagos.com.mx')) source = 'Home / Otro'
+      else if (v.referrer.includes('google')) source = 'Google'
+      else if (v.referrer.includes('facebook')) source = 'Facebook'
+      else if (v.referrer.includes('instagram')) source = 'Instagram'
+      else source = 'Externo'
+    }
+    referrerCounts[source] = (referrerCounts[source] || 0) + 1
+  })
+  const topReferrers = Object.entries(referrerCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([name, value]) => ({ name, value }))
+
+  // Devices (mobile vs desktop)
+  let mobileCount = 0
+  let desktopCount = 0
+  viewsLast30.forEach((v: any) => {
+    if (v.user_agent && /mobile|android|iphone|ipad/i.test(v.user_agent)) {
+      mobileCount++
+    } else {
+      desktopCount++
+    }
+  })
+  const devicesData = [
+    { name: 'Movil', value: mobileCount },
+    { name: 'Escritorio', value: desktopCount },
+  ].filter(d => d.value > 0)
 
   // Calculate stats
   const typedOrders = (orders || []) as OrderData[]
@@ -219,7 +297,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div className="bg-white rounded-xl shadow-sm p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -264,6 +342,18 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                 <div>
                   <p className="text-2xl font-bold text-green-600">{formatCurrency(totalRevenue)}</p>
                   <p className="text-xs text-gray-500">Ingresos Total</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+                  <span className="text-xl">👁</span>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-teal-600">{totalViews}</p>
+                  <p className="text-xs text-gray-500">Visitas</p>
                 </div>
               </div>
             </div>
@@ -341,6 +431,16 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               </div>
             )}
           </div>
+
+          {/* Views Analytics Charts */}
+          <AdminViewsCharts
+            viewsByDay={viewsByDay}
+            topReferrers={topReferrers}
+            devicesData={devicesData}
+            totalViews={totalViews}
+            viewsThisMonth={viewsThisMonth}
+            viewsLast30={viewsLast30.length}
+          />
         </div>
 
         {/* Right Column - Subscription & Owner */}
@@ -494,11 +594,15 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                   }
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2">
+              <div className="flex items-center justify-between py-2 border-b border-gray-100">
                 <span className="text-gray-600">Productos activos</span>
                 <span className="font-bold">
                   {(products as ProductData[] || []).filter(p => p.is_available).length}
                 </span>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <span className="text-gray-600">Visitas este mes</span>
+                <span className="font-bold text-teal-600">{viewsThisMonth || 0}</span>
               </div>
             </div>
           </div>

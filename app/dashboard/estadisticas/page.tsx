@@ -129,6 +129,88 @@ export default async function EstadisticasPage() {
     )
   }
 
+  // Fetch views data
+  const now = new Date()
+  const thirtyDaysAgo = new Date(now)
+  thirtyDaysAgo.setDate(now.getDate() - 30)
+  const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+
+  const [viewsResult, viewsThisMonthResult, totalViewsResult] = await Promise.all([
+    supabase
+      .from('business_views')
+      .select('created_at, ip_hash, referrer, user_agent')
+      .eq('business_id', currentBusinessId)
+      .gte('created_at', thirtyDaysAgo.toISOString())
+      .order('created_at', { ascending: true }),
+    supabase
+      .from('business_views')
+      .select('ip_hash')
+      .eq('business_id', currentBusinessId)
+      .gte('created_at', firstOfMonth.toISOString()),
+    supabase
+      .from('businesses')
+      .select('total_views')
+      .eq('id', currentBusinessId)
+      .single(),
+  ])
+
+  const viewsLast30 = viewsResult.data || []
+  const viewsThisMonth = viewsThisMonthResult.data || []
+  const totalViews = (totalViewsResult.data as any)?.total_views || 0
+  const uniqueThisMonth = new Set(viewsThisMonth.map((v: any) => v.ip_hash)).size
+
+  // Views by day (last 30 days)
+  const last30DaysForViews = Array.from({ length: 30 }, (_, i) => {
+    const d = new Date()
+    d.setDate(d.getDate() - (29 - i))
+    return d.toISOString().split('T')[0]
+  })
+
+  const viewsByDay = last30DaysForViews.map(day => {
+    const dayViews = viewsLast30.filter((v: any) => v.created_at.split('T')[0] === day)
+    const uniqueIps = new Set(dayViews.map((v: any) => v.ip_hash))
+    return {
+      date: day,
+      visitas: dayViews.length,
+      unicos: uniqueIps.size,
+    }
+  })
+
+  // Top referrers
+  const referrerCounts: Record<string, number> = {}
+  viewsLast30.forEach((v: any) => {
+    let source = 'Directo'
+    if (v.referrer) {
+      if (v.referrer.includes('/buscar')) source = 'Buscador'
+      else if (v.referrer.includes('/categorias')) source = 'Categorias'
+      else if (v.referrer.includes('somoslagos.com.mx')) source = 'Home / Otro'
+      else if (v.referrer.includes('google')) source = 'Google'
+      else if (v.referrer.includes('facebook')) source = 'Facebook'
+      else if (v.referrer.includes('instagram')) source = 'Instagram'
+      else source = 'Externo'
+    }
+    referrerCounts[source] = (referrerCounts[source] || 0) + 1
+  })
+  const topReferrers = Object.entries(referrerCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([name, value]) => ({ name, value }))
+
+  // Devices (mobile vs desktop)
+  let mobileCount = 0
+  let desktopCount = 0
+  viewsLast30.forEach((v: any) => {
+    if (v.user_agent && /mobile|android|iphone|ipad/i.test(v.user_agent)) {
+      mobileCount++
+    } else {
+      desktopCount++
+    }
+  })
+  const devicesData = [
+    { name: 'Movil', value: mobileCount },
+    { name: 'Escritorio', value: desktopCount },
+  ].filter(d => d.value > 0)
+
   // Fetch all data for premium users
   const [ordersResult, orderItemsResult, productsResult] = await Promise.all([
     supabase
@@ -273,7 +355,37 @@ export default async function EstadisticasPage() {
         </div>
       </div>
 
-      {/* KPI Cards */}
+      {/* Views KPI Cards */}
+      <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-500 text-xs sm:text-sm">Visitas Totales</span>
+            <span className="text-xl sm:text-2xl">👁</span>
+          </div>
+          <p className="text-xl sm:text-3xl font-bold text-gray-900">{totalViews.toLocaleString()}</p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">desde el inicio</p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-500 text-xs sm:text-sm">Visitas Este Mes</span>
+            <span className="text-xl sm:text-2xl">📅</span>
+          </div>
+          <p className="text-xl sm:text-3xl font-bold text-gray-900">{viewsThisMonth.length.toLocaleString()}</p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">{uniqueThisMonth} visitantes unicos</p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-500 text-xs sm:text-sm">Ultimos 30 Dias</span>
+            <span className="text-xl sm:text-2xl">📊</span>
+          </div>
+          <p className="text-xl sm:text-3xl font-bold text-gray-900">{viewsLast30.length.toLocaleString()}</p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">{new Set(viewsLast30.map((v: any) => v.ip_hash)).size} unicos</p>
+        </div>
+      </div>
+
+      {/* Sales KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8">
         <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
@@ -321,6 +433,9 @@ export default async function EstadisticasPage() {
         topProducts={topProducts}
         paymentMethodsData={paymentMethodsData}
         orderStatusData={orderStatusData}
+        viewsByDay={viewsByDay}
+        topReferrers={topReferrers}
+        devicesData={devicesData}
       />
 
       {/* Top Products */}
