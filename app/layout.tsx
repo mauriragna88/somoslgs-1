@@ -8,6 +8,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CartProvider from '@/components/cart/CartProvider'
 import PWARegister from '@/components/PWARegister'
+import PWAInstallPrompt from '@/components/PWAInstallPrompt'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -72,6 +73,7 @@ export default function RootLayout({
           <Toaster richColors position="top-right" />
         </CartProvider>
         <PWARegister />
+        <PWAInstallPrompt />
         <Analytics />
         <SpeedInsights />
       </body>
