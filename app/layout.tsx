@@ -7,6 +7,7 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CartProvider from '@/components/cart/CartProvider'
+import PWARegister from '@/components/PWARegister'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,8 +35,15 @@ export const metadata: Metadata = {
     title: 'SomosLagos - Encuentra negocios en Lagos de Moreno',
     description: 'La plataforma digital de Lagos de Moreno. Descubre negocios locales, pide productos y conecta con tu comunidad.',
   },
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'SomosLagos',
+  },
   other: {
     'theme-color': '#0F766E',
+    'mobile-web-app-capable': 'yes',
   },
 }
 
@@ -47,6 +55,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (
           <script
             async
@@ -62,6 +71,7 @@ export default function RootLayout({
           <Footer />
           <Toaster richColors position="top-right" />
         </CartProvider>
+        <PWARegister />
         <Analytics />
         <SpeedInsights />
       </body>
