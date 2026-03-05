@@ -1,4 +1,4 @@
-const CACHE_NAME = 'somoslagos-v1'
+const CACHE_NAME = 'somoslagos-v2'
 
 // Archivos esenciales para cache offline
 const STATIC_ASSETS = [
