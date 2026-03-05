@@ -241,8 +241,8 @@ export default function Header() {
             )}
           </div>
 
-          {/* Mobile: Search + Hamburger */}
-          <div className="flex items-center space-x-2 md:hidden">
+          {/* Mobile: Search + Login/Avatar + Hamburger */}
+          <div className="flex items-center space-x-1 md:hidden">
             <Link
               href="/buscar"
               aria-label="Buscar"
@@ -252,6 +252,26 @@ export default function Header() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </Link>
+
+            {/* Mobile: Direct login button or user avatar */}
+            {!loading && !user && (
+              <Link
+                href="/login"
+                className="px-3 py-1.5 text-xs font-semibold bg-primary text-white rounded-full hover:bg-primary-dark transition-colors"
+              >
+                Entrar
+              </Link>
+            )}
+            {!loading && user && profile && (
+              <Link
+                href={getDashboardLink()}
+                aria-label="Mi cuenta"
+                className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark text-white rounded-full flex items-center justify-center text-xs font-semibold"
+              >
+                {getInitials(profile.full_name)}
+              </Link>
+            )}
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? 'Cerrar menu' : 'Abrir menu'}

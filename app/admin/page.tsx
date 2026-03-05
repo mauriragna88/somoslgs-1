@@ -128,10 +128,10 @@ export default async function AdminDashboard() {
                   const owner = normalizeOwner(business.owner)
                   const daysInfo = formatDaysRemaining(business.subscription_expires_at)
                   return (
-                    <div key={business.id} className="p-4 flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-gray-900">{business.name}</p>
-                        <p className="text-sm text-gray-600">{owner?.full_name || 'Sin dueño'}</p>
+                    <div key={business.id} className="p-3 sm:p-4 flex items-start sm:items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-medium text-gray-900 text-sm sm:text-base truncate">{business.name}</p>
+                        <p className="text-xs sm:text-sm text-gray-600">{owner?.full_name || 'Sin dueño'}</p>
                         <p className={`text-xs ${daysInfo.color}`}>{daysInfo.text}</p>
                       </div>
                       <ExpiringBusinessActions
@@ -164,10 +164,10 @@ export default async function AdminDashboard() {
                     ? Math.ceil((new Date(business.subscription_expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
                     : null
                   return (
-                    <div key={business.id} className="p-4 flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-gray-900">{business.name}</p>
-                        <p className="text-sm text-gray-600">{owner?.full_name || 'Sin dueño'}</p>
+                    <div key={business.id} className="p-3 sm:p-4 flex items-start sm:items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-medium text-gray-900 text-sm sm:text-base truncate">{business.name}</p>
+                        <p className="text-xs sm:text-sm text-gray-600">{owner?.full_name || 'Sin dueño'}</p>
                         <p className={`text-xs ${daysInfo.color}`}>{daysInfo.text}</p>
                       </div>
                       <ExpiringBusinessActions
@@ -188,13 +188,41 @@ export default async function AdminDashboard() {
 
       {/* Recent Businesses */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-        <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900">Negocios Recientes</h2>
+        <div className="px-4 sm:px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900">Negocios Recientes</h2>
           <Link href="/admin/negocios" className="text-primary hover:underline text-sm">
             Ver todos →
           </Link>
         </div>
-        <div className="overflow-x-auto">
+
+        {/* Mobile: cards */}
+        <div className="sm:hidden divide-y divide-gray-100">
+          {recentBusinesses && recentBusinesses.length > 0 ? (
+            recentBusinesses.map((business) => (
+              <div key={business.id} className="p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <p className="font-medium text-gray-900 text-sm">{business.name}</p>
+                  <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
+                    business.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  }`}>
+                    {business.is_active ? 'Activo' : 'Inactivo'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <span className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full font-semibold capitalize">
+                    {business.subscription_tier}
+                  </span>
+                  <span>{new Date(business.created_at).toLocaleDateString('es-MX')}</span>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="p-8 text-center text-gray-500">No hay negocios registrados aún</div>
+          )}
+        </div>
+
+        {/* Desktop: table */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>

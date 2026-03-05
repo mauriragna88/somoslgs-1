@@ -205,32 +205,32 @@ export default async function BusinessDetailPage({ params }: PageProps) {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
+      <div className="mb-6">
+        <div className="flex items-center gap-4 mb-3">
           <Link
             href="/admin/negocios"
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
             ← Volver
           </Link>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{business.name}</h1>
-            <p className="text-gray-600">{business.category?.name || 'Sin categoría'}</p>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">{business.name}</h1>
+            <p className="text-gray-600 text-sm">{business.category?.name || 'Sin categoría'}</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           <Link
             href={`/admin/negocios/${business.id}/editar`}
-            className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg transition-colors"
+            className="px-3 py-1.5 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg transition-colors"
           >
             Editar
           </Link>
           <Link
             href={`/negocios/${business.slug}`}
             target="_blank"
-            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
+            className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
           >
-            Ver Perfil Público →
+            Ver Público
           </Link>
           <BusinessDetailActions business={business} />
         </div>
@@ -240,56 +240,56 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         {/* Left Column - Main Info */}
         <div className="lg:col-span-2 space-y-6">
           {/* Business Card */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <div className="flex items-start gap-6">
+          <div className="bg-white rounded-xl shadow-sm p-4 md:p-6">
+            <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
               {business.logo_url ? (
                 <Image
                   src={business.logo_url}
                   alt={business.name}
                   width={96}
                   height={96}
-                  className="w-24 h-24 rounded-xl object-cover"
+                  className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl object-cover flex-shrink-0"
                 />
               ) : (
-                <div className="w-24 h-24 bg-primary rounded-xl flex items-center justify-center">
-                  <span className="text-4xl text-white font-bold">
+                <div className="w-16 h-16 sm:w-24 sm:h-24 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl sm:text-4xl text-white font-bold">
                     {business.name[0].toUpperCase()}
                   </span>
                 </div>
               )}
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className={`px-3 py-1 text-sm font-semibold rounded-full ${currentPlanInfo.color}`}>
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${currentPlanInfo.color}`}>
                     Plan {currentPlanInfo.label}
                   </span>
-                  <span className={`px-3 py-1 text-sm font-semibold rounded-full ${
+                  <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
                     business.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                   }`}>
                     {business.is_active ? 'Activo' : 'Inactivo'}
                   </span>
                   {business.is_featured && (
-                    <span className="px-3 py-1 text-sm font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                    <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
                       ⭐ Destacado
                     </span>
                   )}
                 </div>
-                <p className="text-gray-600 mb-4">{business.description || 'Sin descripción'}</p>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <p className="text-gray-600 text-sm mb-3">{business.description || 'Sin descripción'}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                   <div>
-                    <span className="text-gray-500">Teléfono:</span>
-                    <span className="ml-2 font-medium">{business.phone}</span>
+                    <span className="text-gray-500">Tel:</span>
+                    <span className="ml-1 font-medium">{business.phone}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500">WhatsApp:</span>
-                    <span className="ml-2 font-medium">{business.whatsapp || 'N/A'}</span>
+                    <span className="text-gray-500">WA:</span>
+                    <span className="ml-1 font-medium">{business.whatsapp || 'N/A'}</span>
                   </div>
                   <div>
                     <span className="text-gray-500">Email:</span>
-                    <span className="ml-2 font-medium">{business.email || 'N/A'}</span>
+                    <span className="ml-1 font-medium break-all">{business.email || 'N/A'}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500">Dirección:</span>
-                    <span className="ml-2 font-medium">{business.address}</span>
+                    <span className="text-gray-500">Dir:</span>
+                    <span className="ml-1 font-medium">{business.address}</span>
                   </div>
                 </div>
               </div>
@@ -297,7 +297,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             <div className="bg-white rounded-xl shadow-sm p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -361,14 +361,14 @@ export default async function BusinessDetailPage({ params }: PageProps) {
 
           {/* Recent Orders */}
           <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+            <div className="p-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <h3 className="font-bold text-gray-900">Últimos Pedidos</h3>
               <span className="text-sm text-gray-500">Este mes: {formatCurrency(thisMonthRevenue)}</span>
             </div>
             {typedOrders.length > 0 ? (
               <div className="divide-y divide-gray-100">
                 {typedOrders.slice(0, 5).map((order) => (
-                  <div key={order.id} className="p-4 flex items-center justify-between hover:bg-gray-50">
+                  <div key={order.id} className="p-3 sm:p-4 flex items-center justify-between hover:bg-gray-50 gap-2">
                     <div>
                       <p className="font-medium text-gray-900">#{order.order_number}</p>
                       <p className="text-sm text-gray-500">
