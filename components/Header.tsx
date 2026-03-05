@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import SmartSearch from '@/components/SmartSearch'
 import type { User } from '@supabase/supabase-js'
@@ -15,6 +15,7 @@ interface Profile {
 
 export default function Header() {
   const router = useRouter()
+  const pathname = usePathname()
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [showMenu, setShowMenu] = useState(false)
@@ -69,7 +70,17 @@ export default function Header() {
   useEffect(() => {
     setMobileMenuOpen(false)
     setShowMenu(false)
-  }, [])
+  }, [pathname])
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [mobileMenuOpen])
 
   const handleLogout = async () => {
     const supabase = createClient()
@@ -98,6 +109,7 @@ export default function Header() {
   }
 
   return (
+    <>
     <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
@@ -291,109 +303,158 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+    </header>
+
+      {/* Mobile Menu - Full screen overlay (outside header to avoid sticky clipping) */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
-          <div className="container mx-auto px-4 py-4 space-y-3">
-            {/* Mobile Search */}
-            <SmartSearch variant="mobile" onNavigate={() => setMobileMenuOpen(false)} />
+        <>
+          {/* Backdrop */}
+          <div
+            className="md:hidden fixed inset-0 bg-black/30 z-[60]"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          {/* Menu panel */}
+          <div className="md:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white z-[70] shadow-2xl flex flex-col">
+            {/* Menu header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+              <span className="text-lg font-bold">
+                <span className="text-secondary">Somos</span><span className="text-primary">Lagos</span>
+              </span>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Cerrar menu"
+                className="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
 
-            {/* Mobile Nav Links */}
-            <nav className="space-y-1">
-              <Link
-                href="/categorias"
-                className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Categorias
-              </Link>
-              <Link
-                href="/buscar"
-                className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Explorar Negocios
-              </Link>
-              <Link
-                href="/marketplace"
-                className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Marketplace
-              </Link>
-              {user && (
-                <Link
-                  href="/mis-pedidos"
-                  className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Mis Pedidos
-                </Link>
-              )}
-            </nav>
-
-            {/* Mobile Auth */}
-            <div className="border-t border-gray-100 pt-3">
-              {loading ? (
-                <div className="h-10 bg-gray-100 animate-pulse rounded-lg"></div>
-              ) : user && profile ? (
-                <div className="space-y-1">
-                  <div className="flex items-center px-4 py-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark text-white rounded-full flex items-center justify-center text-xs font-semibold mr-3">
-                      {getInitials(profile.full_name)}
+            {/* Scrollable content */}
+            <div className="flex-1 overflow-y-auto">
+              {/* Auth Section - FIRST so it's always visible */}
+              <div className="px-4 py-4 border-b border-gray-100 bg-gray-50/50">
+                {loading ? (
+                  <div className="h-12 bg-gray-100 animate-pulse rounded-lg"></div>
+                ) : user && profile ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                        {getInitials(profile.full_name)}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{profile.full_name}</p>
+                        <p className="text-xs text-gray-500 capitalize">{profile.role.replace('_', ' ')}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900">{profile.full_name}</p>
-                      <p className="text-xs text-gray-500 capitalize">{profile.role.replace('_', ' ')}</p>
+                    <div className="flex gap-2">
+                      <Link
+                        href={getDashboardLink()}
+                        className="flex-1 text-center px-3 py-2 text-sm font-semibold bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {profile.role === 'admin' ? '⚙️ Admin Panel' :
+                         profile.role === 'business_owner' ? '📊 Mi Dashboard' :
+                         '👤 Mi Perfil'}
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="px-3 py-2 text-sm font-medium text-red-600 border border-red-200 hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        Salir
+                      </button>
                     </div>
                   </div>
-                  <Link
-                    href={getDashboardLink()}
-                    className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {profile.role === 'admin' ? '⚙️ Admin Panel' :
-                     profile.role === 'business_owner' ? '📊 Mi Dashboard' :
-                     '👤 Mi Perfil'}
-                  </Link>
-                  {profile.role === 'customer' && (
+                ) : (
+                  <div className="flex gap-3">
                     <Link
-                      href="/registrar-negocio"
-                      className="block px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                      href="/login"
+                      className="flex-1 text-center px-4 py-2.5 text-sm font-semibold text-primary border-2 border-primary rounded-lg hover:bg-primary/5 transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      ✨ Registra tu Negocio GRATIS
+                      Entrar
                     </Link>
-                  )}
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                  >
-                    🚪 Cerrar Sesion
-                  </button>
-                </div>
-              ) : (
-                <div className="flex space-x-3">
+                    <Link
+                      href="/registro"
+                      className="flex-1 text-center px-4 py-2.5 text-sm font-semibold bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Registrarse
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Search */}
+              <div className="px-4 py-3 border-b border-gray-100">
+                <SmartSearch variant="mobile" onNavigate={() => setMobileMenuOpen(false)} />
+              </div>
+
+              {/* Nav Links */}
+              <nav className="py-2">
+                <Link
+                  href="/categorias"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="text-lg">📂</span> Categorias
+                </Link>
+                <Link
+                  href="/buscar"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="text-lg">🔍</span> Explorar Negocios
+                </Link>
+                <Link
+                  href="/marketplace"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="text-lg">🛒</span> Marketplace
+                </Link>
+                {user && (
+                  <>
+                    <Link
+                      href="/mis-pedidos"
+                      className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <span className="text-lg">📦</span> Mis Pedidos
+                    </Link>
+                    <Link
+                      href="/profile"
+                      className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <span className="text-lg">⚙️</span> Configuracion
+                    </Link>
+                  </>
+                )}
+                {!loading && !user && (
                   <Link
-                    href="/login"
-                    className="flex-1 text-center px-4 py-2.5 text-sm font-medium text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+                    href="/registrar-negocio"
+                    className="flex items-center gap-3 px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Entrar
+                    <span className="text-lg">✨</span> Registra tu Negocio GRATIS
                   </Link>
+                )}
+                {user && profile?.role === 'customer' && (
                   <Link
-                    href="/registro"
-                    className="flex-1 text-center px-4 py-2.5 text-sm font-semibold bg-primary hover:bg-primary-dark text-white rounded-xl transition-colors"
+                    href="/registrar-negocio"
+                    className="flex items-center gap-3 px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Registrarse
+                    <span className="text-lg">✨</span> Registra tu Negocio GRATIS
                   </Link>
-                </div>
-              )}
+                )}
+              </nav>
             </div>
           </div>
-        </div>
+        </>
       )}
-    </header>
+    </>
   )
 }
