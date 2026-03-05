@@ -69,11 +69,11 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
               "font-src 'self' fonts.gstatic.com",
               "img-src 'self' *.supabase.co *.tile.openstreetmap.org unpkg.com blob: data:",
-              "connect-src 'self' *.supabase.co wss://*.supabase.co *.conekta.io",
+              "connect-src 'self' *.supabase.co wss://*.supabase.co *.conekta.io *.tile.openstreetmap.org *.openstreetmap.org",
               "frame-src 'self' pay.conekta.com",
               "object-src 'none'",
               "base-uri 'self'",
