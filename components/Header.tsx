@@ -450,6 +450,33 @@ export default function Header() {
                     <span className="text-lg">✨</span> Registra tu Negocio GRATIS
                   </Link>
                 )}
+                {user && profile?.role === 'admin' && (
+                  <>
+                    <div className="border-t border-gray-200 my-1"></div>
+                    <p className="px-5 py-2 text-xs font-semibold text-gray-400 uppercase">Admin</p>
+                    <Link href="/admin/negocios" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                      <span className="text-lg">🏪</span> Negocios
+                    </Link>
+                    <Link href="/admin/usuarios" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                      <span className="text-lg">👥</span> Usuarios
+                    </Link>
+                    <Link href="/admin/pagos" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                      <span className="text-lg">💳</span> Pagos
+                    </Link>
+                    <Link href="/admin/categorias" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                      <span className="text-lg">📂</span> Categorias
+                    </Link>
+                    <Link href="/admin/publicidad" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                      <span className="text-lg">📢</span> Publicidad
+                    </Link>
+                    <Link href="/admin/marketplace" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                      <span className="text-lg">🛒</span> Marketplace Admin
+                    </Link>
+                    <Link href="/admin/blog" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                      <span className="text-lg">✍️</span> Blog
+                    </Link>
+                  </>
+                )}
               </nav>
             </div>
           </div>
