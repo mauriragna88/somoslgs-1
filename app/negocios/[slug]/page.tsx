@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
-import { ORDER_ENABLED_TIERS, WHATSAPP_ENABLED_TIERS, MAP_ENABLED_TIERS, SOCIAL_LINKS_TIERS, FEATURED_TIERS } from '@/lib/constants'
+import { ORDER_ENABLED_TIERS, WHATSAPP_ENABLED_TIERS, MAP_ENABLED_TIERS, SOCIAL_LINKS_TIERS, FEATURED_TIERS, COVER_ENABLED_TIERS } from '@/lib/constants'
 import type { BusinessHours } from '@/lib/constants'
 import ProductList from '@/components/public/ProductList'
 import PhotoCarousel from '@/components/public/PhotoCarousel'
@@ -15,7 +15,6 @@ import FavoriteButton from '@/components/shared/FavoriteButton'
 import ViewTracker from '@/components/shared/ViewTracker'
 import ReviewsSection from '@/components/reviews/ReviewsSection'
 import type { Review } from '@/types/reviews'
-import UpsellModal from '@/components/public/UpsellModal'
 
 const MapDisplay = dynamic(() => import('@/components/maps/MapDisplay'), { ssr: false })
 
@@ -116,9 +115,10 @@ export default async function BusinessPage({ params }: PageProps) {
   const canWhatsApp = WHATSAPP_ENABLED_TIERS.includes(tier)
   const canMap = MAP_ENABLED_TIERS.includes(tier)
   const canSocial = SOCIAL_LINKS_TIERS.includes(tier)
-  const canClickPhone = WHATSAPP_ENABLED_TIERS.includes(tier) // same tiers as whatsapp
+  const canClickPhone = true // all tiers can click phone
+  const canCover = COVER_ENABLED_TIERS.includes(tier)
   const isFeatured = FEATURED_TIERS.includes(tier)
-  const canShowGallery = tier !== 'gratis'
+  const canShowGallery = true // all tiers show gallery (limited by photo count)
 
   // Get products if business has the right plan
   const canShowProducts = ORDER_ENABLED_TIERS.includes(tier)
@@ -220,7 +220,7 @@ export default async function BusinessPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       {/* Cover Image */}
-      {business.cover_url && (
+      {canCover && business.cover_url && (
         <div className="relative w-full h-48 md:h-64 lg:h-80">
           <Image
             src={business.cover_url}
@@ -287,22 +287,13 @@ export default async function BusinessPage({ params }: PageProps) {
                   </div>
                 )}
                 {business.phone && (
-                  canClickPhone ? (
-                    <a
-                      href={`tel:${business.phone}`}
-                      className="flex items-center text-primary hover:underline"
-                    >
-                      <span className="mr-2">📞</span>
-                      {business.phone}
-                    </a>
-                  ) : (
-                    <UpsellModal businessName={business.name}>
-                      <span className="flex items-center text-gray-600 cursor-pointer hover:text-primary transition-colors">
-                        <span className="mr-2">📞</span>
-                        {business.phone}
-                      </span>
-                    </UpsellModal>
-                  )
+                  <a
+                    href={`tel:${business.phone}`}
+                    className="flex items-center text-primary hover:underline"
+                  >
+                    <span className="mr-2">📞</span>
+                    {business.phone}
+                  </a>
                 )}
                 {business.website && (
                   <a
@@ -486,34 +477,52 @@ export default async function BusinessPage({ params }: PageProps) {
 
         {/* Contact Section for non-product plans */}
         {!canShowProducts && (
-          <div className="bg-white rounded-xl shadow-sm p-8 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Contacta a {business.name}</h2>
-            <p className="text-gray-600 mb-6">
-              Comunícate directamente con este negocio para conocer sus productos y servicios
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              {business.phone && canClickPhone && (
-                <a
-                  href={`tel:${business.phone}`}
-                  className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
-                >
-                  <span className="mr-2">📞</span>
-                  Llamar
-                </a>
-              )}
-              {canWhatsApp && business.whatsapp && (
-                <a
-                  href={`https://wa.me/52${business.whatsapp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
-                >
-                  <span className="mr-2">💬</span>
-                  WhatsApp
-                </a>
-              )}
+          <>
+            <div className="bg-white rounded-xl shadow-sm p-8 text-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Contacta a {business.name}</h2>
+              <p className="text-gray-600 mb-6">
+                Comunicate directamente con este negocio para conocer sus productos y servicios
+              </p>
+              <div className="flex flex-wrap gap-4 justify-center">
+                {business.phone && (
+                  <a
+                    href={`tel:${business.phone}`}
+                    className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                  >
+                    <span className="mr-2">📞</span>
+                    Llamar
+                  </a>
+                )}
+                {canWhatsApp && business.whatsapp && (
+                  <a
+                    href={`https://wa.me/52${business.whatsapp}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
+                  >
+                    <span className="mr-2">💬</span>
+                    WhatsApp
+                  </a>
+                )}
+              </div>
             </div>
-          </div>
+
+            {/* Upsell: vende tus productos aqui */}
+            <div className="mt-6 bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20 rounded-xl p-6 text-center">
+              <p className="text-sm font-semibold text-gray-700 mb-1">
+                ¿Es tu negocio? Vende tus productos aqui
+              </p>
+              <p className="text-xs text-gray-500 mb-3">
+                Con el Plan Pro por solo <span className="font-bold text-primary">$4 al dia</span> puedes mostrar tu catalogo y recibir pedidos
+              </p>
+              <Link
+                href="/registrar-negocio"
+                className="inline-block px-5 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition-colors"
+              >
+                Ver planes
+              </Link>
+            </div>
+          </>
         )}
 
         {/* Reviews Section */}

@@ -33,15 +33,16 @@ const plans = [
   {
     name: 'Gratis',
     price: '$0',
+    dailyPrice: '',
     period: 'para siempre',
     popular: false,
     features: [
-      { text: 'Listado basico en el directorio', included: true },
-      { text: 'Direccion y horarios visibles', included: true },
-      { text: 'Logo de tu negocio', included: true },
-      { text: 'Opiniones de clientes', included: true },
-      { text: 'WhatsApp clickeable', included: false },
-      { text: 'Mapa interactivo', included: false },
+      { text: 'Aparece en el buscador', included: true },
+      { text: 'WhatsApp y telefono clickeable', included: true },
+      { text: 'Mapa con tu ubicacion', included: true },
+      { text: 'Horarios y opiniones', included: true },
+      { text: 'Hasta 3 fotos', included: true },
+      { text: 'Portada personalizada', included: false },
       { text: 'Redes sociales', included: false },
       { text: 'Productos y pedidos', included: false },
     ],
@@ -49,14 +50,15 @@ const plans = [
   {
     name: 'Emprendedor',
     price: '$60',
+    dailyPrice: 'Solo $2/dia',
     period: '/mes',
     popular: true,
     features: [
       { text: 'Todo lo del plan Gratis', included: true },
-      { text: 'Boton de WhatsApp directo', included: true },
-      { text: 'Mapa interactivo', included: true },
-      { text: 'Redes sociales', included: true },
-      { text: 'Hasta 8 fotos', included: true },
+      { text: 'Portada personalizada', included: true },
+      { text: 'Redes sociales visibles', included: true },
+      { text: 'Hasta 8 fotos en galeria', included: true },
+      { text: 'Mejor posicion en busquedas', included: true },
       { text: 'Productos y pedidos', included: false },
       { text: 'Destacado en busquedas', included: false },
     ],
@@ -64,12 +66,13 @@ const plans = [
   {
     name: 'Pro',
     price: '$120',
+    dailyPrice: 'Solo $4/dia',
     period: '/mes',
     popular: false,
     features: [
       { text: 'Todo lo del plan Emprendedor', included: true },
       { text: 'Catalogo de productos', included: true },
-      { text: 'Recibir pedidos', included: true },
+      { text: 'Recibir pedidos en linea', included: true },
       { text: 'Pagos por transferencia y tarjeta', included: true },
       { text: 'Hasta 15 fotos', included: true },
       { text: 'Destacado en busquedas', included: false },
@@ -79,6 +82,7 @@ const plans = [
   {
     name: 'Avanzado',
     price: '$180',
+    dailyPrice: 'Solo $6/dia',
     period: '/mes',
     popular: false,
     features: [
@@ -95,7 +99,7 @@ const plans = [
 const faqs = [
   {
     q: '¿Es realmente gratis?',
-    a: 'Si, el plan Gratis es 100% gratuito y permanente. Tu negocio aparece en el directorio, mapa y busquedas sin ningun costo. Los planes Pro y Avanzado son opcionales para quienes quieran funciones extra.',
+    a: 'Si, el plan Gratis es 100% gratuito y permanente. Tu negocio aparece en el directorio con WhatsApp, mapa y busquedas sin ningun costo. Los planes de pago son opcionales para quienes quieran verse mas profesionales o vender en linea.',
   },
   {
     q: '¿Cuanto tiempo tarda en aparecer mi negocio?',
@@ -298,6 +302,9 @@ export default async function RegistrarNegocioPage() {
                     <span className="text-4xl font-extrabold text-secondary">{plan.price}</span>
                     <span className="text-gray-400 text-sm">{plan.period}</span>
                   </div>
+                  {plan.dailyPrice && (
+                    <p className="text-xs text-accent-dark font-semibold mt-1">{plan.dailyPrice} — menos que un cafe</p>
+                  )}
                 </div>
                 <ul className="space-y-3 mb-6">
                   {plan.features.map((f) => (

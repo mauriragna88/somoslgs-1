@@ -17,35 +17,40 @@ interface Business {
   status: string
 }
 
-const planDetails: Record<string, { name: string; price: number; features: string[]; isFree?: boolean }> = {
+const planDetails: Record<string, { name: string; price: number; dailyPrice: string; features: string[]; isFree?: boolean }> = {
   gratis: {
     name: 'Gratis',
     price: 0,
+    dailyPrice: '',
     isFree: true,
     features: [
-      'Listado basico en el directorio',
-      'Direccion y horarios visibles',
-      'Logo de tu negocio',
+      'Aparece en el buscador',
+      'WhatsApp y telefono clickeable',
+      'Mapa con tu ubicacion',
+      'Horarios y opiniones',
+      'Hasta 3 fotos',
     ],
   },
   emprendedor: {
     name: 'Emprendedor',
     price: 60,
+    dailyPrice: '$2/dia',
     features: [
       'Todo del plan Gratis',
-      'Boton de WhatsApp directo',
-      'Mapa interactivo',
-      'Redes sociales',
-      'Hasta 8 fotos',
+      'Portada personalizada',
+      'Redes sociales visibles',
+      'Hasta 8 fotos en galeria',
+      'Mejor posicion en busquedas',
     ],
   },
   pro: {
     name: 'Pro',
     price: 120,
+    dailyPrice: '$4/dia',
     features: [
       'Todo del plan Emprendedor',
       'Catalogo de productos ilimitado',
-      'Recepcion de pedidos en linea',
+      'Recibir pedidos en linea',
       'Pagos por transferencia y tarjeta',
       'Hasta 15 fotos',
     ],
@@ -53,10 +58,11 @@ const planDetails: Record<string, { name: string; price: number; features: strin
   avanzado: {
     name: 'Avanzado',
     price: 180,
+    dailyPrice: '$6/dia',
     features: [
       'Todo del plan Pro',
-      'Posicion destacada en busquedas',
-      'Insignia de negocio verificado',
+      'Destacado en busquedas',
+      'Insignia verificado',
       'Estadisticas avanzadas',
       'Soporte prioritario',
       'Hasta 20 fotos',
@@ -218,10 +224,14 @@ export default async function SuscripcionPage() {
                   </span>
                 )}
                 <h3 className="font-bold text-gray-900">{plan.name}</h3>
-                <p className="text-2xl font-bold text-primary mb-3">
+                <p className="text-2xl font-bold text-primary">
                   {plan.isFree ? 'Gratis' : `$${plan.price}`}
                   {!plan.isFree && <span className="text-sm font-normal text-gray-500">/mes</span>}
                 </p>
+                {plan.dailyPrice && (
+                  <p className="text-xs text-accent-dark font-semibold mb-2">Solo {plan.dailyPrice}</p>
+                )}
+                {!plan.dailyPrice && <div className="mb-3" />}
                 <ul className="space-y-1">
                   {plan.features.slice(0, 4).map((f, i) => (
                     <li key={i} className="text-xs text-gray-600 flex items-start gap-1">

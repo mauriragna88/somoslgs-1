@@ -76,13 +76,16 @@ export const STATS_ENABLED_TIERS: readonly string[] = ['avanzado']
 export const FEATURED_TIERS: readonly string[] = ['avanzado']
 
 // Tiers que permiten WhatsApp clickeable en pagina publica
-export const WHATSAPP_ENABLED_TIERS: readonly string[] = ['emprendedor', 'pro', 'avanzado']
+export const WHATSAPP_ENABLED_TIERS: readonly string[] = ['gratis', 'emprendedor', 'pro', 'avanzado']
 
 // Tiers que permiten mapa interactivo en pagina publica
-export const MAP_ENABLED_TIERS: readonly string[] = ['emprendedor', 'pro', 'avanzado']
+export const MAP_ENABLED_TIERS: readonly string[] = ['gratis', 'emprendedor', 'pro', 'avanzado']
 
 // Tiers que permiten redes sociales en pagina publica
 export const SOCIAL_LINKS_TIERS: readonly string[] = ['emprendedor', 'pro', 'avanzado']
+
+// Tiers que permiten portada (cover image) en pagina publica
+export const COVER_ENABLED_TIERS: readonly string[] = ['emprendedor', 'pro', 'avanzado']
 
 // Tiers con acceso a productos en dashboard
 export const PRODUCTS_ENABLED_TIERS: readonly string[] = ['pro', 'avanzado']
@@ -97,11 +100,34 @@ export const DASHBOARD_NAV_TIERS: Record<string, readonly string[]> = {
 
 // Limite de fotos en galeria por plan
 export const GALLERY_PHOTO_LIMITS: Record<SubscriptionTier, number> = {
-  gratis: 1,
+  gratis: 3,
   emprendedor: 8,
   pro: 15,
   avanzado: 20,
 }
+
+// --- Precios de planes (para mostrar en UI) ---
+export const PLAN_PRICES: Record<SubscriptionTier, number> = {
+  gratis: 0,
+  emprendedor: 60,
+  pro: 120,
+  avanzado: 180,
+}
+
+export const PLAN_DAILY_PRICES: Record<SubscriptionTier, string> = {
+  gratis: 'Gratis',
+  emprendedor: '$2',
+  pro: '$4',
+  avanzado: '$6',
+}
+
+// --- Precios de publicidad ---
+export const AD_PRICES = {
+  weekly: 200,   // $200/semana
+  monthly: 500,  // $500/mes
+  quarterly: 1200, // $1,200/trimestre
+  dailyFrom: 17,  // "desde $17 al día"
+} as const
 
 // --- Marketplace ---
 export const MARKETPLACE_PHOTO_LIMIT = 8

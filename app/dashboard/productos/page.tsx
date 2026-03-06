@@ -99,11 +99,11 @@ export default async function ProductsPage() {
           <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-5xl">🔒</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Actualiza tu Plan</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Desbloquea tu Catalogo</h2>
           <p className="text-gray-600 mb-6">
-            Tu plan actual <strong className="capitalize">{selectedBusiness.subscription_tier}</strong> no incluye la gestión de productos.
+            Tu plan actual <strong className="capitalize">{selectedBusiness.subscription_tier}</strong> no incluye catalogo de productos.
             <br />
-            Actualiza al plan <strong>Pro</strong> para desbloquear esta función.
+            Con el plan <strong>Pro</strong> puedes vender directamente desde SomosLagos.
           </p>
           <div className="flex flex-col md:flex-row justify-center gap-4">
             <div className="bg-green-50 border-2 border-green-500 rounded-lg p-4 text-left">
@@ -111,12 +111,13 @@ export default async function ProductsPage() {
                 <span className="text-2xl">🛍️</span>
                 <h3 className="font-semibold text-gray-900">Plan Pro</h3>
               </div>
-              <p className="text-2xl font-bold text-green-600 mb-2">$100/mes</p>
+              <p className="text-2xl font-bold text-green-600">$120<span className="text-sm font-normal text-gray-500">/mes</span></p>
+              <p className="text-xs text-accent-dark font-semibold mb-2">Solo $4 al dia — menos que un cafe</p>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>✓ Catálogo de productos</li>
-                <li>✓ Recibe pedidos en línea</li>
+                <li>✓ Catalogo de productos ilimitado</li>
+                <li>✓ Recibe pedidos en linea</li>
                 <li>✓ Pagos por transferencia y tarjeta</li>
-                <li>✓ Panel de ventas</li>
+                <li>✓ Hasta 15 fotos</li>
               </ul>
             </div>
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-left">
@@ -124,11 +125,12 @@ export default async function ProductsPage() {
                 <span className="text-2xl">⭐</span>
                 <h3 className="font-semibold text-gray-900">Plan Avanzado</h3>
               </div>
-              <p className="text-2xl font-bold text-purple-600 mb-2">$180/mes</p>
+              <p className="text-2xl font-bold text-purple-600">$180<span className="text-sm font-normal text-gray-500">/mes</span></p>
+              <p className="text-xs text-accent-dark font-semibold mb-2">Solo $6 al dia</p>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li>✓ Todo lo de Pro</li>
-                <li>✓ Posición destacada</li>
-                <li>✓ Estadísticas avanzadas</li>
+                <li>✓ Destacado en busquedas</li>
+                <li>✓ Estadisticas avanzadas</li>
                 <li>✓ Badge verificado</li>
               </ul>
             </div>

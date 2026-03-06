@@ -33,19 +33,20 @@ const SUBSCRIPTION_PLANS = [
     id: 'gratis',
     name: 'Plan Gratis',
     price: '$0',
+    dailyPrice: '',
     period: '',
-    description: 'Listado básico en el directorio',
+    description: 'Empieza gratis y date a conocer',
     features: [
-      'Nombre de tu negocio en el buscador',
-      'Dirección visible',
-      'Horarios de atención',
-      'Logo de tu negocio',
+      'Aparece en el buscador',
+      'WhatsApp y telefono clickeable',
+      'Mapa con tu ubicacion',
+      'Horarios de atencion',
+      'Hasta 3 fotos',
     ],
     notIncluded: [
-      'WhatsApp clickeable',
-      'Mapa interactivo',
+      'Portada personalizada',
       'Redes sociales',
-      'Catálogo de productos',
+      'Catalogo de productos',
     ],
     icon: '🆓',
     color: 'from-gray-500 to-gray-600',
@@ -56,17 +57,18 @@ const SUBSCRIPTION_PLANS = [
     id: 'emprendedor',
     name: 'Plan Emprendedor',
     price: '$60',
+    dailyPrice: 'Solo $2 al dia',
     period: 'MXN/mes',
-    description: 'Contacto directo con clientes',
+    description: 'Tu negocio se ve profesional',
     features: [
       'Todo del Plan Gratis',
-      'Botón de WhatsApp directo',
-      'Mapa interactivo con ubicación',
-      'Redes sociales (Facebook, Instagram, TikTok)',
-      'Hasta 8 fotos de tu negocio',
+      'Portada personalizada',
+      'Redes sociales visibles',
+      'Hasta 8 fotos en galeria',
+      'Mejor posicion en busquedas',
     ],
     notIncluded: [
-      'Catálogo de productos',
+      'Catalogo de productos',
       'Recibir pedidos',
     ],
     icon: '🚀',
@@ -78,18 +80,19 @@ const SUBSCRIPTION_PLANS = [
     id: 'pro',
     name: 'Plan Pro',
     price: '$120',
+    dailyPrice: 'Solo $4 al dia',
     period: 'MXN/mes',
-    description: 'Vende con catálogo y pedidos',
+    description: 'Vende con catalogo y pedidos',
     features: [
       'Todo del Plan Emprendedor',
-      'Catálogo de productos ilimitado',
-      'Recibir pedidos en línea',
+      'Catalogo de productos ilimitado',
+      'Recibir pedidos en linea',
       'Pagos por transferencia y tarjeta',
       'Hasta 15 fotos de tu negocio',
     ],
     notIncluded: [
-      'Posición destacada',
-      'Estadísticas avanzadas',
+      'Posicion destacada',
+      'Estadisticas avanzadas',
     ],
     icon: '🛍️',
     color: 'from-green-500 to-green-600',
@@ -100,13 +103,14 @@ const SUBSCRIPTION_PLANS = [
     id: 'avanzado',
     name: 'Plan Avanzado',
     price: '$180',
+    dailyPrice: 'Solo $6 al dia',
     period: 'MXN/mes',
-    description: 'Máxima visibilidad y control',
+    description: 'Maxima visibilidad y control',
     features: [
       'Todo del Plan Pro',
-      'Aparecer primero en búsquedas',
+      'Aparecer primero en busquedas',
       'Insignia de negocio verificado',
-      'Estadísticas avanzadas de visitas',
+      'Estadisticas avanzadas de visitas',
       'Soporte prioritario',
       'Hasta 20 fotos de tu negocio',
     ],
@@ -456,6 +460,9 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                         </>
                       )}
                     </div>
+                    {plan.dailyPrice && (
+                      <p className="text-xs text-accent-dark font-semibold mt-1">{plan.dailyPrice} — menos que un cafe</p>
+                    )}
                   </div>
 
                   <ul className="space-y-2 mb-4">

@@ -46,25 +46,26 @@ export default function UpsellModal({ children, businessName }: UpsellModalProps
 
             <div className="text-5xl mb-4">🚀</div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Desbloquea contacto directo
+              Haz crecer tu negocio
             </h3>
             <p className="text-gray-600 mb-4">
-              Con el Plan Emprendedor tu negocio tiene WhatsApp directo, mapa interactivo, redes sociales y galeria de fotos.
+              Con el Plan Emprendedor tu negocio se ve profesional: portada personalizada, redes sociales y mas fotos para atraer clientes.
             </p>
             <div className="bg-primary/5 rounded-xl p-4 mb-6">
-              <p className="text-primary font-bold text-2xl">$60 <span className="text-sm font-normal text-gray-500">MXN/mes</span></p>
-              <ul className="text-sm text-gray-600 mt-2 space-y-1 text-left">
+              <p className="text-primary font-bold text-2xl">$2 <span className="text-sm font-normal text-gray-500">al dia</span></p>
+              <p className="text-xs text-gray-400 mb-3">$60 MXN/mes — menos que un cafe diario</p>
+              <ul className="text-sm text-gray-600 space-y-1 text-left">
                 <li className="flex items-center gap-2">
-                  <span className="text-green-500">✓</span> Boton de WhatsApp directo
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-green-500">✓</span> Mapa interactivo con ubicacion
+                  <span className="text-green-500">✓</span> Portada personalizada
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-500">✓</span> Redes sociales visibles
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-500">✓</span> Hasta 8 fotos en galeria
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-green-500">✓</span> Mejor posicion en busquedas
                 </li>
               </ul>
             </div>
