@@ -7,16 +7,13 @@ const nextConfig = {
     },
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '*.supabase.co',
       },
     ],
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256],
-    minimumCacheTTL: 60 * 60 * 24,
   },
   async headers() {
     return [
@@ -73,7 +70,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
               "font-src 'self' fonts.gstatic.com",
               "img-src 'self' *.supabase.co *.tile.openstreetmap.org unpkg.com blob: data:",
-              "connect-src 'self' *.supabase.co wss://*.supabase.co *.conekta.io *.tile.openstreetmap.org *.openstreetmap.org",
+              "connect-src 'self' *.supabase.co wss://*.supabase.co *.conekta.io *.tile.openstreetmap.org *.openstreetmap.org unpkg.com",
               "frame-src 'self' pay.conekta.com",
               "object-src 'none'",
               "base-uri 'self'",

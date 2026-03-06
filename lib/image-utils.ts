@@ -8,18 +8,18 @@ interface OptimizeOptions {
   maxWidth: number
   /** Max height in pixels */
   maxHeight: number
-  /** JPEG quality 0-1 (default 0.85) */
+  /** JPEG quality 0-1 (default 0.75) */
   quality?: number
 }
 
 /** Preset configurations for different upload types */
 export const IMAGE_PRESETS = {
-  logo: { maxWidth: 400, maxHeight: 400, quality: 0.85 },
-  cover: { maxWidth: 1920, maxHeight: 640, quality: 0.85 },
-  product: { maxWidth: 800, maxHeight: 800, quality: 0.85 },
-  gallery: { maxWidth: 1200, maxHeight: 1200, quality: 0.85 },
-  banner: { maxWidth: 1200, maxHeight: 600, quality: 0.85 },
-  marketplace: { maxWidth: 1024, maxHeight: 1024, quality: 0.85 },
+  logo: { maxWidth: 400, maxHeight: 400, quality: 0.75 },
+  cover: { maxWidth: 1920, maxHeight: 640, quality: 0.75 },
+  product: { maxWidth: 800, maxHeight: 800, quality: 0.75 },
+  gallery: { maxWidth: 1200, maxHeight: 1200, quality: 0.75 },
+  banner: { maxWidth: 1200, maxHeight: 600, quality: 0.75 },
+  marketplace: { maxWidth: 1024, maxHeight: 1024, quality: 0.75 },
 } as const
 
 /**
@@ -31,7 +31,7 @@ export async function optimizeImage(
   file: File,
   options: OptimizeOptions
 ): Promise<File> {
-  const { maxWidth, maxHeight, quality = 0.85 } = options
+  const { maxWidth, maxHeight, quality = 0.75 } = options
 
   return new Promise((resolve, reject) => {
     const img = new Image()
