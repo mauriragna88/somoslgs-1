@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { getUser } from '@/lib/supabase/server'
 import { formatCurrency, formatDaysRemaining } from '@/lib/utils'
-import { GALLERY_PHOTO_LIMITS, type SubscriptionTier } from '@/lib/constants'
+import { GALLERY_PHOTO_LIMITS, PRODUCTS_ENABLED_TIERS, type SubscriptionTier } from '@/lib/constants'
 import EditBusinessForm from '@/components/dashboard/EditBusinessForm'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 
@@ -137,11 +137,22 @@ export default async function MiNegocioPage({
 
   const daysInfo = formatDaysRemaining(business.subscription_expires_at)
 
+  const canProducts = PRODUCTS_ENABLED_TIERS.includes(business.subscription_tier)
+
   const planFeatures: Record<string, string[]> = {
-    gratis: ['Listado en directorio', 'Perfil básico', 'Contacto WhatsApp'],
-    pro: ['Todo de Gratis', 'Catálogo de productos', 'Pedidos online', 'Pago por transferencia'],
-    avanzado: ['Todo de Pro', 'Negocio destacado', 'Soporte prioritario', 'Estadísticas avanzadas'],
+    gratis: ['Aparece en el buscador', 'WhatsApp y telefono', 'Mapa con ubicacion', 'Hasta 3 fotos'],
+    emprendedor: ['Todo de Gratis', 'Portada personalizada', 'Redes sociales', 'Hasta 8 fotos'],
+    pro: ['Todo de Emprendedor', 'Catalogo de productos', 'Pedidos en linea', 'Pagos transferencia/tarjeta', 'Hasta 15 fotos'],
+    avanzado: ['Todo de Pro', 'Destacado en busquedas', 'Badge verificado', 'Estadisticas avanzadas', 'Hasta 20 fotos'],
   }
+
+  const nextPlan: Record<string, { name: string; price: string; daily: string }> = {
+    gratis: { name: 'Emprendedor', price: '$60/mes', daily: '$2 al dia' },
+    emprendedor: { name: 'Pro', price: '$120/mes', daily: '$4 al dia' },
+    pro: { name: 'Avanzado', price: '$180/mes', daily: '$6 al dia' },
+  }
+
+  const upgrade = nextPlan[business.subscription_tier]
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -191,6 +202,7 @@ export default async function MiNegocioPage({
                   <span className={`px-3 py-1 text-xs font-semibold rounded-full capitalize ${
                     business.subscription_tier === 'avanzado' ? 'bg-purple-100 text-purple-800' :
                     business.subscription_tier === 'pro' ? 'bg-green-100 text-green-800' :
+                    business.subscription_tier === 'emprendedor' ? 'bg-blue-100 text-blue-800' :
                     'bg-gray-100 text-gray-800'
                   }`}>
                     Plan {business.subscription_tier}
@@ -208,64 +220,87 @@ export default async function MiNegocioPage({
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl shadow-sm p-4">
-              <p className="text-sm text-gray-500">Productos</p>
-              <p className="text-2xl font-bold text-gray-900">{productsCount || 0}</p>
+          {/* Stats - only show product/order stats for pro+ */}
+          {canProducts ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white rounded-xl shadow-sm p-4">
+                <p className="text-sm text-gray-500">Productos</p>
+                <p className="text-2xl font-bold text-gray-900">{productsCount || 0}</p>
+              </div>
+              <div className="bg-white rounded-xl shadow-sm p-4">
+                <p className="text-sm text-gray-500">Pedidos Totales</p>
+                <p className="text-2xl font-bold text-gray-900">{orders.length}</p>
+              </div>
+              <div className="bg-white rounded-xl shadow-sm p-4">
+                <p className="text-sm text-gray-500">Pendientes</p>
+                <p className="text-2xl font-bold text-yellow-600">{pendingOrders.length}</p>
+              </div>
+              <div className="bg-white rounded-xl shadow-sm p-4">
+                <p className="text-sm text-gray-500">Ingresos Mes</p>
+                <p className="text-2xl font-bold text-green-600">{formatCurrency(monthlyRevenue)}</p>
+              </div>
             </div>
-            <div className="bg-white rounded-xl shadow-sm p-4">
-              <p className="text-sm text-gray-500">Pedidos Totales</p>
-              <p className="text-2xl font-bold text-gray-900">{orders.length}</p>
+          ) : (
+            <div className="relative bg-white rounded-xl shadow-sm p-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 opacity-40">
+                <div><p className="text-sm text-gray-500">Productos</p><p className="text-2xl font-bold text-gray-900">--</p></div>
+                <div><p className="text-sm text-gray-500">Pedidos</p><p className="text-2xl font-bold text-gray-900">--</p></div>
+                <div><p className="text-sm text-gray-500">Pendientes</p><p className="text-2xl font-bold text-gray-900">--</p></div>
+                <div><p className="text-sm text-gray-500">Ingresos</p><p className="text-2xl font-bold text-gray-900">--</p></div>
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-[1px] rounded-xl">
+                <div className="text-center px-4">
+                  <span className="text-3xl block mb-2">🔒</span>
+                  <p className="text-sm font-semibold text-gray-700">Productos, pedidos e ingresos</p>
+                  <p className="text-xs text-gray-500 mt-1">Disponible desde el Plan <strong>Pro</strong> por solo <span className="text-primary font-bold">$4/dia</span></p>
+                  <Link href="/dashboard/suscripcion" className="inline-block mt-2 px-4 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs font-semibold rounded-lg transition-colors">
+                    Ver planes
+                  </Link>
+                </div>
+              </div>
             </div>
-            <div className="bg-white rounded-xl shadow-sm p-4">
-              <p className="text-sm text-gray-500">Pendientes</p>
-              <p className="text-2xl font-bold text-yellow-600">{pendingOrders.length}</p>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm p-4">
-              <p className="text-sm text-gray-500">Ingresos Mes</p>
-              <p className="text-2xl font-bold text-green-600">{formatCurrency(monthlyRevenue)}</p>
-            </div>
-          </div>
+          )}
 
-          {/* Recent Orders */}
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="font-bold text-gray-900">Últimos Pedidos</h3>
-              <Link href="/dashboard/pedidos" className="text-primary text-sm hover:underline">
-                Ver todos →
-              </Link>
+          {/* Recent Orders - pro+ only */}
+          {canProducts ? (
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+                <h3 className="font-bold text-gray-900">Últimos Pedidos</h3>
+                <Link href="/dashboard/pedidos" className="text-primary text-sm hover:underline">
+                  Ver todos →
+                </Link>
+              </div>
+              {recentOrders && recentOrders.length > 0 ? (
+                <div className="divide-y divide-gray-100">
+                  {recentOrders.map((order) => (
+                    <div key={order.id} className="px-4 py-3 flex items-center justify-between">
+                      <div>
+                        <p className="font-medium text-gray-900">#{order.order_number}</p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(order.created_at).toLocaleDateString('es-MX')}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-primary">{formatCurrency(order.total)}</p>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          order.status === 'completed' ? 'bg-green-100 text-green-800' :
+                          order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                          order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                          'bg-blue-100 text-blue-800'
+                        }`}>
+                          {order.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-6 text-center text-gray-500">
+                  No hay pedidos aún
+                </div>
+              )}
             </div>
-            {recentOrders && recentOrders.length > 0 ? (
-              <div className="divide-y divide-gray-100">
-                {recentOrders.map((order) => (
-                  <div key={order.id} className="px-4 py-3 flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-gray-900">#{order.order_number}</p>
-                      <p className="text-xs text-gray-500">
-                        {new Date(order.created_at).toLocaleDateString('es-MX')}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-primary">{formatCurrency(order.total)}</p>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                        'bg-blue-100 text-blue-800'
-                      }`}>
-                        {order.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="p-6 text-center text-gray-500">
-                No hay pedidos aún
-              </div>
-            )}
-          </div>
+          ) : null}
 
           {/* Edit Form */}
           <div className="bg-white rounded-xl shadow-sm p-6">
@@ -296,7 +331,7 @@ export default async function MiNegocioPage({
         <div className="space-y-6">
           {/* Plan Info */}
           <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-bold text-gray-900 mb-4">Tu Plan: {business.subscription_tier}</h3>
+            <h3 className="font-bold text-gray-900 mb-4 capitalize">Tu Plan: {business.subscription_tier}</h3>
             <ul className="space-y-2">
               {planFeatures[business.subscription_tier]?.map((feature, i) => (
                 <li key={i} className="flex items-center text-sm text-gray-600">
@@ -305,13 +340,18 @@ export default async function MiNegocioPage({
                 </li>
               ))}
             </ul>
-            {business.subscription_tier !== 'avanzado' && (
-              <Link
-                href="/dashboard/pago"
-                className="block mt-4 w-full py-2 bg-primary hover:bg-primary-dark text-white text-center font-medium rounded-lg transition-colors"
-              >
-                Mejorar Plan
-              </Link>
+            {upgrade && (
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <p className="text-xs text-gray-500 mb-2">Siguiente nivel:</p>
+                <p className="text-sm font-semibold text-gray-800">Plan {upgrade.name} — {upgrade.price}</p>
+                <p className="text-xs text-accent-dark font-semibold mb-3">Solo {upgrade.daily} — menos que un cafe</p>
+                <Link
+                  href="/dashboard/suscripcion"
+                  className="block w-full py-2 bg-primary hover:bg-primary-dark text-white text-center font-medium rounded-lg transition-colors"
+                >
+                  Mejorar a {upgrade.name}
+                </Link>
+              </div>
             )}
           </div>
 
@@ -319,24 +359,34 @@ export default async function MiNegocioPage({
           <div className="bg-white rounded-xl shadow-sm p-6">
             <h3 className="font-bold text-gray-900 mb-4">Acciones Rápidas</h3>
             <div className="space-y-2">
-              <Link
-                href="/dashboard/productos/nuevo"
-                className="block w-full py-2 px-4 bg-blue-50 hover:bg-blue-100 text-blue-700 text-center font-medium rounded-lg transition-colors"
-              >
-                + Agregar Producto
-              </Link>
-              <Link
-                href="/dashboard/pedidos"
-                className="block w-full py-2 px-4 bg-green-50 hover:bg-green-100 text-green-700 text-center font-medium rounded-lg transition-colors"
-              >
-                Ver Pedidos
-              </Link>
+              {canProducts && (
+                <>
+                  <Link
+                    href="/dashboard/productos/nuevo"
+                    className="block w-full py-2 px-4 bg-blue-50 hover:bg-blue-100 text-blue-700 text-center font-medium rounded-lg transition-colors"
+                  >
+                    + Agregar Producto
+                  </Link>
+                  <Link
+                    href="/dashboard/pedidos"
+                    className="block w-full py-2 px-4 bg-green-50 hover:bg-green-100 text-green-700 text-center font-medium rounded-lg transition-colors"
+                  >
+                    Ver Pedidos
+                  </Link>
+                </>
+              )}
               <Link
                 href={`/negocios/${business.slug}`}
                 target="_blank"
                 className="block w-full py-2 px-4 bg-gray-50 hover:bg-gray-100 text-gray-700 text-center font-medium rounded-lg transition-colors"
               >
                 Ver Perfil Público
+              </Link>
+              <Link
+                href="/dashboard/suscripcion"
+                className="block w-full py-2 px-4 bg-teal-50 hover:bg-teal-100 text-teal-700 text-center font-medium rounded-lg transition-colors"
+              >
+                Mi Suscripcion
               </Link>
             </div>
           </div>
@@ -366,12 +416,14 @@ export default async function MiNegocioPage({
             </div>
           </div>
 
-          {/* Total Revenue */}
-          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-sm p-6 text-white">
-            <h3 className="font-medium opacity-90">Ingresos Totales</h3>
-            <p className="text-3xl font-bold mt-1">{formatCurrency(totalRevenue)}</p>
-            <p className="text-sm opacity-75 mt-1">{completedOrders.length} pedidos completados</p>
-          </div>
+          {/* Total Revenue - pro+ only */}
+          {canProducts && (
+            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-sm p-6 text-white">
+              <h3 className="font-medium opacity-90">Ingresos Totales</h3>
+              <p className="text-3xl font-bold mt-1">{formatCurrency(totalRevenue)}</p>
+              <p className="text-sm opacity-75 mt-1">{completedOrders.length} pedidos completados</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

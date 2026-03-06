@@ -7,8 +7,9 @@ import LogoUpload from '@/components/shared/LogoUpload'
 import CoverUpload from '@/components/shared/CoverUpload'
 import PhotoGalleryManager from '@/components/dashboard/PhotoGalleryManager'
 import BusinessHoursEditor from '@/components/shared/BusinessHoursEditor'
-import { DEFAULT_BUSINESS_HOURS } from '@/lib/constants'
+import { DEFAULT_BUSINESS_HOURS, COVER_ENABLED_TIERS, SOCIAL_LINKS_TIERS, PRODUCTS_ENABLED_TIERS } from '@/lib/constants'
 import type { BusinessHours } from '@/lib/constants'
+import Link from 'next/link'
 
 const MapPicker = dynamic(() => import('@/components/maps/MapPicker'), { ssr: false })
 import type { BusinessPhoto } from '@/lib/supabase/database.types'
@@ -153,6 +154,24 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
     }
   }
 
+  const tier = subscriptionTier || 'gratis'
+  const canCover = COVER_ENABLED_TIERS.includes(tier)
+  const canSocial = SOCIAL_LINKS_TIERS.includes(tier)
+  const canPayments = PRODUCTS_ENABLED_TIERS.includes(tier)
+
+  const LockedOverlay = ({ plan, dailyPrice, feature }: { plan: string; dailyPrice: string; feature: string }) => (
+    <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-[2px] rounded-lg">
+      <div className="text-center px-4">
+        <span className="text-3xl block mb-2">🔒</span>
+        <p className="text-sm font-semibold text-gray-700">{feature}</p>
+        <p className="text-xs text-gray-500 mt-1">Disponible desde el Plan <strong>{plan}</strong> por solo <span className="text-primary font-bold">{dailyPrice}</span></p>
+        <Link href="/dashboard/suscripcion" className="inline-block mt-2 px-4 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs font-semibold rounded-lg transition-colors">
+          Ver planes
+        </Link>
+      </div>
+    </div>
+  )
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {message && (
@@ -189,13 +208,16 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
       </div>
 
       {/* Cover Upload */}
-      <div className="pb-4 border-b border-gray-200">
-        <CoverUpload
-          currentCover={formData.cover_url || null}
-          saveEndpoint={`/api/businesses/${business.id}`}
-          onUpload={(url) => setFormData(prev => ({ ...prev, cover_url: url }))}
-          onRemove={() => setFormData(prev => ({ ...prev, cover_url: '' }))}
-        />
+      <div className="pb-4 border-b border-gray-200 relative">
+        {!canCover && <LockedOverlay plan="Emprendedor" dailyPrice="$2/dia" feature="Portada personalizada" />}
+        <div className={!canCover ? 'opacity-40 pointer-events-none' : ''}>
+          <CoverUpload
+            currentCover={formData.cover_url || null}
+            saveEndpoint={`/api/businesses/${business.id}`}
+            onUpload={(url) => setFormData(prev => ({ ...prev, cover_url: url }))}
+            onRemove={() => setFormData(prev => ({ ...prev, cover_url: '' }))}
+          />
+        </div>
       </div>
 
       {/* Photo Gallery */}
@@ -354,13 +376,15 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
       <BusinessHoursEditor value={businessHours} onChange={setBusinessHours} />
 
       {/* Website y Redes Sociales */}
-      <div className="border-t border-gray-200 pt-6 mt-6">
+      <div className="border-t border-gray-200 pt-6 mt-6 relative">
+        {!canSocial && <LockedOverlay plan="Emprendedor" dailyPrice="$2/dia" feature="Redes sociales visibles" />}
         <h4 className="text-lg font-semibold text-gray-900 mb-4">
           Website y Redes Sociales
         </h4>
         <p className="text-sm text-gray-500 mb-4">
           Agrega tu sitio web y perfiles de redes sociales para que tus clientes te encuentren.
         </p>
+        <div className={!canSocial ? 'opacity-40 pointer-events-none' : ''}>
 
         <div className="space-y-4">
           <div>
@@ -435,16 +459,19 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             />
           </div>
         </div>
+        </div>
       </div>
 
       {/* Sección de Datos Bancarios */}
-      <div className="border-t border-gray-200 pt-6 mt-6">
+      <div className="border-t border-gray-200 pt-6 mt-6 relative">
+        {!canPayments && <LockedOverlay plan="Pro" dailyPrice="$4/dia" feature="Datos bancarios para recibir pagos" />}
         <h4 className="text-lg font-semibold text-gray-900 mb-4">
           Datos Bancarios para Recibir Pagos
         </h4>
         <p className="text-sm text-gray-500 mb-4">
-          Estos datos se mostrarán a tus clientes cuando elijan pagar por transferencia.
+          Estos datos se mostraran a tus clientes cuando elijan pagar por transferencia.
         </p>
+        <div className={!canPayments ? 'opacity-40 pointer-events-none' : ''}>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -505,10 +532,13 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             )}
           </div>
         </div>
+        </div>
       </div>
 
       {/* Sección de Pasarelas de Pago */}
-      <div className="border-t border-gray-200 pt-6 mt-6">
+      <div className="border-t border-gray-200 pt-6 mt-6 relative">
+        {!canPayments && <LockedOverlay plan="Pro" dailyPrice="$4/dia" feature="Pasarelas de pago con tarjeta" />}
+        <div className={!canPayments ? 'opacity-40 pointer-events-none' : ''}>
         <h4 className="text-lg font-semibold text-gray-900 mb-2">
           Pasarelas de Pago
         </h4>
@@ -738,6 +768,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             )}
           </div>
         )}
+        </div>
       </div>
 
       <div className="pt-4 flex items-center gap-4">
