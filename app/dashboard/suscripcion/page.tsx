@@ -23,18 +23,27 @@ const planDetails: Record<string, { name: string; price: number; features: strin
     price: 0,
     isFree: true,
     features: [
-      'Perfil del negocio en el directorio',
-      'Informacion de contacto visible',
-      'Ubicacion en mapa',
-      'Horarios de atencion',
-      'Hasta 5 fotos',
+      'Listado basico en el directorio',
+      'Direccion y horarios visibles',
+      'Logo de tu negocio',
+    ],
+  },
+  emprendedor: {
+    name: 'Emprendedor',
+    price: 60,
+    features: [
+      'Todo del plan Gratis',
+      'Boton de WhatsApp directo',
+      'Mapa interactivo',
+      'Redes sociales',
+      'Hasta 8 fotos',
     ],
   },
   pro: {
     name: 'Pro',
-    price: 100,
+    price: 120,
     features: [
-      'Todo del plan Gratis',
+      'Todo del plan Emprendedor',
       'Catalogo de productos ilimitado',
       'Recepcion de pedidos en linea',
       'Pagos por transferencia y tarjeta',
@@ -191,7 +200,7 @@ export default async function SuscripcionPage() {
       {/* All Plans */}
       <div className="mb-8">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Todos los Planes</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {Object.entries(planDetails).map(([key, plan]) => {
             const isCurrent = key === business.subscription_tier
             return (

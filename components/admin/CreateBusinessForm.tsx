@@ -45,7 +45,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
     businessType: 'productos' as 'productos' | 'servicios' | 'ambos',
 
     // Suscripción
-    subscriptionTier: 'gratis' as 'gratis' | 'pro' | 'avanzado',
+    subscriptionTier: 'gratis' as 'gratis' | 'emprendedor' | 'pro' | 'avanzado',
     subscriptionDays: 30,
     isFree: false,
   })
@@ -486,9 +486,10 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              { value: 'gratis', label: 'Gratis', price: '$0', features: ['Info basica', 'WhatsApp', 'Ubicacion', '5 fotos'] },
-              { value: 'pro', label: 'Pro', price: '$100/mes', features: ['Todo lo anterior', 'Productos', 'Pedidos', 'Pagos'] },
-              { value: 'avanzado', label: 'Avanzado', price: '$180/mes', features: ['Todo lo anterior', 'Destacado', 'Analytics', 'Badge'] },
+              { value: 'gratis', label: 'Gratis', price: '$0', features: ['Listado basico', 'Solo logo', 'Sin WhatsApp/mapa'] },
+              { value: 'emprendedor', label: 'Emprendedor', price: '$60/mes', features: ['WhatsApp', 'Mapa', 'Redes sociales', '8 fotos'] },
+              { value: 'pro', label: 'Pro', price: '$120/mes', features: ['Todo Emprendedor', 'Productos', 'Pedidos', '15 fotos'] },
+              { value: 'avanzado', label: 'Avanzado', price: '$180/mes', features: ['Todo Pro', 'Destacado', 'Analytics', '20 fotos'] },
             ].map((plan) => (
               <label
                 key={plan.value}

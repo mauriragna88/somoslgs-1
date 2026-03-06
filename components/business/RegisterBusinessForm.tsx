@@ -16,7 +16,7 @@ const businessSchema = z.object({
   phone: z.string().regex(/^\d{10}$/, 'El teléfono debe tener 10 dígitos'),
   whatsapp: z.string().regex(/^\d{10}$/, 'El WhatsApp debe tener 10 dígitos').optional().or(z.literal('')),
   email: z.string().email('Email inválido').optional().or(z.literal('')),
-  subscription_tier: z.enum(['gratis', 'pro', 'avanzado']),
+  subscription_tier: z.enum(['gratis', 'emprendedor', 'pro', 'avanzado']),
   logo_url: z.string().url().optional().or(z.literal('')),
   business_type: z.enum(['productos', 'servicios', 'ambos']).default('productos'),
 })
@@ -34,18 +34,18 @@ const SUBSCRIPTION_PLANS = [
     name: 'Plan Gratis',
     price: '$0',
     period: '',
-    description: 'Presencia en el directorio',
+    description: 'Listado básico en el directorio',
     features: [
       'Nombre de tu negocio en el buscador',
-      'Dirección y ubicación en el mapa',
-      'Número de WhatsApp para contacto',
+      'Dirección visible',
       'Horarios de atención',
-      'Hasta 5 fotos de tu negocio',
+      'Logo de tu negocio',
     ],
     notIncluded: [
+      'WhatsApp clickeable',
+      'Mapa interactivo',
+      'Redes sociales',
       'Catálogo de productos',
-      'Recibir pedidos',
-      'Pagos en línea',
     ],
     icon: '🆓',
     color: 'from-gray-500 to-gray-600',
@@ -53,26 +53,47 @@ const SUBSCRIPTION_PLANS = [
     isFree: true,
   },
   {
+    id: 'emprendedor',
+    name: 'Plan Emprendedor',
+    price: '$60',
+    period: 'MXN/mes',
+    description: 'Contacto directo con clientes',
+    features: [
+      'Todo del Plan Gratis',
+      'Botón de WhatsApp directo',
+      'Mapa interactivo con ubicación',
+      'Redes sociales (Facebook, Instagram, TikTok)',
+      'Hasta 8 fotos de tu negocio',
+    ],
+    notIncluded: [
+      'Catálogo de productos',
+      'Recibir pedidos',
+    ],
+    icon: '🚀',
+    color: 'from-blue-500 to-blue-600',
+    popular: true,
+    isFree: false,
+  },
+  {
     id: 'pro',
     name: 'Plan Pro',
-    price: '$100',
+    price: '$120',
     period: 'MXN/mes',
     description: 'Vende con catálogo y pedidos',
     features: [
-      'Todo del Plan Gratis',
+      'Todo del Plan Emprendedor',
       'Catálogo de productos ilimitado',
       'Recibir pedidos en línea',
       'Pagos por transferencia y tarjeta',
-      'Verificar pagos desde tu panel',
       'Hasta 15 fotos de tu negocio',
     ],
     notIncluded: [
-      'Posición destacada en búsquedas',
+      'Posición destacada',
       'Estadísticas avanzadas',
     ],
     icon: '🛍️',
     color: 'from-green-500 to-green-600',
-    popular: true,
+    popular: false,
     isFree: false,
   },
   {
@@ -394,7 +415,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
               {SUBSCRIPTION_PLANS.map((plan) => (
                 <div
                   key={plan.id}

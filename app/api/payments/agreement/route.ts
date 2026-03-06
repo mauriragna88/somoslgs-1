@@ -15,7 +15,7 @@ function getSupabaseAdmin() {
 const agreementSchema = z.object({
   business_id: z.string().uuid(),
   amount: z.number().positive(),
-  subscription_tier: z.enum(['pro', 'avanzado']),
+  subscription_tier: z.enum(['emprendedor', 'pro', 'avanzado']),
 })
 
 export async function POST(request: Request) {

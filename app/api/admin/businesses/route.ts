@@ -16,7 +16,7 @@ const adminBusinessSchema = z.object({
   email: z.string().email().or(z.literal('')).nullable().optional(),
   businessType: z.enum(['productos', 'servicios', 'ambos']).default('productos'),
   businessHours: z.any().nullable().optional(),
-  subscriptionTier: z.enum(['gratis', 'pro', 'avanzado']).default('gratis'),
+  subscriptionTier: z.enum(['gratis', 'emprendedor', 'pro', 'avanzado']).default('gratis'),
   subscriptionDays: z.number().int().min(1).max(365).optional(),
   isFree: z.boolean().optional(),
 })

@@ -106,7 +106,7 @@ export default function BusinessDetailActions({ business }: BusinessDetailAction
         {/* Quick Plan Buttons */}
         <div className="flex items-center bg-gray-100 rounded-lg p-1">
           <span className="text-xs text-gray-500 px-2">Plan:</span>
-          {['gratis', 'pro', 'avanzado'].map((tier) => (
+          {['gratis', 'emprendedor', 'pro', 'avanzado'].map((tier) => (
             <button
               key={tier}
               onClick={() => handleQuickUpgrade(tier)}

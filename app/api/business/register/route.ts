@@ -14,7 +14,7 @@ const businessSchema = z.object({
   phone: z.string().regex(/^\d{10}$/),
   whatsapp: z.string().regex(/^\d{10}$/).optional().or(z.literal('')),
   email: z.string().email().optional().or(z.literal('')),
-  subscription_tier: z.enum(['gratis', 'pro', 'avanzado']),
+  subscription_tier: z.enum(['gratis', 'emprendedor', 'pro', 'avanzado']),
   logo_url: z.string().url().optional().or(z.literal('')),
   business_type: z.enum(['productos', 'servicios', 'ambos']).default('productos'),
   admin_free_activation: z.boolean().optional(),

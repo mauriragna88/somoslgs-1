@@ -123,7 +123,7 @@ async function sendWhatsApp(opts: SendWhatsAppOptions): Promise<void> {
 // TIER-BASED NOTIFICATION
 // ============================================
 
-type SubscriptionTier = 'gratis' | 'pro' | 'avanzado'
+type SubscriptionTier = 'gratis' | 'emprendedor' | 'pro' | 'avanzado'
 
 interface NotifyByTierOptions {
   tier: SubscriptionTier
@@ -148,7 +148,7 @@ export async function notifyByTier(opts: NotifyByTierOptions): Promise<void> {
   if (tier === 'avanzado') {
     // Envío automático
     await sendWhatsApp({ phone, message, businessId, orderId, userId, type })
-  } else if (tier === 'pro') {
+  } else if (tier === 'pro' || tier === 'emprendedor') {
     // Guardar como pending_manual con wa.me link
     const waLink = generateWaMeLink(phone, message)
     await supabase.from('notifications').insert({

@@ -5,12 +5,14 @@ import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { DASHBOARD_NAV_TIERS } from '@/lib/constants'
 
 interface Business {
   id: string
   name: string
   logo_url: string | null
   business_type?: 'productos' | 'servicios' | 'ambos'
+  subscription_tier?: string
 }
 
 interface BusinessSidebarProps {
@@ -72,16 +74,20 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
 
   const selectedBusiness = businesses.find(b => b.id === selectedBusinessId) || businesses[0]
   const bType = selectedBusiness?.business_type || 'productos'
+  const tier = selectedBusiness?.subscription_tier || 'gratis'
   const catalogLabel = bType === 'servicios' ? 'Servicios' : bType === 'ambos' ? 'Productos y Servicios' : 'Productos'
   const catalogIcon = bType === 'servicios' ? '🔧' : '📦'
 
-  const navItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { href: '/dashboard/productos', label: catalogLabel, icon: catalogIcon },
-    { href: '/dashboard/pedidos', label: 'Pedidos', icon: '🛒' },
-    { href: '/dashboard/estadisticas', label: 'Estadísticas', icon: '📈' },
-    { href: '/dashboard/mi-negocio', label: 'Mi Negocio', icon: '🏪' },
+  const allNavItems = [
+    { href: '/dashboard', label: 'Dashboard', icon: '📊', key: 'dashboard' },
+    { href: '/dashboard/productos', label: catalogLabel, icon: catalogIcon, key: 'productos' },
+    { href: '/dashboard/pedidos', label: 'Pedidos', icon: '🛒', key: 'pedidos' },
+    { href: '/dashboard/estadisticas', label: 'Estadísticas', icon: '📈', key: 'estadisticas' },
+    { href: '/dashboard/mi-negocio', label: 'Mi Negocio', icon: '🏪', key: 'mi-negocio' },
   ]
+
+  const allowedKeys = DASHBOARD_NAV_TIERS[tier] || DASHBOARD_NAV_TIERS.gratis
+  const navItems = allNavItems.filter(item => allowedKeys.includes(item.key))
 
   const sidebarContent = (
     <>

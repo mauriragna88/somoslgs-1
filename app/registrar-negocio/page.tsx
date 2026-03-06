@@ -36,34 +36,44 @@ const plans = [
     period: 'para siempre',
     popular: false,
     features: [
-      { text: 'Listado en el directorio', included: true },
-      { text: 'Mapa interactivo', included: true },
-      { text: 'Boton de WhatsApp', included: true },
-      { text: 'Horarios de negocio', included: true },
-      { text: 'Hasta 5 fotos', included: true },
+      { text: 'Listado basico en el directorio', included: true },
+      { text: 'Direccion y horarios visibles', included: true },
+      { text: 'Logo de tu negocio', included: true },
       { text: 'Opiniones de clientes', included: true },
+      { text: 'WhatsApp clickeable', included: false },
+      { text: 'Mapa interactivo', included: false },
+      { text: 'Redes sociales', included: false },
       { text: 'Productos y pedidos', included: false },
-      { text: 'Pagos en linea', included: false },
-      { text: 'Destacado en busquedas', included: false },
-      { text: 'Badge verificado', included: false },
     ],
   },
   {
-    name: 'Pro',
-    price: '$100',
+    name: 'Emprendedor',
+    price: '$60',
     period: '/mes',
     popular: true,
     features: [
       { text: 'Todo lo del plan Gratis', included: true },
+      { text: 'Boton de WhatsApp directo', included: true },
+      { text: 'Mapa interactivo', included: true },
+      { text: 'Redes sociales', included: true },
+      { text: 'Hasta 8 fotos', included: true },
+      { text: 'Productos y pedidos', included: false },
+      { text: 'Destacado en busquedas', included: false },
+    ],
+  },
+  {
+    name: 'Pro',
+    price: '$120',
+    period: '/mes',
+    popular: false,
+    features: [
+      { text: 'Todo lo del plan Emprendedor', included: true },
       { text: 'Catalogo de productos', included: true },
       { text: 'Recibir pedidos', included: true },
-      { text: 'Pagos por transferencia', included: true },
-      { text: 'Pagos con tarjeta', included: true },
+      { text: 'Pagos por transferencia y tarjeta', included: true },
       { text: 'Hasta 15 fotos', included: true },
       { text: 'Destacado en busquedas', included: false },
-      { text: 'Badge verificado', included: false },
       { text: 'Estadisticas', included: false },
-      { text: 'Soporte VIP', included: false },
     ],
   },
   {
@@ -267,7 +277,7 @@ export default async function RegistrarNegocioPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {plans.map((plan) => (
               <div
                 key={plan.name}

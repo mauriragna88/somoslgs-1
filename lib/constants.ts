@@ -54,9 +54,17 @@ export function isBusinessOpen(hours: BusinessHours | null | undefined): boolean
 }
 
 // Tiers de suscripcion disponibles
-export const SUBSCRIPTION_TIERS = ['gratis', 'pro', 'avanzado'] as const
+export const SUBSCRIPTION_TIERS = ['gratis', 'emprendedor', 'pro', 'avanzado'] as const
 
 export type SubscriptionTier = (typeof SUBSCRIPTION_TIERS)[number]
+
+// Orden numerico de tiers (para ordenar en busqueda)
+export const TIER_ORDER: Record<string, number> = {
+  gratis: 1,
+  emprendedor: 2,
+  pro: 3,
+  avanzado: 4,
+}
 
 // Tiers de suscripcion que permiten recibir pedidos
 export const ORDER_ENABLED_TIERS: readonly string[] = ['pro', 'avanzado']
@@ -67,9 +75,30 @@ export const STATS_ENABLED_TIERS: readonly string[] = ['avanzado']
 // Tiers que aparecen destacados
 export const FEATURED_TIERS: readonly string[] = ['avanzado']
 
+// Tiers que permiten WhatsApp clickeable en pagina publica
+export const WHATSAPP_ENABLED_TIERS: readonly string[] = ['emprendedor', 'pro', 'avanzado']
+
+// Tiers que permiten mapa interactivo en pagina publica
+export const MAP_ENABLED_TIERS: readonly string[] = ['emprendedor', 'pro', 'avanzado']
+
+// Tiers que permiten redes sociales en pagina publica
+export const SOCIAL_LINKS_TIERS: readonly string[] = ['emprendedor', 'pro', 'avanzado']
+
+// Tiers con acceso a productos en dashboard
+export const PRODUCTS_ENABLED_TIERS: readonly string[] = ['pro', 'avanzado']
+
+// Items de navegacion del dashboard por tier
+export const DASHBOARD_NAV_TIERS: Record<string, readonly string[]> = {
+  gratis: ['dashboard', 'mi-negocio'],
+  emprendedor: ['dashboard', 'mi-negocio'],
+  pro: ['dashboard', 'productos', 'pedidos', 'mi-negocio'],
+  avanzado: ['dashboard', 'productos', 'pedidos', 'estadisticas', 'mi-negocio'],
+}
+
 // Limite de fotos en galeria por plan
 export const GALLERY_PHOTO_LIMITS: Record<SubscriptionTier, number> = {
-  gratis: 5,
+  gratis: 1,
+  emprendedor: 8,
   pro: 15,
   avanzado: 20,
 }
@@ -111,8 +140,8 @@ export const BANNED_WORDS = [
 
 // --- Publicidad / Banners ---
 export const BANNER_PLACEMENTS = [
-  'home_top', 'home_middle', 'search_top',
-  'search_sidebar', 'business_sidebar', 'categories_top',
+  'home_top', 'home_middle', 'home_left', 'home_right',
+  'search_top', 'search_sidebar', 'search_inline', 'business_sidebar', 'categories_top',
   'marketplace_top', 'marketplace_sidebar'
 ] as const
 
@@ -121,8 +150,11 @@ export type BannerPlacement = (typeof BANNER_PLACEMENTS)[number]
 export const BANNER_PLACEMENT_LABELS: Record<BannerPlacement, string> = {
   home_top: 'Inicio - Superior',
   home_middle: 'Inicio - Medio',
+  home_left: 'Inicio - Lateral Izquierdo',
+  home_right: 'Inicio - Lateral Derecho',
   search_top: 'Búsqueda - Superior',
   search_sidebar: 'Búsqueda - Lateral',
+  search_inline: 'Búsqueda - Tarjeta Patrocinada',
   business_sidebar: 'Negocio - Lateral',
   categories_top: 'Categorías - Superior',
   marketplace_top: 'Marketplace - Superior',

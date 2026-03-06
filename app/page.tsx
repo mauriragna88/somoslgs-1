@@ -7,6 +7,7 @@ import StarRating from '@/components/reviews/StarRating'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import PremiumSlider from '@/components/shared/PremiumSlider'
 import AnimatedCounter from '@/components/shared/AnimatedCounter'
+import { TIER_ORDER } from '@/lib/constants'
 import type { BlogPost } from '@/types/database.types'
 
 export const revalidate = 3600
@@ -72,6 +73,16 @@ export default async function Home() {
 
   const latestPosts = (blogPosts as BlogPost[]) || []
 
+  // Fetch top reviews for testimonials section
+  const { data: topReviews } = await supabase
+    .from('reviews')
+    .select('id, rating, comment, created_at, profile:profiles(full_name), business:businesses(name, slug)')
+    .gte('rating', 4)
+    .not('comment', 'is', null)
+    .order('rating', { ascending: false })
+    .order('created_at', { ascending: false })
+    .limit(6)
+
   // Fetch newest businesses (all tiers) for Descubre section
   const { data: newestBusinesses } = await supabase
     .from('businesses')
@@ -81,11 +92,15 @@ export default async function Home() {
       business_photos(image_url)
     `)
     .eq('is_active', true)
-    .order('subscription_tier', { ascending: false })
     .order('created_at', { ascending: false })
     .limit(16) as { data: any[] | null }
 
-  const discoverBusinesses = newestBusinesses || []
+  // Sort by tier order client-side (avanzado > pro > emprendedor > gratis)
+  const discoverBusinesses = (newestBusinesses || []).sort((a: any, b: any) => {
+    const tierA = TIER_ORDER[a.subscription_tier] || 0
+    const tierB = TIER_ORDER[b.subscription_tier] || 0
+    return tierB - tierA
+  })
 
   // JSON-LD structured data
   const websiteJsonLd = {
@@ -172,7 +187,7 @@ export default async function Home() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent">Lagos de Moreno</span>
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              Conecta con negocios locales, explora servicios y apoya a tu comunidad
+              La red de negocios mas grande de Lagos de Moreno. Conecta, explora y apoya a tu comunidad
             </p>
 
             {/* Search */}
@@ -184,7 +199,7 @@ export default async function Home() {
             <div className="flex flex-wrap justify-center gap-4 md:gap-6">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10 animate-fade-in-up">
                 <p className="text-2xl md:text-3xl font-bold text-accent">
-                  <AnimatedCounter target={25} suffix="+" />
+                  <AnimatedCounter target={100} suffix="+" />
                 </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Negocios</p>
               </div>
@@ -211,6 +226,14 @@ export default async function Home() {
           </svg>
         </div>
       </section>
+
+      {/* Lateral banners (desktop xl+ only) */}
+      <div className="hidden xl:block fixed left-2 top-1/2 -translate-y-1/2 z-30 w-[130px]">
+        <BannerDisplay placement="home_left" />
+      </div>
+      <div className="hidden xl:block fixed right-2 top-1/2 -translate-y-1/2 z-30 w-[130px]">
+        <BannerDisplay placement="home_right" />
+      </div>
 
       {/* Banner: Home Top */}
       <div className="container mx-auto px-4 py-6">
@@ -366,6 +389,7 @@ export default async function Home() {
       {discoverBusinesses.length > 0 && (() => {
         const avanzadoBiz = discoverBusinesses.filter((b: any) => b.subscription_tier === 'avanzado')
         const proBiz = discoverBusinesses.filter((b: any) => b.subscription_tier === 'pro')
+        const emprendedorBiz = discoverBusinesses.filter((b: any) => b.subscription_tier === 'emprendedor')
         const gratisBiz = discoverBusinesses.filter((b: any) => b.subscription_tier === 'gratis')
 
         return (
@@ -531,8 +555,8 @@ export default async function Home() {
                 </div>
               )}
 
-              {/* GRATIS: Compact cards with description snippet */}
-              {gratisBiz.length > 0 && (
+              {/* EMPRENDEDOR + GRATIS: Compact cards with description snippet */}
+              {(emprendedorBiz.length > 0 || gratisBiz.length > 0) && (
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">📍</span>
@@ -540,7 +564,7 @@ export default async function Home() {
                   </div>
                   <p className="text-gray-400 text-sm mb-5">Encuentra de todo en Lagos de Moreno — conoce lo que ofrecen</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {gratisBiz.map((business: any) => (
+                    {[...emprendedorBiz, ...gratisBiz].map((business: any) => (
                       <Link
                         key={business.id}
                         href={`/negocios/${business.slug}`}
@@ -681,7 +705,7 @@ export default async function Home() {
                 </svg>
               </div>
               <p className="text-2xl font-bold text-primary mb-1">
-                <AnimatedCounter target={25} suffix="+" />
+                <AnimatedCounter target={100} suffix="+" />
               </p>
               <h3 className="font-bold text-secondary mb-1 text-sm">Negocios</h3>
               <p className="text-xs text-gray-500">Verificados y activos</p>
@@ -728,78 +752,71 @@ export default async function Home() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full mb-4">Testimonios</span>
+            <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full mb-4">Opiniones</span>
             <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">Lo que dicen nuestros usuarios</h2>
-            <p className="text-gray-500">Negocios que ya son parte de SomosLagos</p>
+            <p className="text-gray-500">Opiniones reales de personas en Lagos de Moreno</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <div className="bg-surface rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
+          {topReviews && topReviews.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-10">
+                {topReviews.map((review: any) => (
+                  <div key={review.id} className="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-1 mb-3">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className={`w-4 h-4 ${i < review.rating ? 'text-accent' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-gray-700 text-sm mb-4 line-clamp-3">&ldquo;{review.comment}&rdquo;</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-secondary">{(review.profile as any)?.full_name || 'Usuario'}</span>
+                      {(review.business as any)?.slug && (
+                        <Link href={`/negocios/${(review.business as any).slug}`} className="text-xs text-primary hover:underline">
+                          {(review.business as any).name}
+                        </Link>
+                      )}
+                    </div>
+                  </div>
                 ))}
               </div>
-              <p className="text-sm text-gray-600 mb-4 italic">
-                &ldquo;Desde que registre mi negocio en SomosLagos, me llegan clientes nuevos cada semana. Es como tener un anuncio permanente en todo Lagos.&rdquo;
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">MR</span>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-secondary">Maria Rodriguez</p>
-                  <p className="text-xs text-gray-500">Restaurante La Casona</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-surface rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              <div className="text-center">
+                <Link
+                  href="/buscar"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                   </svg>
-                ))}
+                  Busca un negocio y deja tu opinion
+                </Link>
               </div>
-              <p className="text-sm text-gray-600 mb-4 italic">
-                &ldquo;Lo mejor es que es gratis y muy facil de usar. En 5 minutos ya tenia mi negocio publicado con fotos, horarios y mapa. Muy recomendable.&rdquo;
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-accent to-accent-dark rounded-full flex items-center justify-center">
-                  <span className="text-secondary font-bold text-sm">JL</span>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-secondary">Jose Luis Hernandez</p>
-                  <p className="text-xs text-gray-500">Taller Mecanico JL</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-surface rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </>
+          ) : (
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 md:p-12 border border-gray-100 text-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
-                ))}
-              </div>
-              <p className="text-sm text-gray-600 mb-4 italic">
-                &ldquo;Mis clientes ahora me encuentran facilmente. El plan Pro me permite recibir pedidos y eso ha aumentado mis ventas. SomosLagos es lo que Lagos necesitaba.&rdquo;
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">AG</span>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-secondary">Ana Garcia</p>
-                  <p className="text-xs text-gray-500">Estetica Bella Lagos</p>
-                </div>
+                <h3 className="text-xl font-bold text-secondary mb-3">Se el primero en opinar</h3>
+                <p className="text-gray-600 max-w-lg mx-auto mb-6">
+                  Visita cualquier negocio de Lagos de Moreno y comparte tu experiencia. Tu opinion ayuda a otros a descubrir los mejores lugares.
+                </p>
+                <Link
+                  href="/buscar"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-colors"
+                >
+                  Explorar negocios
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
-import { ORDER_ENABLED_TIERS } from '@/lib/constants'
+import { ORDER_ENABLED_TIERS, WHATSAPP_ENABLED_TIERS, MAP_ENABLED_TIERS, SOCIAL_LINKS_TIERS, FEATURED_TIERS } from '@/lib/constants'
 import type { BusinessHours } from '@/lib/constants'
 import ProductList from '@/components/public/ProductList'
 import PhotoCarousel from '@/components/public/PhotoCarousel'
@@ -15,6 +15,7 @@ import FavoriteButton from '@/components/shared/FavoriteButton'
 import ViewTracker from '@/components/shared/ViewTracker'
 import ReviewsSection from '@/components/reviews/ReviewsSection'
 import type { Review } from '@/types/reviews'
+import UpsellModal from '@/components/public/UpsellModal'
 
 const MapDisplay = dynamic(() => import('@/components/maps/MapDisplay'), { ssr: false })
 
@@ -110,8 +111,17 @@ export default async function BusinessPage({ params }: PageProps) {
     notFound()
   }
 
+  // Feature flags based on subscription tier
+  const tier = business.subscription_tier
+  const canWhatsApp = WHATSAPP_ENABLED_TIERS.includes(tier)
+  const canMap = MAP_ENABLED_TIERS.includes(tier)
+  const canSocial = SOCIAL_LINKS_TIERS.includes(tier)
+  const canClickPhone = WHATSAPP_ENABLED_TIERS.includes(tier) // same tiers as whatsapp
+  const isFeatured = FEATURED_TIERS.includes(tier)
+  const canShowGallery = tier !== 'gratis'
+
   // Get products if business has the right plan
-  const canShowProducts = ['pro', 'avanzado'].includes(business.subscription_tier)
+  const canShowProducts = ORDER_ENABLED_TIERS.includes(tier)
   let products: any[] = []
 
   if (canShowProducts) {
@@ -277,13 +287,22 @@ export default async function BusinessPage({ params }: PageProps) {
                   </div>
                 )}
                 {business.phone && (
-                  <a
-                    href={`tel:${business.phone}`}
-                    className="flex items-center text-primary hover:underline"
-                  >
-                    <span className="mr-2">📞</span>
-                    {business.phone}
-                  </a>
+                  canClickPhone ? (
+                    <a
+                      href={`tel:${business.phone}`}
+                      className="flex items-center text-primary hover:underline"
+                    >
+                      <span className="mr-2">📞</span>
+                      {business.phone}
+                    </a>
+                  ) : (
+                    <UpsellModal businessName={business.name}>
+                      <span className="flex items-center text-gray-600 cursor-pointer hover:text-primary transition-colors">
+                        <span className="mr-2">📞</span>
+                        {business.phone}
+                      </span>
+                    </UpsellModal>
+                  )
                 )}
                 {business.website && (
                   <a
@@ -301,7 +320,7 @@ export default async function BusinessPage({ params }: PageProps) {
               </div>
 
               {/* Social Links */}
-              {(business.facebook_url || business.instagram_url || business.tiktok_url) && (
+              {canSocial && (business.facebook_url || business.instagram_url || business.tiktok_url) && (
                 <div className="flex items-center gap-3 mt-3">
                   {business.facebook_url && (
                     <a
@@ -348,7 +367,12 @@ export default async function BusinessPage({ params }: PageProps) {
 
             {/* Action Buttons */}
             <div className="flex-shrink-0 flex flex-col gap-2">
-              {business.whatsapp && (
+              {isFeatured && (
+                <span className="inline-flex items-center justify-center px-3 py-1 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full border border-accent/30">
+                  ⭐ Negocio Verificado
+                </span>
+              )}
+              {canWhatsApp && business.whatsapp && (
                 <a
                   href={`https://wa.me/52${business.whatsapp}?text=Hola, vi tu negocio en SomosLagos y me gustaría más información`}
                   target="_blank"
@@ -376,12 +400,12 @@ export default async function BusinessPage({ params }: PageProps) {
       </div>
 
       {/* Photo Gallery Carousel */}
-      {photos.length > 0 && (
+      {canShowGallery && photos.length > 0 && (
         <PhotoCarousel photos={photos} businessName={business.name} />
       )}
 
       {/* Map Section */}
-      {business.latitude && business.longitude && (
+      {canMap && business.latitude && business.longitude && (
         <div className="container mx-auto px-4 py-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Ubicación</h2>
           <MapDisplay
@@ -468,7 +492,7 @@ export default async function BusinessPage({ params }: PageProps) {
               Comunícate directamente con este negocio para conocer sus productos y servicios
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              {business.phone && (
+              {business.phone && canClickPhone && (
                 <a
                   href={`tel:${business.phone}`}
                   className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
@@ -477,7 +501,7 @@ export default async function BusinessPage({ params }: PageProps) {
                   Llamar
                 </a>
               )}
-              {business.whatsapp && (
+              {canWhatsApp && business.whatsapp && (
                 <a
                   href={`https://wa.me/52${business.whatsapp}`}
                   target="_blank"
