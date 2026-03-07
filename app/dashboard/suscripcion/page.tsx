@@ -97,6 +97,14 @@ export default async function SuscripcionPage() {
   const currentPlan = planDetails[business.subscription_tier] || planDetails.gratis
   const expiration = formatDaysRemaining(business.subscription_expires_at)
 
+  const nextPlanMap: Record<string, string> = {
+    gratis: 'emprendedor',
+    emprendedor: 'pro',
+    pro: 'avanzado',
+  }
+  const nextPlanKey = nextPlanMap[business.subscription_tier]
+  const nextPlan = nextPlanKey ? planDetails[nextPlanKey] : null
+
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-8">
@@ -202,6 +210,39 @@ export default async function SuscripcionPage() {
           </div>
         </Link>
       </div>
+
+      {/* Next Plan Recommendation */}
+      {nextPlan && (
+        <div className="bg-gradient-to-r from-primary/5 to-accent/5 border-2 border-primary/20 rounded-xl p-6 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium text-gray-500 mb-1">Siguiente nivel</p>
+              <h2 className="text-2xl font-bold text-gray-900">Plan {nextPlan.name}</h2>
+              <p className="text-3xl font-bold text-primary mt-1">
+                ${nextPlan.price}<span className="text-base font-normal text-gray-500">/mes</span>
+              </p>
+              {nextPlan.dailyPrice && (
+                <p className="text-sm text-accent-dark font-semibold">Solo {nextPlan.dailyPrice} — menos que un cafe</p>
+              )}
+              <ul className="mt-3 space-y-1">
+                {nextPlan.features.map((f, i) => (
+                  <li key={i} className="text-sm text-gray-600 flex items-center gap-2">
+                    <span className="text-green-500">✓</span> {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex-shrink-0">
+              <Link
+                href="/dashboard/pago"
+                className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors text-center"
+              >
+                Mejorar a {nextPlan.name}
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* All Plans */}
       <div className="mb-8">

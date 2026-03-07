@@ -44,14 +44,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ListingDetailPage({ params }: PageProps) {
   const supabase = createServiceClient()
 
-  const { data: listing, error } = await supabase
+  // Try with FK join first, fallback without it
+  let listing: any = null
+  const { data, error } = await supabase
     .from('marketplace_listings')
     .select('*, category:marketplace_categories(*), seller:profiles!marketplace_listings_seller_id_fkey(full_name, created_at)')
     .eq('id', params.id)
     .single()
 
-  if (error || !listing || listing.status === 'removed') {
-    notFound()
+  if (error) {
+    // Fallback: query without FK hint (in case FK doesn't exist)
+    const { data: fallback } = await supabase
+      .from('marketplace_listings')
+      .select('*, category:marketplace_categories(*)')
+      .eq('id', params.id)
+      .single()
+
+    if (!fallback || fallback.status === 'removed') {
+      notFound()
+    }
+    listing = { ...fallback, seller: null }
+  } else {
+    if (!data || data.status === 'removed') {
+      notFound()
+    }
+    listing = data
   }
 
   // Increment views

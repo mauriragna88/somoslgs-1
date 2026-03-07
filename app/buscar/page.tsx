@@ -479,6 +479,11 @@ export default async function BuscarPage({
             )}
           </div>
 
+          {/* Banner: visible on mobile only (sidebar banner shows on desktop) */}
+          <div className="lg:hidden mt-6">
+            <BannerDisplay placement="search_sidebar" />
+          </div>
+
           {/* Sidebar - Categories (desktop only) */}
           <aside className="hidden lg:block lg:col-span-1">
             <div className="bg-white rounded-2xl border border-gray-100 p-5 sticky top-24">
