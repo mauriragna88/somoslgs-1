@@ -448,6 +448,17 @@ export interface Report {
   created_at: string
 }
 
+// Marketplace lead type
+export interface MarketplaceLead {
+  id: string
+  listing_id: string
+  buyer_id: string
+  message: string | null
+  created_at: string
+  // Joined fields
+  buyer?: { full_name: string; phone: string | null } | null
+}
+
 // Blog post type
 export interface BlogPost {
   id: string

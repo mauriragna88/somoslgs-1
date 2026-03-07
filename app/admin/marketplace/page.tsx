@@ -31,6 +31,8 @@ interface Listing {
   images: string[]
   created_at: string
   views: number
+  is_featured: boolean
+  featured_until: string | null
   seller: { full_name: string } | null
   category: { name: string; icon: string } | null
 }
@@ -237,6 +239,28 @@ export default function AdminMarketplacePage() {
                   <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[listing.status] || ''}`}>
                     {listing.status}
                   </span>
+                  {listing.is_featured && listing.featured_until && new Date(listing.featured_until) > new Date() && (
+                    <span className="px-2 py-0.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold">
+                      &#11088;
+                    </span>
+                  )}
+                  {listing.status === 'active' && (
+                    listing.is_featured && listing.featured_until && new Date(listing.featured_until) > new Date() ? (
+                      <button
+                        onClick={() => handleAction(listing.id, 'unfeature')}
+                        className="px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        Quitar destacado
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleAction(listing.id, 'feature')}
+                        className="px-3 py-1.5 text-xs font-medium text-accent-dark border border-accent/30 rounded-lg hover:bg-accent/10 transition-colors"
+                      >
+                        Destacar 7d
+                      </button>
+                    )
+                  )}
                   {listing.status !== 'removed' && (
                     <button
                       onClick={() => handleForceDelete(listing.id)}

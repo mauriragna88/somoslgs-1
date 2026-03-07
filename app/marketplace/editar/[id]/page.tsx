@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { getUser, createServiceClient } from '@/lib/supabase/server'
 import ListingForm from '@/components/marketplace/ListingForm'
+import { MARKETPLACE_FREE_PHOTO_LIMIT, MARKETPLACE_PHOTO_LIMIT } from '@/lib/constants'
 import type { MarketplaceCategory, MarketplaceListing } from '@/types/database.types'
 
 export const dynamic = 'force-dynamic'
@@ -43,6 +44,10 @@ export default async function EditarListingPage({ params }: PageProps) {
     redirect('/marketplace/mis-articulos')
   }
 
+  const isFeatured = listing.is_featured &&
+    listing.featured_until &&
+    new Date(listing.featured_until) > new Date()
+
   return (
     <main className="min-h-screen bg-surface">
       <div className="container mx-auto px-4 py-8">
@@ -53,6 +58,7 @@ export default async function EditarListingPage({ params }: PageProps) {
           <ListingForm
             categories={(categories || []) as MarketplaceCategory[]}
             listing={listing as unknown as MarketplaceListing}
+            photoLimit={isFeatured ? MARKETPLACE_PHOTO_LIMIT : MARKETPLACE_FREE_PHOTO_LIMIT}
           />
         </div>
       </div>

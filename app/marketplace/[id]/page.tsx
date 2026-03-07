@@ -1,12 +1,13 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createServiceClient, getUser } from '@/lib/supabase/server'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { MARKETPLACE_CONDITIONS, MARKETPLACE_PRICE_TYPES } from '@/lib/constants'
+import { MARKETPLACE_CONDITIONS, MARKETPLACE_PRICE_TYPES, MARKETPLACE_FEATURED_PRICE } from '@/lib/constants'
 import ListingGallery from '@/components/marketplace/ListingGallery'
 import ListingCard from '@/components/marketplace/ListingCard'
 import ReportButton from '@/components/marketplace/ReportButton'
+import InterestButton from '@/components/marketplace/InterestButton'
 import type { MarketplaceListing } from '@/types/database.types'
 
 export const revalidate = 300
@@ -99,6 +100,28 @@ export default async function ListingDetailPage({ params }: PageProps) {
   const typedListing = listing as unknown as MarketplaceListing
   const conditionLabel = MARKETPLACE_CONDITIONS[typedListing.condition]
   const priceTypeLabel = MARKETPLACE_PRICE_TYPES[typedListing.price_type]
+
+  // Check if listing is currently featured
+  const isFeatured = typedListing.is_featured &&
+    typedListing.featured_until &&
+    new Date(typedListing.featured_until) > new Date()
+
+  // Get current user + lead data
+  const user = await getUser()
+  const [{ count: leadCount }, { data: userLead }] = await Promise.all([
+    supabase
+      .from('marketplace_leads')
+      .select('id', { count: 'exact', head: true })
+      .eq('listing_id', params.id),
+    user
+      ? supabase
+          .from('marketplace_leads')
+          .select('id')
+          .eq('listing_id', params.id)
+          .eq('buyer_id', user.id)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+  ])
 
   const whatsappUrl = `https://wa.me/52${typedListing.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(
     `Hola, me interesa tu artículo "${typedListing.title}" en SomosLagos Marketplace.`
@@ -251,20 +274,40 @@ export default async function ListingDetailPage({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* WhatsApp CTA */}
+              {/* CTA: WhatsApp (featured) or Interest button (free) */}
               {typedListing.status === 'active' && (
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 w-full py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl transition-colors text-lg"
-                >
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.913.913l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.34 0-4.508-.646-6.372-1.766l-.246-.151-3.244 1.088 1.088-3.244-.151-.246A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-                  </svg>
-                  Contactar por WhatsApp
-                </a>
+                isFeatured ? (
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 w-full py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl transition-colors text-lg"
+                  >
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.913.913l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.34 0-4.508-.646-6.372-1.766l-.246-.151-3.244 1.088 1.088-3.244-.151-.246A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+                    </svg>
+                    Contactar por WhatsApp
+                  </a>
+                ) : (
+                  <>
+                    {typedListing.seller_id !== user?.id && (
+                      <InterestButton
+                        listingId={typedListing.id}
+                        isLoggedIn={!!user}
+                        alreadyInterested={!!userLead}
+                        interestCount={leadCount || 0}
+                      />
+                    )}
+                    <div className="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
+                      <p className="text-xs text-amber-800 text-center">
+                        El WhatsApp del vendedor se muestra en articulos Destacados.
+                        <br />
+                        <span className="font-semibold">Destaca tu articulo por ${MARKETPLACE_FEATURED_PRICE} / 7 dias</span>
+                      </p>
+                    </div>
+                  </>
+                )
               )}
 
               {/* Report */}

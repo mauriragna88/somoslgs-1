@@ -7,6 +7,7 @@ import {
   MARKETPLACE_CONDITIONS,
   MARKETPLACE_PRICE_TYPES,
   MARKETPLACE_PHOTO_LIMIT,
+  MARKETPLACE_FEATURED_PRICE,
   BANNED_WORDS,
 } from '@/lib/constants'
 import { optimizeImage, IMAGE_PRESETS } from '@/lib/image-utils'
@@ -16,6 +17,7 @@ interface ListingFormProps {
   categories: MarketplaceCategory[]
   listing?: MarketplaceListing | null
   userWhatsapp?: string | null
+  photoLimit?: number
 }
 
 function normalizeText(text: string): string {
@@ -34,7 +36,8 @@ function clientModerate(title: string, description: string): string | null {
   return null
 }
 
-export default function ListingForm({ categories, listing, userWhatsapp }: ListingFormProps) {
+export default function ListingForm({ categories, listing, userWhatsapp, photoLimit }: ListingFormProps) {
+  const maxPhotos = photoLimit ?? MARKETPLACE_PHOTO_LIMIT
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const isEditing = !!listing
@@ -56,9 +59,9 @@ export default function ListingForm({ categories, listing, userWhatsapp }: Listi
     const files = e.target.files
     if (!files || files.length === 0) return
 
-    const remaining = MARKETPLACE_PHOTO_LIMIT - images.length
+    const remaining = maxPhotos - images.length
     if (remaining <= 0) {
-      setError(`Máximo ${MARKETPLACE_PHOTO_LIMIT} fotos`)
+      setError(`Máximo ${maxPhotos} fotos`)
       return
     }
 
@@ -183,7 +186,7 @@ export default function ListingForm({ categories, listing, userWhatsapp }: Listi
       {/* Photos */}
       <div>
         <label className="block text-sm font-semibold text-secondary mb-2">
-          Fotos ({images.length}/{MARKETPLACE_PHOTO_LIMIT})
+          Fotos ({images.length}/{maxPhotos})
         </label>
         <div className="grid grid-cols-4 gap-3">
           {images.map((img, idx) => (
@@ -204,7 +207,7 @@ export default function ListingForm({ categories, listing, userWhatsapp }: Listi
               )}
             </div>
           ))}
-          {images.length < MARKETPLACE_PHOTO_LIMIT && (
+          {images.length < maxPhotos && (
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
@@ -232,6 +235,11 @@ export default function ListingForm({ categories, listing, userWhatsapp }: Listi
           onChange={handleImageUpload}
           className="hidden"
         />
+        {maxPhotos < MARKETPLACE_PHOTO_LIMIT && (
+          <p className="text-xs text-gray-400 mt-2">
+            Sube hasta {maxPhotos} fotos. Con Destacado (${MARKETPLACE_FEATURED_PRICE}) sube hasta {MARKETPLACE_PHOTO_LIMIT}.
+          </p>
+        )}
       </div>
 
       {/* Title */}

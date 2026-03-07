@@ -42,13 +42,20 @@ export async function GET(request: Request) {
     const supabase = createServiceClient()
     const { data } = await supabase
       .from('marketplace_listings')
-      .select('*, category:marketplace_categories(*)')
+      .select('*, category:marketplace_categories(*), marketplace_leads(count)')
       .eq('seller_id', user.id)
       .neq('status', 'removed')
       .order('created_at', { ascending: false })
       .limit(100)
 
-    return NextResponse.json({ data: data || [] })
+    // Flatten lead count into each listing
+    const withLeadCount = (data || []).map((item: any) => ({
+      ...item,
+      lead_count: item.marketplace_leads?.[0]?.count || 0,
+      marketplace_leads: undefined,
+    }))
+
+    return NextResponse.json({ data: withLeadCount })
   }
 
   const supabase = createServiceClient()

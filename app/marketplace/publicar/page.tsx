@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { Metadata } from 'next'
 import { getUser, createServiceClient } from '@/lib/supabase/server'
 import ListingForm from '@/components/marketplace/ListingForm'
+import { MARKETPLACE_FREE_PHOTO_LIMIT } from '@/lib/constants'
 import type { MarketplaceCategory } from '@/types/database.types'
 
 export const dynamic = 'force-dynamic'
@@ -42,6 +43,7 @@ export default async function PublicarPage() {
           <ListingForm
             categories={(categories || []) as MarketplaceCategory[]}
             userWhatsapp={profile?.phone}
+            photoLimit={MARKETPLACE_FREE_PHOTO_LIMIT}
           />
         </div>
       </div>

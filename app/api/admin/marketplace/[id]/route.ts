@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { isAdmin, getUser, createServiceClient } from '@/lib/supabase/server'
+import { MARKETPLACE_FEATURED_DAYS } from '@/lib/constants'
 
 // PUT: Admin update listing/report status
 export async function PUT(
@@ -56,6 +57,43 @@ export async function PUT(
       .eq('item_type', 'marketplace_listing')
       .eq('item_id', params.id)
       .eq('status', 'pending')
+
+    return NextResponse.json({ success: true })
+  }
+
+  if (action === 'feature') {
+    const featuredUntil = new Date()
+    featuredUntil.setDate(featuredUntil.getDate() + MARKETPLACE_FEATURED_DAYS)
+
+    const { error } = await supabase
+      .from('marketplace_listings')
+      .update({
+        is_featured: true,
+        featured_until: featuredUntil.toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', params.id)
+
+    if (error) {
+      return NextResponse.json({ error: 'Error al destacar artículo' }, { status: 500 })
+    }
+
+    return NextResponse.json({ success: true })
+  }
+
+  if (action === 'unfeature') {
+    const { error } = await supabase
+      .from('marketplace_listings')
+      .update({
+        is_featured: false,
+        featured_until: null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', params.id)
+
+    if (error) {
+      return NextResponse.json({ error: 'Error al quitar destacado' }, { status: 500 })
+    }
 
     return NextResponse.json({ success: true })
   }

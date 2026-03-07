@@ -131,8 +131,9 @@ export const AD_PRICES = {
 
 // --- Marketplace ---
 export const MARKETPLACE_PHOTO_LIMIT = 8
+export const MARKETPLACE_FREE_PHOTO_LIMIT = 4
 export const MARKETPLACE_LISTING_DAYS = 30
-export const MARKETPLACE_FEATURED_PRICE = 25 // MXN por 7 días
+export const MARKETPLACE_FEATURED_PRICE = 15 // MXN por 7 días
 export const MARKETPLACE_FEATURED_DAYS = 7
 
 export const MARKETPLACE_CONDITIONS = {
