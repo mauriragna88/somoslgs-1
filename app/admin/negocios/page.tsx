@@ -27,6 +27,7 @@ interface BusinessRow {
   subscription_expires_at: string | null
   is_courtesy: boolean
   is_active: boolean
+  total_views: number
   created_at: string
   category: CategoryData | CategoryData[] | null
   owner: OwnerData | OwnerData[] | null
@@ -44,6 +45,7 @@ interface BusinessForDisplay {
   subscription_expires_at: string | null
   is_courtesy: boolean
   is_active: boolean
+  total_views: number
   created_at: string
   category: CategoryData | null
   owner: OwnerData | null
@@ -68,6 +70,7 @@ export default async function AdminBusinessesPage() {
       subscription_expires_at,
       is_courtesy,
       is_active,
+      total_views,
       created_at,
       category:categories(name),
       owner:profiles!businesses_owner_id_fkey(id, full_name, email, phone)
@@ -98,6 +101,7 @@ export default async function AdminBusinessesPage() {
   const noOwnerCount = typedBusinesses.filter(b => !b.owner_id).length
   const courtesyCount = typedBusinesses.filter(b => b.is_courtesy).length
   const payingCount = typedBusinesses.filter(b => !b.is_courtesy).length
+  const totalViews = typedBusinesses.reduce((sum, b) => sum + (b.total_views || 0), 0)
 
   return (
     <div>
@@ -116,7 +120,7 @@ export default async function AdminBusinessesPage() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4 mb-6">
         <div className="bg-white rounded-xl shadow-sm p-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -197,6 +201,21 @@ export default async function AdminBusinessesPage() {
             <div>
               <p className="text-2xl font-bold text-amber-600">{noOwnerCount}</p>
               <p className="text-xs text-gray-500">Sin Dueno</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-indigo-600">{totalViews.toLocaleString()}</p>
+              <p className="text-xs text-gray-500">Vistas</p>
             </div>
           </div>
         </div>

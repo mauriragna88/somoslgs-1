@@ -32,6 +32,7 @@ interface Business {
   subscription_expires_at: string | null
   is_courtesy?: boolean
   is_active: boolean
+  total_views?: number
   created_at: string
   category: CategoryData | null
   owner: OwnerData | null
@@ -52,6 +53,7 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
   const [filterPlan, setFilterPlan] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
   const [filterPayment, setFilterPayment] = useState('')
+  const [sortBy, setSortBy] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
 
   // Filter businesses
@@ -72,6 +74,13 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
       (filterPayment === 'paying' && !business.is_courtesy)
 
     return matchesSearch && matchesPlan && matchesStatus && matchesPayment
+  })
+
+  // Sort businesses
+  const sortedBusinesses = [...filteredBusinesses].sort((a, b) => {
+    if (sortBy === 'views_desc') return (b.total_views || 0) - (a.total_views || 0)
+    if (sortBy === 'views_asc') return (a.total_views || 0) - (b.total_views || 0)
+    return 0 // default: keep original order (created_at desc)
   })
 
   const getDaysRemaining = (expiresAt: string | null) => {
@@ -168,14 +177,23 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
               <option value="paying">De pago</option>
               <option value="courtesy">Cortesia</option>
             </select>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+            >
+              <option value="">Ordenar</option>
+              <option value="views_desc">Mas vistas</option>
+              <option value="views_asc">Menos vistas</option>
+            </select>
           </div>
         </div>
       </div>
 
       {/* Mobile Cards View */}
       <div className="lg:hidden space-y-4">
-        {filteredBusinesses.length > 0 ? (
-          filteredBusinesses.map((business) => {
+        {sortedBusinesses.length > 0 ? (
+          sortedBusinesses.map((business) => {
             const daysInfo = formatDaysRemaining(business.subscription_expires_at)
             return (
               <div key={business.id} className="bg-white rounded-xl shadow-sm p-4">
@@ -241,6 +259,16 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
+                    <span className="text-gray-500">Vistas:</span>
+                    <span className="text-gray-900 font-medium flex items-center gap-1">
+                      <svg className="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                      </svg>
+                      {(business.total_views || 0).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
                     <span className="text-gray-500">Suscripción:</span>
                     <span className={`font-medium ${daysInfo.color}`}>{daysInfo.text}</span>
                   </div>
@@ -297,7 +325,7 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
           <div className="bg-white rounded-xl shadow-sm p-8 text-center text-gray-500">
             <p className="font-medium mb-1">No hay negocios</p>
             <p className="text-sm">
-              {searchTerm || filterPlan || filterStatus || filterPayment
+              {searchTerm || filterPlan || filterStatus || filterPayment || sortBy
                 ? 'No se encontraron negocios con los filtros aplicados'
                 : 'Comienza agregando tu primer negocio'}
             </p>
@@ -310,29 +338,43 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
         <table className="w-full table-fixed">
           <thead className="bg-gray-50">
             <tr>
-              <th className="w-[22%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="w-[20%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Negocio
               </th>
-              <th className="w-[22%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="w-[18%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Dueño
               </th>
-              <th className="w-[13%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="w-[11%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Plan
               </th>
-              <th className="w-[15%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="w-[13%] px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Suscripcion
+              </th>
+              <th className="w-[8%] px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase cursor-pointer hover:text-indigo-600 transition-colors"
+                onClick={() => setSortBy(sortBy === 'views_desc' ? 'views_asc' : 'views_desc')}
+                title="Ordenar por vistas"
+              >
+                <span className="flex items-center justify-center gap-1">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg>
+                  Vistas
+                  {sortBy === 'views_desc' && ' ↓'}
+                  {sortBy === 'views_asc' && ' ↑'}
+                </span>
               </th>
               <th className="w-[8%] px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Estado
               </th>
-              <th className="w-[20%] px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+              <th className="w-[22%] px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase">
                 Acciones
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-100">
-            {filteredBusinesses.length > 0 ? (
-              filteredBusinesses.map((business) => {
+            {sortedBusinesses.length > 0 ? (
+              sortedBusinesses.map((business) => {
                 const daysInfo = formatDaysRemaining(business.subscription_expires_at)
 
                 return (
@@ -404,6 +446,11 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
                         </p>
                       )}
                     </td>
+                    <td className="px-2 py-3 text-center">
+                      <span className={`text-sm font-semibold ${(business.total_views || 0) > 0 ? 'text-indigo-600' : 'text-gray-400'}`}>
+                        {(business.total_views || 0).toLocaleString()}
+                      </span>
+                    </td>
                     <td className="px-2 py-3">
                       <span
                         className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
@@ -461,11 +508,11 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
               })
             ) : (
               <tr>
-                <td colSpan={6} className="px-3 py-12 text-center">
+                <td colSpan={7} className="px-3 py-12 text-center">
                   <div className="text-gray-500">
                     <p className="text-lg font-medium mb-2">No hay negocios</p>
                     <p className="text-sm">
-                      {searchTerm || filterPlan || filterStatus || filterPayment
+                      {searchTerm || filterPlan || filterStatus || filterPayment || sortBy
                         ? 'No se encontraron negocios con los filtros aplicados'
                         : 'Comienza agregando tu primer negocio'}
                     </p>
@@ -479,7 +526,7 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
 
       {/* Results count */}
       <div className="mt-4 text-sm text-gray-500">
-        Mostrando {filteredBusinesses.length} de {businesses.length} negocios
+        Mostrando {sortedBusinesses.length} de {businesses.length} negocios
       </div>
 
       {/* Subscription Modal */}
