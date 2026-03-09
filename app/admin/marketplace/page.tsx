@@ -44,16 +44,16 @@ export default function AdminMarketplacePage() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
 
-  const fetchData = async () => {
+  const fetchData = async (currentTab: string, currentSearch: string) => {
     setLoading(true)
     try {
-      const params = new URLSearchParams({ tab })
-      if (tab === 'all' && search) params.set('q', search)
+      const params = new URLSearchParams({ tab: currentTab })
+      if (currentTab === 'all' && currentSearch) params.set('q', currentSearch)
 
       const res = await fetch(`/api/admin/marketplace?${params}`)
       const json = await res.json()
 
-      if (tab === 'reported') {
+      if (currentTab === 'reported') {
         setReports(json.data || [])
       } else {
         setListings(json.data || [])
@@ -66,7 +66,8 @@ export default function AdminMarketplacePage() {
   }
 
   useEffect(() => {
-    fetchData()
+    fetchData(tab, search)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab])
 
   const handleAction = async (listingId: string, action: string, reportId?: string) => {
@@ -82,14 +83,14 @@ export default function AdminMarketplacePage() {
       body: JSON.stringify({ action, report_id: reportId }),
     })
 
-    fetchData()
+    fetchData(tab, search)
   }
 
   const handleForceDelete = async (id: string) => {
     if (!confirm('¿Eliminar este artículo permanentemente?')) return
 
     await fetch(`/api/admin/marketplace/${id}`, { method: 'DELETE' })
-    fetchData()
+    fetchData(tab, search)
   }
 
   return (
@@ -122,7 +123,7 @@ export default function AdminMarketplacePage() {
       {/* Search (only for "all" tab) */}
       {tab === 'all' && (
         <form
-          onSubmit={(e) => { e.preventDefault(); fetchData() }}
+          onSubmit={(e) => { e.preventDefault(); fetchData(tab, search) }}
           className="flex gap-3 mb-6"
         >
           <input
