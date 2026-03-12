@@ -385,157 +385,30 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Conoce Nuestros Planes — Netflix/HBO style comparison */}
-      <section className="py-20 bg-surface">
+      {/* Planes CTA — link a pagina dedicada */}
+      <section className="py-12 bg-surface">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="max-w-3xl mx-auto text-center bg-white rounded-2xl border border-gray-100 p-8 md:p-10 shadow-sm">
             <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Planes</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">Conoce Nuestros Planes</h2>
-            <p className="text-gray-500 max-w-lg mx-auto">Empieza gratis y crece a tu ritmo. Sin contratos.</p>
-          </div>
-
-          {/* Desktop table */}
-          <div className="hidden lg:block max-w-6xl mx-auto">
-            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-              {/* Header row with plan names and prices */}
-              <div className="grid grid-cols-6">
-                <div className="p-5 bg-gray-50 border-b border-r border-gray-200 flex items-end">
-                  <span className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Funciones</span>
-                </div>
-                {[
-                  { name: 'Gratis', price: '$0', period: 'siempre', color: 'text-gray-600', bg: 'bg-white' },
-                  { name: 'Emprendedor', price: '$60', period: '/mes', color: 'text-primary', bg: 'bg-white' },
-                  { name: 'Pro', price: '$120', period: '/mes', color: 'text-emerald-600', bg: 'bg-white' },
-                  { name: 'Avanzado', price: '$180', period: '/mes', color: 'text-purple-600', bg: 'bg-white' },
-                  { name: 'Chatbot', price: '$300', period: '/mes', color: 'text-white', bg: 'bg-gradient-to-b from-violet-600 to-fuchsia-600' },
-                ].map((plan) => (
-                  <div key={plan.name} className={`p-5 border-b border-r border-gray-200 text-center ${plan.bg} ${plan.name === 'Chatbot' ? 'relative' : ''}`}>
-                    {plan.name === 'Chatbot' && (
-                      <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 -translate-y-full bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white text-[10px] font-bold px-3 py-1 rounded-t-lg">NUEVO</span>
-                    )}
-                    <p className={`font-bold text-sm mb-1 ${plan.name === 'Chatbot' ? 'text-white' : 'text-secondary'}`}>{plan.name}</p>
-                    <p className={`text-2xl font-extrabold ${plan.color}`}>{plan.price}</p>
-                    <p className={`text-xs ${plan.name === 'Chatbot' ? 'text-white/70' : 'text-gray-400'}`}>{plan.period}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Feature rows */}
-              {[
-                { feature: 'Aparecer en buscador y mapa', tiers: [true, true, true, true, true] },
-                { feature: 'WhatsApp y telefono directo', tiers: [true, true, true, true, true] },
-                { feature: 'Horarios y opiniones', tiers: [true, true, true, true, true] },
-                { feature: 'Fotos en galeria', tiers: ['3', '8', '15', '20', '25'] },
-                { feature: 'Portada personalizada', tiers: [false, true, true, true, true] },
-                { feature: 'Redes sociales visibles', tiers: [false, true, true, true, true] },
-                { feature: 'Catalogo de productos', tiers: [false, false, true, true, true] },
-                { feature: 'Recibir pedidos en linea', tiers: [false, false, true, true, true] },
-                { feature: 'Pagos por transferencia y tarjeta', tiers: [false, false, true, true, true] },
-                { feature: 'Destacado en busquedas', tiers: [false, false, false, true, true] },
-                { feature: 'Badge verificado', tiers: [false, false, false, true, true] },
-                { feature: 'Estadisticas detalladas', tiers: [false, false, false, true, true] },
-                { feature: 'Chatbot de WhatsApp con IA', tiers: [false, false, false, false, true], highlight: true },
-                { feature: 'Atencion automatica 24/7', tiers: [false, false, false, false, true], highlight: true },
-                { feature: 'Pedidos por chat sin texto', tiers: [false, false, false, false, true], highlight: true },
-              ].map((row, idx) => (
-                <div key={idx} className={`grid grid-cols-6 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'} ${row.highlight ? 'bg-violet-50/50' : ''}`}>
-                  <div className={`p-4 border-r border-gray-100 flex items-center text-sm ${row.highlight ? 'font-semibold text-violet-700' : 'text-gray-600'}`}>
-                    {row.highlight && <span className="mr-2">🤖</span>}
-                    {row.feature}
-                  </div>
-                  {row.tiers.map((val, i) => (
-                    <div key={i} className={`p-4 border-r border-gray-100 flex items-center justify-center ${i === 4 && row.highlight ? 'bg-violet-100/50' : ''}`}>
-                      {typeof val === 'string' ? (
-                        <span className="text-sm font-semibold text-secondary">{val}</span>
-                      ) : val ? (
-                        <svg className={`w-5 h-5 ${i === 4 ? 'text-violet-600' : 'text-primary'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                        </svg>
-                      ) : (
-                        <svg className="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ))}
-
-              {/* CTA row */}
-              <div className="grid grid-cols-6 bg-white border-t border-gray-200">
-                <div className="p-5 border-r border-gray-100"></div>
-                <div className="p-5 border-r border-gray-100 text-center">
-                  <Link href="/registrar-negocio" className="inline-block px-4 py-2 bg-gray-100 hover:bg-gray-200 text-secondary text-sm font-semibold rounded-lg transition-colors">
-                    Empezar Gratis
-                  </Link>
-                </div>
-                <div className="p-5 border-r border-gray-100 text-center">
-                  <Link href="/registrar-negocio" className="inline-block px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-sm font-semibold rounded-lg transition-colors">
-                    Elegir Plan
-                  </Link>
-                </div>
-                <div className="p-5 border-r border-gray-100 text-center">
-                  <Link href="/registrar-negocio" className="inline-block px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition-colors">
-                    Elegir Plan
-                  </Link>
-                </div>
-                <div className="p-5 border-r border-gray-100 text-center">
-                  <Link href="/registrar-negocio" className="inline-block px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold rounded-lg transition-colors">
-                    Elegir Plan
-                  </Link>
-                </div>
-                <div className="p-5 text-center">
-                  <a
-                    href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20plan%20Chatbot%20para%20mi%20negocio"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block px-4 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-violet-700 hover:to-fuchsia-600 text-white text-sm font-semibold rounded-lg transition-colors"
-                  >
-                    WhatsApp
-                  </a>
-                </div>
-              </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-secondary mb-3">Haz crecer tu negocio con el plan ideal</h2>
+            <p className="text-gray-500 mb-6 max-w-lg mx-auto">Desde gratis hasta chatbot con IA. Sin contratos, cancela cuando quieras.</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/planes"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+              >
+                Ver Planes y Precios
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+              <Link
+                href="/registrar-negocio"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gray-100 hover:bg-gray-200 text-secondary font-semibold rounded-full transition-colors"
+              >
+                Empezar Gratis
+              </Link>
             </div>
-          </div>
-
-          {/* Mobile cards */}
-          <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-            {[
-              { name: 'Gratis', price: '$0', period: 'siempre', features: ['Buscador y mapa', 'WhatsApp directo', '3 fotos'], border: 'border-gray-200' },
-              { name: 'Emprendedor', price: '$60', period: '/mes', features: ['Todo de Gratis', 'Portada y redes', '8 fotos'], border: 'border-primary/30' },
-              { name: 'Pro', price: '$120', period: '/mes', features: ['Todo de Emprendedor', 'Productos y pedidos', 'Pagos en linea', '15 fotos'], border: 'border-emerald-500/30' },
-              { name: 'Avanzado', price: '$180', period: '/mes', features: ['Todo de Pro', 'Destacado + verificado', 'Estadisticas', '20 fotos'], border: 'border-purple-500/30' },
-              { name: 'Chatbot', price: '$300', period: '/mes', features: ['Todo de Avanzado', 'Chatbot de WhatsApp IA', 'Atencion 24/7 auto', 'Pedidos sin texto', '25 fotos'], border: 'border-violet-500', gradient: true },
-            ].map((plan) => (
-              <div key={plan.name} className={`rounded-2xl border-2 p-5 ${plan.border} ${plan.gradient ? 'bg-gradient-to-b from-violet-50 to-white' : 'bg-white'}`}>
-                <div className="flex items-baseline justify-between mb-3">
-                  <h3 className="font-bold text-secondary">{plan.name}</h3>
-                  <div className="text-right">
-                    <span className="text-xl font-extrabold text-secondary">{plan.price}</span>
-                    <span className="text-xs text-gray-400 ml-1">{plan.period}</span>
-                  </div>
-                </div>
-                <ul className="space-y-1.5 mb-4">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                      <svg className={`w-4 h-4 flex-shrink-0 ${plan.gradient ? 'text-violet-600' : 'text-primary'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                      </svg>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                {plan.gradient ? (
-                  <a href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20plan%20Chatbot" target="_blank" rel="noopener noreferrer" className="block text-center py-2.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white">
-                    WhatsApp
-                  </a>
-                ) : (
-                  <Link href="/registrar-negocio" className="block text-center py-2.5 rounded-xl font-semibold text-sm bg-gray-100 hover:bg-gray-200 text-secondary">
-                    {plan.price === '$0' ? 'Empezar Gratis' : 'Elegir Plan'}
-                  </Link>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       </section>

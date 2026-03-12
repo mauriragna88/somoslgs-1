@@ -21,17 +21,31 @@ const VERTICAL_PLACEMENTS: BannerPlacement[] = [
   'marketplace_sidebar'
 ]
 
+// Tiers con plan de pago (pueden cerrar banners completamente)
+const PAID_TIERS = ['emprendedor', 'pro', 'avanzado', 'chatbot']
+
 interface BannerDisplayProps {
   placement: BannerPlacement
   className?: string
+  userTier?: string
 }
 
-export default function BannerDisplay({ placement, className = '' }: BannerDisplayProps) {
+export default function BannerDisplay({ placement, className = '', userTier }: BannerDisplayProps) {
   const [banner, setBanner] = useState<BannerData | null>(null)
   const [loading, setLoading] = useState(true)
   const [dismissed, setDismissed] = useState(false)
+  const [minimized, setMinimized] = useState(false)
 
   const isVertical = VERTICAL_PLACEMENTS.includes(placement)
+  const canClose = userTier ? PAID_TIERS.includes(userTier) : false
+
+  // Restore minimized state from localStorage
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(`banner-min-${placement}`)
+      if (stored === 'true') setMinimized(true)
+    } catch {}
+  }, [placement])
 
   const trackEvent = useCallback((bannerId: string, type: 'impression' | 'click') => {
     fetch('/api/banners/track', {
@@ -54,16 +68,71 @@ export default function BannerDisplay({ placement, className = '' }: BannerDispl
       .finally(() => setLoading(false))
   }, [placement, trackEvent])
 
+  const handleMinimize = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setMinimized(true)
+    try { localStorage.setItem(`banner-min-${placement}`, 'true') } catch {}
+  }
+
+  const handleExpand = () => {
+    setMinimized(false)
+    try { localStorage.removeItem(`banner-min-${placement}`) } catch {}
+  }
+
+  const handleClose = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDismissed(true)
+  }
+
   if (loading || dismissed) return null
 
   if (banner) {
-    const closeButton = (
+    // Minimized state — small floating button
+    if (minimized && isVertical) {
+      return (
+        <div className={`${className}`}>
+          <button
+            onClick={handleExpand}
+            className="w-10 h-10 rounded-full bg-primary/90 hover:bg-primary text-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-110 mx-auto"
+            aria-label="Ver publicidad"
+            title="Ver publicidad"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+            </svg>
+          </button>
+        </div>
+      )
+    }
+
+    // Action button: minimize (free) or close (paid)
+    const actionButton = isVertical ? (
+      canClose ? (
+        <button
+          onClick={handleClose}
+          className="absolute top-1 right-1 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+          aria-label="Cerrar publicidad"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      ) : (
+        <button
+          onClick={handleMinimize}
+          className="absolute top-1 right-1 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+          aria-label="Minimizar publicidad"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      )
+    ) : (
       <button
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          setDismissed(true)
-        }}
+        onClick={handleClose}
         className="absolute top-1 right-1 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
         aria-label="Cerrar publicidad"
       >
@@ -102,7 +171,7 @@ export default function BannerDisplay({ placement, className = '' }: BannerDispl
         <div className={`relative group ${className}`}>
           <span className="text-[9px] font-medium text-gray-400 uppercase tracking-wider block text-center mb-1">Publicidad</span>
           <div className="relative w-full overflow-hidden rounded-xl shadow-sm group-hover:shadow-md transition-shadow border border-gray-100">
-            {closeButton}
+            {actionButton}
             <div className="relative w-full" style={{ aspectRatio: '2/3', minHeight: 160 }}>
               <Image
                 src={banner.image_url}
@@ -130,7 +199,7 @@ export default function BannerDisplay({ placement, className = '' }: BannerDispl
           </div>
 
           <div className="relative w-full overflow-hidden rounded-2xl shadow-sm group-hover:shadow-lg transition-shadow border border-gray-100">
-            {closeButton}
+            {actionButton}
             <div className="relative w-full" style={{ aspectRatio: '4/1', minHeight: 70, maxHeight: 160 }}>
               <Image
                 src={banner.image_url}
@@ -156,7 +225,7 @@ export default function BannerDisplay({ placement, className = '' }: BannerDispl
         </div>
 
         <div className="overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-br from-white to-gray-50/80 shadow-sm hover:shadow-lg transition-all group relative">
-          {closeButton}
+          {actionButton}
           <div className="flex flex-col sm:flex-row">
             <div className="relative w-full sm:w-36 md:w-44 flex-shrink-0">
               <div className="relative h-36 sm:h-full min-h-[120px]">
@@ -224,7 +293,7 @@ export default function BannerDisplay({ placement, className = '' }: BannerDispl
       >
         <div className="px-6 py-5 text-center">
           <p className="text-sm font-semibold text-gray-700 group-hover:text-primary transition-colors">
-            📣 Anuncia tu negocio aqui
+            Anuncia tu negocio aqui
           </p>
           <p className="text-xs text-gray-400 mt-1">
             Desde <span className="font-bold text-primary">$17 al dia</span> — miles de personas en Lagos te veran
