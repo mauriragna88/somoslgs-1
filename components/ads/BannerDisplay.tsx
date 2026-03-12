@@ -264,11 +264,55 @@ export default function BannerDisplay({ placement, className = '', userTier }: B
     )
   }
 
+  // ─── Minimized state for fallback/CTA (no banner loaded) ───
+  if (minimized && isVertical) {
+    return (
+      <div className={`${className}`}>
+        <button
+          onClick={handleExpand}
+          className="w-10 h-10 rounded-full bg-primary/90 hover:bg-primary text-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-110 mx-auto"
+          aria-label="Ver publicidad"
+          title="Ver publicidad"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+          </svg>
+        </button>
+      </div>
+    )
+  }
+
+  // Boton minimizar/cerrar para fallbacks
+  const fallbackActionButton = isVertical ? (
+    canClose ? (
+      <button
+        onClick={handleClose}
+        className="absolute top-1 right-1 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+        aria-label="Cerrar publicidad"
+      >
+        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    ) : (
+      <button
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleMinimize(e); }}
+        className="absolute top-1 right-1 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+        aria-label="Minimizar publicidad"
+      >
+        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    )
+  ) : null
+
   // Fallback to AdSense if configured
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID
   if (adsenseId) {
     return (
-      <div className={className}>
+      <div className={`relative ${className}`}>
+        {fallbackActionButton}
         <div className="flex items-center gap-1.5 mb-1.5">
           <div className="h-px flex-1 bg-gray-200"></div>
           <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wider px-1">Publicidad</span>
@@ -284,7 +328,8 @@ export default function BannerDisplay({ placement, className = '', userTier }: B
   if (placement === 'search_inline') return null
 
   return (
-    <div className={className}>
+    <div className={`relative ${className}`}>
+      {fallbackActionButton}
       <a
         href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20anunciar%20mi%20negocio%20en%20SomosLagos"
         target="_blank"
