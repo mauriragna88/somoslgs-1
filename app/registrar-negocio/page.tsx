@@ -94,6 +94,23 @@ const plans = [
       { text: 'Hasta 20 fotos', included: true },
     ],
   },
+  {
+    name: 'Chatbot',
+    price: '$300',
+    dailyPrice: 'Solo $10/dia',
+    period: '/mes',
+    popular: false,
+    hot: true,
+    features: [
+      { text: 'Todo lo del plan Avanzado', included: true },
+      { text: 'Chatbot de pedidos con IA', included: true },
+      { text: 'Catalogo automatico en el chat', included: true },
+      { text: 'Pedidos sin escribir textos', included: true },
+      { text: 'Pagos integrados en el bot', included: true },
+      { text: 'Atencion 24/7 automatica', included: true },
+      { text: 'Hasta 25 fotos', included: true },
+    ],
+  },
 ]
 
 const faqs = [
@@ -281,17 +298,27 @@ export default async function RegistrarNegocioPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {plans.map((plan) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 max-w-7xl mx-auto">
+            {plans.map((plan: any) => (
               <div
                 key={plan.name}
                 className={`relative rounded-2xl border-2 p-6 ${
-                  plan.popular
+                  plan.hot
+                    ? 'border-purple-500 shadow-xl shadow-purple-500/20 bg-gradient-to-b from-purple-50 to-white scale-[1.02]'
+                    : plan.popular
                     ? 'border-primary shadow-xl shadow-primary/10 scale-[1.02]'
                     : 'border-gray-100'
                 }`}
               >
-                {plan.popular && (
+                {plan.hot && (
+                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-bold px-4 py-1 rounded-full flex items-center gap-1">
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+                    </svg>
+                    Nuevo
+                  </span>
+                )}
+                {plan.popular && !plan.hot && (
                   <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-4 py-1 rounded-full">
                     Popular
                   </span>
@@ -307,7 +334,7 @@ export default async function RegistrarNegocioPage() {
                   )}
                 </div>
                 <ul className="space-y-3 mb-6">
-                  {plan.features.map((f) => (
+                  {plan.features.map((f: any) => (
                     <li key={f.text} className="flex items-center gap-2.5 text-sm">
                       {f.included ? (
                         <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -322,16 +349,27 @@ export default async function RegistrarNegocioPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href="/registro?ref=registrar-negocio"
-                  className={`block w-full text-center py-3 rounded-xl font-semibold transition-colors ${
-                    plan.popular
-                      ? 'bg-primary hover:bg-primary-dark text-white'
-                      : 'bg-gray-100 hover:bg-gray-200 text-secondary'
-                  }`}
-                >
-                  {plan.price === '$0' ? 'Empezar Gratis' : 'Elegir Plan'}
-                </Link>
+                {plan.hot ? (
+                  <a
+                    href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20plan%20Chatbot%20para%20mi%20negocio"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-center py-3 rounded-xl font-semibold transition-colors bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white"
+                  >
+                    Contactar por WhatsApp
+                  </a>
+                ) : (
+                  <Link
+                    href="/registro?ref=registrar-negocio"
+                    className={`block w-full text-center py-3 rounded-xl font-semibold transition-colors ${
+                      plan.popular
+                        ? 'bg-primary hover:bg-primary-dark text-white'
+                        : 'bg-gray-100 hover:bg-gray-200 text-secondary'
+                    }`}
+                  >
+                    {plan.price === '$0' ? 'Empezar Gratis' : 'Elegir Plan'}
+                  </Link>
+                )}
               </div>
             ))}
           </div>
