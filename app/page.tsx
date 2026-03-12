@@ -197,23 +197,23 @@ export default async function Home() {
 
             {/* Social Proof Metrics - glass cards with animated counters */}
             <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10 animate-fade-in-up">
-                <p className="text-2xl md:text-3xl font-bold text-accent">
-                  <AnimatedCounter target={100} suffix="+" />
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-accent/20 animate-fade-in-up shadow-lg shadow-accent/5">
+                <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent via-amber-300 to-accent">
+                  <AnimatedCounter target={150} suffix="+" />
                 </p>
-                <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Negocios</p>
+                <p className="text-xs text-white/80 uppercase tracking-wider mt-1 text-center">Negocios</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                <p className="text-2xl md:text-3xl font-bold text-primary-light">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-primary-light/20 animate-fade-in-up shadow-lg shadow-primary/5" style={{ animationDelay: '0.1s' }}>
+                <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-light via-teal-300 to-primary-light">
                   <AnimatedCounter target={catCount} suffix="+" />
                 </p>
-                <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Categorias</p>
+                <p className="text-xs text-white/80 uppercase tracking-wider mt-1 text-center">Categorias</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                <p className="text-2xl md:text-3xl font-bold text-white">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-white/20 animate-fade-in-up shadow-lg" style={{ animationDelay: '0.2s' }}>
+                <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-primary-light to-white">
                   <AnimatedCounter target={100} suffix="%" />
                 </p>
-                <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Gratis</p>
+                <p className="text-xs text-white/80 uppercase tracking-wider mt-1 text-center">Gratis</p>
               </div>
             </div>
           </div>
@@ -381,6 +381,161 @@ export default async function Home() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Conoce Nuestros Planes — Netflix/HBO style comparison */}
+      <section className="py-20 bg-surface">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Planes</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">Conoce Nuestros Planes</h2>
+            <p className="text-gray-500 max-w-lg mx-auto">Empieza gratis y crece a tu ritmo. Sin contratos.</p>
+          </div>
+
+          {/* Desktop table */}
+          <div className="hidden lg:block max-w-6xl mx-auto">
+            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+              {/* Header row with plan names and prices */}
+              <div className="grid grid-cols-6">
+                <div className="p-5 bg-gray-50 border-b border-r border-gray-200 flex items-end">
+                  <span className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Funciones</span>
+                </div>
+                {[
+                  { name: 'Gratis', price: '$0', period: 'siempre', color: 'text-gray-600', bg: 'bg-white' },
+                  { name: 'Emprendedor', price: '$60', period: '/mes', color: 'text-primary', bg: 'bg-white' },
+                  { name: 'Pro', price: '$120', period: '/mes', color: 'text-emerald-600', bg: 'bg-white' },
+                  { name: 'Avanzado', price: '$180', period: '/mes', color: 'text-purple-600', bg: 'bg-white' },
+                  { name: 'Chatbot', price: '$300', period: '/mes', color: 'text-white', bg: 'bg-gradient-to-b from-violet-600 to-fuchsia-600' },
+                ].map((plan) => (
+                  <div key={plan.name} className={`p-5 border-b border-r border-gray-200 text-center ${plan.bg} ${plan.name === 'Chatbot' ? 'relative' : ''}`}>
+                    {plan.name === 'Chatbot' && (
+                      <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 -translate-y-full bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white text-[10px] font-bold px-3 py-1 rounded-t-lg">NUEVO</span>
+                    )}
+                    <p className={`font-bold text-sm mb-1 ${plan.name === 'Chatbot' ? 'text-white' : 'text-secondary'}`}>{plan.name}</p>
+                    <p className={`text-2xl font-extrabold ${plan.color}`}>{plan.price}</p>
+                    <p className={`text-xs ${plan.name === 'Chatbot' ? 'text-white/70' : 'text-gray-400'}`}>{plan.period}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Feature rows */}
+              {[
+                { feature: 'Aparecer en buscador y mapa', tiers: [true, true, true, true, true] },
+                { feature: 'WhatsApp y telefono directo', tiers: [true, true, true, true, true] },
+                { feature: 'Horarios y opiniones', tiers: [true, true, true, true, true] },
+                { feature: 'Fotos en galeria', tiers: ['3', '8', '15', '20', '25'] },
+                { feature: 'Portada personalizada', tiers: [false, true, true, true, true] },
+                { feature: 'Redes sociales visibles', tiers: [false, true, true, true, true] },
+                { feature: 'Catalogo de productos', tiers: [false, false, true, true, true] },
+                { feature: 'Recibir pedidos en linea', tiers: [false, false, true, true, true] },
+                { feature: 'Pagos por transferencia y tarjeta', tiers: [false, false, true, true, true] },
+                { feature: 'Destacado en busquedas', tiers: [false, false, false, true, true] },
+                { feature: 'Badge verificado', tiers: [false, false, false, true, true] },
+                { feature: 'Estadisticas detalladas', tiers: [false, false, false, true, true] },
+                { feature: 'Chatbot de WhatsApp con IA', tiers: [false, false, false, false, true], highlight: true },
+                { feature: 'Atencion automatica 24/7', tiers: [false, false, false, false, true], highlight: true },
+                { feature: 'Pedidos por chat sin texto', tiers: [false, false, false, false, true], highlight: true },
+              ].map((row, idx) => (
+                <div key={idx} className={`grid grid-cols-6 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'} ${row.highlight ? 'bg-violet-50/50' : ''}`}>
+                  <div className={`p-4 border-r border-gray-100 flex items-center text-sm ${row.highlight ? 'font-semibold text-violet-700' : 'text-gray-600'}`}>
+                    {row.highlight && <span className="mr-2">🤖</span>}
+                    {row.feature}
+                  </div>
+                  {row.tiers.map((val, i) => (
+                    <div key={i} className={`p-4 border-r border-gray-100 flex items-center justify-center ${i === 4 && row.highlight ? 'bg-violet-100/50' : ''}`}>
+                      {typeof val === 'string' ? (
+                        <span className="text-sm font-semibold text-secondary">{val}</span>
+                      ) : val ? (
+                        <svg className={`w-5 h-5 ${i === 4 ? 'text-violet-600' : 'text-primary'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                        </svg>
+                      ) : (
+                        <svg className="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+
+              {/* CTA row */}
+              <div className="grid grid-cols-6 bg-white border-t border-gray-200">
+                <div className="p-5 border-r border-gray-100"></div>
+                <div className="p-5 border-r border-gray-100 text-center">
+                  <Link href="/registrar-negocio" className="inline-block px-4 py-2 bg-gray-100 hover:bg-gray-200 text-secondary text-sm font-semibold rounded-lg transition-colors">
+                    Empezar Gratis
+                  </Link>
+                </div>
+                <div className="p-5 border-r border-gray-100 text-center">
+                  <Link href="/registrar-negocio" className="inline-block px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-sm font-semibold rounded-lg transition-colors">
+                    Elegir Plan
+                  </Link>
+                </div>
+                <div className="p-5 border-r border-gray-100 text-center">
+                  <Link href="/registrar-negocio" className="inline-block px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition-colors">
+                    Elegir Plan
+                  </Link>
+                </div>
+                <div className="p-5 border-r border-gray-100 text-center">
+                  <Link href="/registrar-negocio" className="inline-block px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold rounded-lg transition-colors">
+                    Elegir Plan
+                  </Link>
+                </div>
+                <div className="p-5 text-center">
+                  <a
+                    href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20plan%20Chatbot%20para%20mi%20negocio"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-4 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-violet-700 hover:to-fuchsia-600 text-white text-sm font-semibold rounded-lg transition-colors"
+                  >
+                    WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            {[
+              { name: 'Gratis', price: '$0', period: 'siempre', features: ['Buscador y mapa', 'WhatsApp directo', '3 fotos'], border: 'border-gray-200' },
+              { name: 'Emprendedor', price: '$60', period: '/mes', features: ['Todo de Gratis', 'Portada y redes', '8 fotos'], border: 'border-primary/30' },
+              { name: 'Pro', price: '$120', period: '/mes', features: ['Todo de Emprendedor', 'Productos y pedidos', 'Pagos en linea', '15 fotos'], border: 'border-emerald-500/30' },
+              { name: 'Avanzado', price: '$180', period: '/mes', features: ['Todo de Pro', 'Destacado + verificado', 'Estadisticas', '20 fotos'], border: 'border-purple-500/30' },
+              { name: 'Chatbot', price: '$300', period: '/mes', features: ['Todo de Avanzado', 'Chatbot de WhatsApp IA', 'Atencion 24/7 auto', 'Pedidos sin texto', '25 fotos'], border: 'border-violet-500', gradient: true },
+            ].map((plan) => (
+              <div key={plan.name} className={`rounded-2xl border-2 p-5 ${plan.border} ${plan.gradient ? 'bg-gradient-to-b from-violet-50 to-white' : 'bg-white'}`}>
+                <div className="flex items-baseline justify-between mb-3">
+                  <h3 className="font-bold text-secondary">{plan.name}</h3>
+                  <div className="text-right">
+                    <span className="text-xl font-extrabold text-secondary">{plan.price}</span>
+                    <span className="text-xs text-gray-400 ml-1">{plan.period}</span>
+                  </div>
+                </div>
+                <ul className="space-y-1.5 mb-4">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
+                      <svg className={`w-4 h-4 flex-shrink-0 ${plan.gradient ? 'text-violet-600' : 'text-primary'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                {plan.gradient ? (
+                  <a href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20plan%20Chatbot" target="_blank" rel="noopener noreferrer" className="block text-center py-2.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white">
+                    WhatsApp
+                  </a>
+                ) : (
+                  <Link href="/registrar-negocio" className="block text-center py-2.5 rounded-xl font-semibold text-sm bg-gray-100 hover:bg-gray-200 text-secondary">
+                    {plan.price === '$0' ? 'Empezar Gratis' : 'Elegir Plan'}
+                  </Link>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -706,15 +861,16 @@ export default async function Home() {
             </div>
 
             <h2 className="text-3xl md:text-5xl font-extrabold text-white text-center mb-4 leading-tight">
-              Deja de pedir por{' '}
-              <span className="line-through text-white/40 decoration-red-400 decoration-4">WhatsApp</span>
+              Deja ese chat de{' '}
+              <span className="line-through text-white/40 decoration-red-400 decoration-4">puro texto</span>
+              {' '}en WhatsApp
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-primary-light to-accent">
-                Tu negocio merece un Chatbot
+                Actualiza al Chatbot de WhatsApp
               </span>
             </h2>
             <p className="text-lg text-white/70 text-center max-w-2xl mx-auto mb-12">
-              Tus clientes ya no tendran que escribir listas interminables. Con nuestro chatbot eligen productos, ven precios y pagan en segundos.
+              Tus clientes siguen mandando &ldquo;que tienen?&rdquo; y &ldquo;cuanto cuesta?&rdquo;. Con nuestro chatbot de WhatsApp, abren el menu, eligen productos, ven precios y piden con un solo toque.
             </p>
 
             {/* Feature cards */}
@@ -725,9 +881,9 @@ export default async function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                   </svg>
                 </div>
-                <h3 className="text-white font-bold text-lg mb-2">Adioos textos largos</h3>
+                <h3 className="text-white font-bold text-lg mb-2">Adioos listas por texto</h3>
                 <p className="text-white/60 text-sm leading-relaxed">
-                  &ldquo;Hola, quiero 2 hamburguesas, una sin cebolla, y unas papas...&rdquo; Eso ya fue. Tu cliente solo toca, elige y listo.
+                  &ldquo;Que tienen? Cuanto cuesta? Quiero 2 de esto...&rdquo; Eso ya fue. Tu cliente abre el chatbot en WhatsApp y elige tocando.
                 </p>
               </div>
 
@@ -737,9 +893,9 @@ export default async function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
                   </svg>
                 </div>
-                <h3 className="text-white font-bold text-lg mb-2">Catalogo con precios</h3>
+                <h3 className="text-white font-bold text-lg mb-2">Menu con precios en WhatsApp</h3>
                 <p className="text-white/60 text-sm leading-relaxed">
-                  Muestra tus productos con fotos y precios. Tu cliente arma su pedido solito, sin confusiones ni malentendidos.
+                  Tu cliente ve tus productos con fotos y precios directo en el chat. Arma su pedido solito, sin malentendidos.
                 </p>
               </div>
 
@@ -749,9 +905,9 @@ export default async function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <h3 className="text-white font-bold text-lg mb-2">Paga como quieras</h3>
+                <h3 className="text-white font-bold text-lg mb-2">Paga como quiera</h3>
                 <p className="text-white/60 text-sm leading-relaxed">
-                  Transferencia, pago en efectivo al recibir, o tarjeta. Tu cliente elige y tu recibes el pedido completo.
+                  Transferencia, efectivo al recibir, o tarjeta. Tu cliente elige como pagar y tu recibes el pedido completo y claro.
                 </p>
               </div>
             </div>
@@ -785,16 +941,16 @@ export default async function Home() {
               <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-2xl">🤖</span>
-                  <h4 className="text-primary-light font-bold">Con chatbot</h4>
+                  <h4 className="text-primary-light font-bold">Con chatbot de WhatsApp</h4>
                 </div>
                 <ul className="space-y-2.5 text-sm">
                   <li className="flex items-start gap-2 text-white/80">
                     <span className="text-primary-light mt-0.5">✓</span>
-                    <span>Tu cliente ve el menu completo con precios</span>
+                    <span>Tu cliente ve el menu completo en el chat</span>
                   </li>
                   <li className="flex items-start gap-2 text-white/80">
                     <span className="text-primary-light mt-0.5">✓</span>
-                    <span>Arma su pedido tocando botones, sin escribir</span>
+                    <span>Elige productos tocando botones, sin escribir</span>
                   </li>
                   <li className="flex items-start gap-2 text-white/80">
                     <span className="text-primary-light mt-0.5">✓</span>
@@ -821,10 +977,10 @@ export default async function Home() {
                 <span className="text-4xl">🤖</span>
                 <div>
                   <h2 className="text-2xl md:text-3xl font-extrabold text-secondary leading-tight">
-                    ¿Te interesa el chatbot?
+                    ¿Te interesa el chatbot de WhatsApp?
                   </h2>
                   <p className="text-secondary/70 font-medium">
-                    Solo $300/mes — tu negocio vende solo
+                    Solo $300/mes — tu WhatsApp vende solo
                   </p>
                 </div>
               </div>
@@ -864,8 +1020,8 @@ export default async function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
-              <p className="text-2xl font-bold text-primary mb-1">
-                <AnimatedCounter target={100} suffix="+" />
+              <p className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent-dark mb-1">
+                <AnimatedCounter target={150} suffix="+" />
               </p>
               <h3 className="font-bold text-secondary mb-1 text-sm">Negocios</h3>
               <p className="text-xs text-gray-500">Verificados y activos</p>
@@ -876,7 +1032,7 @@ export default async function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                 </svg>
               </div>
-              <p className="text-2xl font-bold text-accent-dark mb-1">
+              <p className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent-dark to-accent mb-1">
                 <AnimatedCounter target={catCount} suffix="+" />
               </p>
               <h3 className="font-bold text-secondary mb-1 text-sm">Categorias</h3>
@@ -888,7 +1044,7 @@ export default async function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <p className="text-2xl font-bold text-primary mb-1">24/7</p>
+              <p className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-light mb-1">24/7</p>
               <h3 className="font-bold text-secondary mb-1 text-sm">Siempre Activo</h3>
               <p className="text-xs text-gray-500">Busca en cualquier momento</p>
             </div>
@@ -898,7 +1054,7 @@ export default async function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-2xl font-bold text-accent-dark mb-1">
+              <p className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent-dark to-accent mb-1">
                 <AnimatedCounter target={100} suffix="%" />
               </p>
               <h3 className="font-bold text-secondary mb-1 text-sm">Gratis</h3>
