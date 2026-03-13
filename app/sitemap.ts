@@ -96,6 +96,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   )
 
+  // Fetch all categories
+  const { data: categories } = await supabase
+    .from('categories')
+    .select('slug')
+
+  const categoryRoutes: MetadataRoute.Sitemap = (categories || []).map(
+    (cat: any) => ({
+      url: `${BASE_URL}/categorias/${cat.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    })
+  )
+
   // Fetch published blog posts
   const { data: blogPosts } = await supabase
     .from('blog_posts')
@@ -113,5 +127,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   )
 
-  return [...staticRoutes, ...businessRoutes, ...blogRoutes]
+  // Fetch active marketplace listings
+  const { data: listings } = await supabase
+    .from('marketplace_listings')
+    .select('id, updated_at')
+    .eq('status', 'active')
+    .gte('expires_at', new Date().toISOString())
+
+  const marketplaceRoutes: MetadataRoute.Sitemap = (listings || []).map(
+    (listing: any) => ({
+      url: `${BASE_URL}/marketplace/${listing.id}`,
+      lastModified: listing.updated_at
+        ? new Date(listing.updated_at)
+        : new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.5,
+    })
+  )
+
+  return [...staticRoutes, ...businessRoutes, ...categoryRoutes, ...blogRoutes, ...marketplaceRoutes]
 }

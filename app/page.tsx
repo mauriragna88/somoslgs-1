@@ -16,6 +16,7 @@ interface HomeCategory {
   id: string
   name: string
   icon: string
+  slug: string
 }
 
 interface FeaturedBusiness {
@@ -39,7 +40,7 @@ export default async function Home() {
   // Fetch popular categories
   const { data: categories } = await supabase
     .from('categories')
-    .select('id, name, icon')
+    .select('id, name, icon, slug')
     .is('parent_id', null)
     .limit(12)
     .order('display_order') as { data: HomeCategory[] | null }
@@ -249,7 +250,7 @@ export default async function Home() {
                 {categories.slice(0, 6).map((category) => (
                   <Link
                     key={category.id}
-                    href={`/buscar?categoria=${category.id}`}
+                    href={`/categorias/${category.slug}`}
                     className="group flex items-center gap-2 px-5 py-3 bg-white rounded-full border border-gray-200 hover:border-primary/30 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 transition-all duration-300"
                   >
                     <span className="text-xl group-hover:scale-110 transition-transform duration-300">{category.icon || '📦'}</span>

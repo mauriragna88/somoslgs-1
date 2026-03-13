@@ -76,7 +76,7 @@ export default async function CategoriasPage() {
             {categoriesWithCount.map((category) => (
               <Link
                 key={category.id}
-                href={`/buscar?categoria=${category.id}`}
+                href={`/categorias/${category.slug}`}
                 className="bg-white rounded-2xl hover:shadow-xl transition-all p-6 text-center group border border-gray-100 hover:border-transparent hover:-translate-y-1"
               >
                 <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">

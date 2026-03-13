@@ -1,36 +1,57 @@
 import React from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { stemSpanish } from '@/lib/utils'
 import { TIER_ORDER } from '@/lib/constants'
-import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
-import StarRating from '@/components/reviews/StarRating'
-import FavoriteButton from '@/components/shared/FavoriteButton'
+import BusinessCard from '@/components/shared/BusinessCard'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import ListingCard from '@/components/marketplace/ListingCard'
 import type { MarketplaceListing } from '@/types/database.types'
 
 export const revalidate = 1800
 
-export const metadata: Metadata = {
-  title: 'Buscar en Lagos de Moreno',
-  description: 'Encuentra negocios, restaurantes, tiendas, servicios y artículos en venta en Lagos de Moreno, Jalisco.',
-  openGraph: {
-    title: 'Buscar en Lagos de Moreno | SomosLagos',
-    description: 'Encuentra negocios y artículos en Lagos de Moreno, Jalisco.',
-    url: 'https://www.somoslagos.com.mx/buscar',
-  },
-}
-
-interface SearchParams {
+interface BuscarSearchParams {
   q?: string
   categoria?: string
   colonia?: string
   orden?: string
   tipo?: string
+}
+
+export async function generateMetadata({ searchParams }: { searchParams: BuscarSearchParams }): Promise<Metadata> {
+  const query = searchParams.q || ''
+  const categoriaId = searchParams.categoria || ''
+
+  let title = 'Buscar en Lagos de Moreno'
+  let description = 'Encuentra negocios, restaurantes, tiendas, servicios y artículos en venta en Lagos de Moreno, Jalisco.'
+
+  if (query) {
+    const capitalizedQuery = query.charAt(0).toUpperCase() + query.slice(1)
+    title = `${capitalizedQuery} en Lagos de Moreno`
+    description = `Encuentra ${query.toLowerCase()} en Lagos de Moreno, Jalisco. Directorio con horarios, ubicacion, opiniones y contacto.`
+  } else if (categoriaId) {
+    const supabase = createClient()
+    const { data: cat } = await supabase
+      .from('categories')
+      .select('name')
+      .eq('id', categoriaId)
+      .single() as unknown as { data: { name: string } | null }
+    if (cat) {
+      title = `${cat.name} en Lagos de Moreno`
+      description = `Encuentra los mejores ${cat.name.toLowerCase()} en Lagos de Moreno, Jalisco.`
+    }
+  }
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title: `${title} | SomosLagos`,
+      description,
+      url: 'https://www.somoslagos.com.mx/buscar',
+    },
+  }
 }
 
 interface Category {
@@ -60,7 +81,7 @@ interface Business {
 export default async function BuscarPage({
   searchParams,
 }: {
-  searchParams: SearchParams
+  searchParams: BuscarSearchParams
 }) {
   const query = searchParams.q || ''
   const categoriaId = searchParams.categoria || ''
@@ -375,84 +396,7 @@ export default async function BuscarPage({
                             <BannerDisplay placement="search_inline" />
                           </div>
                         )}
-                        <Link
-                          href={`/negocios/${business.slug}`}
-                          className="bg-white rounded-2xl hover:shadow-2xl transition-all overflow-hidden group border border-gray-100 hover:border-transparent hover:-translate-y-1"
-                        >
-                          {/* Top accent */}
-                          <div className="h-1 bg-gradient-to-r from-primary via-accent to-warm"></div>
-
-                          {/* Image/Logo */}
-                          <div className="h-48 bg-surface relative overflow-hidden">
-                            {business.logo_url ? (
-                              <Image
-                                src={business.logo_url}
-                                alt={business.name}
-                                fill
-                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/5 to-primary/5">
-                                <span className="text-6xl text-secondary/30 font-bold">
-                                  {business.name[0].toUpperCase()}
-                                </span>
-                              </div>
-                            )}
-                            {/* Category badge */}
-                            {business.category && (
-                              <div className="absolute top-3 left-3 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700 shadow-sm">
-                                {business.category.icon} {business.category.name}
-                              </div>
-                            )}
-                            {/* Avanzado/Featured badge */}
-                            {(business.subscription_tier === 'avanzado' || business.is_featured) && (
-                              <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold shadow-lg">
-                                &#11088; Destacado
-                              </div>
-                            )}
-                            {/* Favorite button */}
-                            <div className="absolute bottom-3 right-3">
-                              <FavoriteButton businessId={business.id} />
-                            </div>
-                          </div>
-
-                          {/* Content */}
-                          <div className="p-5">
-                            <div className="flex items-center gap-2">
-                              <h2 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
-                                {business.name}
-                              </h2>
-                              <OpenClosedBadge businessHours={business.business_hours} />
-                            </div>
-                            {business.description && (
-                              <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">
-                                {business.description}
-                              </p>
-                            )}
-                            {business.address && (
-                              <p className="text-sm text-gray-400 mt-2.5 flex items-center">
-                                <span className="mr-1.5 text-accent">&#128205;</span>
-                                {business.address}
-                              </p>
-                            )}
-                            {business.total_reviews > 0 && (
-                              <div className="mt-2">
-                                <StarRating value={business.rating} count={business.total_reviews} size="sm" />
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Footer */}
-                          <div className="px-5 py-3 border-t border-gray-50 flex items-center justify-between">
-                            <span className="text-sm text-primary font-semibold">Ver negocio</span>
-                            <div className="w-7 h-7 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
-                              <svg className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </div>
-                          </div>
-                        </Link>
+                        <BusinessCard business={business} />
                       </React.Fragment>
                     ))}
                   </div>
