@@ -8,6 +8,7 @@ import BannerDisplay from '@/components/ads/BannerDisplay'
 import PremiumSlider from '@/components/shared/PremiumSlider'
 import AnimatedCounter from '@/components/shared/AnimatedCounter'
 import { TIER_ORDER } from '@/lib/constants'
+import TourismPreview from '@/components/tourism/TourismPreview'
 import type { BlogPost } from '@/types/database.types'
 
 export const revalidate = 3600
@@ -290,6 +291,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Qué Hacer en Lagos — Tourism Preview */}
+      <TourismPreview />
 
       {/* Banner: Home Middle */}
       <div className="container mx-auto px-4 py-6">

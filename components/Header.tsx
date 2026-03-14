@@ -141,6 +141,9 @@ export default function Header() {
             <Link href="/marketplace" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
               Marketplace
             </Link>
+            <Link href="/que-hacer-en-lagos-de-moreno" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
+              Qué Hacer
+            </Link>
             <Link href="/planes" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
               Planes
             </Link>
@@ -416,6 +419,13 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <span className="text-lg">🛒</span> Marketplace
+                </Link>
+                <Link
+                  href="/que-hacer-en-lagos-de-moreno"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="text-lg">🏛️</span> Qué Hacer
                 </Link>
                 <Link
                   href="/planes"
