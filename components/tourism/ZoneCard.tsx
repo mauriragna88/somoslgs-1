@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { Zone } from '@/lib/tourism'
 
 interface ZoneCardProps {
@@ -8,39 +9,57 @@ interface ZoneCardProps {
 export default function ZoneCard({ zone, compact = false }: ZoneCardProps) {
   if (compact) {
     return (
-      <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 border border-gray-100">
-        {/* Gradient top with icon */}
-        <div className={`bg-gradient-to-br ${zone.gradient} p-6 h-28 flex items-center justify-center relative overflow-hidden`}>
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-2 right-2 w-20 h-20 border-2 border-white rounded-full" />
-            <div className="absolute bottom-2 left-2 w-12 h-12 border border-white/50 rounded-full" />
+      <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.03] transition-all duration-300">
+        {/* Photo background */}
+        <div className="relative h-52 overflow-hidden">
+          <Image
+            src={zone.image}
+            alt={zone.name}
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+          {/* Dark gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          {/* Icon badge */}
+          <div className="absolute top-3 right-3 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <span className="text-lg">{zone.icon}</span>
           </div>
-          <span className="text-5xl drop-shadow-lg relative z-10 group-hover:scale-110 transition-transform duration-300">{zone.icon}</span>
-        </div>
-        {/* Text on solid background */}
-        <div className="p-5 bg-white">
-          <h3 className="text-base font-bold text-secondary">{zone.name}</h3>
-          <p className="text-gray-500 text-sm mt-1 line-clamp-2">{zone.description}</p>
+          {/* Text overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-5">
+            <h3 className="text-lg font-bold text-white drop-shadow-lg">{zone.name}</h3>
+            <p className="text-white/90 text-sm mt-1 line-clamp-2 drop-shadow">{zone.description}</p>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100">
-      {/* Gradient top with icon */}
-      <div className={`bg-gradient-to-br ${zone.gradient} p-8 h-40 flex items-center justify-center relative overflow-hidden`}>
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-4 right-4 w-28 h-28 border-2 border-white rounded-full" />
-          <div className="absolute top-8 right-8 w-16 h-16 border-2 border-white rounded-full" />
-          <div className="absolute bottom-4 left-4 w-14 h-14 border border-white/50 rounded-full" />
+    <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300">
+      {/* Photo section */}
+      <div className="relative h-56 overflow-hidden">
+        <Image
+          src={zone.image}
+          alt={zone.name}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-700"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        {/* Icon badge */}
+        <div className="absolute top-4 right-4 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30">
+          <span className="text-2xl drop-shadow">{zone.icon}</span>
         </div>
-        <span className="text-7xl drop-shadow-lg relative z-10 group-hover:scale-110 transition-transform duration-300">{zone.icon}</span>
+        {/* Title on photo */}
+        <div className="absolute bottom-4 left-5 right-5">
+          <h3 className="text-xl font-bold text-white drop-shadow-lg">{zone.name}</h3>
+        </div>
       </div>
 
-      {/* Text on solid background */}
-      <div className="p-6 bg-white">
-        <h3 className="text-lg font-bold text-secondary mb-2">{zone.name}</h3>
+      {/* Description below */}
+      <div className="p-5 bg-white">
         <p className="text-gray-600 text-sm leading-relaxed">{zone.longDescription}</p>
         {zone.coordinates && (
           <a

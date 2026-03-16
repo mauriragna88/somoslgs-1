@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import ZoneCard from '@/components/tourism/ZoneCard'
 import ActivityCard from '@/components/tourism/ActivityCard'
@@ -167,13 +168,18 @@ export default async function QueHacerPage() {
       />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-secondary via-secondary/95 to-primary-dark overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
-        </div>
+      <section className="relative overflow-hidden">
+        {/* Background photo */}
+        <Image
+          src="/tourism/templo-calvario.jpg"
+          alt="Templo del Calvario, Lagos de Moreno"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
 
         <div className="relative container mx-auto px-4 py-20 md:py-28">
           {/* Breadcrumb */}

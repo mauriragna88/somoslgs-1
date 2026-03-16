@@ -6,6 +6,25 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    // Tourism dynamic gradients (lib/tourism.ts)
+    'from-orange-500', 'to-red-500',
+    'from-pink-500', 'to-purple-500',
+    'from-amber-500', 'to-yellow-500',
+    'from-cyan-500', 'to-blue-500',
+    'from-emerald-500', 'to-teal-500',
+    'from-violet-500', 'to-fuchsia-500',
+    'from-teal-600', 'to-emerald-700',
+    'from-slate-700', 'to-slate-900',
+    'from-blue-600', 'to-indigo-700',
+    'from-rose-600', 'to-pink-700',
+    'from-purple-600', 'to-violet-700',
+    'from-amber-600', 'to-orange-700',
+    'from-green-600', 'to-emerald-700',
+    'from-yellow-700', 'to-amber-800',
+    'from-teal-500', 'to-green-600',
+    'from-indigo-600', 'to-blue-700',
+  ],
   theme: {
     extend: {
       colors: {

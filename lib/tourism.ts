@@ -10,6 +10,7 @@ export interface Activity {
   longDescription: string
   icon: string
   gradient: string
+  image: string
   relatedCategories: string[] // slugs de categorías existentes
 }
 
@@ -20,6 +21,7 @@ export interface Zone {
   longDescription: string
   icon: string
   gradient: string
+  image: string
   relatedCategories: string[]
   coordinates?: { lat: number; lng: number }
 }
@@ -33,6 +35,7 @@ export const ACTIVITIES: Activity[] = [
     longDescription: 'Lagos de Moreno es cuna de una gastronomía rica y variada. Desde la famosa birria jalisciense hasta los dulces de leche artesanales, cada platillo cuenta una historia. Visita restaurantes, fondas y puestos tradicionales que llevan generaciones compartiendo su sazón.',
     icon: '🍽️',
     gradient: 'from-orange-500 to-red-500',
+    image: '/tourism/gastronomia.jpg',
     relatedCategories: ['restaurantes', 'cafeterias', 'antojitos'],
   },
   {
@@ -42,6 +45,7 @@ export const ACTIVITIES: Activity[] = [
     longDescription: 'Explora tiendas y mercados donde encontrarás artesanías de piel, textiles bordados, dulces regionales y recuerdos únicos. El comercio local de Lagos de Moreno es una experiencia en sí misma, con vendedores que te cuentan la historia detrás de cada producto.',
     icon: '🛍️',
     gradient: 'from-pink-500 to-purple-500',
+    image: '/tourism/artesanias.jpg',
     relatedCategories: ['tiendas', 'ropa', 'artesanias'],
   },
   {
@@ -51,6 +55,7 @@ export const ACTIVITIES: Activity[] = [
     longDescription: 'Lagos de Moreno alberga templos y parroquias con siglos de historia. Desde la majestuosa Parroquia de la Asunción hasta el icónico Templo del Calvario, cada edificio religioso es una obra de arte arquitectónica que refleja la profunda fe y tradición de la región.',
     icon: '⛪',
     gradient: 'from-amber-500 to-yellow-500',
+    image: '/tourism/turismo-religioso.jpg',
     relatedCategories: [],
   },
   {
@@ -60,6 +65,7 @@ export const ACTIVITIES: Activity[] = [
     longDescription: 'Cada esquina de Lagos de Moreno es una postal. Sus calles empedradas, fachadas coloniales coloridas, puentes históricos y miradores ofrecen escenarios perfectos para la fotografía. Ya sea al amanecer desde el Calvario o al atardecer junto al río, Lagos nunca deja de sorprender.',
     icon: '📸',
     gradient: 'from-cyan-500 to-blue-500',
+    image: '/tourism/calvario-panoramica.jpg',
     relatedCategories: ['fotografia', 'servicios'],
   },
   {
@@ -69,6 +75,7 @@ export const ACTIVITIES: Activity[] = [
     longDescription: 'No hay mejor forma de conocer Lagos de Moreno que caminando. Recorre el centro histórico, cruza el emblemático puente sobre el río, sube al Templo del Calvario para una vista panorámica y descubre rincones escondidos. Después, acompáñalo con un helado o un café en algún negocio local.',
     icon: '🚶',
     gradient: 'from-emerald-500 to-teal-500',
+    image: '/tourism/centro-historico.jpg',
     relatedCategories: ['cafeterias', 'heladerias'],
   },
   {
@@ -78,6 +85,7 @@ export const ACTIVITIES: Activity[] = [
     longDescription: 'Lagos de Moreno cobra vida con sus tradiciones: la Feria de la Primavera, las fiestas de la Asunción en agosto, las celebraciones de Semana Santa y el Día de Muertos. Cada evento es una oportunidad para vivir la cultura laguense en su máxima expresión.',
     icon: '🎉',
     gradient: 'from-violet-500 to-fuchsia-500',
+    image: '/tourism/dia-muertos.jpg',
     relatedCategories: [],
   },
 ]
@@ -91,6 +99,7 @@ export const ZONES: Zone[] = [
     longDescription: 'Construido en el siglo XIX con arquitectura neoclásica, el Templo del Calvario se alza majestuoso sobre Lagos de Moreno. Sube sus escalinatas para disfrutar de una vista panorámica impresionante de toda la ciudad y sus alrededores. Es el símbolo más reconocido de Lagos.',
     icon: '⛪',
     gradient: 'from-teal-600 to-emerald-700',
+    image: '/tourism/templo-calvario.jpg',
     relatedCategories: [],
     coordinates: { lat: 21.3571, lng: -102.3425 },
   },
@@ -101,6 +110,7 @@ export const ZONES: Zone[] = [
     longDescription: 'Declarado Patrimonio de la Humanidad por la UNESCO en 2010, el centro histórico de Lagos de Moreno es un tesoro arquitectónico. Pasea por sus portales, admira las casonas coloniales y siéntate en la plaza principal a disfrutar de un momento tranquilo en este Pueblo Mágico.',
     icon: '🏛️',
     gradient: 'from-slate-700 to-slate-900',
+    image: '/tourism/centro-historico.jpg',
     relatedCategories: ['restaurantes', 'cafeterias', 'tiendas'],
     coordinates: { lat: 21.3528, lng: -102.3444 },
   },
@@ -111,6 +121,7 @@ export const ZONES: Zone[] = [
     longDescription: 'Construido en 1860, el Puente del Río Lagos es uno de los monumentos más fotografiados de la ciudad. Su arquitectura de cantera y las vistas del río lo convierten en el lugar perfecto para un paseo romántico o una sesión de fotos al atardecer.',
     icon: '🌉',
     gradient: 'from-blue-600 to-indigo-700',
+    image: '/tourism/puente-rio.jpg',
     relatedCategories: ['heladerias', 'cafeterias'],
   },
   {
@@ -120,6 +131,7 @@ export const ZONES: Zone[] = [
     longDescription: 'La Parroquia de la Asunción es considerada una de las mejores expresiones del barroco mexicano. Su imponente fachada de cantera rosa, con torres de tres cuerpos, domina el paisaje del centro de Lagos. En su interior, retablos dorados y pinturas coloniales cuentan siglos de historia.',
     icon: '🕍',
     gradient: 'from-rose-600 to-pink-700',
+    image: '/tourism/parroquia-asuncion.jpg',
     relatedCategories: [],
     coordinates: { lat: 21.3534, lng: -102.3442 },
   },
@@ -130,6 +142,7 @@ export const ZONES: Zone[] = [
     longDescription: 'Nombrado en honor al célebre poeta y fabulista laguense, el Teatro José Rosas Moreno es un edificio neoclásico que ha sido escenario de eventos culturales desde el siglo XIX. Su elegante interior y su rica programación lo convierten en un punto obligado para los amantes de la cultura.',
     icon: '🎭',
     gradient: 'from-purple-600 to-violet-700',
+    image: '/tourism/teatro-rosas-moreno.jpg',
     relatedCategories: [],
   },
   {
@@ -139,6 +152,7 @@ export const ZONES: Zone[] = [
     longDescription: 'El Museo de Arte Sacro resguarda una valiosa colección de arte religioso que abarca desde la época colonial hasta el siglo XX. Pinturas, esculturas, ornamentos litúrgicos y documentos históricos te transportan a los orígenes de Lagos de Moreno.',
     icon: '🖼️',
     gradient: 'from-amber-600 to-orange-700',
+    image: '/tourism/turismo-religioso.jpg',
     relatedCategories: [],
   },
   {
@@ -148,6 +162,7 @@ export const ZONES: Zone[] = [
     longDescription: 'A las afueras de Lagos de Moreno, la Presa de Cuarenta ofrece un escape natural con aguas tranquilas rodeadas de paisajes verdes. Es el lugar ideal para un día de campo, pesca recreativa o simplemente disfrutar de la naturaleza lejos del bullicio de la ciudad.',
     icon: '🏞️',
     gradient: 'from-green-600 to-emerald-700',
+    image: '/tourism/panoramica-lagos.jpg',
     relatedCategories: [],
   },
   {
@@ -157,6 +172,7 @@ export const ZONES: Zone[] = [
     longDescription: 'Los alrededores de Lagos de Moreno están salpicados de haciendas coloniales que fueron el corazón de la actividad ganadera y agrícola de la región. Algunas han sido restauradas y abren sus puertas para que conozcas la vida hacendaria del México colonial.',
     icon: '🏡',
     gradient: 'from-yellow-700 to-amber-800',
+    image: '/tourism/palacio-municipal.jpg',
     relatedCategories: [],
   },
   {
@@ -166,6 +182,7 @@ export const ZONES: Zone[] = [
     longDescription: 'El Jardín de los Constituyentes es el corazón social de Lagos de Moreno. Con su kiosco tradicional, bancas bajo los árboles y rodeado de portales con cafés y tiendas, es el lugar perfecto para sentarse a observar la vida cotidiana de este Pueblo Mágico.',
     icon: '🌳',
     gradient: 'from-teal-500 to-green-600',
+    image: '/tourism/jardin-constituyentes.jpg',
     relatedCategories: ['cafeterias', 'heladerias', 'restaurantes'],
     coordinates: { lat: 21.3530, lng: -102.3440 },
   },
@@ -176,6 +193,7 @@ export const ZONES: Zone[] = [
     longDescription: 'La Casa de la Cultura de Lagos de Moreno es un espacio dedicado a las artes y la educación. Alberga exposiciones temporales, talleres de arte, presentaciones de libros y eventos culturales. Un lugar imprescindible para quienes buscan conocer el lado artístico de Lagos.',
     icon: '🎨',
     gradient: 'from-indigo-600 to-blue-700',
+    image: '/tourism/casa-cultura.jpg',
     relatedCategories: [],
   },
 ]
