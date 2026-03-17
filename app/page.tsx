@@ -7,6 +7,8 @@ import StarRating from '@/components/reviews/StarRating'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import PremiumSlider from '@/components/shared/PremiumSlider'
 import AnimatedCounter from '@/components/shared/AnimatedCounter'
+import ScrollReveal from '@/components/shared/ScrollReveal'
+import TextReveal from '@/components/shared/TextReveal'
 import { TIER_ORDER } from '@/lib/constants'
 import TourismPreview from '@/components/tourism/TourismPreview'
 import type { BlogPost } from '@/types/database.types'
@@ -172,7 +174,7 @@ export default async function Home() {
           <div className="text-center max-w-3xl mx-auto">
             {/* Logo in hero */}
             <div className="flex justify-center mb-8 animate-fade-in-up">
-              <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+              <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 animate-float animate-glow">
                 <Image
                   src="/logo.png"
                   alt="SomosLagos"
@@ -185,8 +187,9 @@ export default async function Home() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white mb-5 leading-tight tracking-tight animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
-              Descubre{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent">Lagos de Moreno</span>
+              <TextReveal text="Descubre" staggerMs={100} />
+              {' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent bg-[length:200%_auto] animate-shimmer">Lagos de Moreno</span>
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               La red de negocios mas grande de Lagos de Moreno. Conecta, explora y apoya a tu comunidad
@@ -199,19 +202,19 @@ export default async function Home() {
 
             {/* Social Proof Metrics - glass cards with animated counters */}
             <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-accent/20 animate-fade-in-up shadow-lg shadow-accent/5">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-accent/20 animate-scale-in-bounce shadow-lg shadow-accent/5" style={{ animationDelay: '0.5s' }}>
                 <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent via-amber-300 to-accent">
                   <AnimatedCounter target={150} suffix="+" />
                 </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1 text-center">Negocios</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-primary-light/20 animate-fade-in-up shadow-lg shadow-primary/5" style={{ animationDelay: '0.1s' }}>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-primary-light/20 animate-scale-in-bounce shadow-lg shadow-primary/5" style={{ animationDelay: '0.65s' }}>
                 <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-light via-teal-300 to-primary-light">
                   <AnimatedCounter target={catCount} suffix="+" />
                 </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1 text-center">Categorias</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-white/20 animate-fade-in-up shadow-lg" style={{ animationDelay: '0.2s' }}>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-white/20 animate-scale-in-bounce shadow-lg" style={{ animationDelay: '0.8s' }}>
                 <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-primary-light to-white">
                   <AnimatedCounter target={100} suffix="%" />
                 </p>
@@ -222,7 +225,7 @@ export default async function Home() {
         </div>
 
         {/* Bottom wave */}
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 animate-wave-move">
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
             <path d="M0 80H1440V40C1440 40 1320 0 1200 0C1080 0 960 40 840 40C720 40 600 0 480 0C360 0 240 40 120 40C60 40 0 20 0 20V80Z" fill="white"/>
           </svg>
@@ -248,17 +251,18 @@ export default async function Home() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             {categories && categories.length > 0 ? (
               <>
-                {categories.slice(0, 6).map((category) => (
-                  <Link
-                    key={category.id}
-                    href={`/categorias/${category.slug}`}
-                    className="group flex items-center gap-2 px-5 py-3 bg-white rounded-full border border-gray-200 hover:border-primary/30 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 transition-all duration-300"
-                  >
-                    <span className="text-xl group-hover:scale-110 transition-transform duration-300">{category.icon || '📦'}</span>
-                    <span className="font-medium text-sm text-secondary group-hover:text-primary transition-colors">
-                      {category.name}
-                    </span>
-                  </Link>
+                {categories.slice(0, 6).map((category, i) => (
+                  <ScrollReveal key={category.id} direction="up" delay={i * 80}>
+                    <Link
+                      href={`/categorias/${category.slug}`}
+                      className="group flex items-center gap-2 px-5 py-3 bg-white rounded-full border border-gray-200 hover:border-primary/30 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 transition-all duration-300"
+                    >
+                      <span className="text-xl group-hover:scale-110 transition-transform duration-300">{category.icon || '📦'}</span>
+                      <span className="font-medium text-sm text-secondary group-hover:text-primary transition-colors">
+                        {category.name}
+                      </span>
+                    </Link>
+                  </ScrollReveal>
                 ))}
                 {catCount > 6 && (
                   <Link
@@ -293,7 +297,9 @@ export default async function Home() {
       </section>
 
       {/* Qué Hacer en Lagos — Tourism Preview */}
-      <TourismPreview />
+      <ScrollReveal direction="left">
+        <TourismPreview />
+      </ScrollReveal>
 
       {/* Banner: Home Middle */}
       <div className="container mx-auto px-4 py-6">
@@ -304,25 +310,31 @@ export default async function Home() {
       {featuredBusinesses && featuredBusinesses.length > 0 && (
         <section className="py-20 bg-surface">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
-              <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full mb-4">Destacados</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-2">Negocios Destacados</h2>
-              <p className="text-gray-500">Los mejores negocios de Lagos de Moreno</p>
-            </div>
+            <ScrollReveal direction="up">
+              <div className="text-center mb-10">
+                <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full mb-4 animate-scale-in" style={{ animationDelay: '0.2s' }}>Destacados</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-2">Negocios Destacados</h2>
+                <p className="text-gray-500">Los mejores negocios de Lagos de Moreno</p>
+              </div>
+            </ScrollReveal>
 
-            <PremiumSlider businesses={featuredBusinesses} />
+            <ScrollReveal direction="up" delay={200}>
+              <PremiumSlider businesses={featuredBusinesses} />
+            </ScrollReveal>
 
-            <div className="text-center mt-8">
-              <Link
-                href="/descubre"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-secondary font-medium rounded-full hover:shadow-md transition-all"
-              >
-                Ver todos los negocios
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
+            <ScrollReveal direction="up" delay={300}>
+              <div className="text-center mt-8">
+                <Link
+                  href="/descubre"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-secondary font-medium rounded-full hover:shadow-md transition-all"
+                >
+                  Ver todos los negocios
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </ScrollReveal>
           </div>
         </section>
       )}
@@ -330,6 +342,7 @@ export default async function Home() {
       {/* CTA for Business Owners */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
+          <ScrollReveal direction="scale">
           <div className="max-w-5xl mx-auto relative overflow-hidden rounded-3xl">
             {/* Background image reuse */}
             <Image
@@ -387,12 +400,14 @@ export default async function Home() {
               </div>
             </div>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Planes CTA — link a pagina dedicada */}
       <section className="py-12 bg-surface">
         <div className="container mx-auto px-4">
+          <ScrollReveal direction="up">
           <div className="max-w-3xl mx-auto text-center bg-white rounded-2xl border border-gray-100 p-8 md:p-10 shadow-sm">
             <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Planes</span>
             <h2 className="text-2xl md:text-3xl font-bold text-secondary mb-3">Haz crecer tu negocio con el plan ideal</h2>
@@ -415,6 +430,7 @@ export default async function Home() {
               </Link>
             </div>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -428,6 +444,7 @@ export default async function Home() {
         return (
           <section className="py-20 bg-surface">
             <div className="container mx-auto px-4">
+              <ScrollReveal direction="up">
               <div className="flex items-end justify-between mb-12">
                 <div>
                   <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Descubre</span>
@@ -444,6 +461,7 @@ export default async function Home() {
                   </svg>
                 </Link>
               </div>
+              </ScrollReveal>
 
               {/* AVANZADO: Slider + Large Cards */}
               {avanzadoBiz.length > 0 && (
@@ -649,6 +667,7 @@ export default async function Home() {
       {latestPosts.length > 0 && (
         <section className="py-20 bg-white">
           <div className="container mx-auto px-4">
+            <ScrollReveal direction="up">
             <div className="flex items-end justify-between mb-12">
               <div>
                 <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Blog</span>
@@ -665,11 +684,12 @@ export default async function Home() {
                 </svg>
               </Link>
             </div>
+            </ScrollReveal>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {latestPosts.map((post) => (
+              {latestPosts.map((post, i) => (
+                <ScrollReveal key={post.id} direction="up" delay={i * 120}>
                 <Link
-                  key={post.id}
                   href={`/blog/${post.slug}`}
                   className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all"
                 >
@@ -702,6 +722,7 @@ export default async function Home() {
                     )}
                   </div>
                 </Link>
+                </ScrollReveal>
               ))}
             </div>
 
@@ -792,6 +813,7 @@ export default async function Home() {
 
             {/* Before vs After comparison */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              <ScrollReveal direction="left">
               <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-2xl">😫</span>
@@ -816,6 +838,8 @@ export default async function Home() {
                   </li>
                 </ul>
               </div>
+              </ScrollReveal>
+              <ScrollReveal direction="right" delay={150}>
               <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-2xl">🤖</span>
@@ -840,6 +864,7 @@ export default async function Home() {
                   </li>
                 </ul>
               </div>
+              </ScrollReveal>
             </div>
           </div>
         </div>
@@ -884,11 +909,13 @@ export default async function Home() {
       {/* Trust Section - with animated counters */}
       <section className="py-20 bg-surface">
         <div className="container mx-auto px-4">
+          <ScrollReveal direction="up">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1.5 bg-secondary/5 text-secondary text-sm font-semibold rounded-full mb-4">Ventajas</span>
             <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">¿Por que SomosLagos?</h2>
             <p className="text-gray-500">La plataforma hecha por y para Lagos de Moreno</p>
           </div>
+          </ScrollReveal>
 
           {/* Counters row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-12">
@@ -945,17 +972,20 @@ export default async function Home() {
       {/* Testimonials Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
+          <ScrollReveal direction="up">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full mb-4">Opiniones</span>
             <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">Lo que dicen nuestros usuarios</h2>
             <p className="text-gray-500">Opiniones reales de personas en Lagos de Moreno</p>
           </div>
+          </ScrollReveal>
 
           {topReviews && topReviews.length > 0 ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-10">
-                {topReviews.map((review: any) => (
-                  <div key={review.id} className="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                {topReviews.map((review: any, i: number) => (
+                  <ScrollReveal key={review.id} direction={i % 2 === 0 ? 'left' : 'right'} delay={i * 100}>
+                  <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
                     <div className="flex items-center gap-1 mb-3">
                       {[...Array(5)].map((_, i) => (
                         <svg key={i} className={`w-4 h-4 ${i < review.rating ? 'text-accent' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
@@ -973,6 +1003,7 @@ export default async function Home() {
                       )}
                     </div>
                   </div>
+                  </ScrollReveal>
                 ))}
               </div>
               <div className="text-center">

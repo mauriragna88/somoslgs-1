@@ -54,6 +54,16 @@ const config: Config = {
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.6s ease-out both',
+        'fade-in-down': 'fadeInDown 0.6s ease-out both',
+        'fade-in-left': 'fadeInLeft 0.6s ease-out both',
+        'fade-in-right': 'fadeInRight 0.6s ease-out both',
+        'scale-in': 'scaleIn 0.5s ease-out both',
+        'scale-in-bounce': 'scaleInBounce 0.6s ease-out both',
+        'shimmer': 'shimmer 3s ease-in-out infinite',
+        'float': 'float 3s ease-in-out infinite',
+        'glow': 'glow 2s ease-in-out infinite',
+        'wave-move': 'waveMove 6s ease-in-out infinite',
+        'gradient-shift': 'gradientShift 4s ease infinite',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
