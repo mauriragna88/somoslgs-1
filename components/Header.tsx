@@ -129,7 +129,7 @@ export default function Header() {
           </Link>
 
           {/* Search Bar - Desktop */}
-          <div className="hidden md:block flex-1 max-w-md mx-8">
+          <div className="hidden md:block flex-1 max-w-xs mx-4">
             <SmartSearch variant="header" />
           </div>
 

@@ -13,20 +13,25 @@ export async function GET(request: NextRequest) {
 
   const supabase = createServiceClient()
 
-  // Sanitize and split query into words for smarter matching
   const sanitized = sanitizeSearchQuery(query)
   if (!sanitized || sanitized.length < 2) {
     return NextResponse.json([])
   }
+
   const words = sanitized.toLowerCase().split(/\s+/).filter(w => w.length >= 2)
   if (words.length === 0) {
     return NextResponse.json([])
   }
 
-  // Build OR conditions: stem each word for plural/singular matching
+  // Build OR conditions: search name, description, address, neighborhood
   const orConditions = words.map(word => {
     const stem = stemSpanish(word)
-    return `name.ilike.%${stem}%,description.ilike.%${stem}%`
+    return [
+      `name.ilike.%${stem}%`,
+      `description.ilike.%${stem}%`,
+      `address.ilike.%${stem}%`,
+      `neighborhood.ilike.%${stem}%`,
+    ].join(',')
   }).join(',')
 
   const { data: businesses, error } = await supabase
@@ -38,6 +43,7 @@ export async function GET(request: NextRequest) {
       description,
       logo_url,
       address,
+      neighborhood,
       subscription_tier,
       is_featured,
       rating,
@@ -49,13 +55,13 @@ export async function GET(request: NextRequest) {
     .order('is_featured', { ascending: false })
     .order('subscription_tier', { ascending: false })
     .order('name')
-    .limit(8)
+    .limit(12)
 
   if (error) {
     return NextResponse.json([], { status: 500 })
   }
 
-  // Also search by category name for results that may not match above
+  // Also search by category name
   const { data: categoryMatches } = await supabase
     .from('businesses')
     .select(`
@@ -65,6 +71,7 @@ export async function GET(request: NextRequest) {
       description,
       logo_url,
       address,
+      neighborhood,
       subscription_tier,
       is_featured,
       rating,
@@ -77,7 +84,7 @@ export async function GET(request: NextRequest) {
     .limit(5)
 
   // Merge results, avoiding duplicates
-  const allResults = businesses || []
+  const allResults = [...(businesses || [])]
   const existingIds = new Set(allResults.map(b => b.id))
 
   if (categoryMatches) {
@@ -88,6 +95,18 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Return max 8 results
-  return NextResponse.json(allResults.slice(0, 8))
+  // Sort: exact name match first, then starts-with, then rest
+  const queryLower = sanitized.toLowerCase()
+  const sorted = allResults.sort((a, b) => {
+    const aName = a.name.toLowerCase()
+    const bName = b.name.toLowerCase()
+    const aExact = aName === queryLower ? 0 : aName.startsWith(queryLower) ? 1 : 2
+    const bExact = bName === queryLower ? 0 : bName.startsWith(queryLower) ? 1 : 2
+    if (aExact !== bExact) return aExact - bExact
+    // Featured first within same relevance
+    if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1
+    return 0
+  })
+
+  return NextResponse.json(sorted.slice(0, 8))
 }
