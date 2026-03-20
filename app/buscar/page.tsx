@@ -7,6 +7,7 @@ import { TIER_ORDER } from '@/lib/constants'
 import BusinessCard from '@/components/shared/BusinessCard'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import ListingCard from '@/components/marketplace/ListingCard'
+import SmartSearch from '@/components/SmartSearch'
 import type { MarketplaceListing } from '@/types/database.types'
 
 export const revalidate = 1800
@@ -238,6 +239,12 @@ export default async function BuscarPage({
       <div className="bg-gradient-to-br from-white to-surface border-b border-gray-100 py-8">
         <div className="container mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-4">Buscar</h1>
+
+          {/* SmartSearch - solo móvil (desktop ya tiene en header) */}
+          <div className="md:hidden mb-5">
+            <SmartSearch variant="mobile" />
+            <p className="text-xs text-gray-400 mt-1.5 text-center">Escribe para ver resultados al instante</p>
+          </div>
 
           {/* Tabs */}
           <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-6 w-fit">
