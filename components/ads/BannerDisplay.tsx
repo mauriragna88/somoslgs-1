@@ -28,15 +28,17 @@ interface BannerDisplayProps {
   placement: BannerPlacement
   className?: string
   userTier?: string
+  /** Force horizontal layout even for sidebar placements (useful for mobile inline) */
+  forceHorizontal?: boolean
 }
 
-export default function BannerDisplay({ placement, className = '', userTier }: BannerDisplayProps) {
+export default function BannerDisplay({ placement, className = '', userTier, forceHorizontal = false }: BannerDisplayProps) {
   const [banner, setBanner] = useState<BannerData | null>(null)
   const [loading, setLoading] = useState(true)
   const [dismissed, setDismissed] = useState(false)
   const [minimized, setMinimized] = useState(false)
 
-  const isVertical = VERTICAL_PLACEMENTS.includes(placement)
+  const isVertical = !forceHorizontal && VERTICAL_PLACEMENTS.includes(placement)
   const canClose = userTier ? PAID_TIERS.includes(userTier) : false
 
   // Restore minimized state from localStorage
@@ -323,28 +325,6 @@ export default function BannerDisplay({ placement, className = '', userTier }: B
     )
   }
 
-  // CTA: Anuncia aqui (cuando no hay banner ni AdSense)
-  // Solo mostrar en placements principales, no en inline
-  if (placement === 'search_inline') return null
-
-  return (
-    <div className={`relative ${className}`}>
-      {fallbackActionButton}
-      <a
-        href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20anunciar%20mi%20negocio%20en%20SomosLagos"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block overflow-hidden rounded-2xl border border-dashed border-gray-300 bg-gradient-to-br from-gray-50 to-white hover:border-primary/40 hover:shadow-sm transition-all group"
-      >
-        <div className="px-6 py-5 text-center">
-          <p className="text-sm font-semibold text-gray-700 group-hover:text-primary transition-colors">
-            Anuncia tu negocio aqui
-          </p>
-          <p className="text-xs text-gray-400 mt-1">
-            Desde <span className="font-bold text-primary">$17 al dia</span> — miles de personas en Lagos te veran
-          </p>
-        </div>
-      </a>
-    </div>
-  )
+  // Sin banner ni AdSense → no renderizar nada (sin espacio vacío ni CTAs de precio)
+  return null
 }
