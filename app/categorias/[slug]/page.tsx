@@ -79,6 +79,33 @@ export async function generateStaticParams() {
   }))
 }
 
+// Generates SEO intro text and FAQ based on category name
+function getCategoryContent(name: string, count: number) {
+  const n = name.toLowerCase()
+  const city = 'Lagos de Moreno, Jalisco'
+
+  const intro = `¿Buscas ${n} en ${city}? En SomosLagos encontrarás ${count > 0 ? `los ${count} negocios de ${n}` : 'negocios de ' + n} más recomendados de la ciudad, con horarios de atención, ubicación exacta en el mapa, número de WhatsApp directo y opiniones reales de clientes locales. Toda la información actualizada en un solo lugar.`
+
+  const faqs = [
+    {
+      q: `¿Cuántos negocios de ${n} hay en Lagos de Moreno?`,
+      a: count > 0
+        ? `Actualmente hay ${count} negocio${count !== 1 ? 's' : ''} de ${n} registrado${count !== 1 ? 's' : ''} en SomosLagos. La lista se actualiza en tiempo real conforme se registran nuevos negocios.`
+        : `Aún no hay negocios de ${n} registrados en SomosLagos. Si tienes uno, puedes registrarlo gratis y ser el primero en aparecer.`,
+    },
+    {
+      q: `¿Cómo contactar a un negocio de ${n} en Lagos de Moreno?`,
+      a: `Desde cada perfil puedes escribirles directamente por WhatsApp con un solo toque, ver su ubicación en el mapa y consultar sus horarios de atención sin necesidad de llamar.`,
+    },
+    {
+      q: `¿Cómo registro mi negocio de ${n} en Lagos de Moreno?`,
+      a: `El registro es completamente gratis. Solo entra a SomosLagos, crea tu cuenta y llena la información de tu negocio. En menos de 5 minutos tu negocio aparece en las búsquedas de Lagos de Moreno.`,
+    },
+  ]
+
+  return { intro, faqs }
+}
+
 export default async function CategoriaPage({ params }: PageProps) {
   const supabase = createClient()
 
@@ -186,6 +213,18 @@ export default async function CategoriaPage({ params }: PageProps) {
     ],
   }
 
+  const { intro, faqs } = getCategoryContent(category.name, businesses.length)
+
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: { '@type': 'Answer', text: faq.a },
+    })),
+  }
+
   return (
     <main className="min-h-screen bg-surface">
       <script
@@ -195,6 +234,10 @@ export default async function CategoriaPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       {/* Header */}
@@ -209,8 +252,8 @@ export default async function CategoriaPage({ params }: PageProps) {
             <span className="text-secondary font-medium">{category.name}</span>
           </nav>
 
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl flex items-center justify-center">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="text-2xl">{category.icon || '📁'}</span>
             </div>
             <div>
@@ -222,6 +265,11 @@ export default async function CategoriaPage({ params }: PageProps) {
               </p>
             </div>
           </div>
+
+          {/* SEO intro paragraph */}
+          <p className="text-sm text-gray-500 max-w-3xl leading-relaxed border-t border-gray-100 pt-4">
+            {intro}
+          </p>
         </div>
       </div>
 
@@ -276,6 +324,28 @@ export default async function CategoriaPage({ params }: PageProps) {
             </div>
           </div>
         )}
+
+        {/* FAQ — SEO: People Also Ask */}
+        <div className="mt-12">
+          <h2 className="text-xl font-bold text-secondary mb-4">
+            Preguntas frecuentes sobre {category.name.toLowerCase()} en Lagos de Moreno
+          </h2>
+          <div className="space-y-3">
+            {faqs.map((faq) => (
+              <details key={faq.q} className="group bg-white rounded-xl border border-gray-100 overflow-hidden">
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-secondary hover:text-primary transition-colors list-none [&::-webkit-details-marker]:hidden text-sm">
+                  {faq.q}
+                  <svg className="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-5 pb-4 text-sm text-gray-600 leading-relaxed">
+                  {faq.a}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
 
         {/* CTA */}
         <div className="mt-12 bg-gradient-to-r from-secondary via-secondary-light to-primary rounded-2xl p-8 text-center text-white relative overflow-hidden">
