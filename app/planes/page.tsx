@@ -32,10 +32,10 @@ const CROSS = (
 
 const plans = [
   { name: 'Gratis', price: '$0', period: 'siempre', color: 'text-gray-700', border: 'border-gray-200', bg: 'bg-white', cta: 'Empezar Gratis', ctaStyle: 'bg-gray-100 hover:bg-gray-200 text-secondary', href: '/registrar-negocio' },
-  { name: 'Emprendedor', price: '$60', period: '/mes', color: 'text-primary', border: 'border-primary/30', bg: 'bg-white', cta: 'Elegir Emprendedor', ctaStyle: 'bg-primary/10 hover:bg-primary/20 text-primary', href: '/registrar-negocio' },
-  { name: 'Pro', price: '$120', period: '/mes', color: 'text-emerald-600', border: 'border-emerald-500/30', bg: 'bg-white', popular: true, cta: 'Elegir Pro', ctaStyle: 'bg-primary hover:bg-primary-dark text-white', href: '/registrar-negocio' },
-  { name: 'Avanzado', price: '$180', period: '/mes', color: 'text-purple-600', border: 'border-purple-500/30', bg: 'bg-white', cta: 'Elegir Avanzado', ctaStyle: 'bg-purple-600 hover:bg-purple-700 text-white', href: '/registrar-negocio' },
-  { name: 'Chatbot', price: '$300', period: '/mes', color: 'text-white', border: 'border-violet-500', bg: 'bg-gradient-to-b from-violet-600 to-fuchsia-600', cta: 'WhatsApp', ctaStyle: 'bg-white hover:bg-gray-100 text-violet-700', href: 'https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20plan%20Chatbot%20para%20mi%20negocio', external: true },
+  { name: 'Emprendedor', price: '$60', period: 'MXN/mes', color: 'text-primary', border: 'border-primary/30', bg: 'bg-white', cta: 'Elegir Emprendedor', ctaStyle: 'bg-primary/10 hover:bg-primary/20 text-primary', href: '/registrar-negocio' },
+  { name: 'Pro', price: '$120', period: 'MXN/mes', color: 'text-emerald-600', border: 'border-emerald-500/30', bg: 'bg-white', popular: true, cta: 'Elegir Pro', ctaStyle: 'bg-primary hover:bg-primary-dark text-white', href: '/registrar-negocio' },
+  { name: 'Avanzado', price: '$180', period: 'MXN/mes', color: 'text-purple-600', border: 'border-purple-500/30', bg: 'bg-white', cta: 'Elegir Avanzado', ctaStyle: 'bg-purple-600 hover:bg-purple-700 text-white', href: '/registrar-negocio' },
+  { name: 'Chatbot', price: '$300', period: 'MXN/mes', color: 'text-white', border: 'border-violet-500', bg: 'bg-gradient-to-b from-violet-600 to-fuchsia-600', cta: 'WhatsApp', ctaStyle: 'bg-white hover:bg-gray-100 text-violet-700', href: 'https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20plan%20Chatbot%20para%20mi%20negocio', external: true },
 ]
 
 const features = [

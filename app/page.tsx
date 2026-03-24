@@ -40,18 +40,29 @@ interface FeaturedBusiness {
 export default async function Home() {
   const supabase = createClient()
 
-  // Fetch popular categories
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('id, name, icon, slug')
-    .is('parent_id', null)
-    .limit(12)
-    .order('display_order') as { data: HomeCategory[] | null }
+  // Get category IDs that have at least one active business
+  const { data: businessCats } = await supabase
+    .from('businesses')
+    .select('category_id')
+    .eq('is_active', true)
+    .not('category_id', 'is', null)
 
-  // Get total category count
-  const { count: totalCategories } = await supabase
-    .from('categories')
-    .select('id', { count: 'exact', head: true })
+  const activeCatIds = Array.from(new Set((businessCats || []).map((b: any) => b.category_id)))
+
+  // Fetch only categories that have active businesses
+  let categories: HomeCategory[] = []
+  if (activeCatIds.length > 0) {
+    const { data } = await supabase
+      .from('categories')
+      .select('id, name, icon, slug')
+      .is('parent_id', null)
+      .in('id', activeCatIds)
+      .limit(12)
+      .order('display_order') as { data: HomeCategory[] | null }
+    categories = data || []
+  }
+
+  const totalCategories = activeCatIds.length
 
   // Fetch featured/premium businesses (avanzado) with photos for slider
   const { data: featuredBusinesses } = await supabase
@@ -141,7 +152,7 @@ export default async function Home() {
     },
   }
 
-  const catCount = totalCategories || (categories?.length ?? 0)
+  const catCount = totalCategories || categories.length
 
   return (
     <main className="min-h-screen">
@@ -339,6 +350,11 @@ export default async function Home() {
         </section>
       )}
 
+      {/* Banner: Home Left (mobile inline — hidden on xl where it's a fixed sidebar) */}
+      <div className="xl:hidden container mx-auto px-4 py-6">
+        <BannerDisplay placement="home_left" forceHorizontal />
+      </div>
+
       {/* CTA for Business Owners */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
@@ -385,6 +401,14 @@ export default async function Home() {
                   <h3 className="font-semibold text-white mb-1 text-sm">Ventas Online</h3>
                   <p className="text-xs text-white/80">Pedidos y pagos en linea</p>
                 </div>
+              </div>
+
+              {/* Chatbot selling point */}
+              <div className="mb-8 p-4 bg-accent/10 border border-accent/20 rounded-2xl flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0">🤖</span>
+                <p className="text-sm text-white/80">
+                  <strong className="text-accent">Al subir tus productos al Plan Pro</strong>, tu menú aparece automáticamente en el <strong className="text-white">Chatbot de Inteligencia Artificial</strong> de la ciudad. Presencia web y en WhatsApp al mismo tiempo.
+                </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -663,6 +687,11 @@ export default async function Home() {
         )
       })()}
 
+      {/* Banner: Home Right (mobile inline — hidden on xl where it's a fixed sidebar) */}
+      <div className="xl:hidden container mx-auto px-4 py-6">
+        <BannerDisplay placement="home_right" forceHorizontal />
+      </div>
+
       {/* Blog Section */}
       {latestPosts.length > 0 && (
         <section className="py-20 bg-white">
@@ -750,13 +779,18 @@ export default async function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-5xl mx-auto">
             {/* Badge */}
-            <div className="text-center mb-8">
-              <span className="inline-flex items-center gap-2 px-5 py-2 bg-accent/20 text-accent font-bold text-sm rounded-full border border-accent/30 animate-pulse">
+            <div className="text-center mb-8 flex flex-col items-center gap-3">
+              <a
+                href="https://wa.me/528142172127?text=Hola%2C%20me%20interesa%20ver%20los%20negocios%20y%20productos%20de%20SomosLagos"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2 bg-green-500/20 text-green-300 font-bold text-sm rounded-full border border-green-400/40 hover:bg-green-500/30 transition-colors"
+              >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                PROXIMAMENTE
-              </span>
+                YA DISPONIBLE — Escríbenos en WhatsApp →
+              </a>
             </div>
 
             <h2 className="text-3xl md:text-5xl font-extrabold text-white text-center mb-4 leading-tight">
@@ -883,7 +917,7 @@ export default async function Home() {
                     ¿Te interesa el chatbot de WhatsApp?
                   </h2>
                   <p className="text-secondary/70 font-medium">
-                    Solo $300/mes — tu WhatsApp vende solo
+                    Solo $300 MXN/mes — tu WhatsApp vende solo
                   </p>
                 </div>
               </div>

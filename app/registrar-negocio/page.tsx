@@ -50,8 +50,8 @@ const plans = [
   {
     name: 'Emprendedor',
     price: '$60',
-    dailyPrice: 'Solo $2/dia',
-    period: '/mes',
+    dailyPrice: 'Solo $2 MXN/día',
+    period: 'MXN/mes',
     popular: true,
     features: [
       { text: 'Todo lo del plan Gratis', included: true },
@@ -66,14 +66,15 @@ const plans = [
   {
     name: 'Pro',
     price: '$120',
-    dailyPrice: 'Solo $4/dia',
-    period: '/mes',
+    dailyPrice: 'Solo $4 MXN/día',
+    period: 'MXN/mes',
     popular: false,
     features: [
       { text: 'Todo lo del plan Emprendedor', included: true },
       { text: 'Catalogo de productos', included: true },
       { text: 'Recibir pedidos en linea', included: true },
       { text: 'Pagos por transferencia y tarjeta', included: true },
+      { text: 'Tus productos en el Chatbot IA 🤖', included: true },
       { text: 'Hasta 15 fotos', included: true },
       { text: 'Destacado en busquedas', included: false },
       { text: 'Estadisticas', included: false },
@@ -82,8 +83,8 @@ const plans = [
   {
     name: 'Avanzado',
     price: '$180',
-    dailyPrice: 'Solo $6/dia',
-    period: '/mes',
+    dailyPrice: 'Solo $6 MXN/día',
+    period: 'MXN/mes',
     popular: false,
     features: [
       { text: 'Todo lo del plan Pro', included: true },
@@ -97,8 +98,8 @@ const plans = [
   {
     name: 'Chatbot',
     price: '$300',
-    dailyPrice: 'Solo $10/dia',
-    period: '/mes',
+    dailyPrice: 'Solo $10 MXN/día',
+    period: 'MXN/mes',
     popular: false,
     hot: true,
     features: [
