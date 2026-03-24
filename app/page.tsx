@@ -430,35 +430,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Planes CTA — link a pagina dedicada */}
-      <section className="py-12 bg-surface">
-        <div className="container mx-auto px-4">
-          <ScrollReveal direction="up">
-          <div className="max-w-3xl mx-auto text-center bg-white rounded-2xl border border-gray-100 p-8 md:p-10 shadow-sm">
-            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Planes</span>
-            <h2 className="text-2xl md:text-3xl font-bold text-secondary mb-3">Haz crecer tu negocio con el plan ideal</h2>
-            <p className="text-gray-500 mb-6 max-w-lg mx-auto">Desde gratis hasta chatbot con IA. Sin contratos, cancela cuando quieras.</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href="/planes"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all"
-              >
-                Ver Planes y Precios
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <Link
-                href="/registrar-negocio"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gray-100 hover:bg-gray-200 text-secondary font-semibold rounded-full transition-colors"
-              >
-                Empezar Gratis
-              </Link>
-            </div>
-          </div>
-          </ScrollReveal>
-        </div>
-      </section>
 
       {/* Descubre Section — differentiated by tier */}
       {discoverBusinesses.length > 0 && (() => {
@@ -1078,6 +1049,121 @@ export default async function Home() {
               </div>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* ── PLANES — cierre de embudo, al final de todo ── */}
+      <section className="py-24 bg-gradient-to-br from-secondary via-[#1a2744] to-secondary relative overflow-hidden">
+        {/* Decorative blobs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none"></div>
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl translate-y-1/2 pointer-events-none"></div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <ScrollReveal direction="up">
+            <div className="text-center mb-14">
+              <span className="inline-flex items-center gap-2 px-5 py-2 bg-accent/20 text-accent font-bold text-sm rounded-full border border-accent/20 mb-5">
+                ✨ Ya viste todo lo que ofrecemos
+              </span>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                ¿Listo para que más gente<br className="hidden md:block" /> te encuentre en Lagos?
+              </h2>
+              <p className="text-lg text-white/60 max-w-xl mx-auto">
+                Empieza gratis hoy. Si en algún momento quieres más visibilidad, tenemos planes opcionales sin compromiso.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* Plan cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto mb-12">
+            {/* Gratis */}
+            <ScrollReveal direction="up" delay={0}>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col hover:bg-white/10 hover:border-white/20 transition-all">
+              <p className="text-white/60 text-xs font-semibold uppercase tracking-widest mb-2">Gratis</p>
+              <p className="text-4xl font-extrabold text-white mb-1">$0</p>
+              <p className="text-white/40 text-xs mb-5">para siempre</p>
+              <ul className="space-y-2 text-sm text-white/70 flex-1 mb-6">
+                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Aparece en buscador y mapa</li>
+                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> WhatsApp directo</li>
+                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Horarios y opiniones</li>
+                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Hasta 3 fotos</li>
+              </ul>
+              <Link href="/registrar-negocio" className="block text-center py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-colors">
+                Empezar Gratis
+              </Link>
+            </div>
+            </ScrollReveal>
+
+            {/* Emprendedor */}
+            <ScrollReveal direction="up" delay={100}>
+            <div className="bg-white/5 border border-primary/30 rounded-2xl p-6 flex flex-col hover:bg-white/10 hover:border-primary/50 transition-all">
+              <p className="text-primary-light text-xs font-semibold uppercase tracking-widest mb-2">Emprendedor</p>
+              <p className="text-4xl font-extrabold text-white mb-1">$60</p>
+              <p className="text-white/40 text-xs mb-5">MXN/mes · $2/día</p>
+              <ul className="space-y-2 text-sm text-white/70 flex-1 mb-6">
+                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Todo lo del plan Gratis</li>
+                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Portada personalizada</li>
+                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Redes sociales visibles</li>
+                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Hasta 8 fotos</li>
+              </ul>
+              <Link href="/planes" className="block text-center py-2.5 rounded-xl bg-primary/20 hover:bg-primary/30 text-primary-light font-semibold text-sm transition-colors">
+                Ver detalles
+              </Link>
+            </div>
+            </ScrollReveal>
+
+            {/* Pro — destacado */}
+            <ScrollReveal direction="up" delay={200}>
+            <div className="relative bg-gradient-to-b from-primary/20 to-primary/10 border-2 border-primary/60 rounded-2xl p-6 flex flex-col shadow-xl shadow-primary/20 scale-[1.03]">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-secondary text-xs font-bold px-4 py-1 rounded-full shadow-lg">MÁS POPULAR</span>
+              <p className="text-accent text-xs font-semibold uppercase tracking-widest mb-2">Pro</p>
+              <p className="text-4xl font-extrabold text-white mb-1">$120</p>
+              <p className="text-white/40 text-xs mb-5">MXN/mes · $4/día</p>
+              <ul className="space-y-2 text-sm text-white/80 flex-1 mb-6">
+                <li className="flex items-center gap-2"><span className="text-accent">✓</span> Catálogo de productos</li>
+                <li className="flex items-center gap-2"><span className="text-accent">✓</span> Recibe pedidos en línea</li>
+                <li className="flex items-center gap-2"><span className="text-accent">✓</span> Tus productos en el Chatbot IA 🤖</li>
+                <li className="flex items-center gap-2"><span className="text-accent">✓</span> Hasta 15 fotos</li>
+              </ul>
+              <Link href="/planes" className="block text-center py-2.5 rounded-xl bg-accent hover:bg-accent-dark text-secondary font-bold text-sm transition-colors shadow-lg">
+                Ver detalles
+              </Link>
+            </div>
+            </ScrollReveal>
+
+            {/* Avanzado */}
+            <ScrollReveal direction="up" delay={300}>
+            <div className="bg-white/5 border border-purple-400/30 rounded-2xl p-6 flex flex-col hover:bg-white/10 hover:border-purple-400/50 transition-all">
+              <p className="text-purple-300 text-xs font-semibold uppercase tracking-widest mb-2">Avanzado</p>
+              <p className="text-4xl font-extrabold text-white mb-1">$180</p>
+              <p className="text-white/40 text-xs mb-5">MXN/mes · $6/día</p>
+              <ul className="space-y-2 text-sm text-white/70 flex-1 mb-6">
+                <li className="flex items-center gap-2"><span className="text-purple-300">✓</span> Destacado en búsquedas</li>
+                <li className="flex items-center gap-2"><span className="text-purple-300">✓</span> Badge verificado ✅</li>
+                <li className="flex items-center gap-2"><span className="text-purple-300">✓</span> Estadísticas detalladas</li>
+                <li className="flex items-center gap-2"><span className="text-purple-300">✓</span> Hasta 20 fotos</li>
+              </ul>
+              <Link href="/planes" className="block text-center py-2.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-semibold text-sm transition-colors">
+                Ver detalles
+              </Link>
+            </div>
+            </ScrollReveal>
+          </div>
+
+          {/* Bottom note */}
+          <ScrollReveal direction="up" delay={400}>
+          <div className="text-center">
+            <p className="text-white/40 text-sm mb-4">Sin contratos • Cancela cuando quieras • El plan Gratis es para siempre</p>
+            <Link
+              href="/registrar-negocio"
+              className="inline-flex items-center gap-2 px-10 py-4 bg-accent hover:bg-accent-dark text-secondary font-bold text-lg rounded-full shadow-2xl shadow-accent/20 hover:scale-105 transition-all"
+            >
+              Registrar mi Negocio GRATIS
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+          </ScrollReveal>
         </div>
       </section>
 
