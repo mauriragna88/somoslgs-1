@@ -29,90 +29,6 @@ const steps = [
   { num: '3', title: 'Empieza a recibir clientes', desc: 'Tu negocio aparece en busquedas y el mapa de Lagos' },
 ]
 
-const plans = [
-  {
-    name: 'Gratis',
-    price: '$0',
-    dailyPrice: '',
-    period: 'para siempre',
-    popular: false,
-    features: [
-      { text: 'Aparece en el buscador', included: true },
-      { text: 'WhatsApp y telefono clickeable', included: true },
-      { text: 'Mapa con tu ubicacion', included: true },
-      { text: 'Horarios y opiniones', included: true },
-      { text: 'Hasta 3 fotos', included: true },
-      { text: 'Portada personalizada', included: false },
-      { text: 'Redes sociales', included: false },
-      { text: 'Productos y pedidos', included: false },
-    ],
-  },
-  {
-    name: 'Emprendedor',
-    price: '$60',
-    dailyPrice: 'Solo $2 MXN/día',
-    period: 'MXN/mes',
-    popular: true,
-    features: [
-      { text: 'Todo lo del plan Gratis', included: true },
-      { text: 'Portada personalizada', included: true },
-      { text: 'Redes sociales visibles', included: true },
-      { text: 'Hasta 8 fotos en galeria', included: true },
-      { text: 'Mejor posicion en busquedas', included: true },
-      { text: 'Productos y pedidos', included: false },
-      { text: 'Destacado en busquedas', included: false },
-    ],
-  },
-  {
-    name: 'Pro',
-    price: '$120',
-    dailyPrice: 'Solo $4 MXN/día',
-    period: 'MXN/mes',
-    popular: false,
-    features: [
-      { text: 'Todo lo del plan Emprendedor', included: true },
-      { text: 'Catalogo de productos', included: true },
-      { text: 'Recibir pedidos en linea', included: true },
-      { text: 'Pagos por transferencia y tarjeta', included: true },
-      { text: 'Tus productos en el Chatbot IA 🤖', included: true },
-      { text: 'Hasta 15 fotos', included: true },
-      { text: 'Destacado en busquedas', included: false },
-      { text: 'Estadisticas', included: false },
-    ],
-  },
-  {
-    name: 'Avanzado',
-    price: '$180',
-    dailyPrice: 'Solo $6 MXN/día',
-    period: 'MXN/mes',
-    popular: false,
-    features: [
-      { text: 'Todo lo del plan Pro', included: true },
-      { text: 'Destacado en busquedas', included: true },
-      { text: 'Badge verificado', included: true },
-      { text: 'Estadisticas detalladas', included: true },
-      { text: 'Soporte VIP prioritario', included: true },
-      { text: 'Hasta 20 fotos', included: true },
-    ],
-  },
-  {
-    name: 'Chatbot',
-    price: '$300',
-    dailyPrice: 'Solo $10 MXN/día',
-    period: 'MXN/mes',
-    popular: false,
-    hot: true,
-    features: [
-      { text: 'Todo lo del plan Avanzado', included: true },
-      { text: 'Chatbot de pedidos con IA', included: true },
-      { text: 'Catalogo automatico en el chat', included: true },
-      { text: 'Pedidos sin escribir textos', included: true },
-      { text: 'Pagos integrados en el bot', included: true },
-      { text: 'Atencion 24/7 automatica', included: true },
-      { text: 'Hasta 25 fotos', included: true },
-    ],
-  },
-]
 
 const faqs = [
   {
@@ -286,94 +202,15 @@ export default async function RegistrarNegocioPage() {
         </div>
       </section>
 
-      {/* Planes */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Planes</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">
-              Elige el plan ideal para ti
-            </h2>
-            <p className="text-gray-500 max-w-lg mx-auto">
-              Empieza gratis y crece a tu ritmo. Sin contratos ni permanencias.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 max-w-7xl mx-auto">
-            {plans.map((plan: any) => (
-              <div
-                key={plan.name}
-                className={`relative rounded-2xl border-2 p-6 ${
-                  plan.hot
-                    ? 'border-purple-500 shadow-xl shadow-purple-500/20 bg-gradient-to-b from-purple-50 to-white scale-[1.02]'
-                    : plan.popular
-                    ? 'border-primary shadow-xl shadow-primary/10 scale-[1.02]'
-                    : 'border-gray-100'
-                }`}
-              >
-                {plan.hot && (
-                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-bold px-4 py-1 rounded-full flex items-center gap-1">
-                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
-                    </svg>
-                    Nuevo
-                  </span>
-                )}
-                {plan.popular && !plan.hot && (
-                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-4 py-1 rounded-full">
-                    Popular
-                  </span>
-                )}
-                <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold text-secondary mb-2">{plan.name}</h3>
-                  <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-4xl font-extrabold text-secondary">{plan.price}</span>
-                    <span className="text-gray-400 text-sm">{plan.period}</span>
-                  </div>
-                  {plan.dailyPrice && (
-                    <p className="text-xs text-accent-dark font-semibold mt-1">{plan.dailyPrice} — menos que un cafe</p>
-                  )}
-                </div>
-                <ul className="space-y-3 mb-6">
-                  {plan.features.map((f: any) => (
-                    <li key={f.text} className="flex items-center gap-2.5 text-sm">
-                      {f.included ? (
-                        <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                        </svg>
-                      ) : (
-                        <svg className="w-5 h-5 text-gray-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      )}
-                      <span className={f.included ? 'text-gray-700' : 'text-gray-400'}>{f.text}</span>
-                    </li>
-                  ))}
-                </ul>
-                {plan.hot ? (
-                  <a
-                    href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20plan%20Chatbot%20para%20mi%20negocio"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full text-center py-3 rounded-xl font-semibold transition-colors bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white"
-                  >
-                    Contactar por WhatsApp
-                  </a>
-                ) : (
-                  <Link
-                    href="/registro?ref=registrar-negocio"
-                    className={`block w-full text-center py-3 rounded-xl font-semibold transition-colors ${
-                      plan.popular
-                        ? 'bg-primary hover:bg-primary-dark text-white'
-                        : 'bg-gray-100 hover:bg-gray-200 text-secondary'
-                    }`}
-                  >
-                    {plan.price === '$0' ? 'Empezar Gratis' : 'Elegir Plan'}
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
+      {/* Opciones opcionales — discreta, sin precios */}
+      <section className="py-10 bg-white border-t border-gray-100">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm text-gray-400">
+            ¿Quieres más visibilidad? Hay funciones opcionales para crecer a tu ritmo.{' '}
+            <Link href="/planes" className="text-primary hover:text-primary-dark font-medium underline underline-offset-2">
+              Ver opciones →
+            </Link>
+          </p>
         </div>
       </section>
 
