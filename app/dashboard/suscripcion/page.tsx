@@ -34,7 +34,7 @@ const planDetails: Record<string, { name: string; price: number; dailyPrice: str
   emprendedor: {
     name: 'Emprendedor',
     price: 60,
-    dailyPrice: '$2/dia',
+    dailyPrice: '$2 MXN/día',
     features: [
       'Todo del plan Gratis',
       'Portada personalizada',
@@ -46,7 +46,7 @@ const planDetails: Record<string, { name: string; price: number; dailyPrice: str
   pro: {
     name: 'Pro',
     price: 120,
-    dailyPrice: '$4/dia',
+    dailyPrice: '$4 MXN/día',
     features: [
       'Todo del plan Emprendedor',
       'Catalogo de productos ilimitado',
@@ -58,7 +58,7 @@ const planDetails: Record<string, { name: string; price: number; dailyPrice: str
   avanzado: {
     name: 'Avanzado',
     price: 180,
-    dailyPrice: '$6/dia',
+    dailyPrice: '$6 MXN/día',
     features: [
       'Todo del plan Pro',
       'Destacado en busquedas',

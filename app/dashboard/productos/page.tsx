@@ -111,8 +111,8 @@ export default async function ProductsPage() {
                 <span className="text-2xl">🛍️</span>
                 <h3 className="font-semibold text-gray-900">Plan Pro</h3>
               </div>
-              <p className="text-2xl font-bold text-green-600">$120<span className="text-sm font-normal text-gray-500">/mes</span></p>
-              <p className="text-xs text-accent-dark font-semibold mb-2">Solo $4 al dia — menos que un cafe</p>
+              <p className="text-2xl font-bold text-green-600">$120<span className="text-sm font-normal text-gray-500"> MXN/mes</span></p>
+              <p className="text-xs text-accent-dark font-semibold mb-2">Solo $4 MXN/día — menos que un café</p>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li>✓ Catalogo de productos ilimitado</li>
                 <li>✓ Recibe pedidos en linea</li>
@@ -125,8 +125,8 @@ export default async function ProductsPage() {
                 <span className="text-2xl">⭐</span>
                 <h3 className="font-semibold text-gray-900">Plan Avanzado</h3>
               </div>
-              <p className="text-2xl font-bold text-purple-600">$180<span className="text-sm font-normal text-gray-500">/mes</span></p>
-              <p className="text-xs text-accent-dark font-semibold mb-2">Solo $6 al dia</p>
+              <p className="text-2xl font-bold text-purple-600">$180<span className="text-sm font-normal text-gray-500"> MXN/mes</span></p>
+              <p className="text-xs text-accent-dark font-semibold mb-2">Solo $6 MXN/día</p>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li>✓ Todo lo de Pro</li>
                 <li>✓ Destacado en busquedas</li>

@@ -147,9 +147,9 @@ export default async function MiNegocioPage({
   }
 
   const nextPlan: Record<string, { name: string; price: string; daily: string }> = {
-    gratis: { name: 'Emprendedor', price: '$60/mes', daily: '$2 al dia' },
-    emprendedor: { name: 'Pro', price: '$120/mes', daily: '$4 al dia' },
-    pro: { name: 'Avanzado', price: '$180/mes', daily: '$6 al dia' },
+    gratis: { name: 'Emprendedor', price: '$60 MXN/mes', daily: '$2 MXN/día' },
+    emprendedor: { name: 'Pro', price: '$120 MXN/mes', daily: '$4 MXN/día' },
+    pro: { name: 'Avanzado', price: '$180 MXN/mes', daily: '$6 MXN/día' },
   }
 
   const upgrade = nextPlan[business.subscription_tier]
@@ -252,7 +252,7 @@ export default async function MiNegocioPage({
                 <div className="text-center px-4">
                   <span className="text-3xl block mb-2">🔒</span>
                   <p className="text-sm font-semibold text-gray-700">Productos, pedidos e ingresos</p>
-                  <p className="text-xs text-gray-500 mt-1">Disponible desde el Plan <strong>Pro</strong> por solo <span className="text-primary font-bold">$4/dia</span></p>
+                  <p className="text-xs text-gray-500 mt-1">Disponible desde el Plan <strong>Pro</strong> por solo <span className="text-primary font-bold">$4 MXN/día</span></p>
                   <Link href="/dashboard/suscripcion" className="inline-block mt-2 px-4 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs font-semibold rounded-lg transition-colors">
                     Ver planes
                   </Link>

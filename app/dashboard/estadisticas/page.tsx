@@ -115,7 +115,7 @@ export default async function EstadisticasPage() {
 
           <div className="bg-white/20 rounded-xl p-4 mb-6">
             <p className="text-sm mb-2">Esta función está disponible en el</p>
-            <p className="text-2xl font-bold">Plan Avanzado - $180/mes</p>
+            <p className="text-2xl font-bold">Plan Avanzado - $180 MXN/mes</p>
           </div>
 
           <Link

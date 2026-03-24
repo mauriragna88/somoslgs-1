@@ -513,7 +513,7 @@ export default async function BusinessPage({ params }: PageProps) {
                 ¿Es tu negocio? Vende tus productos aqui
               </p>
               <p className="text-xs text-gray-500 mb-3">
-                Con el Plan Pro por solo <span className="font-bold text-primary">$4 al dia</span> puedes mostrar tu catalogo y recibir pedidos
+                Con el Plan Pro por solo <span className="font-bold text-primary">$4 MXN/día</span> puedes mostrar tu catalogo y recibir pedidos
               </p>
               <Link
                 href="/registrar-negocio"
@@ -538,7 +538,7 @@ export default async function BusinessPage({ params }: PageProps) {
 
         {/* Banner: Business Sidebar */}
         <div className="mt-8">
-          <BannerDisplay placement="business_sidebar" />
+          <BannerDisplay placement="business_sidebar" forceHorizontal />
         </div>
 
         {/* Back Link */}

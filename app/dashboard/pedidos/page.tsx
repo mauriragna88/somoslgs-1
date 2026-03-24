@@ -104,7 +104,7 @@ export default async function OrdersPage({
             Función no disponible en tu plan
           </h2>
           <p className="text-yellow-700 mb-4">
-            Para recibir pedidos en línea necesitas el plan <strong>Pro</strong> ($100/mes) o superior.
+            Para recibir pedidos en línea necesitas el plan <strong>Pro</strong> ($120 MXN/mes) o superior.
           </p>
           <a
             href="/dashboard/suscripcion"
