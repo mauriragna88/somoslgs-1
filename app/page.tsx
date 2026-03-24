@@ -12,6 +12,7 @@ import TextReveal from '@/components/shared/TextReveal'
 import { TIER_ORDER } from '@/lib/constants'
 import TourismPreview from '@/components/tourism/TourismPreview'
 import type { BlogPost } from '@/types/database.types'
+import PWAInstallInline from '@/components/PWAInstallInline'
 
 export const revalidate = 3600
 
@@ -207,8 +208,9 @@ export default async function Home() {
             </p>
 
             {/* Search */}
-            <div className="max-w-2xl mx-auto mb-12 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>
+            <div className="max-w-2xl mx-auto mb-6 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>
               <SearchForm />
+              <PWAInstallInline variant="hero" />
             </div>
 
             {/* Social Proof Metrics - glass cards with animated counters */}

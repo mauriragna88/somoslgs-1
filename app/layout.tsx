@@ -8,7 +8,6 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CartProvider from '@/components/cart/CartProvider'
 import PWARegister from '@/components/PWARegister'
-import PWAInstallPrompt from '@/components/PWAInstallPrompt'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -75,7 +74,6 @@ export default function RootLayout({
           <WhatsAppFloat />
         </CartProvider>
         <PWARegister />
-        <PWAInstallPrompt />
         <Analytics />
         <SpeedInsights />
       </body>

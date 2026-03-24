@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import PWAInstallInline from '@/components/PWAInstallInline'
 
 export default function Footer() {
   const pathname = usePathname()
@@ -71,6 +72,9 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+
+        {/* PWA Install */}
+        <PWAInstallInline variant="footer" />
 
         {/* CTA Banner - Registra tu negocio */}
         <div className="mb-8 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl p-6 border border-white/10 text-center">
