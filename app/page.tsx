@@ -205,7 +205,7 @@ export default async function Home() {
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white mb-5 leading-tight tracking-tight animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
               <TextReveal text="Descubre" staggerMs={100} />
               {' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-light via-[#99F6E4] to-primary-light">Lagos de Moreno</span>
+              <span className="text-[#2DD4BF]">Lagos de Moreno</span>
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               La red de negocios mas grande de Lagos de Moreno. Conecta, explora y apoya a tu comunidad
