@@ -111,6 +111,10 @@ export default async function Home() {
     .order('created_at', { ascending: false })
     .limit(16) as { data: any[] | null }
 
+  // Business count rounded down to nearest 5 minus 5 (e.g. 175 → 170, 182 → 175)
+  const totalBusinessCount = (businessCats || []).length
+  const businessDisplayCount = Math.max(5, Math.floor(totalBusinessCount / 5) * 5 - 5)
+
   // Sort by tier order client-side (avanzado > pro > emprendedor > gratis)
   const discoverBusinesses = (newestBusinesses || []).sort((a: any, b: any) => {
     const tierA = TIER_ORDER[a.subscription_tier] || 0
@@ -201,7 +205,7 @@ export default async function Home() {
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white mb-5 leading-tight tracking-tight animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
               <TextReveal text="Descubre" staggerMs={100} />
               {' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent bg-[length:200%_auto] animate-shimmer">Lagos de Moreno</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-light via-[#99F6E4] to-primary-light">Lagos de Moreno</span>
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               La red de negocios mas grande de Lagos de Moreno. Conecta, explora y apoya a tu comunidad
@@ -217,7 +221,7 @@ export default async function Home() {
             <div className="flex flex-wrap justify-center gap-4 md:gap-6">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-accent/20 animate-scale-in-bounce shadow-lg shadow-accent/5" style={{ animationDelay: '0.5s' }}>
                 <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent via-amber-300 to-accent">
-                  <AnimatedCounter target={150} suffix="+" />
+                  <AnimatedCounter target={businessDisplayCount} suffix="+" />
                 </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1 text-center">Negocios</p>
               </div>
@@ -933,7 +937,7 @@ export default async function Home() {
                 </svg>
               </div>
               <p className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent-dark mb-1">
-                <AnimatedCounter target={150} suffix="+" />
+                <AnimatedCounter target={businessDisplayCount} suffix="+" />
               </p>
               <h3 className="font-bold text-secondary mb-1 text-sm">Negocios</h3>
               <p className="text-xs text-gray-500">Verificados y activos</p>
