@@ -113,8 +113,8 @@ export default async function BlogPostPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }}
       />
 
-      {/* Featured Image */}
-      {blogPost.featured_image_url && (
+      {/* Hero — imagen o gradiente */}
+      {blogPost.featured_image_url ? (
         <div className="relative h-64 md:h-96 bg-gray-100">
           <Image
             src={blogPost.featured_image_url}
@@ -124,47 +124,97 @@ export default async function BlogPostPage({ params }: PageProps) {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 max-w-3xl mx-auto">
+            <span className="text-xs font-semibold text-white/90 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full mb-3 inline-block">
+              {CATEGORY_LABELS[blogPost.category] || blogPost.category}
+            </span>
+            <h1 className="text-2xl md:text-4xl font-extrabold text-white leading-tight">
+              {blogPost.title}
+            </h1>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-gradient-to-br from-secondary to-primary py-14 md:py-20">
+          <div className="container mx-auto px-4 max-w-3xl">
+            <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
+              <Link href="/" className="hover:text-white transition-colors">Inicio</Link>
+              <span>/</span>
+              <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+              <span>/</span>
+              <span className="text-white/70 truncate">{blogPost.title}</span>
+            </nav>
+            <span className="text-xs font-semibold text-secondary bg-accent px-3 py-1 rounded-full mb-4 inline-block">
+              {CATEGORY_LABELS[blogPost.category] || blogPost.category}
+            </span>
+            <h1 className="text-2xl md:text-4xl font-extrabold text-white leading-tight mb-4">
+              {blogPost.title}
+            </h1>
+            {blogPost.excerpt && (
+              <p className="text-white/70 text-lg max-w-2xl">{blogPost.excerpt}</p>
+            )}
+            <div className="flex items-center gap-4 mt-6 text-sm text-white/50">
+              {blogPost.published_at && (
+                <time dateTime={blogPost.published_at}>
+                  {new Date(blogPost.published_at).toLocaleDateString('es-MX', {
+                    day: 'numeric', month: 'long', year: 'numeric',
+                  })}
+                </time>
+              )}
+              <span>·</span>
+              <span>{blogPost.view_count} vistas</span>
+            </div>
+          </div>
         </div>
       )}
 
       <article className="container mx-auto px-4 py-10 max-w-3xl">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-gray-400 mb-6">
-          <Link href="/" className="hover:text-primary">Inicio</Link>
-          <span>/</span>
-          <Link href="/blog" className="hover:text-primary">Blog</Link>
-          <span>/</span>
-          <span className="text-gray-600 truncate">{blogPost.title}</span>
-        </nav>
+        {/* Breadcrumb — solo cuando hay imagen */}
+        {blogPost.featured_image_url && (
+          <nav className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+            <Link href="/" className="hover:text-primary">Inicio</Link>
+            <span>/</span>
+            <Link href="/blog" className="hover:text-primary">Blog</Link>
+            <span>/</span>
+            <span className="text-gray-600 truncate">{blogPost.title}</span>
+          </nav>
+        )}
 
-        {/* Header */}
-        <header className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-xs font-medium text-primary bg-primary/10 px-2.5 py-1 rounded-full">
-              {CATEGORY_LABELS[blogPost.category] || blogPost.category}
-            </span>
-            {blogPost.published_at && (
-              <time className="text-sm text-gray-400" dateTime={blogPost.published_at}>
-                {new Date(blogPost.published_at).toLocaleDateString('es-MX', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric',
-                })}
-              </time>
+        {/* Header — solo cuando hay imagen (el hero ya muestra título) */}
+        {blogPost.featured_image_url && (
+          <header className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-xs font-medium text-primary bg-primary/10 px-2.5 py-1 rounded-full">
+                {CATEGORY_LABELS[blogPost.category] || blogPost.category}
+              </span>
+              {blogPost.published_at && (
+                <time className="text-sm text-gray-400" dateTime={blogPost.published_at}>
+                  {new Date(blogPost.published_at).toLocaleDateString('es-MX', {
+                    day: 'numeric', month: 'long', year: 'numeric',
+                  })}
+                </time>
+              )}
+              <span className="text-sm text-gray-400">{blogPost.view_count} vistas</span>
+            </div>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-secondary leading-tight mb-4">
+              {blogPost.title}
+            </h1>
+            {blogPost.excerpt && (
+              <p className="text-lg text-gray-500">{blogPost.excerpt}</p>
             )}
-            <span className="text-sm text-gray-400">{blogPost.view_count} vistas</span>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-secondary leading-tight mb-4">
-            {blogPost.title}
-          </h1>
-          {blogPost.excerpt && (
-            <p className="text-lg text-gray-500">{blogPost.excerpt}</p>
-          )}
-        </header>
+          </header>
+        )}
 
         {/* Content */}
-        <div className="prose prose-lg max-w-none prose-headings:text-secondary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
+        <div className="prose prose-lg max-w-none
+          prose-headings:text-secondary prose-headings:font-bold
+          prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-3 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-100
+          prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium
+          prose-ul:space-y-1 prose-li:text-gray-700 prose-li:marker:text-primary
+          prose-p:text-gray-600 prose-p:leading-relaxed
+          prose-strong:text-secondary
+          prose-hr:border-gray-200
+          prose-img:rounded-xl">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {blogPost.content}
           </ReactMarkdown>
