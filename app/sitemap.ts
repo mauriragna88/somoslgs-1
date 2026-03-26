@@ -151,5 +151,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   )
 
-  return [...staticRoutes, ...businessRoutes, ...categoryRoutes, ...blogRoutes, ...marketplaceRoutes]
+  // Fetch unique neighborhoods
+  const { data: neighborhoodData } = await supabase
+    .from('businesses')
+    .select('neighborhood')
+    .eq('is_active', true)
+    .not('neighborhood', 'is', null)
+
+  const uniqueNeighborhoods = [
+    ...new Set(
+      (neighborhoodData || [])
+        .map((b: { neighborhood: string | null }) => b.neighborhood)
+        .filter(Boolean) as string[]
+    ),
+  ]
+
+  const neighborhoodRoutes: MetadataRoute.Sitemap = uniqueNeighborhoods.map((colonia) => ({
+    url: `${BASE_URL}/negocios-en/${encodeURIComponent(colonia)}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }))
+
+  return [...staticRoutes, ...businessRoutes, ...categoryRoutes, ...blogRoutes, ...marketplaceRoutes, ...neighborhoodRoutes]
 }

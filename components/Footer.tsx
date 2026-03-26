@@ -73,6 +73,31 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Negocios por zona */}
+        <div className="mb-8 border-t border-slate-700/50 pt-8">
+          <h4 className="font-semibold text-white mb-4 text-sm">Negocios por zona</h4>
+          <div className="flex flex-wrap gap-2">
+            {[
+              'Centro',
+              'San Francisco',
+              'La Loma',
+              'Obregón',
+              'Jardines del Parque',
+              'Zona Centro',
+              'Valle del Campestre',
+              '8 de Julio',
+            ].map((colonia) => (
+              <Link
+                key={colonia}
+                href={`/negocios-en/${encodeURIComponent(colonia)}`}
+                className="text-xs text-slate-400 hover:text-accent transition-colors px-3 py-1.5 rounded-full border border-slate-700 hover:border-accent/40"
+              >
+                📍 {colonia}
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* PWA Install */}
         <PWAInstallInline variant="footer" />
 

@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -20,6 +21,9 @@ export const metadata: Metadata = {
   description: 'La plataforma digital de Lagos de Moreno. Descubre negocios locales, pide productos y conecta con tu comunidad.',
   keywords: ['Lagos de Moreno', 'negocios locales', 'directorio', 'restaurantes', 'tiendas', 'servicios', 'Jalisco', 'SomosLagos'],
   metadataBase: new URL('https://www.somoslagos.com.mx'),
+  verification: {
+    google: '7oumsaVSEVPXWZ28wu1vd8Dgvr1H5aQ10aRl30KEp-Q',
+  },
   alternates: {
     canonical: '/',
   },
@@ -76,6 +80,9 @@ export default function RootLayout({
         <PWARegister />
         <Analytics />
         <SpeedInsights />
+        {process.env.NEXT_PUBLIC_GA4_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_ID} />
+        )}
       </body>
     </html>
   )
