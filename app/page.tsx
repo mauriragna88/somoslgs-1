@@ -11,7 +11,6 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import TextReveal from '@/components/shared/TextReveal'
 import { TIER_ORDER } from '@/lib/constants'
 import TourismPreview from '@/components/tourism/TourismPreview'
-import HomeVideoPlayer from '@/components/home/video/HomeVideoPlayer'
 import type { BlogPost } from '@/types/database.types'
 import PWAInstallInline from '@/components/PWAInstallInline'
 
@@ -262,24 +261,6 @@ export default async function Home() {
       <div className="container mx-auto px-4 py-6">
         <BannerDisplay placement="home_top" />
       </div>
-
-      {/* Video SomosLagos */}
-      <section className="py-14 bg-gradient-to-b from-white to-surface">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="text-center mb-8">
-            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-3">
-              Lagos de Moreno
-            </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-secondary mb-2">
-              Descubre tu ciudad
-            </h2>
-            <p className="text-gray-500 text-sm max-w-md mx-auto">
-              176+ negocios locales, 52 categorías, todo en un solo lugar
-            </p>
-          </div>
-          <HomeVideoPlayer />
-        </div>
-      </section>
 
       {/* Categories — compact horizontal strip */}
       <section className="py-8 bg-white">

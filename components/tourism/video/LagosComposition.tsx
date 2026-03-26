@@ -8,6 +8,7 @@ import {
   spring,
   Sequence,
   Img,
+  Audio,
 } from 'remotion'
 
 // ─── Escenas y tiempos ───────────────────────────────────────────
@@ -347,6 +348,8 @@ function OutroScene() {
 export function LagosComposition() {
   return (
     <AbsoluteFill style={{ background: '#000', fontFamily: 'system-ui, sans-serif' }}>
+      {/* Música de fondo — pon tu archivo en public/sounds/background.mp3 */}
+      <Audio src="/sounds/background.mp3" volume={0.35} />
       {/* Intro */}
       <Sequence from={0} durationInFrames={INTRO_FRAMES}>
         <IntroScene />
