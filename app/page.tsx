@@ -11,6 +11,8 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import TextReveal from '@/components/shared/TextReveal'
 import { TIER_ORDER } from '@/lib/constants'
 import TourismPreview from '@/components/tourism/TourismPreview'
+import ParroquiaReveal from '@/components/home/animations/ParroquiaReveal'
+import FallingBusiness from '@/components/home/animations/FallingBusiness'
 import type { BlogPost } from '@/types/database.types'
 import PWAInstallInline from '@/components/PWAInstallInline'
 
@@ -317,6 +319,53 @@ export default async function Home() {
       <ScrollReveal direction="left">
         <TourismPreview />
       </ScrollReveal>
+
+      {/* Animación: Parroquia Grid Reveal (scroll-driven) */}
+      <section className="py-16 bg-secondary">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="text-center mb-10">
+            <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary-light text-sm font-semibold rounded-full mb-3">
+              Patrimonio de la Humanidad
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              Descubre Lagos de Moreno
+            </h2>
+            <p className="text-white/50 text-sm">
+              Desliza para revelar
+            </p>
+          </div>
+          <ParroquiaReveal />
+        </div>
+      </section>
+
+      {/* Animación: Negocios que caen */}
+      <section className="py-16 bg-gradient-to-b from-secondary to-surface">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+            <div>
+              <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent text-sm font-semibold rounded-full mb-4">
+                Negocios Locales
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                176+ negocios te esperan en Lagos de Moreno
+              </h2>
+              <p className="text-white/60 leading-relaxed mb-6">
+                Restaurantes, taquerías, pizzerías, bares, tiendas y mucho más. Todos con perfil completo, horarios, mapa y contacto directo.
+              </p>
+              <a
+                href="/buscar"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent-dark text-secondary font-bold rounded-full transition-all hover:scale-105"
+              >
+                Explorar negocios
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
+            </div>
+            <FallingBusiness />
+          </div>
+        </div>
+      </section>
 
       {/* Banner: Home Middle */}
       <div className="container mx-auto px-4 py-6">
