@@ -128,7 +128,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
   }
 
   const dropdownClasses = {
-    header: 'absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50',
+    header: 'absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 w-[420px]',
     hero: 'absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50',
     mobile: 'absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50',
   }
@@ -206,7 +206,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
-                    <p className="text-sm font-semibold text-gray-900 truncate">{biz.name}</p>
+                    <p className="text-sm font-semibold text-gray-900">{biz.name}</p>
                     {(biz.is_featured || biz.subscription_tier === 'avanzado') && (
                       <span className="text-xs text-amber-500 flex-shrink-0">&#11088;</span>
                     )}

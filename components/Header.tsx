@@ -147,11 +147,6 @@ export default function Header() {
             <Link href="/planes" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
               Planes
             </Link>
-            {user && (
-              <Link href="/mis-pedidos" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
-                Mis Pedidos
-              </Link>
-            )}
 
             <div className="w-px h-6 bg-gray-200 mx-2"></div>
 
@@ -435,22 +430,13 @@ export default function Header() {
                   <span className="text-lg">💎</span> Planes
                 </Link>
                 {user && (
-                  <>
-                    <Link
-                      href="/mis-pedidos"
-                      className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <span className="text-lg">📦</span> Mis Pedidos
-                    </Link>
-                    <Link
-                      href="/profile"
-                      className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <span className="text-lg">⚙️</span> Configuracion
-                    </Link>
-                  </>
+                  <Link
+                    href="/profile"
+                    className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <span className="text-lg">⚙️</span> Configuracion
+                  </Link>
                 )}
                 {!loading && !user && (
                   <Link
