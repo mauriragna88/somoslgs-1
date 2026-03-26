@@ -14,6 +14,8 @@ import TourismPreview from '@/components/tourism/TourismPreview'
 import ParroquiaReveal from '@/components/home/animations/ParroquiaReveal'
 import FallingBusiness from '@/components/home/animations/FallingBusiness'
 import PixelTitle from '@/components/home/animations/PixelTitle'
+import AdShowcase from '@/components/home/animations/AdShowcase'
+import FeaturedHeader from '@/components/home/animations/FeaturedHeader'
 import type { BlogPost } from '@/types/database.types'
 import PWAInstallInline from '@/components/PWAInstallInline'
 
@@ -382,15 +384,12 @@ export default async function Home() {
 
       {/* Featured Businesses — Premium Slider */}
       {featuredBusinesses && featuredBusinesses.length > 0 && (
-        <section className="py-20 bg-surface">
+        <section className="py-12 bg-secondary">
           <div className="container mx-auto px-4">
-            <ScrollReveal direction="up">
-              <div className="text-center mb-10">
-                <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full mb-4 animate-scale-in" style={{ animationDelay: '0.2s' }}>Destacados</span>
-                <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-2">Negocios Destacados</h2>
-                <p className="text-gray-500">Los mejores negocios de Lagos de Moreno</p>
-              </div>
-            </ScrollReveal>
+            {/* Animated header */}
+            <div className="mb-8">
+              <FeaturedHeader />
+            </div>
 
             <ScrollReveal direction="up" delay={200}>
               <PremiumSlider businesses={featuredBusinesses} />
@@ -400,7 +399,7 @@ export default async function Home() {
               <div className="text-center mt-8">
                 <Link
                   href="/descubre"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-secondary font-medium rounded-full hover:shadow-md transition-all"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/20 text-white font-medium rounded-full hover:bg-white/20 transition-all"
                 >
                   Ver todos los negocios
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -412,6 +411,24 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      {/* Publicidad — Animated showcase */}
+      <section className="py-10 bg-secondary">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <AdShowcase />
+          <div className="text-center mt-6">
+            <Link
+              href="/contacto"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent hover:bg-accent-dark text-secondary font-bold rounded-full transition-all hover:scale-105 shadow-lg shadow-accent/20"
+            >
+              Quiero anunciarme
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Banner: Home Left (mobile inline — hidden on xl where it's a fixed sidebar) */}
       <div className="xl:hidden container mx-auto px-4 py-6">
