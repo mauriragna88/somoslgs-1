@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import type { BannerPlacement } from '@/lib/constants'
 import AdSenseSlot from './AdSenseSlot'
+import BannerReveal from './BannerReveal'
 
 // ─── 3D Block Reveal Overlay ─────────────────────────────────────────
 const COLS = 6
@@ -244,81 +245,40 @@ export default function BannerDisplay({ placement, className = '', userTier, for
       )
     }
 
-    // ─── MODO HORIZONTAL (centro) ───
-    const isImageOnly = banner.display_mode === 'image_only'
-
-    if (isImageOnly) {
-      return wrapWithLink(
-        <div className={`relative group ${className}`}>
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <div className="h-px flex-1 bg-gray-200"></div>
-            <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wider px-1">Publicidad</span>
-            <div className="h-px flex-1 bg-gray-200"></div>
-          </div>
-
-          <div className="relative w-full overflow-hidden rounded-2xl shadow-sm group-hover:shadow-lg transition-shadow border border-gray-100">
-            {showBlockReveal && <BlockRevealOverlay onDone={() => setShowBlockReveal(false)} />}
-            {actionButton}
-            <div className="relative w-full" style={{ aspectRatio: '4/1', minHeight: 70, maxHeight: 160 }}>
-              <Image
-                src={banner.image_url}
-                alt={banner.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 1200px"
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"></div>
-          </div>
-        </div>
-      )
-    }
-
-    // ─── MODO IMAGEN + TEXTO (centro) ───
-    return wrapWithLink(
+    // ─── MODO HORIZONTAL (centro) — Remotion 3D Tile Reveal ───
+    return (
       <div className={`relative ${className}`}>
         <div className="flex items-center gap-1.5 mb-1.5">
           <div className="h-px flex-1 bg-gray-200"></div>
           <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wider px-1">Publicidad</span>
           <div className="h-px flex-1 bg-gray-200"></div>
         </div>
-
-        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-br from-white to-gray-50/80 shadow-sm hover:shadow-lg transition-all group relative">
-          {showBlockReveal && <BlockRevealOverlay onDone={() => setShowBlockReveal(false)} />}
+        <div className="relative">
           {actionButton}
-          <div className="flex flex-col sm:flex-row">
-            <div className="relative w-full sm:w-36 md:w-44 flex-shrink-0">
-              <div className="relative h-36 sm:h-full min-h-[120px]">
-                <Image
-                  src={banner.image_url}
-                  alt={banner.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 176px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="hidden sm:block absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-white to-transparent"></div>
-            </div>
-
-            <div className="flex-1 p-4 sm:p-5 flex flex-col justify-center">
-              <h3 className="font-bold text-secondary text-base sm:text-lg leading-tight mb-1 group-hover:text-primary transition-colors line-clamp-1">
-                {banner.title}
-              </h3>
-              {banner.description && (
-                <p className="text-sm text-gray-500 line-clamp-2 mb-2">
-                  {banner.description}
-                </p>
-              )}
-              <span className="inline-flex items-center gap-1.5 text-sm text-primary font-semibold group-hover:gap-2 transition-all">
-                Conocer mas
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </span>
-            </div>
-          </div>
-
-          <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-primary via-accent to-primary opacity-60"></div>
+          {banner.link_url ? (
+            <a
+              href={banner.link_url}
+              {...(banner.link_url.startsWith('/') || banner.link_url.includes('somoslagos.com.mx')
+                ? {}
+                : { target: '_blank', rel: 'noopener noreferrer sponsored' })}
+              onClick={() => trackEvent(banner.id, 'click')}
+              className="block"
+            >
+              <BannerReveal
+                imageUrl={banner.image_url}
+                title={banner.display_mode === 'image_text' ? banner.title : ''}
+                description={banner.display_mode === 'image_text' ? banner.description : null}
+                linkUrl={banner.link_url}
+              />
+            </a>
+          ) : (
+            <BannerReveal
+              imageUrl={banner.image_url}
+              title={banner.display_mode === 'image_text' ? banner.title : ''}
+              description={banner.display_mode === 'image_text' ? banner.description : null}
+              linkUrl={null}
+            />
+          )}
         </div>
       </div>
     )
