@@ -1,9 +1,63 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import type { BannerPlacement } from '@/lib/constants'
 import AdSenseSlot from './AdSenseSlot'
+
+// ─── 3D Block Reveal Overlay ─────────────────────────────────────────
+const COLS = 6
+const ROWS = 3
+const BLOCK_DURATION = 420 // ms per block animation
+const STAGGER = 75 // ms between blocks (diagonal wave)
+
+function BlockRevealOverlay({ onDone }: { onDone: () => void }) {
+  const doneRef = useRef(false)
+  const totalDelay = (COLS + ROWS - 2) * STAGGER + BLOCK_DURATION
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (!doneRef.current) { doneRef.current = true; onDone() }
+    }, totalDelay + 80)
+    return () => clearTimeout(t)
+  }, [onDone, totalDelay])
+
+  return (
+    <>
+      <style>{`
+        @keyframes block3d-reveal {
+          0%   { transform: perspective(500px) rotateY(0deg) scaleX(1); opacity: 1; }
+          40%  { transform: perspective(500px) rotateY(45deg) scaleX(0.7); opacity: 0.8; }
+          100% { transform: perspective(500px) rotateY(90deg) scaleX(0); opacity: 0; }
+        }
+      `}</style>
+      <div
+        className="absolute inset-0 z-10 overflow-hidden pointer-events-none"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${COLS}, 1fr)`,
+          gridTemplateRows: `repeat(${ROWS}, 1fr)`,
+        }}
+      >
+        {Array.from({ length: ROWS }).flatMap((_, row) =>
+          Array.from({ length: COLS }).map((_, col) => (
+            <div
+              key={`${row}-${col}`}
+              style={{
+                background: `linear-gradient(135deg, #0F766E, #0D5E58)`,
+                borderRight: '1px solid rgba(153,246,228,0.15)',
+                borderBottom: '1px solid rgba(153,246,228,0.15)',
+                transformOrigin: 'left center',
+                animation: `block3d-reveal ${BLOCK_DURATION}ms ease-in forwards`,
+                animationDelay: `${(col + row) * STAGGER}ms`,
+              }}
+            />
+          ))
+        )}
+      </div>
+    </>
+  )
+}
 
 interface BannerData {
   id: string
@@ -37,6 +91,7 @@ export default function BannerDisplay({ placement, className = '', userTier, for
   const [loading, setLoading] = useState(true)
   const [dismissed, setDismissed] = useState(false)
   const [minimized, setMinimized] = useState(false)
+  const [showBlockReveal, setShowBlockReveal] = useState(false)
 
   const isVertical = !forceHorizontal && VERTICAL_PLACEMENTS.includes(placement)
   const canClose = userTier ? PAID_TIERS.includes(userTier) : false
@@ -63,6 +118,7 @@ export default function BannerDisplay({ placement, className = '', userTier, for
       .then((data: BannerData[]) => {
         if (data && data.length > 0) {
           setBanner(data[0])
+          setShowBlockReveal(true)
           trackEvent(data[0].id, 'impression')
         }
       })
@@ -201,6 +257,7 @@ export default function BannerDisplay({ placement, className = '', userTier, for
           </div>
 
           <div className="relative w-full overflow-hidden rounded-2xl shadow-sm group-hover:shadow-lg transition-shadow border border-gray-100">
+            {showBlockReveal && <BlockRevealOverlay onDone={() => setShowBlockReveal(false)} />}
             {actionButton}
             <div className="relative w-full" style={{ aspectRatio: '4/1', minHeight: 70, maxHeight: 160 }}>
               <Image
@@ -227,6 +284,7 @@ export default function BannerDisplay({ placement, className = '', userTier, for
         </div>
 
         <div className="overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-br from-white to-gray-50/80 shadow-sm hover:shadow-lg transition-all group relative">
+          {showBlockReveal && <BlockRevealOverlay onDone={() => setShowBlockReveal(false)} />}
           {actionButton}
           <div className="flex flex-col sm:flex-row">
             <div className="relative w-full sm:w-36 md:w-44 flex-shrink-0">
