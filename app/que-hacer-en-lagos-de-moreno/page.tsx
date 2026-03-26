@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import ZoneCard from '@/components/tourism/ZoneCard'
 import ActivityCard from '@/components/tourism/ActivityCard'
+import LagosVideoPlayer from '@/components/tourism/video/LagosVideoPlayer'
 import { ACTIVITIES, ZONES, TOURISM_SEO } from '@/lib/tourism'
 
 export const revalidate = 1800
@@ -262,8 +263,26 @@ export default async function QueHacerPage() {
         </div>
       </section>
 
-      {/* Zonas Emblemáticas */}
+      {/* Video de Lagos de Moreno */}
       <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="text-center mb-10">
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">
+              Conoce Lagos
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">
+              Un vistazo a nuestra ciudad
+            </h2>
+            <p className="text-gray-500 max-w-xl mx-auto">
+              Lagos de Moreno en imágenes — Pueblo Mágico de Jalisco
+            </p>
+          </div>
+          <LagosVideoPlayer />
+        </div>
+      </section>
+
+      {/* Zonas Emblemáticas */}
+      <section className="py-16 bg-surface">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">
