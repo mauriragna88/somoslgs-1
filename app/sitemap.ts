@@ -158,13 +158,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .eq('is_active', true)
     .not('neighborhood', 'is', null)
 
-  const uniqueNeighborhoods = [
-    ...new Set(
+  const uniqueNeighborhoods = Array.from(
+    new Set(
       (neighborhoodData || [])
         .map((b: { neighborhood: string | null }) => b.neighborhood)
         .filter(Boolean) as string[]
-    ),
-  ]
+    )
+  )
 
   const neighborhoodRoutes: MetadataRoute.Sitemap = uniqueNeighborhoods.map((colonia) => ({
     url: `${BASE_URL}/negocios-en/${encodeURIComponent(colonia)}`,

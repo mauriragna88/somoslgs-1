@@ -40,13 +40,13 @@ export async function generateStaticParams() {
     .eq('is_active', true)
     .not('neighborhood', 'is', null)
 
-  const unique = [
-    ...new Set(
+  const unique = Array.from(
+    new Set(
       (businesses || [])
         .map((b: { neighborhood: string | null }) => b.neighborhood)
         .filter(Boolean) as string[]
-    ),
-  ]
+    )
+  )
 
   return unique.map((colonia) => ({ colonia }))
 }
