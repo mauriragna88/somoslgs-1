@@ -13,6 +13,7 @@ import { TIER_ORDER } from '@/lib/constants'
 import TourismPreview from '@/components/tourism/TourismPreview'
 import ParroquiaReveal from '@/components/home/animations/ParroquiaReveal'
 import FallingBusiness from '@/components/home/animations/FallingBusiness'
+import PixelTitle from '@/components/home/animations/PixelTitle'
 import type { BlogPost } from '@/types/database.types'
 import PWAInstallInline from '@/components/PWAInstallInline'
 
@@ -364,6 +365,13 @@ export default async function Home() {
             </div>
             <FallingBusiness />
           </div>
+        </div>
+      </section>
+
+      {/* Animación: SOMOSLAGOS pixel/scramble title */}
+      <section className="py-8 bg-secondary">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <PixelTitle />
         </div>
       </section>
 
