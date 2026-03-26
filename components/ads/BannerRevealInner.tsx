@@ -1,59 +1,60 @@
 'use client'
 
-import { Player } from '@remotion/player'
+import { useEffect, useRef } from 'react'
+import { Player, PlayerRef } from '@remotion/player'
 import {
   AbsoluteFill,
-  Img,
   interpolate,
   spring,
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion'
 
-// ─── Config ──────────────────────────────────────────────────────────
-const COLS = 4
+// ─── Config ───────────────────────────────────────────────────────────
+const COLS = 5
 const ROWS = 3
 const FPS = 30
-const ASSEMBLE_DONE = 68   // frame where last tile lands
-const TOTAL_FRAMES = 110   // total composition length
+const HOLD_FRAMES = 8          // tiles stay solid before flying
+const STAGGER = 3.5            // frames between each tile's start
+const TILE_DURATION = 28       // frames for one tile to fly away
+const TOTAL_FRAMES = Math.ceil(HOLD_FRAMES + (COLS + ROWS - 2) * STAGGER + TILE_DURATION + 10)
 
 export interface BannerRevealProps {
-  imageUrl: string
-  title: string
-  description?: string | null
-  linkUrl?: string | null
+  onComplete?: () => void
 }
 
-// ─── Single 3D tile ───────────────────────────────────────────────────
-function Tile({
-  col,
-  row,
-  imageUrl,
-  from,
-}: {
-  col: number
-  row: number
-  imageUrl: string
-  from: number
-}) {
+// ─── Tile that flies away in 3D ───────────────────────────────────────
+function FlyAwayTile({ col, row }: { col: number; row: number }) {
   const frame = useCurrentFrame()
   const { fps, width, height } = useVideoConfig()
 
   const tileW = width / COLS
   const tileH = height / ROWS
 
-  const elapsed = Math.max(0, frame - from)
+  // Diagonal stagger: top-left first
+  const delay = HOLD_FRAMES + (col / (COLS - 1) + row / (ROWS - 1)) * ((COLS + ROWS - 2) * STAGGER) / 2
+
   const progress = spring({
-    frame: elapsed,
+    frame: Math.max(0, frame - delay),
     fps,
-    config: { damping: 14, stiffness: 160, mass: 0.7 },
+    config: { damping: 10, stiffness: 180, mass: 0.55 },
   })
 
-  const translateZ = interpolate(progress, [0, 1], [-380, 0])
-  const rotateY = interpolate(progress, [0, 1], [col % 2 === 0 ? -25 : 25, 0])
-  const rotateX = interpolate(progress, [0, 1], [row % 2 === 0 ? -18 : 18, 0])
-  const scale = interpolate(progress, [0, 1], [0.55, 1])
-  const opacity = interpolate(elapsed, [0, 8], [0, 1], { extrapolateRight: 'clamp' })
+  // Each tile flies in a slightly different direction for variety
+  const angle = ((col * ROWS + row) / (COLS * ROWS)) * Math.PI * 2
+  const spreadX = (col - (COLS - 1) / 2) * 180 + Math.cos(angle) * 60
+  const spreadY = -Math.abs(row - (ROWS - 1) / 2) * 120 - 200 + Math.sin(angle) * 40
+
+  const translateX = interpolate(progress, [0, 1], [0, spreadX])
+  const translateY = interpolate(progress, [0, 1], [0, spreadY])
+  const translateZ = interpolate(progress, [0, 1], [0, 350])
+  const rotateZ = interpolate(progress, [0, 1], [0, col % 2 === 0 ? 55 : -55])
+  const rotateX = interpolate(progress, [0, 1], [0, row % 2 === 0 ? -30 : 30])
+  const opacity = interpolate(progress, [0, 0.55, 1], [1, 0.7, 0])
+
+  // Tile color: alternating dark teal shades for depth
+  const shade = (col + row) % 2 === 0 ? '#0F766E' : '#0D5E58'
+  const borderLight = (col + row) % 3 === 0 ? 'rgba(153,246,228,0.25)' : 'rgba(153,246,228,0.08)'
 
   return (
     <div
@@ -63,232 +64,63 @@ function Tile({
         top: row * tileH,
         width: tileW,
         height: tileH,
-        overflow: 'hidden',
-        transform: `perspective(900px) translateZ(${translateZ}px) rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(${scale})`,
+        background: `linear-gradient(135deg, ${shade}, #0A1929)`,
+        border: `1px solid ${borderLight}`,
+        transform: `perspective(900px) translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateZ(${rotateZ}deg) rotateX(${rotateX}deg)`,
         opacity,
-        // Subtle border between tiles during assembly
-        boxShadow: progress < 0.95
-          ? `0 0 0 1px rgba(153,246,228,${0.4 * (1 - progress)})`
-          : 'none',
+        transformStyle: 'preserve-3d',
+        backfaceVisibility: 'hidden',
       }}
     >
-      {/* Each tile shows its section of the full image */}
-      <Img
-        src={imageUrl}
-        style={{
-          position: 'absolute',
-          width: width,
-          height: height,
-          left: -col * tileW,
-          top: -row * tileH,
-          objectFit: 'cover',
-        }}
-      />
-      {/* Dark face shown during flight */}
+      {/* Subtle inner highlight */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          background: `rgba(15,23,42,${interpolate(progress, [0, 0.7, 1], [0.85, 0.3, 0])})`,
+          background: 'linear-gradient(135deg, rgba(153,246,228,0.12) 0%, transparent 60%)',
         }}
       />
     </div>
   )
 }
 
-// ─── Glint sweep ─────────────────────────────────────────────────────
-function Glint() {
-  const frame = useCurrentFrame()
-  const { width, height } = useVideoConfig()
-
-  const glintStart = ASSEMBLE_DONE + 4
-  const x = interpolate(frame, [glintStart, glintStart + 22], [-80, width + 80], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  })
-  const opacity = interpolate(
-    frame,
-    [glintStart, glintStart + 4, glintStart + 18, glintStart + 22],
-    [0, 1, 1, 0],
-    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
-  )
-
+// ─── Composition (only tiles, no image) ───────────────────────────────
+function TileRevealComposition() {
   return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: x,
-        width: 60,
-        height: height,
-        background: 'linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%)',
-        transform: 'skewX(-12deg)',
-        opacity,
-        pointerEvents: 'none',
-      }}
-    />
-  )
-}
-
-// ─── Text overlay ────────────────────────────────────────────────────
-function TextOverlay({ title, description }: { title: string; description?: string | null }) {
-  const frame = useCurrentFrame()
-
-  const titleOpacity = interpolate(frame, [ASSEMBLE_DONE, ASSEMBLE_DONE + 16], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  })
-  const titleY = interpolate(frame, [ASSEMBLE_DONE, ASSEMBLE_DONE + 16], [14, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  })
-  const descOpacity = interpolate(frame, [ASSEMBLE_DONE + 10, ASSEMBLE_DONE + 24], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  })
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: '20px 24px',
-        background: 'linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.5) 70%, transparent 100%)',
-      }}
-    >
-      <div
-        style={{
-          color: 'white',
-          fontSize: 22,
-          fontWeight: 800,
-          fontFamily: 'system-ui, sans-serif',
-          lineHeight: 1.2,
-          opacity: titleOpacity,
-          transform: `translateY(${titleY}px)`,
-          marginBottom: 4,
-        }}
-      >
-        {title}
-      </div>
-      {description && (
-        <div
-          style={{
-            color: 'rgba(255,255,255,0.7)',
-            fontSize: 13,
-            fontFamily: 'system-ui, sans-serif',
-            opacity: descOpacity,
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {description}
-        </div>
+    <AbsoluteFill style={{ background: 'transparent', overflow: 'hidden' }}>
+      {Array.from({ length: ROWS }).flatMap((_, row) =>
+        Array.from({ length: COLS }).map((_, col) => (
+          <FlyAwayTile key={`${col}-${row}`} col={col} row={row} />
+        ))
       )}
-      <div
-        style={{
-          marginTop: 8,
-          opacity: descOpacity,
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 6,
-          color: '#99F6E4',
-          fontSize: 12,
-          fontWeight: 700,
-          fontFamily: 'system-ui, sans-serif',
-          letterSpacing: 1,
-        }}
-      >
-        CONOCER MÁS →
-      </div>
-    </div>
-  )
-}
-
-// ─── Composition ─────────────────────────────────────────────────────
-function BannerRevealComposition(props: Record<string, unknown>) {
-  const { imageUrl, title, description } = props as unknown as BannerRevealProps
-  const frame = useCurrentFrame()
-
-  // Stagger tiles: diagonal wave top-left → bottom-right
-  const getTileDelay = (col: number, row: number) => {
-    return Math.round((col / (COLS - 1) + row / (ROWS - 1)) * 28)
-  }
-
-  // Subtle continuous parallax after assembly
-  const parallaxPhase = Math.max(0, frame - ASSEMBLE_DONE)
-  const tiltX = Math.sin(parallaxPhase * 0.025) * 2.5
-  const tiltY = Math.cos(parallaxPhase * 0.018) * 1.8
-
-  return (
-    <AbsoluteFill style={{ background: '#0F172A', overflow: 'hidden' }}>
-      {/* Assembled image with continuous 3D parallax */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          transform: `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
-          transition: 'transform 0.1s ease',
-        }}
-      >
-        {/* Tiles */}
-        {Array.from({ length: ROWS }).flatMap((_, row) =>
-          Array.from({ length: COLS }).map((_, col) => (
-            <Tile
-              key={`${col}-${row}`}
-              col={col}
-              row={row}
-              imageUrl={imageUrl}
-              from={getTileDelay(col, row)}
-            />
-          ))
-        )}
-      </div>
-
-      {/* Glint */}
-      <Glint />
-
-      {/* Text overlay */}
-      {title && (
-        <TextOverlay title={title} description={description} />
-      )}
-
-      {/* Top teal accent line */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 3,
-          background: 'linear-gradient(90deg, #0F766E, #99F6E4, #F59E0B, #0F766E)',
-          opacity: interpolate(frame, [ASSEMBLE_DONE, ASSEMBLE_DONE + 12], [0, 1], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'clamp',
-          }),
-        }}
-      />
     </AbsoluteFill>
   )
 }
 
-// ─── Export wrapper ───────────────────────────────────────────────────
-export default function BannerRevealInner(props: BannerRevealProps) {
+// ─── Overlay wrapper ──────────────────────────────────────────────────
+export default function BannerRevealInner({ onComplete }: BannerRevealProps) {
+  const playerRef = useRef<PlayerRef>(null)
+
+  useEffect(() => {
+    const durationMs = (TOTAL_FRAMES / FPS) * 1000
+    const t = setTimeout(() => onComplete?.(), durationMs)
+    return () => clearTimeout(t)
+  }, [onComplete])
+
   return (
-    <Player
-      component={BannerRevealComposition}
-      inputProps={props}
-      durationInFrames={TOTAL_FRAMES}
-      fps={FPS}
-      compositionWidth={800}
-      compositionHeight={280}
-      style={{ width: '100%', borderRadius: 16, overflow: 'hidden' }}
-      initiallyShowControls={false}
-      autoPlay
-      loop={false}
-    />
+    <div className="absolute inset-0 z-10 pointer-events-none" style={{ overflow: 'hidden' }}>
+      <Player
+        ref={playerRef}
+        component={TileRevealComposition}
+        durationInFrames={TOTAL_FRAMES}
+        fps={FPS}
+        compositionWidth={500}
+        compositionHeight={200}
+        style={{ width: '100%', height: '100%' }}
+        initiallyShowControls={false}
+        autoPlay
+        loop={false}
+      />
+    </div>
   )
 }

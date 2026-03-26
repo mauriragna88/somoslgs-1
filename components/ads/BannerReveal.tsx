@@ -5,9 +5,7 @@ import type { BannerRevealProps } from './BannerRevealInner'
 
 const Inner = dynamic(() => import('./BannerRevealInner'), {
   ssr: false,
-  loading: () => (
-    <div className="w-full rounded-2xl bg-secondary animate-pulse" style={{ aspectRatio: '800/280' }} />
-  ),
+  loading: () => null,
 })
 
 export default function BannerReveal(props: BannerRevealProps) {
