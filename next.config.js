@@ -12,10 +12,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*.supabase.co',
-      },
+      { protocol: 'https', hostname: '*.supabase.co' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
     ],
   },
   async headers() {
@@ -72,7 +70,7 @@ const nextConfig = {
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
               "font-src 'self' fonts.gstatic.com",
-              "img-src 'self' *.supabase.co *.tile.openstreetmap.org unpkg.com blob: data:",
+              "img-src 'self' *.supabase.co *.tile.openstreetmap.org unpkg.com images.unsplash.com blob: data:",
               "connect-src 'self' *.supabase.co wss://*.supabase.co *.conekta.io *.tile.openstreetmap.org *.openstreetmap.org unpkg.com",
               "frame-src 'self' pay.conekta.com",
               "object-src 'none'",
