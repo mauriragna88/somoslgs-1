@@ -102,12 +102,18 @@ export default async function BlogPostPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }} />
 
       {/* ── HERO ────────────────────────────────────────────────── */}
-      <div className="relative min-h-[70vh] flex items-end overflow-hidden">
+      <div
+        className="relative min-h-[70vh] flex items-end overflow-hidden"
+        style={blogPost.featured_image_url ? {
+          backgroundImage: `url(${blogPost.featured_image_url})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        } : undefined}
+      >
         {/* Background */}
         {blogPost.featured_image_url ? (
           <>
-            <Image src={blogPost.featured_image_url} alt={blogPost.title} fill sizes="100vw" className="object-cover" priority />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
           </>
         ) : (
           <>
