@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createServiceClient } from '@/lib/supabase/server'
 import type { BlogPost } from '@/types/database.types'
+import { resolveBlogImage } from '@/lib/blog-image-fallbacks'
 
 export const revalidate = 1800
 
@@ -33,7 +34,10 @@ export default async function BlogPage() {
     .eq('status', 'published')
     .order('published_at', { ascending: false })
 
-  const blogPosts = (posts as BlogPost[]) || []
+  const blogPosts = ((posts as BlogPost[]) || []).map((post, index) => ({
+    ...post,
+    display_image_url: resolveBlogImage(post.featured_image_url, index),
+  }))
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -67,10 +71,10 @@ export default async function BlogPage() {
                 className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all"
               >
                 {/* Image */}
-                {post.featured_image_url ? (
+                {post.display_image_url ? (
                   <div className="relative h-48 bg-gray-100">
                     <Image
-                      src={post.featured_image_url}
+                      src={post.display_image_url}
                       alt={post.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

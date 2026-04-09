@@ -5,10 +5,11 @@ import { createHash } from 'crypto'
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const businessId = params.id
+    const businessId = id
 
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -65,3 +66,4 @@ export async function POST(
     return NextResponse.json({ success: true }) // Silent fail, never break UX
   }
 }
+

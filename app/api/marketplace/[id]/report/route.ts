@@ -11,8 +11,9 @@ const reportSchema = z.object({
 // POST: Report a listing
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -38,7 +39,7 @@ export async function POST(
     const { data: listing } = await supabase
       .from('marketplace_listings')
       .select('id, seller_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (!listing) {
@@ -56,7 +57,7 @@ export async function POST(
       .select('id')
       .eq('reporter_id', user.id)
       .eq('item_type', 'marketplace_listing')
-      .eq('item_id', params.id)
+      .eq('item_id', id)
       .maybeSingle()
 
     if (existing) {
@@ -68,7 +69,7 @@ export async function POST(
       .insert({
         reporter_id: user.id,
         item_type: 'marketplace_listing',
-        item_id: params.id,
+        item_id: id,
         reason: validated.reason,
         details: validated.details?.trim() || null,
       })
@@ -85,3 +86,4 @@ export async function POST(
     return NextResponse.json({ error: 'Error interno' }, { status: 500 })
   }
 }
+

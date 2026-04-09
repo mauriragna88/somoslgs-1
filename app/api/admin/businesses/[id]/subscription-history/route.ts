@@ -11,10 +11,11 @@ function getSupabaseAdmin() {
 }
 
 interface RouteParams {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function GET(request: Request, { params }: RouteParams) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -33,7 +34,7 @@ export async function GET(request: Request, { params }: RouteParams) {
         *,
         admin:profiles!subscription_history_admin_id_fkey(full_name)
       `)
-      .eq('business_id', params.id)
+      .eq('business_id', id)
       .order('created_at', { ascending: false })
       .limit(50)
 
@@ -46,3 +47,4 @@ export async function GET(request: Request, { params }: RouteParams) {
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

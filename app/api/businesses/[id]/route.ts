@@ -47,8 +47,9 @@ function getSupabaseAdmin() {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const supabase = getSupabaseAdmin()
 
@@ -59,7 +60,7 @@ export async function GET(
         category:categories(id, name, icon),
         owner:profiles!businesses_owner_id_fkey(full_name, email, phone)
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (error || !business) {
@@ -74,8 +75,9 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -91,7 +93,7 @@ export async function PUT(
     const { data: business, error: fetchError } = await supabase
       .from('businesses')
       .select('owner_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (fetchError || !business) {
@@ -126,7 +128,7 @@ export async function PUT(
         ...cleanData,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -142,3 +144,4 @@ export async function PUT(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

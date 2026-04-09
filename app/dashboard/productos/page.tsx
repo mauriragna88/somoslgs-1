@@ -27,7 +27,7 @@ interface Product {
 }
 
 export default async function ProductsPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -236,3 +236,4 @@ export default async function ProductsPage() {
     </div>
   )
 }
+

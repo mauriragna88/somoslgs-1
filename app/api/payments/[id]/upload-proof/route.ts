@@ -25,15 +25,16 @@ const uploadProofSchema = z.object({
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const transactionId = params.id
+    const transactionId = id
     if (!transactionId) {
       return NextResponse.json({ error: 'ID de transacción requerido' }, { status: 400 })
     }
@@ -128,3 +129,4 @@ export async function PUT(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

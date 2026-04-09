@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
@@ -14,23 +13,23 @@ import BannerDisplay from '@/components/ads/BannerDisplay'
 import FavoriteButton from '@/components/shared/FavoriteButton'
 import ViewTracker from '@/components/shared/ViewTracker'
 import ReviewsSection from '@/components/reviews/ReviewsSection'
+import MapDisplay from '@/components/maps/MapDisplay'
 import type { Review } from '@/types/reviews'
-
-const MapDisplay = dynamic(() => import('@/components/maps/MapDisplay'), { ssr: false })
 
 export const revalidate = 1800
 
 interface PageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const supabase = createClient()
+  const { slug } = await params
+  const supabase = await createClient()
 
   const { data: business } = await supabase
     .from('businesses')
     .select('name, description, logo_url, cover_url, slug, category:categories(name)')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .eq('is_active', true)
     .single() as unknown as { data: { name: string; description: string | null; logo_url: string | null; cover_url: string | null; slug: string; category: { name: string } | null } | null }
 
@@ -93,7 +92,8 @@ interface PublicBusiness {
 }
 
 export default async function BusinessPage({ params }: PageProps) {
-  const supabase = createClient()
+  const { slug } = await params
+  const supabase = await createClient()
 
   // Get business by slug
   const { data: business, error } = await supabase
@@ -102,7 +102,7 @@ export default async function BusinessPage({ params }: PageProps) {
       *,
       category:categories(id, name, icon)
     `)
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .eq('is_active', true)
     .single() as unknown as { data: PublicBusiness | null; error: any }
 
@@ -557,3 +557,4 @@ export default async function BusinessPage({ params }: PageProps) {
     </main>
   )
 }
+

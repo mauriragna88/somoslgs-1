@@ -9,16 +9,86 @@ export interface DayHours {
   closed: boolean
 }
 
+export const BUSINESS_HOURS_DAYS = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+] as const
+
+export type BusinessHoursDay = (typeof BUSINESS_HOURS_DAYS)[number]
+
 export interface BusinessHours {
-  weekdays: DayHours  // Lunes a Viernes
+  monday: DayHours
+  tuesday: DayHours
+  wednesday: DayHours
+  thursday: DayHours
+  friday: DayHours
   saturday: DayHours
   sunday: DayHours
 }
 
+const CLOSED_DAY_HOURS: DayHours = { open: null, close: null, closed: true }
+const DEFAULT_OPEN_DAY_HOURS: DayHours = { open: '09:00', close: '18:00', closed: false }
+
 export const DEFAULT_BUSINESS_HOURS: BusinessHours = {
-  weekdays: { open: '09:00', close: '18:00', closed: false },
-  saturday: { open: '09:00', close: '14:00', closed: false },
-  sunday: { open: null, close: null, closed: true },
+  monday: { ...DEFAULT_OPEN_DAY_HOURS },
+  tuesday: { ...DEFAULT_OPEN_DAY_HOURS },
+  wednesday: { ...DEFAULT_OPEN_DAY_HOURS },
+  thursday: { ...DEFAULT_OPEN_DAY_HOURS },
+  friday: { ...DEFAULT_OPEN_DAY_HOURS },
+  saturday: { ...DEFAULT_OPEN_DAY_HOURS },
+  sunday: { ...DEFAULT_OPEN_DAY_HOURS },
+}
+
+function normalizeDayHours(input: any, fallback: DayHours): DayHours {
+  if (!input || typeof input !== 'object') {
+    return { ...fallback }
+  }
+
+  const closed = Boolean(input.closed)
+  const open = typeof input.open === 'string' ? input.open : fallback.open
+  const close = typeof input.close === 'string' ? input.close : fallback.close
+
+  if (closed) {
+    return { open: null, close: null, closed: true }
+  }
+
+  return {
+    open: open ?? fallback.open,
+    close: close ?? fallback.close,
+    closed: false,
+  }
+}
+
+export function normalizeBusinessHours(hours: any): BusinessHours {
+  if (!hours || typeof hours !== 'object') {
+    return {
+      ...DEFAULT_BUSINESS_HOURS,
+      monday: { ...DEFAULT_BUSINESS_HOURS.monday },
+      tuesday: { ...DEFAULT_BUSINESS_HOURS.tuesday },
+      wednesday: { ...DEFAULT_BUSINESS_HOURS.wednesday },
+      thursday: { ...DEFAULT_BUSINESS_HOURS.thursday },
+      friday: { ...DEFAULT_BUSINESS_HOURS.friday },
+      saturday: { ...DEFAULT_BUSINESS_HOURS.saturday },
+      sunday: { ...DEFAULT_BUSINESS_HOURS.sunday },
+    }
+  }
+
+  const legacyWeekdays = normalizeDayHours(hours.weekdays, CLOSED_DAY_HOURS)
+
+  return {
+    monday: normalizeDayHours(hours.monday, legacyWeekdays),
+    tuesday: normalizeDayHours(hours.tuesday, legacyWeekdays),
+    wednesday: normalizeDayHours(hours.wednesday, legacyWeekdays),
+    thursday: normalizeDayHours(hours.thursday, legacyWeekdays),
+    friday: normalizeDayHours(hours.friday, legacyWeekdays),
+    saturday: normalizeDayHours(hours.saturday, DEFAULT_OPEN_DAY_HOURS),
+    sunday: normalizeDayHours(hours.sunday, DEFAULT_OPEN_DAY_HOURS),
+  }
 }
 
 /**
@@ -28,6 +98,8 @@ export const DEFAULT_BUSINESS_HOURS: BusinessHours = {
 export function isBusinessOpen(hours: BusinessHours | null | undefined): boolean | null {
   if (!hours) return null
 
+  const normalizedHours = normalizeBusinessHours(hours)
+
   // Obtener hora actual en Mexico City
   const now = new Date()
   const mexicoTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Mexico_City' }))
@@ -36,11 +108,19 @@ export function isBusinessOpen(hours: BusinessHours | null | undefined): boolean
 
   let schedule: DayHours
   if (day === 0) {
-    schedule = hours.sunday
+    schedule = normalizedHours.sunday
   } else if (day === 6) {
-    schedule = hours.saturday
+    schedule = normalizedHours.saturday
+  } else if (day === 1) {
+    schedule = normalizedHours.monday
+  } else if (day === 2) {
+    schedule = normalizedHours.tuesday
+  } else if (day === 3) {
+    schedule = normalizedHours.wednesday
+  } else if (day === 4) {
+    schedule = normalizedHours.thursday
   } else {
-    schedule = hours.weekdays
+    schedule = normalizedHours.friday
   }
 
   if (schedule.closed || !schedule.open || !schedule.close) return false

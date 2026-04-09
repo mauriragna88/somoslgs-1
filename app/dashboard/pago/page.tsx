@@ -30,7 +30,7 @@ export default async function PagoPage() {
     redirect('/login')
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get user's businesses (only needed fields)
   const { data: allBusinesses } = await supabase
@@ -150,3 +150,4 @@ export default async function PagoPage() {
     </div>
   )
 }
+

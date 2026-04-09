@@ -19,15 +19,16 @@ function getSupabaseAdmin() {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const supabase = getSupabaseAdmin()
 
     const { data: photos, error } = await supabase
       .from('business_photos')
       .select('*')
-      .eq('business_id', params.id)
+      .eq('business_id', id)
       .order('display_order', { ascending: true })
 
     if (error) {
@@ -42,8 +43,9 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -59,7 +61,7 @@ export async function POST(
     const { data: business, error: fetchError } = await supabase
       .from('businesses')
       .select('owner_id, subscription_tier')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (fetchError || !business) {
@@ -78,7 +80,7 @@ export async function POST(
     const { count } = await supabase
       .from('business_photos')
       .select('*', { count: 'exact', head: true })
-      .eq('business_id', params.id)
+      .eq('business_id', id)
 
     if ((count || 0) >= limit) {
       return NextResponse.json(
@@ -91,7 +93,7 @@ export async function POST(
     const { data: lastPhoto } = await supabase
       .from('business_photos')
       .select('display_order')
-      .eq('business_id', params.id)
+      .eq('business_id', id)
       .order('display_order', { ascending: false })
       .limit(1)
       .single()
@@ -102,7 +104,7 @@ export async function POST(
     const { data: photo, error: insertError } = await supabase
       .from('business_photos')
       .insert({
-        business_id: params.id,
+        business_id: id,
         image_url: validatedData.image_url,
         storage_path: validatedData.storage_path,
         display_order: nextOrder,
@@ -122,3 +124,4 @@ export async function POST(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

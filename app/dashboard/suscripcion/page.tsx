@@ -76,7 +76,7 @@ export default async function SuscripcionPage() {
     redirect('/login')
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: allBusinesses } = await supabase
     .from('businesses')
@@ -292,3 +292,4 @@ export default async function SuscripcionPage() {
     </div>
   )
 }
+

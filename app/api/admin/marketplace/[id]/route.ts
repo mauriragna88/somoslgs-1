@@ -5,8 +5,9 @@ import { MARKETPLACE_FEATURED_DAYS } from '@/lib/constants'
 // PUT: Admin update listing/report status
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   if (!(await isAdmin())) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 403 })
   }
@@ -40,7 +41,7 @@ export async function PUT(
     const { error: listingError } = await supabase
       .from('marketplace_listings')
       .update({ status: 'removed', updated_at: new Date().toISOString() })
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (listingError) {
       return NextResponse.json({ error: 'Error al eliminar artículo' }, { status: 500 })
@@ -55,7 +56,7 @@ export async function PUT(
         reviewed_at: new Date().toISOString(),
       })
       .eq('item_type', 'marketplace_listing')
-      .eq('item_id', params.id)
+      .eq('item_id', id)
       .eq('status', 'pending')
 
     return NextResponse.json({ success: true })
@@ -72,7 +73,7 @@ export async function PUT(
         featured_until: featuredUntil.toISOString(),
         updated_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) {
       return NextResponse.json({ error: 'Error al destacar artículo' }, { status: 500 })
@@ -89,7 +90,7 @@ export async function PUT(
         featured_until: null,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) {
       return NextResponse.json({ error: 'Error al quitar destacado' }, { status: 500 })
@@ -104,8 +105,9 @@ export async function PUT(
 // DELETE: Admin force remove listing
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   if (!(await isAdmin())) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 403 })
   }
@@ -115,7 +117,7 @@ export async function DELETE(
   const { error } = await supabase
     .from('marketplace_listings')
     .update({ status: 'removed', updated_at: new Date().toISOString() })
-    .eq('id', params.id)
+    .eq('id', id)
 
   if (error) {
     return NextResponse.json({ error: 'Error al eliminar' }, { status: 500 })
@@ -123,3 +125,4 @@ export async function DELETE(
 
   return NextResponse.json({ success: true })
 }
+

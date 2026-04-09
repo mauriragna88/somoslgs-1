@@ -1,16 +1,16 @@
 import Link from 'next/link'
 
 interface SuccessPageProps {
-  searchParams: {
+  searchParams: Promise<{
     order_number?: string
     slug?: string
-  }
+  }>
 }
 
-export default function CheckoutSuccessPage({
+export default async function CheckoutSuccessPage({
   searchParams,
 }: SuccessPageProps) {
-  const { order_number, slug } = searchParams
+  const { order_number, slug } = await searchParams
 
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center">

@@ -20,7 +20,7 @@ const OUTRO_FRAMES  = 120  // 4 s
 const IMAGES = [
   { src: '/tourism/panoramica-lagos.jpg',      label: 'Lagos de Moreno, Jalisco'       },
   { src: '/tourism/parroquia-asuncion.jpg',    label: 'Parroquia de la Asunción'       },
-  { src: '/tourism/templo-calvario.jpg',       label: 'Templo del Calvario'            },
+  { src: '/tourism/calvario2.jpg',             label: 'Templo del Calvario'            },
   { src: '/tourism/jardin-constituyentes.jpg', label: 'Jardín de los Constituyentes'   },
   { src: '/tourism/palacio-municipal.jpg',     label: 'Palacio Municipal'              },
   { src: '/tourism/gastronomia.jpg',           label: 'Gastronomía Local'              },

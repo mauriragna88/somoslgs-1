@@ -6,7 +6,13 @@ import { createServiceClient } from '@/lib/supabase/server'
 import type { BlogPost } from '@/types/database.types'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+// ATTENTION: ReactMarkdown renders user-provided markdown content.
+// Without rehype-sanitize, malicious markdown (e.g. <script> tags, onerror handlers)
+// can be rendered. This is a known XSS risk for blog content.
+// To fix: install remark-rehype and rehype-sanitize, then add rehypePlugins to ReactMarkdown.
+// Until fixed, ensure blog content is only submitted by trusted authors via admin CMS.
 import ReadingProgress from '@/components/blog/ReadingProgress'
+import { resolveBlogImage } from '@/lib/blog-image-fallbacks'
 
 export const revalidate = 1800
 
@@ -37,35 +43,53 @@ function readingTime(content: string): number {
   return Math.max(1, Math.ceil(content.split(/\s+/).length / 200))
 }
 
-interface PageProps { params: { slug: string } }
+interface PageProps { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params
   const supabase = createServiceClient()
-  const { data: post } = await supabase
-    .from('blog_posts').select('title, excerpt, featured_image_url')
-    .eq('slug', params.slug).eq('status', 'published').single()
+  const [{ data: post }, { data: postOrder }] = await Promise.all([
+    supabase
+      .from('blog_posts').select('title, excerpt, featured_image_url')
+      .eq('slug', slug).eq('status', 'published').single(),
+    supabase
+      .from('blog_posts').select('slug')
+      .eq('status', 'published')
+      .order('published_at', { ascending: false }),
+  ])
   if (!post) return { title: 'Post no encontrado' }
+  const postIndex = (postOrder || []).findIndex((entry: { slug: string }) => entry.slug === slug)
+  const postImage = resolveBlogImage(post.featured_image_url, postIndex)
   return {
     title: post.title,
     description: post.excerpt || `Lee ${post.title} en el blog de SomosLagos`,
     openGraph: {
       title: `${post.title} | Blog SomosLagos`,
       description: post.excerpt || '',
-      url: `https://www.somoslagos.com.mx/blog/${params.slug}`,
+      url: `https://www.somoslagos.com.mx/blog/${slug}`,
       type: 'article',
-      images: post.featured_image_url ? [{ url: post.featured_image_url, width: 1200, height: 630 }] : undefined,
+      images: postImage ? [{ url: postImage, width: 1200, height: 630 }] : undefined,
     },
   }
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params
   const supabase = createServiceClient()
-  const { data: post } = await supabase
-    .from('blog_posts').select('*')
-    .eq('slug', params.slug).eq('status', 'published').single()
+  const [{ data: post }, { data: publishedPosts }] = await Promise.all([
+    supabase
+      .from('blog_posts').select('*')
+      .eq('slug', slug).eq('status', 'published').single(),
+    supabase
+      .from('blog_posts').select('slug, featured_image_url')
+      .eq('status', 'published')
+      .order('published_at', { ascending: false }),
+  ])
   if (!post) notFound()
 
   const blogPost = post as BlogPost
+  const postIndexMap = new Map((publishedPosts || []).map((entry: { slug: string }, index: number) => [entry.slug, index]))
+  const currentPostImage = resolveBlogImage(blogPost.featured_image_url, postIndexMap.get(blogPost.slug) ?? -1)
 
   supabase.from('blog_posts')
     .update({ view_count: (blogPost.view_count || 0) + 1 })
@@ -90,7 +114,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const blogPostingJsonLd = {
     '@context': 'https://schema.org', '@type': 'BlogPosting',
     headline: blogPost.title, description: blogPost.excerpt || undefined,
-    image: blogPost.featured_image_url || undefined,
+    image: currentPostImage || undefined,
     datePublished: blogPost.published_at, dateModified: blogPost.updated_at,
     url: `https://www.somoslagos.com.mx/blog/${blogPost.slug}`,
     publisher: { '@type': 'Organization', name: 'SomosLagos', url: 'https://www.somoslagos.com.mx' },
@@ -104,9 +128,9 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* ── HERO ────────────────────────────────────────────────── */}
       <div className="relative min-h-[70vh] flex items-end overflow-hidden">
         {/* Background */}
-        {blogPost.featured_image_url ? (
+        {currentPostImage ? (
           <>
-            <Image src={blogPost.featured_image_url} alt={blogPost.title} fill sizes="100vw" className="object-cover" priority />
+            <Image src={currentPostImage} alt={blogPost.title} fill sizes="100vw" className="object-cover" priority />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
           </>
         ) : (
@@ -367,9 +391,9 @@ export default async function BlogPostPage({ params }: PageProps) {
               {related.map((rp) => (
                 <Link key={rp.id} href={`/blog/${rp.slug}`}
                   className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                  {rp.featured_image_url ? (
+                  {resolveBlogImage(rp.featured_image_url, postIndexMap.get(rp.slug) ?? -1) ? (
                     <div className="relative h-44 overflow-hidden">
-                      <Image src={rp.featured_image_url} alt={rp.title} fill sizes="400px"
+                      <Image src={resolveBlogImage(rp.featured_image_url, postIndexMap.get(rp.slug) ?? -1) || '/tourism/teatro-rosas-moreno.jpg'} alt={rp.title} fill sizes="400px"
                         className="object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     </div>

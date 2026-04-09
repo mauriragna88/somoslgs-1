@@ -20,9 +20,10 @@ interface BuscarSearchParams {
   tipo?: string
 }
 
-export async function generateMetadata({ searchParams }: { searchParams: BuscarSearchParams }): Promise<Metadata> {
-  const query = searchParams.q || ''
-  const categoriaId = searchParams.categoria || ''
+export async function generateMetadata({ searchParams }: { searchParams: Promise<BuscarSearchParams> }): Promise<Metadata> {
+  const resolvedSearchParams = await searchParams
+  const query = resolvedSearchParams.q || ''
+  const categoriaId = resolvedSearchParams.categoria || ''
 
   let title = 'Buscar en Lagos de Moreno'
   let description = 'Encuentra negocios, restaurantes, tiendas, servicios y artículos en venta en Lagos de Moreno, Jalisco.'
@@ -32,7 +33,7 @@ export async function generateMetadata({ searchParams }: { searchParams: BuscarS
     title = `${capitalizedQuery} en Lagos de Moreno`
     description = `Encuentra ${query.toLowerCase()} en Lagos de Moreno, Jalisco. Directorio con horarios, ubicacion, opiniones y contacto.`
   } else if (categoriaId) {
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data: cat } = await supabase
       .from('categories')
       .select('name')
@@ -82,15 +83,16 @@ interface Business {
 export default async function BuscarPage({
   searchParams,
 }: {
-  searchParams: BuscarSearchParams
+  searchParams: Promise<BuscarSearchParams>
 }) {
-  const query = searchParams.q || ''
-  const categoriaId = searchParams.categoria || ''
-  const colonia = searchParams.colonia || ''
-  const orden = searchParams.orden || ''
-  const tipo = searchParams.tipo || 'negocios'
+  const resolvedSearchParams = await searchParams
+  const query = resolvedSearchParams.q || ''
+  const categoriaId = resolvedSearchParams.categoria || ''
+  const colonia = resolvedSearchParams.colonia || ''
+  const orden = resolvedSearchParams.orden || ''
+  const tipo = resolvedSearchParams.tipo || 'negocios'
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const serviceSupabase = createServiceClient()
 
   // Get categories + business counts + neighborhoods in parallel
@@ -487,3 +489,4 @@ export default async function BuscarPage({
     </main>
   )
 }
+

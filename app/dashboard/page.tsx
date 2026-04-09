@@ -26,7 +26,7 @@ interface DashboardBusiness {
 }
 
 export default async function BusinessDashboard() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -231,7 +231,7 @@ export default async function BusinessDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs sm:text-sm text-gray-600 font-medium">Ingresos</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">${stats.monthRevenue}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">—</p>
                 </div>
                 <div className="w-10 h-10 sm:w-14 sm:h-14 bg-yellow-500 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                   💰
@@ -397,3 +397,4 @@ export default async function BusinessDashboard() {
     </div>
   )
 }
+

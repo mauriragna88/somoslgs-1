@@ -7,15 +7,10 @@ import { createServiceClient } from '@/lib/supabase/server'
 import { formatCurrency, formatDaysRemaining } from '@/lib/utils'
 import BusinessDetailActions from '@/components/admin/BusinessDetailActions'
 import BusinessQR from '@/components/dashboard/BusinessQR'
-import nextDynamic from 'next/dynamic'
-
-const AdminViewsCharts = nextDynamic(() => import('@/components/admin/AdminViewsCharts'), {
-  loading: () => <div className="h-96 bg-gray-50 rounded-xl animate-pulse" />,
-  ssr: false,
-})
+import AdminViewsCharts from '@/components/admin/AdminViewsCharts'
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 interface OrderData {
@@ -36,6 +31,7 @@ interface ProductData {
 }
 
 export default async function BusinessDetailPage({ params }: PageProps) {
+  const { id } = await params
   const supabase = createServiceClient()
 
   // Get business with all details
@@ -46,7 +42,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
       category:categories(id, name, icon),
       owner:profiles!businesses_owner_id_fkey(id, full_name, email, phone)
     `)
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (error || !business) {
@@ -57,7 +53,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
   const { data: products, count: productsCount } = await supabase
     .from('products')
     .select('id, name, price, is_available', { count: 'exact' })
-    .eq('business_id', params.id)
+    .eq('business_id', id)
     .order('created_at', { ascending: false })
     .limit(5)
 
@@ -65,7 +61,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
   const { data: orders, count: ordersCount } = await supabase
     .from('orders')
     .select('id, order_number, total, status, payment_method, payment_status, created_at', { count: 'exact' })
-    .eq('business_id', params.id)
+    .eq('business_id', id)
     .order('created_at', { ascending: false })
     .limit(10)
 
@@ -79,13 +75,13 @@ export default async function BusinessDetailPage({ params }: PageProps) {
     supabase
       .from('business_views')
       .select('created_at, ip_hash, referrer, user_agent')
-      .eq('business_id', params.id)
+      .eq('business_id', id)
       .gte('created_at', thirtyDaysAgo.toISOString())
       .order('created_at', { ascending: true }),
     supabase
       .from('business_views')
       .select('id', { count: 'exact', head: true })
-      .eq('business_id', params.id)
+      .eq('business_id', id)
       .gte('created_at', firstOfMonth.toISOString()),
   ])
 

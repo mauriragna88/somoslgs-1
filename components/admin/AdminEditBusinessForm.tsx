@@ -7,7 +7,7 @@ import LogoUpload from '@/components/shared/LogoUpload'
 import CoverUpload from '@/components/shared/CoverUpload'
 import PhotoGalleryManager from '@/components/dashboard/PhotoGalleryManager'
 import BusinessHoursEditor from '@/components/shared/BusinessHoursEditor'
-import { DEFAULT_BUSINESS_HOURS } from '@/lib/constants'
+import { DEFAULT_BUSINESS_HOURS, normalizeBusinessHours } from '@/lib/constants'
 import type { BusinessHours } from '@/lib/constants'
 import type { BusinessPhoto } from '@/lib/supabase/database.types'
 
@@ -83,7 +83,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
   })
 
   const [businessHours, setBusinessHours] = useState<BusinessHours>(
-    business.business_hours || DEFAULT_BUSINESS_HOURS
+    business.business_hours ? normalizeBusinessHours(business.business_hours) : DEFAULT_BUSINESS_HOURS
   )
 
   const handleSubmit = async (e: React.FormEvent) => {

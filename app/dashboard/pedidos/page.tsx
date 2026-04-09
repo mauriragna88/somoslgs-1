@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
@@ -55,19 +56,20 @@ interface Order {
 export default async function OrdersPage({
   searchParams,
 }: {
-  searchParams: { filter?: string }
+  searchParams: Promise<{ filter?: string }>
 }) {
+  const { filter } = await searchParams
   const user = await getUser()
   if (!user) {
     redirect('/login')
   }
 
-  const activeFilter = searchParams.filter || 'all'
+  const activeFilter = filter || 'all'
 
   const cookieStore = await cookies()
   const selectedBusinessId = cookieStore.get('selected_business_id')?.value
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get user's businesses
   const { data: businesses } = await supabase
@@ -106,12 +108,12 @@ export default async function OrdersPage({
           <p className="text-yellow-700 mb-4">
             Para recibir pedidos en línea necesitas el plan <strong>Pro</strong> ($120 MXN/mes) o superior.
           </p>
-          <a
+          <Link
             href="/dashboard/suscripcion"
             className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
           >
             Actualizar Plan
-          </a>
+          </Link>
         </div>
       </div>
     )
@@ -231,7 +233,7 @@ export default async function OrdersPage({
 
       {/* Filters */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        <a
+        <Link
           href="/dashboard/pedidos"
           className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
             activeFilter === 'all'
@@ -240,8 +242,8 @@ export default async function OrdersPage({
           }`}
         >
           Todos ({paidOrders.length})
-        </a>
-        <a
+        </Link>
+        <Link
           href="/dashboard/pedidos?filter=pending"
           className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
             activeFilter === 'pending'
@@ -250,8 +252,8 @@ export default async function OrdersPage({
           }`}
         >
           Pendientes ({pendingOrders})
-        </a>
-        <a
+        </Link>
+        <Link
           href="/dashboard/pedidos?filter=pending_verification"
           className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
             activeFilter === 'pending_verification'
@@ -260,9 +262,9 @@ export default async function OrdersPage({
           }`}
         >
           📱 Por Verificar Pago ({pendingPaymentVerification})
-        </a>
+        </Link>
         {unpaidCardOrders > 0 && (
-          <a
+          <Link
             href="/dashboard/pedidos?filter=unpaid_card"
             className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
               activeFilter === 'unpaid_card'
@@ -271,7 +273,7 @@ export default async function OrdersPage({
             }`}
           >
             ⚠️ Sin pagar ({unpaidCardOrders})
-          </a>
+          </Link>
         )}
       </div>
 
@@ -490,3 +492,4 @@ export default async function OrdersPage({
     </div>
   )
 }
+

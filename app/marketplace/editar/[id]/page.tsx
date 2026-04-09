@@ -12,13 +12,14 @@ export const metadata: Metadata = {
 }
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export default async function EditarListingPage({ params }: PageProps) {
+  const { id } = await params
   const user = await getUser()
   if (!user) {
-    redirect(`/login?redirect=/marketplace/editar/${params.id}`)
+    redirect(`/login?redirect=/marketplace/editar/${id}`)
   }
 
   const supabase = createServiceClient()
@@ -27,7 +28,7 @@ export default async function EditarListingPage({ params }: PageProps) {
     supabase
       .from('marketplace_listings')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .single(),
     supabase
       .from('marketplace_categories')

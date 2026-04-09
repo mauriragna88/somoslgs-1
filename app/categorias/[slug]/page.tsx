@@ -11,7 +11,7 @@ import BannerDisplay from '@/components/ads/BannerDisplay'
 export const revalidate = 1800
 
 interface PageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 interface Category {
@@ -39,12 +39,13 @@ interface Business {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const supabase = createClient()
+  const { slug } = await params
+  const supabase = await createClient()
 
   const { data: category } = await supabase
     .from('categories')
     .select('name, slug')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single() as unknown as { data: { name: string; slug: string } | null }
 
   if (!category) {
@@ -107,13 +108,14 @@ function getCategoryContent(name: string, count: number) {
 }
 
 export default async function CategoriaPage({ params }: PageProps) {
-  const supabase = createClient()
+  const { slug } = await params
+  const supabase = await createClient()
 
   // Get category by slug
   const { data: category, error: catError } = await supabase
     .from('categories')
     .select('id, name, icon, slug')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single() as unknown as { data: Category | null; error: any }
 
   if (catError || !category) {
@@ -367,3 +369,4 @@ export default async function CategoriaPage({ params }: PageProps) {
     </main>
   )
 }
+

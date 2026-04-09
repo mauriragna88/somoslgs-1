@@ -99,7 +99,7 @@ export const ZONES: Zone[] = [
     longDescription: 'Construido en el siglo XIX con arquitectura neoclásica, el Templo del Calvario se alza majestuoso sobre Lagos de Moreno. Sube sus escalinatas para disfrutar de una vista panorámica impresionante de toda la ciudad y sus alrededores. Es el símbolo más reconocido de Lagos.',
     icon: '⛪',
     gradient: 'from-teal-600 to-emerald-700',
-    image: '/tourism/templo-calvario.jpg',
+    image: '/tourism/calvario-panoramica.jpg',
     relatedCategories: [],
     coordinates: { lat: 21.3571, lng: -102.3425 },
   },

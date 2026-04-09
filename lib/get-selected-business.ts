@@ -23,7 +23,7 @@ export interface SelectedBusiness {
  * Falls back to the first business if no selection exists
  */
 export async function getSelectedBusiness(userId: string): Promise<SelectedBusiness | null> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const cookieStore = await cookies()
   const selectedBusinessId = cookieStore.get('selected_business_id')?.value
 
@@ -49,7 +49,7 @@ export async function getSelectedBusiness(userId: string): Promise<SelectedBusin
  * Gets all businesses for the current user
  */
 export async function getUserBusinesses(userId: string): Promise<SelectedBusiness[]> {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: businesses } = await supabase
     .from('businesses')
@@ -58,3 +58,4 @@ export async function getUserBusinesses(userId: string): Promise<SelectedBusines
 
   return businesses || []
 }
+

@@ -1,19 +1,11 @@
 'use client'
 
-import Link from 'next/link'
-import { useEffect } from 'react'
-
 export default function GlobalError({
-  error,
   reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void
 }) {
-  useEffect(() => {
-    console.error('Error global:', error)
-  }, [error])
-
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="text-center max-w-md">
@@ -32,12 +24,12 @@ export default function GlobalError({
           >
             Intentar de nuevo
           </button>
-          <Link
-            href="/"
+          <button
+            onClick={() => window.location.href = '/'}
             className="px-8 py-3 bg-white hover:bg-gray-100 text-gray-700 font-bold rounded-lg border border-gray-200 transition-colors"
           >
             Ir al Inicio
-          </Link>
+          </button>
         </div>
       </div>
     </main>

@@ -3,10 +3,11 @@ import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const supabaseServer = createClient()
+    const supabaseServer = await createClient()
 
     const { data: { user } } = await supabaseServer.auth.getUser()
     if (!user) {
@@ -32,7 +33,7 @@ export async function PUT(
         ...body,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -46,10 +47,11 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const supabaseServer = createClient()
+    const supabaseServer = await createClient()
 
     const { data: { user } } = await supabaseServer.auth.getUser()
     if (!user) {
@@ -70,7 +72,7 @@ export async function DELETE(
     const { error } = await supabase
       .from('banners')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) throw error
 
@@ -79,3 +81,5 @@ export async function DELETE(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+
+

@@ -18,6 +18,7 @@ import AdShowcase from '@/components/home/animations/AdShowcase'
 import FeaturedHeader from '@/components/home/animations/FeaturedHeader'
 import type { BlogPost } from '@/types/database.types'
 import PWAInstallInline from '@/components/PWAInstallInline'
+import { resolveBlogImage } from '@/lib/blog-image-fallbacks'
 
 export const revalidate = 3600
 
@@ -44,7 +45,7 @@ interface FeaturedBusiness {
 }
 
 export default async function Home() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get category IDs that have at least one active business
   const { data: businessCats } = await supabase
@@ -92,7 +93,10 @@ export default async function Home() {
     .order('published_at', { ascending: false })
     .limit(3)
 
-  const latestPosts = (blogPosts as BlogPost[]) || []
+  const latestPosts = ((blogPosts as BlogPost[]) || []).map((post, index) => ({
+    ...post,
+    display_image_url: resolveBlogImage(post.featured_image_url, index),
+  }))
 
   // Fetch top reviews for testimonials section
   const { data: topReviews } = await supabase
@@ -773,10 +777,10 @@ export default async function Home() {
                   href={`/blog/${post.slug}`}
                   className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all"
                 >
-                  {post.featured_image_url ? (
+                  {post.display_image_url ? (
                     <div className="relative h-44 bg-gray-100">
                       <Image
-                        src={post.featured_image_url}
+                        src={post.display_image_url}
                         alt={post.title}
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
@@ -1248,3 +1252,4 @@ export default async function Home() {
     </main>
   )
 }
+

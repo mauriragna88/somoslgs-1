@@ -38,7 +38,7 @@ function getSupabaseAdmin() {
 
 export async function POST(request: Request) {
   try {
-    const supabaseServer = createServerClient()
+    const supabaseServer = await createServerClient()
 
     // Verificar que el usuario sea admin
     const { data: { user } } = await supabaseServer.auth.getUser()
@@ -244,3 +244,4 @@ export async function POST(request: Request) {
     )
   }
 }
+

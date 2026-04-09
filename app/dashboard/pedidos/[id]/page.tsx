@@ -60,17 +60,18 @@ const statusConfig: Record<string, { label: string; color: string; icon: string 
 export default async function OrderDetailPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
+  const { id } = await params
   const user = await getUser()
   if (!user) {
     redirect('/login')
   }
 
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const selectedBusinessId = cookieStore.get('selected_business_id')?.value
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get user's businesses
   const { data: businesses } = await supabase
@@ -95,7 +96,7 @@ export default async function OrderDetailPage({
       order_items(*),
       order_customers(*)
     `)
-    .eq('id', params.id)
+    .eq('id', id)
     .single() as { data: Order | null; error: any }
 
   if (error || !order) {
@@ -110,7 +111,7 @@ export default async function OrderDetailPage({
   const { data: orderBusinessCheck } = await supabase
     .from('orders')
     .select('business_id')
-    .eq('id', params.id)
+    .eq('id', id)
     .single() as { data: { business_id: string } | null }
 
   if (!orderBusinessCheck || !businesses.some(b => b.id === orderBusinessCheck.business_id)) {
@@ -410,3 +411,4 @@ export default async function OrderDetailPage({
     </div>
   )
 }
+

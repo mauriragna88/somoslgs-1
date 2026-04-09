@@ -131,6 +131,19 @@ export function sanitizeSlug(slug: string): string {
 // ============================================
 // RATE LIMITING (Simple in-memory)
 // ============================================
+/**
+ * WARNING: This in-memory rate limiter is INEFFECTIVE in serverless environments
+ * (Vercel, AWS Lambda, etc.) because each function instance has its own isolated memory.
+ * Rate limit state is not shared across instances, making bypass trivial.
+ *
+ * PRODUCTION FIX: Replace with Upstash Redis (https://upstash.com) or a distributed
+ * rate limiting solution that persists state across all function instances.
+ *
+ * Example Upstash Redis integration:
+ *   import { Redis } from '@upstash/redis'
+ *   const redis = new Redis({ url: process.env.UPSTASH_REDIS_URL!, token: process.env.UPSTASH_REDIS_TOKEN! })
+ *   // Then use: const remaining = await redis.decr(identifier) instead of the Map below
+ */
 
 interface RateLimitEntry {
   count: number

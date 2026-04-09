@@ -20,8 +20,9 @@ const rejectSchema = z.object({
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -31,7 +32,7 @@ export async function POST(
     const body = await request.json()
     const { reason } = rejectSchema.parse(body)
 
-    const supabaseServer = createServerClient()
+    const supabaseServer = await createServerClient()
 
     // Verify admin
     const { data: profile } = await supabaseServer
@@ -51,7 +52,7 @@ export async function POST(
     const { data: transaction, error: transactionError } = await supabase
       .from('transactions')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (transactionError || !transaction) {
@@ -73,7 +74,7 @@ export async function POST(
         approved_by: user.id,
         approved_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (updateError) {
       return NextResponse.json({ error: 'Error al rechazar el pago' }, { status: 500 })
@@ -84,7 +85,7 @@ export async function POST(
       userId: user.id,
       action: 'reject_subscription_payment',
       resource: 'transaction',
-      resourceId: params.id,
+      resourceId: id,
       details: { reason },
     })
 
@@ -127,3 +128,5 @@ export async function POST(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+
+

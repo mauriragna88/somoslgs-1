@@ -32,14 +32,15 @@ interface SearchParams {
 export default async function MarketplacePage({
   searchParams,
 }: {
-  searchParams: SearchParams
+  searchParams: Promise<SearchParams>
 }) {
-  const query = searchParams.q || ''
-  const categoryId = searchParams.category || ''
-  const condition = searchParams.condition || ''
-  const priceMin = searchParams.price_min || ''
-  const priceMax = searchParams.price_max || ''
-  const order = searchParams.order || ''
+  const resolvedSearchParams = await searchParams
+  const query = resolvedSearchParams.q || ''
+  const categoryId = resolvedSearchParams.category || ''
+  const condition = resolvedSearchParams.condition || ''
+  const priceMin = resolvedSearchParams.price_min || ''
+  const priceMax = resolvedSearchParams.price_max || ''
+  const order = resolvedSearchParams.order || ''
 
   const supabase = createServiceClient()
 

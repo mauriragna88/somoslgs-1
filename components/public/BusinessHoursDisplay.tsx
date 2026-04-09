@@ -1,14 +1,19 @@
 'use client'
 
-import type { BusinessHours } from '@/lib/constants'
+import { normalizeBusinessHours } from '@/lib/constants'
+import type { BusinessHours, BusinessHoursDay } from '@/lib/constants'
 
 interface BusinessHoursDisplayProps {
   hours: BusinessHours | null | undefined
 }
 
-const ROWS: Array<{ key: keyof BusinessHours; label: string; days: number[] }> = [
-  { key: 'weekdays', label: 'Lunes a Viernes', days: [1, 2, 3, 4, 5] },
-  { key: 'saturday', label: 'Sábado', days: [6] },
+const ROWS: Array<{ key: BusinessHoursDay; label: string; days: number[] }> = [
+  { key: 'monday', label: 'Lunes', days: [1] },
+  { key: 'tuesday', label: 'Martes', days: [2] },
+  { key: 'wednesday', label: 'Miercoles', days: [3] },
+  { key: 'thursday', label: 'Jueves', days: [4] },
+  { key: 'friday', label: 'Viernes', days: [5] },
+  { key: 'saturday', label: 'Sabado', days: [6] },
   { key: 'sunday', label: 'Domingo', days: [0] },
 ]
 
@@ -25,7 +30,8 @@ export default function BusinessHoursDisplay({ hours }: BusinessHoursDisplayProp
     return null
   }
 
-  // Obtener dia actual en Mexico City
+  const normalizedHours = normalizeBusinessHours(hours)
+
   const now = new Date()
   const mexicoTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Mexico_City' }))
   const currentDay = mexicoTime.getDay()
@@ -38,9 +44,44 @@ export default function BusinessHoursDisplay({ hours }: BusinessHoursDisplayProp
         </svg>
         Horarios
       </h3>
-      <div className="space-y-2">
-        {ROWS.map(({ key, label, days }) => {
-          const day = hours[key]
+      <div className="space-y-1">
+        {/* Entre semana */}
+        <div className="px-3 py-1.5">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Entre semana</span>
+        </div>
+        {ROWS.slice(0, 4).map(({ key, label, days }) => {
+          const day = normalizedHours[key]
+          const isToday = days.includes(currentDay)
+
+          return (
+            <div
+              key={key}
+              className={`flex items-center justify-between py-2 px-3 rounded-lg text-sm ${
+                isToday ? 'bg-primary/5 font-semibold' : ''
+              }`}
+            >
+              <span className={isToday ? 'text-primary' : 'text-gray-700'}>
+                {label}
+                {isToday && <span className="ml-2 text-xs text-primary/70">(Hoy)</span>}
+              </span>
+              <span className={day.closed ? 'text-red-500' : isToday ? 'text-primary' : 'text-gray-600'}>
+                {day.closed
+                  ? 'Cerrado'
+                  : `${formatTime(day.open)} - ${formatTime(day.close)}`}
+              </span>
+            </div>
+          )
+        })}
+
+        {/* Separator */}
+        <div className="border-t border-gray-100 my-2" />
+
+        {/* Fin de semana */}
+        <div className="px-3 py-1.5">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Fin de semana</span>
+        </div>
+        {ROWS.slice(4).map(({ key, label, days }) => {
+          const day = normalizedHours[key]
           const isToday = days.includes(currentDay)
 
           return (

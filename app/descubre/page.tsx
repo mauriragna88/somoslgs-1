@@ -38,7 +38,7 @@ interface DiscoverBusiness {
 }
 
 export default async function DescubrePage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: businesses } = await supabase
     .from('businesses')
@@ -376,3 +376,4 @@ function SimpleCard({ business }: { business: DiscoverBusiness }) {
     </Link>
   )
 }
+
