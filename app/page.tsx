@@ -183,7 +183,7 @@ export default async function Home() {
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
         {/* Background Photo */}
         <Image
-          src="/lagos-hero.jpg"
+          src="/tourism/calvario2.jpg"
           alt="Lagos de Moreno"
           fill
           className="object-cover"
@@ -446,7 +446,7 @@ export default async function Home() {
           <div className="max-w-5xl mx-auto relative overflow-hidden rounded-3xl">
             {/* Background image reuse */}
             <Image
-              src="/lagos-hero.jpg"
+              src="/tourism/calvario2.jpg"
               alt=""
               fill
               className="object-cover"
