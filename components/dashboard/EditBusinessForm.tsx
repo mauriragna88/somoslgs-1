@@ -12,7 +12,7 @@ import type { BusinessHours } from '@/lib/constants'
 import Link from 'next/link'
 
 const MapPicker = dynamic(() => import('@/components/maps/MapPicker'), { ssr: false })
-import type { BusinessPhoto } from '@/lib/supabase/database.types'
+import type { BusinessPhoto } from '@/types/database.types'
 
 interface Business {
   id: string

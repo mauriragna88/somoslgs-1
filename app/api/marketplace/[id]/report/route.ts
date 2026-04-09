@@ -21,7 +21,7 @@ export async function POST(
 
   // Rate limiting
   const ip = getClientIP(request)
-  const rateLimit = checkReportRateLimit(`report:${ip}`)
+  const rateLimit = await checkReportRateLimit(`report:${ip}`)
   if (!rateLimit.allowed) {
     return NextResponse.json(
       { error: 'Demasiados reportes. Intenta más tarde.' },

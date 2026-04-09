@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
     // Rate limiting: 10 reviews per hour
     const ip = getClientIP(request)
-    const rateCheck = checkRateLimit(`review:${ip}`, 10, 3600000)
+    const rateCheck = await checkRateLimit(`review:${ip}`, 10, 3600)
     if (!rateCheck.allowed) {
       return NextResponse.json({ error: 'Demasiadas opiniones. Intenta más tarde.' }, { status: 429 })
     }

@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   try {
     // Rate limiting por IP
     const ip = getClientIP(request)
-    const rateLimit = checkRegisterRateLimit(ip)
+    const rateLimit = await checkRegisterRateLimit(ip)
     if (!rateLimit.allowed) {
       return NextResponse.json(
         { error: 'Demasiados intentos de registro. Intenta de nuevo más tarde.' },

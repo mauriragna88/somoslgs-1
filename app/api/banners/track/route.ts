@@ -6,7 +6,7 @@ export async function POST(request: Request) {
   try {
     // Rate limiting to prevent metric inflation
     const ip = getClientIP(request)
-    const rateCheck = checkRateLimit(`banner-track:${ip}`, 60, 60000) // 60 tracks per minute
+    const rateCheck = await checkRateLimit(`banner-track:${ip}`, 60, 60)
     if (!rateCheck.allowed) {
       return NextResponse.json({ success: true }) // Silent fail, don't reveal rate limiting
     }

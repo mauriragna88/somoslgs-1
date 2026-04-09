@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
   // Rate limiting
   const ip = getClientIP(request)
-  const rateLimit = checkUploadRateLimit(`upload:${ip}`)
+  const rateLimit = await checkUploadRateLimit(`upload:${ip}`)
   if (!rateLimit.allowed) {
     return NextResponse.json(
       { error: 'Demasiadas subidas. Intenta más tarde.' },

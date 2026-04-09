@@ -6,11 +6,9 @@ import { createServiceClient } from '@/lib/supabase/server'
 import type { BlogPost } from '@/types/database.types'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-// ATTENTION: ReactMarkdown renders user-provided markdown content.
-// Without rehype-sanitize, malicious markdown (e.g. <script> tags, onerror handlers)
-// can be rendered. This is a known XSS risk for blog content.
-// To fix: install remark-rehype and rehype-sanitize, then add rehypePlugins to ReactMarkdown.
-// Until fixed, ensure blog content is only submitted by trusted authors via admin CMS.
+import rehypeSanitize from 'rehype-sanitize'
+// rehype-sanitize is applied to strip dangerous HTML/scripts from user-provided blog markdown
+// defaultSchema allows safe structural elements while blocking scripts, event handlers, etc.
 import ReadingProgress from '@/components/blog/ReadingProgress'
 import { resolveBlogImage } from '@/lib/blog-image-fallbacks'
 
@@ -282,6 +280,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               prose-code:text-primary prose-code:bg-primary/8 prose-code:rounded prose-code:px-1.5">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeSanitize]}
                 components={{
                   // Custom h2: big colored section header with ID for TOC
                   h2: ({ children }) => {

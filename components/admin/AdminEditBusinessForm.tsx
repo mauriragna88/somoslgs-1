@@ -9,7 +9,7 @@ import PhotoGalleryManager from '@/components/dashboard/PhotoGalleryManager'
 import BusinessHoursEditor from '@/components/shared/BusinessHoursEditor'
 import { DEFAULT_BUSINESS_HOURS, normalizeBusinessHours } from '@/lib/constants'
 import type { BusinessHours } from '@/lib/constants'
-import type { BusinessPhoto } from '@/lib/supabase/database.types'
+import type { BusinessPhoto } from '@/types/database.types'
 
 const MapPicker = dynamic(() => import('@/components/maps/MapPicker'), { ssr: false })
 

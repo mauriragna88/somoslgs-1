@@ -125,7 +125,7 @@ export async function POST(request: Request) {
 
   // Rate limiting
   const ip = getClientIP(request)
-  const rateLimit = checkMarketplaceRateLimit(`marketplace:${ip}`)
+  const rateLimit = await checkMarketplaceRateLimit(`marketplace:${ip}`)
   if (!rateLimit.allowed) {
     return NextResponse.json(
       { error: 'Demasiados artículos publicados. Intenta más tarde.' },

@@ -18,13 +18,13 @@ const FADE_FRAMES   = 30   // 1 s de crossfade
 const OUTRO_FRAMES  = 120  // 4 s
 
 const IMAGES = [
-  { src: '/tourism/panoramica-lagos.jpg',      label: 'Lagos de Moreno, Jalisco'       },
-  { src: '/tourism/parroquia-asuncion.jpg',    label: 'Parroquia de la Asunción'       },
-  { src: '/tourism/calvario2.jpg',             label: 'Templo del Calvario'            },
-  { src: '/tourism/jardin-constituyentes.jpg', label: 'Jardín de los Constituyentes'   },
-  { src: '/tourism/palacio-municipal.jpg',     label: 'Palacio Municipal'              },
-  { src: '/tourism/gastronomia.jpg',           label: 'Gastronomía Local'              },
-  { src: '/tourism/puente-panoramica.jpg',     label: 'Puente Panorámico'              },
+  { src: '/tourism/calvario2.jpg',           label: 'Templo del Calvario'            }, // was 3rd, now 1st
+  { src: '/tourism/parroquia-asuncion.jpg',   label: 'Parroquia de la Asunción'       }, // 2nd unchanged
+  { src: '/tourism/panoramica-lagos.jpg',     label: 'Lagos de Moreno, Jalisco'       }, // was 1st, now 3rd
+  { src: '/tourism/jardin-constituyentes.jpg', label: 'Jardín de los Constituyentes'  },
+  { src: '/tourism/palacio-municipal.jpg',    label: 'Palacio Municipal'              },
+  { src: '/tourism/gastronomia.jpg',          label: 'Gastronomía Local'              },
+  { src: '/tourism/puente-panoramica.jpg',    label: 'Puente Panorámico'              },
 ]
 
 // ─── Escena: Intro ───────────────────────────────────────────────

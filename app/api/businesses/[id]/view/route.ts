@@ -21,7 +21,7 @@ export async function POST(
 
     // Rate limit: 1 view per IP per business per 30 min
     const rateKey = `biz-view:${ip}:${businessId}`
-    const rateCheck = checkRateLimit(rateKey, 1, 30 * 60 * 1000)
+    const rateCheck = await checkRateLimit(rateKey, 1, 1800)
     if (!rateCheck.allowed) {
       return NextResponse.json({ success: true }) // Silent, don't count duplicate
     }
