@@ -175,26 +175,28 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
 
-      {/* Hero Section with Lagos de Moreno background */}
-      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-        {/* Background Photo */}
+      {/* Hero — Pueblo Magico de Lagos de Moreno */}
+      <section className="relative min-h-[88vh] flex items-center overflow-hidden">
+        {/* Background Photo — Calvario chapel */}
         <Image
-          src="/lagos-hero.jpg"
-          alt="Lagos de Moreno"
+          src="/tourism/calvario2.jpg"
+          alt="Santuario del Calvario, Pueblo Magico de Lagos de Moreno"
           fill
           className="object-cover"
           priority
-          quality={85}
+          quality={90}
         />
-        {/* Dark overlay with gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/80 via-secondary/70 to-secondary/90"></div>
-        {/* Accent glow */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-accent/10 to-transparent"></div>
+        {/* Warm colonial overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-pueblo-noche/85 via-pueblo-noche/70 to-pueblo-noche/90" />
+        {/* Golden accent glow from bottom-left */}
+        <div className="absolute bottom-0 left-0 w-[60%] h-48 bg-gradient-to-tr from-pueblo-barroco/15 to-transparent" />
+        {/* Subtle cantera glow from top-right */}
+        <div className="absolute top-0 right-0 w-[40%] h-64 bg-gradient-to-bl from-pueblo-cantera/10 to-transparent" />
 
         <div className="relative container mx-auto px-4 py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
             {/* Logo in hero */}
-            <div className="flex justify-center mb-8 animate-fade-in-up">
+            <div className="flex justify-center mb-6 animate-fade-in-up">
               <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 animate-float animate-glow">
                 <Image
                   src="/logo.png"
@@ -207,10 +209,20 @@ export default async function Home() {
               </div>
             </div>
 
+            {/* Pueblo Magico eyebrow badge */}
+            <div className="flex justify-center mb-5 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+              <span className="pueblo-eyebrow text-xs font-semibold px-5 py-1.5 rounded-full inline-flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+                Pueblo Magico
+              </span>
+            </div>
+
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white mb-5 leading-tight tracking-tight animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
               <TextReveal text="Descubre" staggerMs={100} />
               {' '}
-              <span className="text-[#2DD4BF]">Lagos de Moreno</span>
+              <span className="text-pueblo-barroco">Lagos de Moreno</span>
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               La red de negocios mas grande de Lagos de Moreno. Conecta, explora y apoya a tu comunidad
@@ -222,22 +234,22 @@ export default async function Home() {
               <PWAInstallInline variant="hero" />
             </div>
 
-            {/* Social Proof Metrics - glass cards with animated counters */}
+            {/* Social Proof Metrics — warm glass cards */}
             <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-accent/20 animate-scale-in-bounce shadow-lg shadow-accent/5" style={{ animationDelay: '0.5s' }}>
-                <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent via-amber-300 to-accent">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-pueblo-barroco/30 animate-scale-in-bounce shadow-lg shadow-pueblo-barroco/10" style={{ animationDelay: '0.5s' }}>
+                <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-barroco via-amber-300 to-pueblo-barroco">
                   <AnimatedCounter target={businessDisplayCount} suffix="+" />
                 </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1 text-center">Negocios</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-primary-light/20 animate-scale-in-bounce shadow-lg shadow-primary/5" style={{ animationDelay: '0.65s' }}>
-                <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-light via-teal-300 to-primary-light">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-pueblo-cantera/30 animate-scale-in-bounce shadow-lg shadow-pueblo-cantera/10" style={{ animationDelay: '0.65s' }}>
+                <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-cantera via-pueblo-canteraLight to-pueblo-cantera">
                   <AnimatedCounter target={catCount} suffix="+" />
                 </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1 text-center">Categorias</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-white/20 animate-scale-in-bounce shadow-lg" style={{ animationDelay: '0.8s' }}>
-                <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-primary-light to-white">
+                <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-pueblo-barroco to-white">
                   <AnimatedCounter target={100} suffix="%" />
                 </p>
                 <p className="text-xs text-white/80 uppercase tracking-wider mt-1 text-center">Gratis</p>
@@ -246,10 +258,10 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* Bottom wave */}
+        {/* Bottom wave — blends into pueblo-crema category strip */}
         <div className="absolute bottom-0 left-0 right-0 animate-wave-move">
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 80H1440V40C1440 40 1320 0 1200 0C1080 0 960 40 840 40C720 40 600 0 480 0C360 0 240 40 120 40C60 40 0 20 0 20V80Z" fill="white"/>
+            <path d="M0 80H1440V40C1440 40 1320 0 1200 0C1080 0 960 40 840 40C720 40 600 0 480 0C360 0 240 40 120 40C60 40 0 20 0 20V80Z" fill="#FDF6EE"/>
           </svg>
         </div>
       </section>
@@ -267,8 +279,8 @@ export default async function Home() {
         <BannerDisplay placement="home_top" />
       </div>
 
-      {/* Categories — compact horizontal strip */}
-      <section className="py-8 bg-white">
+      {/* Categories — compact horizontal strip on warm pueblo-crema */}
+      <section className="py-8 bg-pueblo-crema">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-center gap-3">
             {categories && categories.length > 0 ? (
@@ -277,10 +289,10 @@ export default async function Home() {
                   <ScrollReveal key={category.id} direction="up" delay={i * 80}>
                     <Link
                       href={`/categorias/${category.slug}`}
-                      className="group flex items-center gap-2 px-5 py-3 bg-white rounded-full border border-gray-200 hover:border-primary/30 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 transition-all duration-300"
+                      className="group flex items-center gap-2 px-5 py-3 bg-white rounded-full border border-pueblo-canteraLight hover:border-pueblo-cantera/50 hover:bg-white hover:shadow-pueblo-soft hover:scale-105 hover:-translate-y-0.5 transition-all duration-300"
                     >
                       <span className="text-xl group-hover:scale-110 transition-transform duration-300">{category.icon || '📦'}</span>
-                      <span className="font-medium text-sm text-secondary group-hover:text-primary transition-colors">
+                      <span className="font-medium text-sm text-pueblo-noche group-hover:text-pueblo-cantera transition-colors">
                         {category.name}
                       </span>
                     </Link>
@@ -289,7 +301,7 @@ export default async function Home() {
                 {catCount > 6 && (
                   <Link
                     href="/categorias"
-                    className="flex items-center gap-1.5 px-4 py-2.5 bg-primary/10 text-primary rounded-full font-semibold text-sm hover:bg-primary/20 transition-colors"
+                    className="flex items-center gap-1.5 px-4 py-2.5 bg-pueblo-cantera/10 text-pueblo-cantera rounded-full font-semibold text-sm hover:bg-pueblo-cantera/20 transition-colors"
                   >
                     +{catCount - 6} mas
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -300,22 +312,24 @@ export default async function Home() {
               </>
             ) : (
               <>
-                <Link href="/buscar?q=restaurantes" className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-gray-200 hover:border-primary/30 hover:shadow-md transition-all">
-                  <span className="text-lg">🍔</span><span className="font-medium text-sm text-secondary">Restaurantes</span>
+                <Link href="/buscar?q=restaurantes" className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-pueblo-canteraLight hover:border-pueblo-cantera/50 hover:shadow-pueblo-soft transition-all">
+                  <span className="text-lg">🍔</span><span className="font-medium text-sm text-pueblo-noche">Restaurantes</span>
                 </Link>
-                <Link href="/buscar?q=tiendas" className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-gray-200 hover:border-primary/30 hover:shadow-md transition-all">
-                  <span className="text-lg">🛒</span><span className="font-medium text-sm text-secondary">Tiendas</span>
+                <Link href="/buscar?q=tiendas" className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-pueblo-canteraLight hover:border-pueblo-cantera/50 hover:shadow-pueblo-soft transition-all">
+                  <span className="text-lg">🛒</span><span className="font-medium text-sm text-pueblo-noche">Tiendas</span>
                 </Link>
-                <Link href="/buscar?q=servicios" className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-gray-200 hover:border-primary/30 hover:shadow-md transition-all">
-                  <span className="text-lg">🔧</span><span className="font-medium text-sm text-secondary">Servicios</span>
+                <Link href="/buscar?q=servicios" className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-pueblo-canteraLight hover:border-pueblo-cantera/50 hover:shadow-pueblo-soft transition-all">
+                  <span className="text-lg">🔧</span><span className="font-medium text-sm text-pueblo-noche">Servicios</span>
                 </Link>
-                <Link href="/categorias" className="flex items-center gap-1.5 px-4 py-2.5 bg-primary/10 text-primary rounded-full font-semibold text-sm hover:bg-primary/20 transition-colors">
+                <Link href="/categorias" className="flex items-center gap-1.5 px-4 py-2.5 bg-pueblo-cantera/10 text-pueblo-cantera rounded-full font-semibold text-sm hover:bg-pueblo-cantera/20 transition-colors">
                   Ver todas →
                 </Link>
               </>
             )}
           </div>
         </div>
+        {/* Warm divider strip */}
+        <div className="pueblo-divider mt-8 mx-auto max-w-4xl" />
       </section>
 
       {/* Qué Hacer en Lagos — Tourism Preview */}
