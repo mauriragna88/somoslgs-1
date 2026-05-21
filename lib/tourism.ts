@@ -35,7 +35,7 @@ export const ACTIVITIES: Activity[] = [
     longDescription: 'Lagos de Moreno es cuna de una gastronomía rica y variada. Desde la famosa birria jalisciense hasta los dulces de leche artesanales, cada platillo cuenta una historia. Visita restaurantes, fondas y puestos tradicionales que llevan generaciones compartiendo su sazón.',
     icon: '🍽️',
     gradient: 'from-orange-500 to-red-500',
-    image: '/tourism/gastronomia.jpg',
+    image: '/tourism/centro-historico.jpg',
     relatedCategories: ['restaurantes', 'cafeterias', 'antojitos'],
   },
   {
@@ -45,7 +45,7 @@ export const ACTIVITIES: Activity[] = [
     longDescription: 'Explora tiendas y mercados donde encontrarás artesanías de piel, textiles bordados, dulces regionales y recuerdos únicos. El comercio local de Lagos de Moreno es una experiencia en sí misma, con vendedores que te cuentan la historia detrás de cada producto.',
     icon: '🛍️',
     gradient: 'from-pink-500 to-purple-500',
-    image: '/tourism/artesanias.jpg',
+    image: '/tourism/casa-cultura.jpg',
     relatedCategories: ['tiendas', 'ropa', 'artesanias'],
   },
   {

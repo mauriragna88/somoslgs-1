@@ -22,8 +22,8 @@ const OUTRO_F   = 90   // 3 s CTA
 const IMAGES = [
   { src: '/tourism/centro-historico.jpg',      label: 'Centro Histórico'          },
   { src: '/tourism/danza-matachines.jpg',      label: 'Cultura y Tradiciones'     },
-  { src: '/tourism/gastronomia.jpg',           label: 'Gastronomía Local'         },
-  { src: '/tourism/artesanias.jpg',            label: 'Artesanías y Comercio'     },
+  { src: '/tourism/centro-historico.jpg',      label: 'Gastronomía Local'         },
+  { src: '/tourism/casa-cultura.jpg',          label: 'Artesanías y Comercio'     },
   { src: '/tourism/dia-muertos.jpg',           label: 'Fiestas y Eventos'         },
 ]
 

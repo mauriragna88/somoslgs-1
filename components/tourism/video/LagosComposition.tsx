@@ -23,7 +23,7 @@ const IMAGES = [
   { src: '/tourism/templo-calvario.jpg',       label: 'Templo del Calvario'            },
   { src: '/tourism/jardin-constituyentes.jpg', label: 'Jardín de los Constituyentes'   },
   { src: '/tourism/palacio-municipal.jpg',     label: 'Palacio Municipal'              },
-  { src: '/tourism/gastronomia.jpg',           label: 'Gastronomía Local'              },
+  { src: '/tourism/centro-historico.jpg',      label: 'Gastronomía Local'              },
   { src: '/tourism/puente-panoramica.jpg',     label: 'Puente Panorámico'              },
 ]
 
