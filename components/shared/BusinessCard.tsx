@@ -3,6 +3,7 @@ import Image from 'next/image'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import StarRating from '@/components/reviews/StarRating'
 import FavoriteButton from '@/components/shared/FavoriteButton'
+import type { BusinessHours } from '@/lib/constants'
 
 interface BusinessCardProps {
   business: {
@@ -15,7 +16,7 @@ interface BusinessCardProps {
     neighborhood?: string | null
     subscription_tier: string
     is_featured: boolean
-    business_hours: any
+    business_hours: BusinessHours | null
     rating: number
     total_reviews: number
     category: { id?: string; name: string; icon: string } | null

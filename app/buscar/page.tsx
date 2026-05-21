@@ -4,6 +4,7 @@ import { Metadata } from 'next'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { stemSpanish } from '@/lib/utils'
 import { TIER_ORDER } from '@/lib/constants'
+import type { BusinessHours } from '@/lib/constants'
 import BusinessCard from '@/components/shared/BusinessCard'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import ListingCard from '@/components/marketplace/ListingCard'
@@ -73,7 +74,7 @@ interface Business {
   is_active: boolean
   subscription_tier: string
   is_featured: boolean
-  business_hours: any
+  business_hours: BusinessHours | null
   rating: number
   total_reviews: number
   category: { id: string; name: string; icon: string } | null
@@ -91,6 +92,8 @@ export default async function BuscarPage({
   const tipo = searchParams.tipo || 'negocios'
 
   const supabase = createClient()
+  // Audit: public marketplace reads currently use service_role and bypass RLS.
+  // Keep scoped to active listings until marketplace SELECT policies are verified.
   const serviceSupabase = createServiceClient()
 
   // Get categories + business counts + neighborhoods in parallel
@@ -191,7 +194,7 @@ export default async function BuscarPage({
     businessQuery = businessQuery.eq('neighborhood', colonia)
   }
 
-  const { data: rawBusinesses, error } = await businessQuery.limit(50) as { data: Business[] | null; error: any }
+  const { data: rawBusinesses } = await businessQuery.limit(50) as { data: Business[] | null }
 
   // Sort by tier order client-side (Supabase sorts TEXT alphabetically which gives wrong order)
   const businesses = orden !== 'rating' && rawBusinesses
