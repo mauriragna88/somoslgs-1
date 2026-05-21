@@ -458,8 +458,10 @@ export default async function Home() {
       </div>
 
       {/* CTA for Business Owners */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-pueblo-noche relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 md:w-[30rem] md:h-[30rem] bg-pueblo-barroco/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-56 h-56 md:w-[24rem] md:h-[24rem] bg-pueblo-cantera/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="container mx-auto px-4 relative z-10">
           <ScrollReveal direction="scale">
           <div className="max-w-5xl mx-auto relative overflow-hidden rounded-3xl">
             {/* Background image reuse */}
@@ -470,58 +472,58 @@ export default async function Home() {
               className="object-cover"
               aria-hidden="true"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 via-secondary/105 to-primary/100"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-pueblo-noche/90 via-pueblo-noche/95 to-pueblo-terracotta/90"></div>
             <div className="relative p-8 md:p-14">
               <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-pueblo-crema mb-3">
                   Haz crecer tu negocio
                 </h2>
-                <p className="text-lg text-white/100 max-w-xl mx-auto">
+                <p className="text-lg text-pueblo-crema/100 max-w-xl mx-auto">
                   Unete a SomosLagos y llega a miles de clientes en Lagos de Moreno
                 </p>
               </div>
 
               <div className="grid md:grid-cols-3 gap-6 mb-10">
-                <div className="text-center p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                  <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <div className="text-center p-5 bg-pueblo-crema/5 backdrop-blur-sm rounded-2xl border border-pueblo-crema/10">
+                  <div className="w-12 h-12 bg-pueblo-barroco/20 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <span className="text-2xl">📱</span>
                   </div>
-                  <h3 className="font-semibold text-white mb-1 text-sm">Presencia Digital</h3>
-                  <p className="text-xs text-white/100">Tu negocio visible 24/7</p>
+                  <h3 className="font-semibold text-pueblo-crema mb-1 text-sm">Presencia Digital</h3>
+                  <p className="text-xs text-pueblo-crema/70">Tu negocio visible 24/7</p>
                 </div>
-                <div className="text-center p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                  <div className="w-12 h-12 bg-primary-light/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <div className="text-center p-5 bg-pueblo-crema/5 backdrop-blur-sm rounded-2xl border border-pueblo-crema/10">
+                  <div className="w-12 h-12 bg-pueblo-cantera/20 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <span className="text-2xl">🎯</span>
                   </div>
-                  <h3 className="font-semibold text-white mb-1 text-sm">Mas Clientes</h3>
-                  <p className="text-xs text-white/100">Miles de personas en Lagos</p>
+                  <h3 className="font-semibold text-pueblo-crema mb-1 text-sm">Mas Clientes</h3>
+                  <p className="text-xs text-pueblo-crema/70">Miles de personas en Lagos</p>
                 </div>
-                <div className="text-center p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                  <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <div className="text-center p-5 bg-pueblo-crema/5 backdrop-blur-sm rounded-2xl border border-pueblo-crema/10">
+                  <div className="w-12 h-12 bg-pueblo-barroco/20 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <span className="text-2xl">💳</span>
                   </div>
-                  <h3 className="font-semibold text-white mb-1 text-sm">Ventas Online</h3>
-                  <p className="text-xs text-white/100">Pedidos y pagos en linea</p>
+                  <h3 className="font-semibold text-pueblo-crema mb-1 text-sm">Ventas Online</h3>
+                  <p className="text-xs text-pueblo-crema/70">Pedidos y pagos en linea</p>
                 </div>
               </div>
 
               {/* Chatbot selling point */}
-              <div className="mb-8 p-4 bg-accent/10 border border-accent/20 rounded-2xl flex items-start gap-3">
+              <div className="mb-8 p-4 bg-pueblo-barroco/10 border border-pueblo-barroco/20 rounded-2xl flex items-start gap-3">
                 <span className="text-2xl flex-shrink-0">🤖</span>
-                <p className="text-sm text-white/100">
-                  <strong className="text-accent">Al subir tus productos al Plan Pro</strong>, tu menú aparece automáticamente en el <strong className="text-white">Chatbot de Inteligencia Artificial</strong> de la ciudad. Presencia web y en WhatsApp al mismo tiempo.
+                <p className="text-sm text-pueblo-crema/100">
+                  <strong className="text-pueblo-barroco">Al subir tus productos al Plan Pro</strong>, tu menú aparece automáticamente en el <strong className="text-pueblo-crema">Chatbot de Inteligencia Artificial</strong> de la ciudad. Presencia web y en WhatsApp al mismo tiempo.
                 </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link
                   href="/registrar-negocio"
-                  className="bg-accent hover:bg-accent-dark text-secondary px-10 py-4 rounded-full font-bold text-lg shadow-xl transition-all hover:scale-105 hover:shadow-accent/30"
+                  className="bg-gradient-to-r from-pueblo-barroco to-pueblo-terracotta hover:from-pueblo-terracotta hover:to-pueblo-barroco text-pueblo-noche px-10 py-4 rounded-full font-bold text-lg shadow-xl transition-all hover:scale-105 hover:shadow-pueblo"
                 >
                   Registrar mi Negocio GRATIS
                 </Link>
-                <p className="text-sm text-white/100">
-                  <strong className="text-accent text-lg">100% Gratis</strong> — sin costo de registro
+                <p className="text-sm text-pueblo-crema/70">
+                  <strong className="text-pueblo-barroco text-lg">100% Gratis</strong> — sin costo de registro
                 </p>
               </div>
             </div>
@@ -1167,21 +1169,21 @@ export default async function Home() {
       </section>
 
       {/* ── PLANES — cierre de embudo, al final de todo ── */}
-      <section className="py-24 bg-gradient-to-br from-secondary via-[#1a2744] to-secondary relative overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none"></div>
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl translate-y-1/2 pointer-events-none"></div>
+      <section className="py-24 bg-pueblo-noche relative overflow-hidden">
+        {/* Decorative colonial glows */}
+        <div className="absolute top-0 left-1/4 w-64 h-64 md:w-[30rem] md:h-[30rem] bg-pueblo-barroco/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none"></div>
+        <div className="absolute bottom-0 right-1/4 w-56 h-56 md:w-[24rem] md:h-[24rem] bg-pueblo-cantera/10 rounded-full blur-3xl translate-y-1/2 pointer-events-none"></div>
 
         <div className="container mx-auto px-4 relative z-10">
           <ScrollReveal direction="up">
             <div className="text-center mb-14">
-              <span className="inline-flex items-center gap-2 px-5 py-2 bg-accent/20 text-accent font-bold text-sm rounded-full border border-accent/20 mb-5">
+              <span className="pueblo-eyebrow inline-flex items-center gap-2 px-5 py-2 text-sm font-bold rounded-full mb-5">
                 ✨ Ya viste todo lo que ofrecemos
               </span>
-              <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+              <h2 className="text-3xl md:text-5xl font-extrabold text-pueblo-crema mb-4 leading-tight">
                 ¿Listo para que más gente<br className="hidden md:block" /> te encuentre en Lagos?
               </h2>
-              <p className="text-lg text-white/60 max-w-xl mx-auto">
+              <p className="text-lg text-pueblo-crema/60 max-w-xl mx-auto">
                 Empieza gratis hoy. Si en algún momento quieres más visibilidad, tenemos planes opcionales sin compromiso.
               </p>
             </div>
@@ -1191,17 +1193,17 @@ export default async function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto mb-12">
             {/* Gratis */}
             <ScrollReveal direction="up" delay={0}>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col hover:bg-white/10 hover:border-white/20 transition-all">
-              <p className="text-white/60 text-xs font-semibold uppercase tracking-widest mb-2">Gratis</p>
-              <p className="text-4xl font-extrabold text-white mb-1">$0</p>
-              <p className="text-white/40 text-xs mb-5">para siempre</p>
-              <ul className="space-y-2 text-sm text-white/70 flex-1 mb-6">
-                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Aparece en buscador y mapa</li>
-                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> WhatsApp directo</li>
-                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Horarios y opiniones</li>
-                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Hasta 3 fotos</li>
+            <div className="bg-pueblo-crema/5 border border-pueblo-crema/10 rounded-2xl p-6 flex flex-col hover:bg-pueblo-crema/10 hover:border-pueblo-canteraLight/30 transition-all">
+              <p className="text-pueblo-canteraLight/70 text-xs font-semibold uppercase tracking-widest mb-2">Gratis</p>
+              <p className="text-4xl font-extrabold text-pueblo-crema mb-1">$0</p>
+              <p className="text-pueblo-crema/40 text-xs mb-5">para siempre</p>
+              <ul className="space-y-2 text-sm text-pueblo-crema/70 flex-1 mb-6">
+                <li className="flex items-center gap-2"><span className="text-pueblo-cantera">✓</span> Aparece en buscador y mapa</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-cantera">✓</span> WhatsApp directo</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-cantera">✓</span> Horarios y opiniones</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-cantera">✓</span> Hasta 3 fotos</li>
               </ul>
-              <Link href="/registrar-negocio" className="block text-center py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-colors">
+              <Link href="/registrar-negocio" className="block text-center py-2.5 rounded-xl bg-pueblo-crema/10 hover:bg-pueblo-crema/20 text-pueblo-crema font-semibold text-sm transition-colors">
                 Empezar Gratis
               </Link>
             </div>
@@ -1209,17 +1211,17 @@ export default async function Home() {
 
             {/* Emprendedor */}
             <ScrollReveal direction="up" delay={100}>
-            <div className="bg-white/5 border border-primary/30 rounded-2xl p-6 flex flex-col hover:bg-white/10 hover:border-primary/50 transition-all">
-              <p className="text-primary-light text-xs font-semibold uppercase tracking-widest mb-2">Emprendedor</p>
-              <p className="text-4xl font-extrabold text-white mb-1">$60</p>
-              <p className="text-white/40 text-xs mb-5">MXN/mes · $2/día</p>
-              <ul className="space-y-2 text-sm text-white/70 flex-1 mb-6">
-                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Todo lo del plan Gratis</li>
-                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Portada personalizada</li>
-                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Redes sociales visibles</li>
-                <li className="flex items-center gap-2"><span className="text-primary-light">✓</span> Hasta 8 fotos</li>
+            <div className="bg-pueblo-crema/5 border border-pueblo-cantera/30 rounded-2xl p-6 flex flex-col hover:bg-pueblo-crema/10 hover:border-pueblo-cantera/50 transition-all">
+              <p className="text-pueblo-cantera text-xs font-semibold uppercase tracking-widest mb-2">Emprendedor</p>
+              <p className="text-4xl font-extrabold text-pueblo-crema mb-1">$60</p>
+              <p className="text-pueblo-crema/40 text-xs mb-5">MXN/mes · $2/día</p>
+              <ul className="space-y-2 text-sm text-pueblo-crema/70 flex-1 mb-6">
+                <li className="flex items-center gap-2"><span className="text-pueblo-cantera">✓</span> Todo lo del plan Gratis</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-cantera">✓</span> Portada personalizada</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-cantera">✓</span> Redes sociales visibles</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-cantera">✓</span> Hasta 8 fotos</li>
               </ul>
-              <Link href="/planes" className="block text-center py-2.5 rounded-xl bg-primary/20 hover:bg-primary/30 text-primary-light font-semibold text-sm transition-colors">
+              <Link href="/planes" className="block text-center py-2.5 rounded-xl bg-pueblo-cantera/20 hover:bg-pueblo-cantera/30 text-pueblo-canteraLight font-semibold text-sm transition-colors">
                 Ver detalles
               </Link>
             </div>
@@ -1227,18 +1229,18 @@ export default async function Home() {
 
             {/* Pro — destacado */}
             <ScrollReveal direction="up" delay={200}>
-            <div className="relative bg-gradient-to-b from-primary/20 to-primary/10 border-2 border-primary/60 rounded-2xl p-6 flex flex-col shadow-xl shadow-primary/20 scale-[1.03]">
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-secondary text-xs font-bold px-4 py-1 rounded-full shadow-lg">MÁS POPULAR</span>
-              <p className="text-accent text-xs font-semibold uppercase tracking-widest mb-2">Pro</p>
-              <p className="text-4xl font-extrabold text-white mb-1">$120</p>
-              <p className="text-white/40 text-xs mb-5">MXN/mes · $4/día</p>
-              <ul className="space-y-2 text-sm text-white/100 flex-1 mb-6">
-                <li className="flex items-center gap-2"><span className="text-accent">✓</span> Catálogo de productos</li>
-                <li className="flex items-center gap-2"><span className="text-accent">✓</span> Recibe pedidos en línea</li>
-                <li className="flex items-center gap-2"><span className="text-accent">✓</span> Tus productos en el Chatbot IA 🤖</li>
-                <li className="flex items-center gap-2"><span className="text-accent">✓</span> Hasta 15 fotos</li>
+            <div className="relative bg-gradient-to-b from-pueblo-barroco/20 to-pueblo-barroco/10 border-2 border-pueblo-barroco/60 rounded-2xl p-6 flex flex-col shadow-xl shadow-pueblo-barroco/20 scale-[1.03]">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-pueblo-barroco text-pueblo-noche text-xs font-bold px-4 py-1 rounded-full shadow-lg">MÁS POPULAR</span>
+              <p className="text-pueblo-barroco text-xs font-semibold uppercase tracking-widest mb-2">Pro</p>
+              <p className="text-4xl font-extrabold text-pueblo-crema mb-1">$120</p>
+              <p className="text-pueblo-crema/40 text-xs mb-5">MXN/mes · $4/día</p>
+              <ul className="space-y-2 text-sm text-pueblo-crema/100 flex-1 mb-6">
+                <li className="flex items-center gap-2"><span className="text-pueblo-barroco">✓</span> Catálogo de productos</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-barroco">✓</span> Recibe pedidos en línea</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-barroco">✓</span> Tus productos en el Chatbot IA 🤖</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-barroco">✓</span> Hasta 15 fotos</li>
               </ul>
-              <Link href="/planes" className="block text-center py-2.5 rounded-xl bg-accent hover:bg-accent-dark text-secondary font-bold text-sm transition-colors shadow-lg">
+              <Link href="/planes" className="block text-center py-2.5 rounded-xl bg-gradient-to-r from-pueblo-barroco to-pueblo-terracotta hover:from-pueblo-terracotta hover:to-pueblo-barroco text-pueblo-noche font-bold text-sm transition-colors shadow-lg">
                 Ver detalles
               </Link>
             </div>
@@ -1246,17 +1248,17 @@ export default async function Home() {
 
             {/* Avanzado */}
             <ScrollReveal direction="up" delay={300}>
-            <div className="bg-white/5 border border-purple-400/30 rounded-2xl p-6 flex flex-col hover:bg-white/10 hover:border-purple-400/50 transition-all">
-              <p className="text-purple-300 text-xs font-semibold uppercase tracking-widest mb-2">Avanzado</p>
-              <p className="text-4xl font-extrabold text-white mb-1">$180</p>
-              <p className="text-white/40 text-xs mb-5">MXN/mes · $6/día</p>
-              <ul className="space-y-2 text-sm text-white/70 flex-1 mb-6">
-                <li className="flex items-center gap-2"><span className="text-purple-300">✓</span> Destacado en búsquedas</li>
-                <li className="flex items-center gap-2"><span className="text-purple-300">✓</span> Badge verificado ✅</li>
-                <li className="flex items-center gap-2"><span className="text-purple-300">✓</span> Estadísticas detalladas</li>
-                <li className="flex items-center gap-2"><span className="text-purple-300">✓</span> Hasta 20 fotos</li>
+            <div className="bg-pueblo-crema/5 border border-pueblo-agave/30 rounded-2xl p-6 flex flex-col hover:bg-pueblo-crema/10 hover:border-pueblo-agave/50 transition-all">
+              <p className="text-pueblo-agave text-xs font-semibold uppercase tracking-widest mb-2">Avanzado</p>
+              <p className="text-4xl font-extrabold text-pueblo-crema mb-1">$180</p>
+              <p className="text-pueblo-crema/40 text-xs mb-5">MXN/mes · $6/día</p>
+              <ul className="space-y-2 text-sm text-pueblo-crema/70 flex-1 mb-6">
+                <li className="flex items-center gap-2"><span className="text-pueblo-agave">✓</span> Destacado en búsquedas</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-agave">✓</span> Badge verificado ✅</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-agave">✓</span> Estadísticas detalladas</li>
+                <li className="flex items-center gap-2"><span className="text-pueblo-agave">✓</span> Hasta 20 fotos</li>
               </ul>
-              <Link href="/planes" className="block text-center py-2.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-semibold text-sm transition-colors">
+              <Link href="/planes" className="block text-center py-2.5 rounded-xl bg-pueblo-agave/20 hover:bg-pueblo-agave/30 text-pueblo-agave font-semibold text-sm transition-colors">
                 Ver detalles
               </Link>
             </div>
@@ -1266,10 +1268,10 @@ export default async function Home() {
           {/* Bottom note */}
           <ScrollReveal direction="up" delay={400}>
           <div className="text-center">
-            <p className="text-white/40 text-sm mb-4">Sin contratos • Cancela cuando quieras • El plan Gratis es para siempre</p>
+            <p className="text-pueblo-crema/40 text-sm mb-4">Sin contratos • Cancela cuando quieras • El plan Gratis es para siempre</p>
             <Link
               href="/registrar-negocio"
-              className="inline-flex items-center gap-2 px-10 py-4 bg-accent hover:bg-accent-dark text-secondary font-bold text-lg rounded-full shadow-2xl shadow-accent/20 hover:scale-105 transition-all"
+              className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-pueblo-barroco to-pueblo-terracotta hover:from-pueblo-terracotta hover:to-pueblo-barroco text-pueblo-noche font-bold text-lg rounded-full shadow-2xl shadow-pueblo-barroco/20 hover:scale-105 transition-all"
             >
               Registrar mi Negocio GRATIS
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
