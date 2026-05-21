@@ -12,6 +12,13 @@
   --secondary: #0F172A;
   --accent: #F59E0B;
   --accent-dark: #D97706;
+  --pueblo-cantera: #C4745E;
+  --pueblo-terracotta: #8B5E3C;
+  --pueblo-barroco: #D4A843;
+  --pueblo-crema: #FDF6EE;
+  --pueblo-agave: #5B8C3E;
+  --pueblo-noche: #2C1810;
+  --pueblo-cantera-light: #F1D2C7;
 }
 
 * {
@@ -24,6 +31,39 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  .pueblo-shell {
+    background:
+      radial-gradient(circle at 12% 18%, rgba(212, 168, 67, 0.18), transparent 28rem),
+      radial-gradient(circle at 88% 12%, rgba(196, 116, 94, 0.20), transparent 26rem),
+      linear-gradient(180deg, var(--pueblo-crema) 0%, #fffaf4 48%, #ffffff 100%);
+  }
+
+  .pueblo-card {
+    border: 1px solid rgba(139, 94, 60, 0.14);
+    background: rgba(255, 250, 244, 0.86);
+    box-shadow: 0 16px 40px rgba(139, 94, 60, 0.12);
+    backdrop-filter: blur(18px);
+  }
+
+  .pueblo-eyebrow {
+    border: 1px solid rgba(212, 168, 67, 0.32);
+    background: rgba(212, 168, 67, 0.14);
+    color: var(--pueblo-terracotta);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .pueblo-arch {
+    border-radius: 999px 999px 2rem 2rem;
+  }
+
+  .pueblo-divider {
+    background: linear-gradient(90deg, transparent, rgba(196, 116, 94, 0.44), rgba(212, 168, 67, 0.56), transparent);
+    height: 1px;
+  }
 }
 
 @keyframes fadeInUp {

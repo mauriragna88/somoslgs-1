@@ -47,10 +47,23 @@ const config: Config = {
           dark: '#A86230',
           light: '#F5E6D8',
         },
+        pueblo: {
+          cantera: '#C4745E',
+          terracotta: '#8B5E3C',
+          barroco: '#D4A843',
+          crema: '#FDF6EE',
+          agave: '#5B8C3E',
+          noche: '#2C1810',
+          canteraLight: '#F1D2C7',
+        },
         surface: {
           DEFAULT: '#F8FAFC',
           dark: '#F1F5F9',
         },
+      },
+      boxShadow: {
+        pueblo: '0 24px 70px rgba(44, 24, 16, 0.16)',
+        'pueblo-soft': '0 16px 40px rgba(139, 94, 60, 0.12)',
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.6s ease-out both',
