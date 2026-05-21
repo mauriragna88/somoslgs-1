@@ -339,7 +339,7 @@ export default async function Home() {
 
       {/* Animación: Parroquia Grid Reveal (scroll-driven) */}
       <section className="py-20 bg-gradient-to-b from-pueblo-crema via-pueblo-noche to-secondary relative overflow-hidden">
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] bg-pueblo-barroco/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-72 h-72 md:w-[36rem] md:h-[36rem] bg-pueblo-barroco/10 rounded-full blur-3xl pointer-events-none" />
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="text-center mb-10">
             <span className="inline-block px-4 py-1.5 bg-pueblo-barroco/15 text-pueblo-barroco text-sm font-semibold rounded-full mb-3 border border-pueblo-barroco/20">
@@ -357,22 +357,25 @@ export default async function Home() {
       </section>
 
       {/* Animación: Negocios que caen */}
-      <section className="py-16 bg-gradient-to-b from-secondary to-surface">
+      <section className="py-16 bg-gradient-to-b from-pueblo-crema via-white to-pueblo-crema/50 relative overflow-hidden">
+        {/* Warm colonial glow accents */}
+        <div className="absolute top-0 right-0 w-72 h-72 md:w-[30rem] md:h-[30rem] bg-pueblo-barroco/8 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[24rem] h-[24rem] bg-pueblo-cantera/8 rounded-full blur-3xl pointer-events-none" />
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
             <div>
-              <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent text-sm font-semibold rounded-full mb-4">
+              <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-4">
                 Negocios Locales
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-pueblo-noche mb-4">
                 176+ negocios te esperan en Lagos de Moreno
               </h2>
-              <p className="text-white/60 leading-relaxed mb-6">
+              <p className="text-pueblo-terracotta/70 leading-relaxed mb-6">
                 Restaurantes, taquerías, pizzerías, bares, tiendas y mucho más. Todos con perfil completo, horarios, mapa y contacto directo.
               </p>
               <a
                 href="/buscar"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent-dark text-secondary font-bold rounded-full transition-all hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pueblo-barroco to-pueblo-terracotta text-pueblo-crema font-bold rounded-full transition-all hover:scale-105 shadow-pueblo-soft"
               >
                 Explorar negocios
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -386,7 +389,7 @@ export default async function Home() {
       </section>
 
       {/* Animación: SOMOSLAGOS pixel/scramble title */}
-      <section className="py-8 bg-secondary">
+      <section className="py-8 bg-pueblo-crema/50">
         <div className="container mx-auto px-4 max-w-5xl">
           <PixelTitle />
         </div>
@@ -399,8 +402,11 @@ export default async function Home() {
 
       {/* Featured Businesses — Premium Slider */}
       {featuredBusinesses && featuredBusinesses.length > 0 && (
-        <section className="py-12 bg-secondary">
-          <div className="container mx-auto px-4">
+        <section className="py-12 bg-gradient-to-b from-pueblo-noche via-[#3D2418] to-pueblo-noche relative overflow-hidden">
+          {/* Warm colonial glow accents */}
+          <div className="absolute top-0 left-1/4 w-72 h-72 md:w-[40rem] md:h-[40rem] bg-pueblo-barroco/8 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 right-1/4 w-64 h-64 md:w-[30rem] md:h-[30rem] bg-pueblo-cantera/6 rounded-full blur-3xl pointer-events-none" />
+          <div className="container mx-auto px-4 relative z-10">
             {/* Animated header */}
             <div className="mb-8">
               <FeaturedHeader />
@@ -414,7 +420,7 @@ export default async function Home() {
               <div className="text-center mt-8">
                 <Link
                   href="/descubre"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/20 text-white font-medium rounded-full hover:bg-white/20 transition-all"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-pueblo-barroco/15 border border-pueblo-barroco/30 text-pueblo-crema font-medium rounded-full hover:bg-pueblo-barroco/25 transition-all"
                 >
                   Ver todos los negocios
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -428,13 +434,14 @@ export default async function Home() {
       )}
 
       {/* Publicidad — Animated showcase */}
-      <section className="py-10 bg-secondary">
-        <div className="container mx-auto px-4 max-w-5xl">
+      <section className="py-10 bg-pueblo-noche relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-pueblo-noche via-[#3D2418] to-pueblo-noche pointer-events-none" />
+        <div className="container mx-auto px-4 max-w-5xl relative z-10">
           <AdShowcase />
           <div className="text-center mt-6">
             <Link
               href="/contacto"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent hover:bg-accent-dark text-secondary font-bold rounded-full transition-all hover:scale-105 shadow-lg shadow-accent/20"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-pueblo-barroco to-pueblo-terracotta text-pueblo-crema font-bold rounded-full transition-all hover:scale-105 shadow-pueblo-soft"
             >
               Quiero anunciarme
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -532,18 +539,23 @@ export default async function Home() {
         const gratisBiz = discoverBusinesses.filter((b: any) => b.subscription_tier === 'gratis')
 
         return (
-          <section className="py-20 bg-surface">
-            <div className="container mx-auto px-4">
+          <section className="py-20 pueblo-shell relative overflow-hidden">
+            {/* Warm colonial glow accents */}
+            <div className="absolute top-0 right-0 w-72 h-72 md:w-[36rem] md:h-[36rem] bg-pueblo-cantera/8 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 md:w-[28rem] md:h-[28rem] bg-pueblo-barroco/6 rounded-full blur-3xl pointer-events-none" />
+            <div className="container mx-auto px-4 relative z-10">
               <ScrollReveal direction="up">
               <div className="flex items-end justify-between mb-12">
                 <div>
-                  <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Descubre</span>
-                  <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-2">Conoce Negocios Locales</h2>
-                  <p className="text-gray-500">Lo mejor de Lagos de Moreno en un solo lugar</p>
+                  <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-4">
+                    Descubre
+                  </span>
+                  <h2 className="text-3xl md:text-4xl font-bold text-pueblo-noche mb-2">Conoce Negocios Locales</h2>
+                  <p className="text-pueblo-terracotta/70">Lo mejor de Lagos de Moreno en un solo lugar</p>
                 </div>
                 <Link
                   href="/descubre"
-                  className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-secondary font-medium rounded-full hover:shadow-md transition-all"
+                  className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 border border-pueblo-canteraLight hover:border-pueblo-cantera/40 text-pueblo-noche font-medium rounded-full hover:shadow-pueblo-soft transition-all"
                 >
                   Ver todos
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -566,53 +578,53 @@ export default async function Home() {
                           <Link
                             key={business.id}
                             href={`/negocios/${business.slug}`}
-                            className="group bg-gradient-to-br from-amber-50 to-white rounded-2xl overflow-hidden border-2 border-accent/40 hover:shadow-2xl hover:-translate-y-1 transition-all relative"
+                            className="group pueblo-card rounded-2xl overflow-hidden border-2 border-pueblo-barroco/30 hover:border-pueblo-barroco/60 hover:shadow-pueblo hover:-translate-y-1 transition-all relative"
                           >
-                            <div className="absolute top-3 right-3 z-10 bg-accent text-secondary text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
+                            <div className="absolute top-3 right-3 z-10 bg-pueblo-barroco text-pueblo-noche text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
                               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
                               Verificado
                             </div>
                             {heroImage ? (
-                              <div className="relative h-52 bg-gray-100">
+                              <div className="relative h-52 bg-pueblo-crema">
                                 <Image src={heroImage} alt={business.name} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover group-hover:scale-105 transition-transform duration-300" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-pueblo-noche/30 to-transparent" />
                               </div>
                             ) : (
-                              <div className="h-52 bg-gradient-to-br from-accent/10 to-primary/10" />
+                              <div className="h-52 bg-gradient-to-br from-pueblo-barroco/10 to-pueblo-cantera/10" />
                             )}
                             <div className="p-5">
                               <div className="flex items-start gap-4">
                                 {business.logo_url ? (
-                                  <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 ring-2 ring-accent/30 -mt-10 relative bg-white shadow-lg">
+                                  <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 ring-2 ring-pueblo-barroco/30 -mt-10 relative bg-white shadow-lg">
                                     <Image src={business.logo_url} alt={business.name} fill sizes="56px" className="object-cover" />
                                   </div>
                                 ) : (
-                                  <div className="w-14 h-14 bg-gradient-to-br from-accent to-accent-dark rounded-xl flex items-center justify-center flex-shrink-0 -mt-10 shadow-lg">
-                                    <span className="text-xl text-secondary font-bold">{business.name[0].toUpperCase()}</span>
+                                  <div className="w-14 h-14 bg-gradient-to-br from-pueblo-barroco to-pueblo-terracotta rounded-xl flex items-center justify-center flex-shrink-0 -mt-10 shadow-lg">
+                                    <span className="text-xl text-pueblo-crema font-bold">{business.name[0].toUpperCase()}</span>
                                   </div>
                                 )}
                                 <div className="flex-1 min-w-0">
-                                  <h3 className="font-bold text-lg text-secondary group-hover:text-primary transition-colors truncate">{business.name}</h3>
+                                  <h3 className="font-bold text-lg text-pueblo-noche group-hover:text-pueblo-cantera transition-colors truncate">{business.name}</h3>
                                   {business.category && (
-                                    <span className="inline-flex items-center text-xs text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">{business.category.icon} {business.category.name}</span>
+                                    <span className="inline-flex items-center text-xs text-pueblo-terracotta bg-pueblo-canteraLight/50 px-2.5 py-0.5 rounded-full">{business.category.icon} {business.category.name}</span>
                                   )}
                                 </div>
                               </div>
                               {business.description && (
-                                <p className="text-sm text-gray-600 mt-3 line-clamp-3">{business.description}</p>
+                                <p className="text-sm text-pueblo-terracotta/70 mt-3 line-clamp-3">{business.description}</p>
                               )}
                               {photos.length > 1 && (
                                 <div className="flex gap-2 mt-3">
                                   {photos.slice(0, 3).map((p: any, i: number) => (
-                                    <div key={i} className="relative w-20 h-14 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                                    <div key={i} className="relative w-20 h-14 rounded-lg overflow-hidden bg-pueblo-crema flex-shrink-0">
                                       <Image src={p.image_url} alt="" fill sizes="80px" className="object-cover" />
                                     </div>
                                   ))}
                                   {photos.length > 3 && (
-                                    <div className="w-20 h-14 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
-                                      <span className="text-xs font-semibold text-gray-500">+{photos.length - 3}</span>
+                                    <div className="w-20 h-14 rounded-lg bg-pueblo-canteraLight/30 flex items-center justify-center flex-shrink-0">
+                                      <span className="text-xs font-semibold text-pueblo-terracotta">+{photos.length - 3}</span>
                                     </div>
                                   )}
                                 </div>
@@ -621,7 +633,7 @@ export default async function Home() {
                                 <div className="mt-3"><StarRating value={business.rating} count={business.total_reviews} size="sm" /></div>
                               )}
                             </div>
-                            <div className="h-1 bg-gradient-to-r from-accent via-primary to-accent" />
+                            <div className="h-1 bg-gradient-to-r from-pueblo-barroco via-pueblo-cantera to-pueblo-barroco" />
                           </Link>
                         )
                       })}
@@ -635,7 +647,7 @@ export default async function Home() {
                 <div className="mb-10">
                   <div className="flex items-center gap-2 mb-5">
                     <span className="text-xl">🏆</span>
-                    <h3 className="text-xl font-bold text-secondary">Negocios Pro</h3>
+                    <h3 className="text-xl font-bold text-pueblo-noche">Negocios Pro</h3>
                   </div>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                     {proBiz.map((business: any) => {
@@ -645,24 +657,24 @@ export default async function Home() {
                         <Link
                           key={business.id}
                           href={`/negocios/${business.slug}`}
-                          className="group bg-white rounded-2xl overflow-hidden border border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all relative flex flex-col sm:flex-row"
+                          className="group pueblo-card rounded-2xl overflow-hidden border border-pueblo-canteraLight/60 hover:border-pueblo-cantera/40 hover:shadow-pueblo hover:-translate-y-1 transition-all relative flex flex-col sm:flex-row"
                         >
-                          <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 bg-primary text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow">PRO</div>
+                          <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 bg-pueblo-cantera text-pueblo-crema text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow">PRO</div>
                           {/* Image section */}
                           {heroImage ? (
-                            <div className="relative h-44 sm:h-auto sm:w-48 md:w-56 flex-shrink-0 bg-gray-100">
+                            <div className="relative h-44 sm:h-auto sm:w-48 md:w-56 flex-shrink-0 bg-pueblo-crema">
                               <Image src={heroImage} alt={business.name} fill sizes="(max-width: 640px) 100vw, 224px" className="object-cover group-hover:scale-105 transition-transform duration-300" />
                             </div>
                           ) : business.logo_url ? (
-                            <div className="h-44 sm:h-auto sm:w-48 md:w-56 flex-shrink-0 bg-gradient-to-br from-primary/5 to-accent/5 flex items-center justify-center">
+                            <div className="h-44 sm:h-auto sm:w-48 md:w-56 flex-shrink-0 bg-gradient-to-br from-pueblo-cantera/10 to-pueblo-barroco/5 flex items-center justify-center">
                               <div className="w-16 h-16 rounded-xl overflow-hidden relative">
                                 <Image src={business.logo_url} alt={business.name} fill sizes="64px" className="object-cover" />
                               </div>
                             </div>
                           ) : (
-                            <div className="h-44 sm:h-auto sm:w-48 md:w-56 flex-shrink-0 bg-gradient-to-br from-primary/5 to-accent/5 flex items-center justify-center">
-                              <div className="w-16 h-16 bg-gradient-to-br from-secondary to-secondary-light rounded-xl flex items-center justify-center">
-                                <span className="text-2xl text-white font-bold">{business.name[0].toUpperCase()}</span>
+                            <div className="h-44 sm:h-auto sm:w-48 md:w-56 flex-shrink-0 bg-gradient-to-br from-pueblo-cantera/10 to-pueblo-barroco/5 flex items-center justify-center">
+                              <div className="w-16 h-16 bg-gradient-to-br from-pueblo-noche to-pueblo-terracotta rounded-xl flex items-center justify-center">
+                                <span className="text-2xl text-pueblo-crema font-bold">{business.name[0].toUpperCase()}</span>
                               </div>
                             </div>
                           )}
@@ -670,25 +682,25 @@ export default async function Home() {
                           <div className="flex-1 p-5 flex flex-col justify-center">
                             <div className="flex items-center gap-2 mb-1">
                               {business.logo_url && (
-                                <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 relative ring-1 ring-primary/20 hidden sm:block">
+                                <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 relative ring-1 ring-pueblo-canteraLight/40 hidden sm:block">
                                   <Image src={business.logo_url} alt="" fill sizes="36px" className="object-cover" />
                                 </div>
                               )}
-                              <h3 className="font-bold text-lg text-secondary group-hover:text-primary transition-colors truncate">{business.name}</h3>
+                              <h3 className="font-bold text-lg text-pueblo-noche group-hover:text-pueblo-cantera transition-colors truncate">{business.name}</h3>
                               <OpenClosedBadge businessHours={business.business_hours} />
                             </div>
                             {business.category && (
-                              <span className="inline-flex items-center text-xs text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full w-fit mb-2">{business.category.icon} {business.category.name}</span>
+                              <span className="inline-flex items-center text-xs text-pueblo-terracotta bg-pueblo-canteraLight/40 px-2.5 py-0.5 rounded-full w-fit mb-2">{business.category.icon} {business.category.name}</span>
                             )}
                             {business.description && (
-                              <p className="text-sm text-gray-500 line-clamp-2 mb-2">{business.description}</p>
+                              <p className="text-sm text-pueblo-terracotta/60 line-clamp-2 mb-2">{business.description}</p>
                             )}
                             {business.total_reviews > 0 && (
                               <div><StarRating value={business.rating} count={business.total_reviews} size="sm" /></div>
                             )}
-                            <span className="text-sm text-primary font-semibold mt-2 group-hover:underline">Ver negocio →</span>
+                            <span className="text-sm text-pueblo-cantera font-semibold mt-2 group-hover:underline">Ver negocio →</span>
                           </div>
-                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/40 to-primary/10" />
+                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-pueblo-cantera/40 to-pueblo-cantera/10" />
                         </Link>
                       )
                     })}
@@ -701,35 +713,35 @@ export default async function Home() {
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">📍</span>
-                    <h3 className="text-xl font-bold text-secondary">Mas Negocios</h3>
+                    <h3 className="text-xl font-bold text-pueblo-noche">Mas Negocios</h3>
                   </div>
-                  <p className="text-gray-400 text-sm mb-5">Encuentra de todo en Lagos de Moreno — conoce lo que ofrecen</p>
+                  <p className="text-pueblo-terracotta/60 text-sm mb-5">Encuentra de todo en Lagos de Moreno — conoce lo que ofrecen</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {[...emprendedorBiz, ...gratisBiz].map((business: any) => (
                       <Link
                         key={business.id}
                         href={`/negocios/${business.slug}`}
-                        className="group bg-white rounded-xl border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all p-4"
+                        className="group bg-white/80 backdrop-blur-sm rounded-xl border border-pueblo-canteraLight/40 hover:border-pueblo-cantera/40 hover:shadow-pueblo-soft hover:-translate-y-0.5 transition-all p-4"
                       >
                         <div className="flex items-center gap-3">
                           {business.logo_url ? (
-                            <div className="w-11 h-11 rounded-lg overflow-hidden flex-shrink-0 relative ring-1 ring-gray-100">
+                            <div className="w-11 h-11 rounded-lg overflow-hidden flex-shrink-0 relative ring-1 ring-pueblo-canteraLight/30">
                               <Image src={business.logo_url} alt={business.name} fill sizes="44px" className="object-cover" />
                             </div>
                           ) : (
-                            <div className="w-11 h-11 bg-gradient-to-br from-secondary to-secondary-light rounded-lg flex items-center justify-center flex-shrink-0">
-                              <span className="text-sm text-white font-bold">{business.name[0].toUpperCase()}</span>
+                            <div className="w-11 h-11 bg-gradient-to-br from-pueblo-noche to-pueblo-terracotta rounded-lg flex items-center justify-center flex-shrink-0">
+                              <span className="text-sm text-pueblo-crema font-bold">{business.name[0].toUpperCase()}</span>
                             </div>
                           )}
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-sm text-secondary group-hover:text-primary transition-colors truncate">{business.name}</h3>
+                            <h3 className="font-semibold text-sm text-pueblo-noche group-hover:text-pueblo-cantera transition-colors truncate">{business.name}</h3>
                             {business.category && (
-                              <span className="text-xs text-gray-400">{business.category.icon} {business.category.name}</span>
+                              <span className="text-xs text-pueblo-terracotta/60">{business.category.icon} {business.category.name}</span>
                             )}
                           </div>
                         </div>
                         {business.description && (
-                          <p className="text-xs text-gray-400 line-clamp-2 mt-2">{business.description}</p>
+                          <p className="text-xs text-pueblo-terracotta/50 line-clamp-2 mt-2">{business.description}</p>
                         )}
                       </Link>
                     ))}
@@ -740,7 +752,7 @@ export default async function Home() {
               <div className="text-center mt-8 sm:hidden">
                 <Link
                   href="/descubre"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pueblo-cantera to-pueblo-terracotta text-pueblo-crema font-semibold rounded-full hover:shadow-pueblo-soft transition-all"
                 >
                   Descubrir mas negocios
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -749,6 +761,7 @@ export default async function Home() {
                 </Link>
               </div>
             </div>
+            <div className="pueblo-divider mt-12 mx-auto max-w-4xl" />
           </section>
         )
       })()}

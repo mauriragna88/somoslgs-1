@@ -7,6 +7,17 @@ import { AbsoluteFill, useCurrentFrame, interpolate, spring } from 'remotion'
 const TOTAL_FRAMES = 240
 const FPS = 30
 
+// Pueblo Magico palette
+const PUEBLO = {
+  noche: '#2C1810',
+  barroco: '#D4A843',
+  cantera: '#C4745E',
+  terracotta: '#8B5E3C',
+  crema: '#FDF6EE',
+  canteraLight: '#F1D2C7',
+  agave: '#5B8C3E',
+} as const
+
 // ─── Sparkle ─────────────────────────────────────────────────────────
 function Sparkle({ x, y, delay, size = 4 }: { x: number; y: number; delay: number; size?: number }) {
   const frame = useCurrentFrame()
@@ -19,7 +30,7 @@ function Sparkle({ x, y, delay, size = 4 }: { x: number; y: number; delay: numbe
     <g transform={`translate(${x}, ${y}) scale(${scale})`} opacity={opacity}>
       <polygon
         points={`0,${-size} ${size * 0.3},${-size * 0.3} ${size},0 ${size * 0.3},${size * 0.3} 0,${size} ${-size * 0.3},${size * 0.3} ${-size},0 ${-size * 0.3},${-size * 0.3}`}
-        fill="#F59E0B"
+        fill={PUEBLO.barroco}
       />
     </g>
   )
@@ -40,8 +51,8 @@ function NeonLetter({ char, x, index, startAt }: { char: string; x: number; inde
   const flickerOpacity = flickerActive ? (flickerT % 2 === 0 ? 0.5 : 1) : 1
 
   const isHighlight = [1, 3, 7, 9].includes(index) // D, E, S, D (of DESTACADOS)
-  const fill = isHighlight ? '#F59E0B' : 'white'
-  const glowColor = isHighlight ? '#F59E0B' : '#99F6E4'
+  const fill = isHighlight ? PUEBLO.barroco : PUEBLO.crema
+  const glowColor = isHighlight ? PUEBLO.barroco : PUEBLO.cantera
 
   return (
     <g transform={`translate(${x}, ${y})`} opacity={opacity * flickerOpacity}>
@@ -113,20 +124,20 @@ function FeaturedHeaderComposition() {
   const glowPulse = 0.12 + Math.sin(frame * 0.05) * 0.04
 
   return (
-    <AbsoluteFill style={{ background: 'linear-gradient(180deg, #0F172A 0%, #111827 100%)' }}>
+    <AbsoluteFill style={{ background: `linear-gradient(180deg, ${PUEBLO.noche} 0%, #3D2418 100%)` }}>
       <svg width={1280} height={220} viewBox="0 0 1280 220" overflow="hidden">
         <defs>
           <radialGradient id="fh-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#0F766E" stopOpacity={glowPulse} />
-            <stop offset="100%" stopColor="#0F766E" stopOpacity="0" />
+            <stop offset="0%" stopColor={PUEBLO.cantera} stopOpacity={glowPulse} />
+            <stop offset="100%" stopColor={PUEBLO.cantera} stopOpacity="0" />
           </radialGradient>
         </defs>
 
         <ellipse cx={640} cy={110} rx={480} ry={160} fill="url(#fh-glow)" />
 
         {/* Horizontal base lines */}
-        <line x1={0} y1={195} x2={1280} y2={195} stroke="#0F766E" strokeWidth={0.5} opacity={0.2} />
-        <line x1={0} y1={25} x2={1280} y2={25} stroke="#0F766E" strokeWidth={0.5} opacity={0.2} />
+        <line x1={0} y1={195} x2={1280} y2={195} stroke={PUEBLO.cantera} strokeWidth={0.5} opacity={0.2} />
+        <line x1={0} y1={25} x2={1280} y2={25} stroke={PUEBLO.cantera} strokeWidth={0.5} opacity={0.2} />
 
         {/* ── NEGOCIOS ── row 1 */}
         <g transform="translate(0, 90)">
@@ -168,7 +179,7 @@ function FeaturedHeaderComposition() {
           <text
             textAnchor="middle"
             fontSize={11}
-            fill="#F59E0B"
+            fill={PUEBLO.barroco}
             fontFamily="system-ui, sans-serif"
             letterSpacing={3.5}
             fontWeight={700}

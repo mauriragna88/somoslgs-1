@@ -14,13 +14,13 @@ export default function FallingBusiness() {
   const prefersReducedMotion = useReducedMotionPreference()
 
   if (prefersReducedMotion === null) {
-    return <div className="w-full aspect-video bg-secondary rounded-2xl" />
+    return <div className="w-full aspect-video bg-pueblo-noche rounded-2xl" />
   }
 
   if (prefersReducedMotion) {
     return (
-      <div className="w-full aspect-video bg-secondary rounded-2xl border border-white/10 flex items-center justify-center p-6 text-center">
-        <p className="text-white/70 text-sm">Negocios locales destacados en SomosLagos</p>
+      <div className="w-full aspect-video rounded-2xl border border-pueblo-barroco/20 bg-pueblo-noche flex items-center justify-center p-6 text-center">
+        <p className="text-pueblo-crema/70 text-sm">Negocios locales destacados en SomosLagos</p>
       </div>
     )
   }
