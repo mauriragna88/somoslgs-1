@@ -151,6 +151,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
             onChange={(e) => handleChange(e.target.value)}
             onKeyDown={handleKeyDown}
             onFocus={() => { if (results.length > 0) setShowDropdown(true) }}
+            aria-label="Buscar negocios, productos y servicios"
             placeholder="Buscar negocios, productos, servicios..."
             className={inputClasses[variant]}
           />
