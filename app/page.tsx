@@ -338,17 +338,18 @@ export default async function Home() {
       </ScrollReveal>
 
       {/* Animación: Parroquia Grid Reveal (scroll-driven) */}
-      <section className="py-16 bg-secondary">
+      <section className="py-20 bg-gradient-to-b from-pueblo-crema via-pueblo-noche to-secondary relative overflow-hidden">
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] bg-pueblo-barroco/10 rounded-full blur-3xl pointer-events-none" />
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="text-center mb-10">
-            <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary-light text-sm font-semibold rounded-full mb-3">
+            <span className="inline-block px-4 py-1.5 bg-pueblo-barroco/15 text-pueblo-barroco text-sm font-semibold rounded-full mb-3 border border-pueblo-barroco/20">
               Patrimonio de la Humanidad
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-3 tracking-tight">
               Descubre Lagos de Moreno
             </h2>
-            <p className="text-white/50 text-sm">
-              Desliza para revelar
+            <p className="text-pueblo-crema/70 text-sm md:text-base max-w-xl mx-auto">
+              Cantera, arcos y memoria colonial en una ciudad que se vive caminando
             </p>
           </div>
           <ParroquiaReveal />
