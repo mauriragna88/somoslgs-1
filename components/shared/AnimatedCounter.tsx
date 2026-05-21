@@ -28,6 +28,11 @@ export default function AnimatedCounter({
         if (entry.isIntersecting && !hasAnimated) {
           setHasAnimated(true)
 
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setCount(target)
+            return
+          }
+
           const startTime = performance.now()
 
           const animate = (currentTime: number) => {
