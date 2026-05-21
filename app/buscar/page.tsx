@@ -237,24 +237,24 @@ export default async function BuscarPage({
   }
 
   return (
-    <main className="min-h-screen bg-surface">
+    <main className="min-h-screen pueblo-shell">
       {/* Search Header */}
-      <div className="bg-gradient-to-br from-white to-surface border-b border-gray-100 py-8">
+      <div className="bg-gradient-to-b from-pueblo-crema via-pueblo-crema/80 to-transparent border-b border-pueblo-canteraLight/30 py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-4">Buscar</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-pueblo-noche mb-4">Buscar</h1>
 
           {/* SmartSearch - solo móvil (desktop ya tiene en header) */}
           <div className="md:hidden mb-5">
             <SmartSearch variant="mobile" />
-            <p className="text-xs text-gray-400 mt-1.5 text-center">Escribe para ver resultados al instante</p>
+            <p className="text-xs text-pueblo-terracotta/50 mt-1.5 text-center">Escribe para ver resultados al instante</p>
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-6 w-fit">
+          <div className="flex gap-1 bg-pueblo-canteraLight/30 rounded-xl p-1 mb-6 w-fit">
             <Link
               href={`/buscar?tipo=negocios${query ? `&q=${encodeURIComponent(query)}` : ''}`}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                tipo === 'negocios' ? 'bg-white text-secondary shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                tipo === 'negocios' ? 'bg-white text-pueblo-noche shadow-pueblo-soft' : 'text-pueblo-terracotta/70 hover:text-pueblo-noche'
               }`}
             >
               Negocios
@@ -262,15 +262,15 @@ export default async function BuscarPage({
             <Link
               href={`/buscar?tipo=marketplace${query ? `&q=${encodeURIComponent(query)}` : ''}`}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                tipo === 'marketplace' ? 'bg-white text-secondary shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                tipo === 'marketplace' ? 'bg-white text-pueblo-noche shadow-pueblo-soft' : 'text-pueblo-terracotta/70 hover:text-pueblo-noche'
               }`}
             >
               Marketplace
             </Link>
           </div>
 
-          {/* Search Form - glassmorphism */}
-          <form method="GET" className="space-y-3 backdrop-blur-md bg-white/70 border border-white/20 rounded-2xl p-4 shadow-sm">
+          {/* Search Form */}
+          <form method="GET" className="space-y-3 pueblo-card rounded-2xl p-4">
             <input type="hidden" name="tipo" value={tipo} />
             <div className="flex flex-col md:flex-row gap-3">
               <div className="flex-1">
@@ -279,14 +279,14 @@ export default async function BuscarPage({
                   name="q"
                   defaultValue={query}
                   placeholder="Buscar por nombre o descripcion..."
-                  className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full px-4 py-3 bg-white/80 border border-pueblo-canteraLight/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-pueblo-cantera/30 focus:border-pueblo-cantera transition-all"
                 />
               </div>
               <div className="w-full md:w-52">
                 <select
                   name="categoria"
                   defaultValue={categoriaId}
-                  className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full px-4 py-3 bg-white/80 border border-pueblo-canteraLight/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-pueblo-cantera/30 focus:border-pueblo-cantera transition-all"
                 >
                   <option value="">Todas las categorias</option>
                   {categories?.map((cat) => (
@@ -298,7 +298,7 @@ export default async function BuscarPage({
               </div>
               <button
                 type="submit"
-                className="px-8 py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20"
+                className="px-8 py-3 bg-gradient-to-r from-pueblo-cantera to-pueblo-terracotta text-pueblo-crema font-semibold rounded-xl transition-all hover:shadow-pueblo-soft hover:scale-105"
               >
                 Buscar
               </button>
@@ -309,7 +309,7 @@ export default async function BuscarPage({
                   <select
                     name="colonia"
                     defaultValue={colonia}
-                    className="w-full px-4 py-2.5 bg-surface border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                    className="w-full px-4 py-2.5 bg-white/80 border border-pueblo-canteraLight/40 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-pueblo-cantera/30 focus:border-pueblo-cantera transition-all"
                   >
                     <option value="">Todas las colonias</option>
                     {neighborhoods.map((n) => (
@@ -322,7 +322,7 @@ export default async function BuscarPage({
                 <select
                   name="orden"
                   defaultValue={orden}
-                  className="w-full px-4 py-2.5 bg-surface border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full px-4 py-2.5 bg-white/80 border border-pueblo-canteraLight/40 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-pueblo-cantera/30 focus:border-pueblo-cantera transition-all"
                 >
                   <option value="">Ordenar: Destacados primero</option>
                   <option value="rating">Ordenar: Mejor calificados</option>
@@ -347,13 +347,13 @@ export default async function BuscarPage({
               <>
                 {/* Marketplace Results */}
                 <div className="mb-6 flex items-center justify-between">
-                  <p className="text-gray-600">
+                  <p className="text-pueblo-terracotta/70">
                     {marketplaceListings.length} artículo{marketplaceListings.length !== 1 ? 's' : ''}
-                    {query && <span> para &ldquo;<strong>{query}</strong>&rdquo;</span>}
+                    {query && <span> para &ldquo;<strong className="text-pueblo-noche">{query}</strong>&rdquo;</span>}
                   </p>
                   <Link
                     href="/marketplace"
-                    className="text-sm text-primary font-medium hover:underline"
+                    className="text-sm text-pueblo-cantera font-medium hover:underline"
                   >
                     Ver marketplace completo →
                   </Link>
@@ -367,16 +367,16 @@ export default async function BuscarPage({
                   </div>
                 ) : (
                   <div className="text-center py-16">
-                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div className="w-24 h-24 bg-pueblo-canteraLight/30 rounded-full flex items-center justify-center mx-auto mb-6">
                       <span className="text-5xl">🛍️</span>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">No hay artículos</h2>
-                    <p className="text-gray-600 mb-6">
+                    <h2 className="text-2xl font-bold text-pueblo-noche mb-2">No hay artículos</h2>
+                    <p className="text-pueblo-terracotta/60 mb-6">
                       {query ? `No hay artículos que coincidan con "${query}"` : 'No hay artículos en el marketplace'}
                     </p>
                     <Link
                       href="/marketplace/publicar"
-                      className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                      className="inline-block px-6 py-3 bg-gradient-to-r from-pueblo-cantera to-pueblo-terracotta text-pueblo-crema font-semibold rounded-xl hover:shadow-pueblo-soft transition-all"
                     >
                       Publicar artículo
                     </Link>
@@ -387,9 +387,9 @@ export default async function BuscarPage({
               <>
                 {/* Business Results */}
                 <div className="mb-6">
-                  <p className="text-gray-600">
+                  <p className="text-pueblo-terracotta/70">
                     {businesses?.length || 0} negocio{businesses?.length !== 1 ? 's' : ''} encontrado{businesses?.length !== 1 ? 's' : ''}
-                    {query && <span> para &ldquo;<strong>{query}</strong>&rdquo;</span>}
+                    {query && <span> para &ldquo;<strong className="text-pueblo-noche">{query}</strong>&rdquo;</span>}
                   </p>
                 </div>
 
@@ -399,8 +399,8 @@ export default async function BuscarPage({
                       <React.Fragment key={business.id}>
                         {/* Sponsored card every 8 results */}
                         {index > 0 && index % 8 === 0 && (
-                          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden relative">
-                            <div className="absolute top-2 right-2 z-10 px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-xs">
+                          <div className="pueblo-card rounded-2xl overflow-hidden relative">
+                            <div className="absolute top-2 right-2 z-10 px-2 py-0.5 bg-pueblo-canteraLight/50 text-pueblo-terracotta rounded text-xs font-medium">
                               Patrocinado
                             </div>
                             <BannerDisplay placement="search_inline" />
@@ -412,18 +412,18 @@ export default async function BuscarPage({
                   </div>
                 ) : (
                   <div className="text-center py-16">
-                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div className="w-24 h-24 bg-pueblo-canteraLight/30 rounded-full flex items-center justify-center mx-auto mb-6">
                       <span className="text-5xl">🔍</span>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">No se encontraron negocios</h2>
-                    <p className="text-gray-600 mb-6">
+                    <h2 className="text-2xl font-bold text-pueblo-noche mb-2">No se encontraron negocios</h2>
+                    <p className="text-pueblo-terracotta/60 mb-6">
                       {query
                         ? `No hay negocios que coincidan con "${query}"`
                         : 'No hay negocios disponibles en este momento'}
                     </p>
                     <Link
                       href="/"
-                      className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                      className="inline-block px-6 py-3 bg-gradient-to-r from-pueblo-cantera to-pueblo-terracotta text-pueblo-crema font-semibold rounded-xl hover:shadow-pueblo-soft transition-all"
                     >
                       Volver al Inicio
                     </Link>
@@ -440,19 +440,19 @@ export default async function BuscarPage({
 
           {/* Sidebar - Categories (desktop only) */}
           <aside className="hidden lg:block lg:col-span-1">
-            <div className="bg-white rounded-2xl border border-gray-100 p-5 sticky top-24">
-              <h3 className="font-bold text-secondary mb-4 text-sm uppercase tracking-wide">Categorias</h3>
+            <div className="pueblo-card rounded-2xl p-5 sticky top-24">
+              <h3 className="pueblo-eyebrow text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">Categorias</h3>
               <nav className="space-y-1">
                 <Link
                   href={`/buscar${query ? `?q=${encodeURIComponent(query)}` : ''}${colonia ? `${query ? '&' : '?'}colonia=${encodeURIComponent(colonia)}` : ''}${orden ? `${query || colonia ? '&' : '?'}orden=${orden}` : ''}`}
                   className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors ${
                     !categoriaId
-                      ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-pueblo-cantera/10 text-pueblo-cantera font-bold'
+                      : 'text-pueblo-terracotta/60 hover:bg-pueblo-canteraLight/20 hover:text-pueblo-noche'
                   }`}
                 >
                   <span>Todas</span>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${!categoriaId ? 'bg-primary/20 text-primary' : 'bg-gray-100 text-gray-500'}`}>
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${!categoriaId ? 'bg-pueblo-cantera/20 text-pueblo-cantera' : 'bg-pueblo-canteraLight/40 text-pueblo-terracotta/60'}`}>
                     {businessCategoryData?.length || 0}
                   </span>
                 </Link>
@@ -462,8 +462,8 @@ export default async function BuscarPage({
                     href={`/buscar?categoria=${cat.id}${query ? `&q=${encodeURIComponent(query)}` : ''}${colonia ? `&colonia=${encodeURIComponent(colonia)}` : ''}${orden ? `&orden=${orden}` : ''}`}
                     className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors ${
                       categoriaId === cat.id
-                        ? 'bg-primary/10 text-primary font-bold'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                        ? 'bg-pueblo-cantera/10 text-pueblo-cantera font-bold'
+                        : 'text-pueblo-terracotta/60 hover:bg-pueblo-canteraLight/20 hover:text-pueblo-noche'
                     }`}
                   >
                     <span className="truncate">
@@ -471,7 +471,7 @@ export default async function BuscarPage({
                       {cat.name}
                     </span>
                     <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ml-2 ${
-                      categoriaId === cat.id ? 'bg-primary/20 text-primary' : 'bg-gray-100 text-gray-500'
+                      categoriaId === cat.id ? 'bg-pueblo-cantera/20 text-pueblo-cantera' : 'bg-pueblo-canteraLight/40 text-pueblo-terracotta/60'
                     }`}>
                       {cat.businessCount}
                     </span>

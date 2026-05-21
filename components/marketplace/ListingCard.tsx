@@ -31,21 +31,21 @@ export default function ListingCard({ listing }: ListingCardProps) {
   return (
     <Link
       href={`/marketplace/${listing.id}`}
-      className={`bg-white rounded-2xl hover:shadow-2xl transition-all overflow-hidden group border hover:-translate-y-1 ${
+      className={`pueblo-card rounded-2xl hover:shadow-pueblo transition-all overflow-hidden group border hover:-translate-y-1 ${
         listing.is_featured
-          ? 'border-accent/50 ring-1 ring-accent/20'
-          : 'border-gray-100 hover:border-transparent'
+          ? 'border-pueblo-barroco/40 ring-1 ring-pueblo-barroco/20'
+          : 'border-pueblo-canteraLight/60 hover:border-pueblo-cantera/40'
       }`}
     >
       {/* Top accent */}
       <div className={`h-1 ${
         listing.is_featured
-          ? 'bg-gradient-to-r from-accent via-amber-400 to-accent'
-          : 'bg-gradient-to-r from-primary via-accent to-warm'
+          ? 'bg-gradient-to-r from-pueblo-barroco via-amber-400 to-pueblo-barroco'
+          : 'bg-gradient-to-r from-pueblo-barroco via-pueblo-cantera to-pueblo-barroco'
       }`} />
 
       {/* Image */}
-      <div className="h-48 bg-surface relative overflow-hidden">
+      <div className="h-48 bg-pueblo-crema relative overflow-hidden">
         {mainImage ? (
           <Image
             src={mainImage}
@@ -55,19 +55,19 @@ export default function ListingCard({ listing }: ListingCardProps) {
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/5 to-primary/5">
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pueblo-barroco/10 to-pueblo-cantera/10">
             <span className="text-5xl">📦</span>
           </div>
         )}
 
         {/* Condition badge */}
-        <div className="absolute top-3 left-3 px-2.5 py-1 bg-white/95 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700 shadow-sm">
+        <div className="absolute top-3 left-3 px-2.5 py-1 bg-white/95 backdrop-blur-sm rounded-full text-xs font-semibold text-pueblo-terracotta shadow-sm">
           {conditionLabel}
         </div>
 
         {/* Featured badge */}
         {listing.is_featured && (
-          <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold shadow-lg">
+          <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-pueblo-barroco to-pueblo-cantera text-pueblo-noche rounded-full text-xs font-bold shadow-lg">
             &#11088; Destacado
           </div>
         )}
@@ -85,26 +85,26 @@ export default function ListingCard({ listing }: ListingCardProps) {
         {/* Price */}
         <div className="mb-1">
           {listing.price_type === 'gratis' ? (
-            <span className="text-lg font-bold text-green-600">Gratis</span>
+            <span className="text-lg font-bold text-pueblo-agave">Gratis</span>
           ) : listing.price_type === 'intercambio' ? (
-            <span className="text-lg font-bold text-purple-600">Intercambio</span>
+            <span className="text-lg font-bold text-pueblo-barroco">Intercambio</span>
           ) : (
-            <span className="text-lg font-bold text-secondary">
+            <span className="text-lg font-bold text-pueblo-noche">
               {formatCurrency(listing.price)}
               {listing.price_type === 'negociable' && (
-                <span className="text-xs font-normal text-gray-500 ml-1.5">{priceLabel}</span>
+                <span className="text-xs font-normal text-pueblo-terracotta/50 ml-1.5">{priceLabel}</span>
               )}
             </span>
           )}
         </div>
 
         {/* Title */}
-        <h3 className="font-semibold text-secondary group-hover:text-primary transition-colors line-clamp-2 text-sm">
+        <h3 className="font-semibold text-pueblo-noche group-hover:text-pueblo-cantera transition-colors line-clamp-2 text-sm">
           {listing.title}
         </h3>
 
         {/* Location + Time */}
-        <div className="mt-2 flex items-center justify-between text-xs text-gray-400">
+        <div className="mt-2 flex items-center justify-between text-xs text-pueblo-terracotta/40">
           <span className="truncate">
             {listing.location && (
               <>
