@@ -123,7 +123,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
 
   const inputClasses = {
     header: 'w-full pl-10 pr-4 py-2 bg-gray-100 border border-transparent rounded-full text-sm focus:outline-none focus:bg-white focus:border-primary/30 focus:ring-2 focus:ring-primary/10 transition-all',
-    hero: 'w-full pl-12 pr-4 py-4 text-base bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:bg-white/20 focus:border-white/40 focus:ring-2 focus:ring-accent/30 transition-all',
+    hero: 'w-full pl-12 pr-4 py-4 text-base bg-pueblo-crema border-2 border-pueblo-canteraLight rounded-2xl text-pueblo-noche placeholder-pueblo-terracotta/40 focus:outline-none focus:bg-white focus:border-pueblo-barroco focus:ring-2 focus:ring-pueblo-barroco/20 shadow-lg shadow-pueblo-noche/10 transition-all',
     mobile: 'w-full pl-10 pr-4 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all',
   }
 
@@ -138,7 +138,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
       <form onSubmit={handleSubmit} className={variant === 'hero' ? 'relative flex gap-3' : 'relative'}>
         <div className={variant === 'hero' ? 'relative flex-1' : 'relative w-full'}>
           <svg
-            className={`absolute ${variant === 'hero' ? 'left-4' : 'left-3'} top-1/2 -translate-y-1/2 ${variant === 'hero' ? 'w-5 h-5' : 'w-4 h-4'} text-gray-400`}
+            className={`absolute ${variant === 'hero' ? 'left-4' : 'left-3'} top-1/2 -translate-y-1/2 ${variant === 'hero' ? 'w-5 h-5' : 'w-4 h-4'} ${variant === 'hero' ? 'text-pueblo-terracotta/60' : 'text-gray-400'}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -157,14 +157,14 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
           />
           {loading && (
             <div className={`absolute ${variant === 'hero' ? 'right-4' : 'right-3'} top-1/2 -translate-y-1/2`}>
-              <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+              <div className={`w-4 h-4 border-2 rounded-full animate-spin ${variant === 'hero' ? 'border-pueblo-canteraLight border-t-pueblo-barroco' : 'border-primary/30 border-t-primary'}`}></div>
             </div>
           )}
         </div>
         {variant === 'hero' && (
           <button
             type="submit"
-            className="px-8 py-4 bg-accent hover:bg-accent-dark text-secondary font-bold rounded-2xl transition-all hover:scale-105 shadow-xl shadow-accent/20"
+            className="px-8 py-4 bg-gradient-to-r from-pueblo-barroco to-pueblo-terracotta hover:from-pueblo-terracotta hover:to-pueblo-barroco text-pueblo-noche font-bold rounded-2xl transition-all hover:scale-105 shadow-xl shadow-pueblo-barroco/20"
           >
             Buscar
           </button>

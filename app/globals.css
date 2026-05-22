@@ -64,6 +64,231 @@ body {
     background: linear-gradient(90deg, transparent, rgba(196, 116, 94, 0.44), rgba(212, 168, 67, 0.56), transparent);
     height: 1px;
   }
+
+  /* Editorial photo break — full-bleed image with overlay text */
+  .pueblo-photo-break {
+    position: relative;
+    overflow: hidden;
+  }
+  .pueblo-photo-break::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(44, 24, 16, 0.55) 0%, rgba(44, 24, 16, 0.35) 40%, rgba(44, 24, 16, 0.65) 100%);
+    pointer-events: none;
+  }
+
+  /* Architectural arch separator */
+  .pueblo-arch-separator {
+    position: relative;
+    height: 48px;
+    overflow: hidden;
+  }
+  .pueblo-arch-separator::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 48px;
+    border: 2px solid rgba(212, 168, 67, 0.35);
+    border-bottom: none;
+    border-radius: 80px 80px 0 0;
+  }
+
+  /* Cantera texture stripe */
+  .pueblo-cantera-stripe {
+    background:
+      repeating-linear-gradient(
+        90deg,
+        rgba(196, 116, 94, 0.08) 0px,
+        rgba(196, 116, 94, 0.08) 2px,
+        transparent 2px,
+        transparent 12px
+      ),
+      linear-gradient(180deg, rgba(212, 168, 67, 0.06), rgba(196, 116, 94, 0.1), rgba(212, 168, 67, 0.06));
+  }
+
+  /* Editorial accent line — left-aligned section marker */
+  .pueblo-accent-line {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  .pueblo-accent-line::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    bottom: 0.15em;
+    width: 4px;
+    background: linear-gradient(180deg, var(--pueblo-barroco), var(--pueblo-cantera));
+    border-radius: 2px;
+  }
+
+  /* Hero split clip — diagonal edge for the image side */
+  .pueblo-hero-clip {
+    clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+  @media (max-width: 768px) {
+    .pueblo-hero-clip {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+  }
+
+  /* ── Tier-specific card treatments ── */
+
+  /* Avanzado: editorial premium card with gold left accent */
+  .pueblo-card-avanzado {
+    position: relative;
+    border-left: 4px solid var(--pueblo-barroco);
+    background: linear-gradient(135deg, rgba(253, 246, 238, 0.95) 0%, rgba(241, 210, 199, 0.35) 100%);
+    box-shadow:
+      0 20px 50px rgba(139, 94, 60, 0.14),
+      0 0 0 1px rgba(212, 168, 67, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(18px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .pueblo-card-avanzado:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 28px 60px rgba(139, 94, 60, 0.2),
+      0 0 0 1px rgba(212, 168, 67, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  /* Pro: professional card with cantera left accent */
+  .pueblo-card-pro {
+    position: relative;
+    border-left: 3px solid var(--pueblo-cantera);
+    background: rgba(255, 250, 244, 0.92);
+    box-shadow:
+      0 12px 32px rgba(139, 94, 60, 0.1),
+      0 0 0 1px rgba(196, 116, 94, 0.15);
+    backdrop-filter: blur(12px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .pueblo-card-pro:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 18px 44px rgba(139, 94, 60, 0.16),
+      0 0 0 1px rgba(196, 116, 94, 0.3);
+  }
+
+  /* Emprendedor/Gratis: compact directory card */
+  .pueblo-card-directory {
+    background: white;
+    border: 1px solid rgba(241, 210, 199, 0.5);
+    box-shadow: 0 4px 16px rgba(139, 94, 60, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .pueblo-card-directory:hover {
+    transform: translateY(-2px);
+    border-color: rgba(196, 116, 94, 0.4);
+    box-shadow: 0 8px 24px rgba(139, 94, 60, 0.1);
+  }
+
+  /* Wax-seal verified badge */
+  .pueblo-wax-seal {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, var(--pueblo-barroco) 0%, #b8922e 100%);
+    color: var(--pueblo-noche);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px 4px 8px;
+    border-radius: 20px;
+    box-shadow:
+      0 2px 8px rgba(212, 168, 67, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.02em;
+  }
+
+  /* Tier stripe — colored left bar for plan cards */
+  .pueblo-plan-stripe {
+    position: relative;
+    overflow: hidden;
+  }
+  .pueblo-plan-stripe::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 4px 0 0 4px;
+  }
+  .pueblo-plan-stripe-gratis::before { background: rgba(241, 210, 199, 0.5); }
+  .pueblo-plan-stripe-emprendedor::before { background: var(--pueblo-cantera); }
+  .pueblo-plan-stripe-pro::before { background: var(--pueblo-barroco); }
+  .pueblo-plan-stripe-avanzado::before { background: var(--pueblo-agave); }
+
+  /* Editorial blog hero card — first story */
+  .pueblo-blog-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+  .pueblo-blog-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(44, 24, 16, 0.85) 0%, rgba(44, 24, 16, 0.3) 40%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Torn paper edge effect */
+  .pueblo-torn-edge {
+    position: relative;
+  }
+  .pueblo-torn-edge::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q30,0 60,4 T120,4 T180,4 T240,4 T300,4 T360,4 T420,4 T480,4 T540,4 T600,4 T660,4 T720,4 T780,4 T840,4 T900,4 T960,4 T1020,4 T1080,4 T1140,4 T1200,4' fill='none' stroke='%23C4745E' stroke-width='1' opacity='0.3'/%3E%3C/svg%3E") repeat-x;
+    background-size: 200px 8px;
+  }
+
+  /* Plan card glow for featured */
+  .pueblo-plan-featured {
+    position: relative;
+    background: linear-gradient(135deg, rgba(212, 168, 67, 0.15) 0%, rgba(44, 24, 16, 0.95) 50%, rgba(212, 168, 67, 0.1) 100%);
+    border: 2px solid rgba(212, 168, 67, 0.5);
+    box-shadow:
+      0 24px 64px rgba(212, 168, 67, 0.2),
+      0 0 0 1px rgba(212, 168, 67, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .pueblo-plan-featured::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--pueblo-barroco), transparent);
+    border-radius: 2rem 2rem 0 0;
+  }
+
+  /* Category pill for blog */
+  .pueblo-category-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    background: rgba(212, 168, 67, 0.15);
+    color: var(--pueblo-barroco);
+    border: 1px solid rgba(212, 168, 67, 0.25);
+  }
 }
 
 @keyframes fadeInUp {
