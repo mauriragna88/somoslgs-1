@@ -165,7 +165,7 @@ export default async function Home() {
   const catCount = totalCategories || categories.length
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen overflow-x-hidden">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
@@ -187,7 +187,7 @@ export default async function Home() {
           quality={90}
         />
         {/* Warm colonial overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-pueblo-noche/105 via-pueblo-noche/70 to-pueblo-noche/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-pueblo-noche via-pueblo-noche/70 to-pueblo-noche/90" />
         {/* Golden accent glow from bottom-left */}
         <div className="absolute bottom-0 left-0 w-[60%] h-48 bg-gradient-to-tr from-pueblo-barroco/20 to-transparent" />
         {/* Subtle cantera glow from top-right */}
@@ -224,7 +224,7 @@ export default async function Home() {
               {' '}
               <span className="text-pueblo-barroco">Lagos de Moreno</span>
             </h1>
-            <p className="text-lg md:text-xl text-white/100 mb-10 max-w-2xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <p className="text-lg md:text-xl text-white mb-10 max-w-2xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               La red de negocios mas grande de Lagos de Moreno. Conecta, explora y apoya a tu comunidad
             </p>
 
@@ -240,19 +240,19 @@ export default async function Home() {
                 <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-barroco via-amber-300 to-pueblo-barroco">
                   <AnimatedCounter target={businessDisplayCount} suffix="+" />
                 </p>
-                <p className="text-xs text-white/100 uppercase tracking-wider mt-1 text-center">Negocios</p>
+                <p className="text-xs text-white uppercase tracking-wider mt-1 text-center">Negocios</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-pueblo-cantera/30 animate-scale-in-bounce shadow-lg shadow-pueblo-cantera/10" style={{ animationDelay: '0.65s' }}>
                 <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-cantera via-pueblo-canteraLight to-pueblo-cantera">
                   <AnimatedCounter target={catCount} suffix="+" />
                 </p>
-                <p className="text-xs text-white/100 uppercase tracking-wider mt-1 text-center">Categorias</p>
+                <p className="text-xs text-white uppercase tracking-wider mt-1 text-center">Categorias</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 border border-white/20 animate-scale-in-bounce shadow-lg" style={{ animationDelay: '0.8s' }}>
                 <p className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-pueblo-barroco to-white">
                   <AnimatedCounter target={100} suffix="%" />
                 </p>
-                <p className="text-xs text-white/100 uppercase tracking-wider mt-1 text-center">Gratis</p>
+                <p className="text-xs text-white uppercase tracking-wider mt-1 text-center">Gratis</p>
               </div>
             </div>
           </div>
@@ -478,7 +478,7 @@ export default async function Home() {
                 <h2 className="text-3xl md:text-4xl font-extrabold text-pueblo-crema mb-3">
                   Haz crecer tu negocio
                 </h2>
-                <p className="text-lg text-pueblo-crema/100 max-w-xl mx-auto">
+                <p className="text-lg text-pueblo-crema max-w-xl mx-auto">
                   Unete a SomosLagos y llega a miles de clientes en Lagos de Moreno
                 </p>
               </div>
@@ -510,7 +510,7 @@ export default async function Home() {
               {/* Chatbot selling point */}
               <div className="mb-8 p-4 bg-pueblo-barroco/10 border border-pueblo-barroco/20 rounded-2xl flex items-start gap-3">
                 <span className="text-2xl flex-shrink-0">🤖</span>
-                <p className="text-sm text-pueblo-crema/100">
+                <p className="text-sm text-pueblo-crema">
                   <strong className="text-pueblo-barroco">Al subir tus productos al Plan Pro</strong>, tu menú aparece automáticamente en el <strong className="text-pueblo-crema">Chatbot de Inteligencia Artificial</strong> de la ciudad. Presencia web y en WhatsApp al mismo tiempo.
                 </p>
               </div>
@@ -557,7 +557,7 @@ export default async function Home() {
                 </div>
                 <Link
                   href="/descubre"
-                  className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-white/100 border border-pueblo-canteraLight hover:border-pueblo-cantera/40 text-pueblo-noche font-medium rounded-full hover:shadow-pueblo-soft transition-all"
+                  className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-pueblo-canteraLight hover:border-pueblo-cantera/40 text-pueblo-noche font-medium rounded-full hover:shadow-pueblo-soft transition-all"
                 >
                   Ver todos
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -723,7 +723,7 @@ export default async function Home() {
                       <Link
                         key={business.id}
                         href={`/negocios/${business.slug}`}
-                        className="group bg-white/100 backdrop-blur-sm rounded-xl border border-pueblo-canteraLight/40 hover:border-pueblo-cantera/40 hover:shadow-pueblo-soft hover:-translate-y-0.5 transition-all p-4"
+                        className="group bg-white backdrop-blur-sm rounded-xl border border-pueblo-canteraLight/40 hover:border-pueblo-cantera/40 hover:shadow-pueblo-soft hover:-translate-y-0.5 transition-all p-4"
                       >
                         <div className="flex items-center gap-3">
                           {business.logo_url ? (
@@ -788,7 +788,7 @@ export default async function Home() {
               </div>
               <Link
                 href="/blog"
-                className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-white/100 border border-pueblo-canteraLight hover:border-pueblo-cantera/40 text-pueblo-noche font-medium rounded-full hover:shadow-pueblo-soft transition-all"
+                className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-pueblo-canteraLight hover:border-pueblo-cantera/40 text-pueblo-noche font-medium rounded-full hover:shadow-pueblo-soft transition-all"
               >
                 Ver todos
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1116,7 +1116,7 @@ export default async function Home() {
                         </svg>
                       ))}
                     </div>
-                    <p className="text-pueblo-noche/100 text-sm mb-4 line-clamp-3">&ldquo;{review.comment}&rdquo;</p>
+                    <p className="text-pueblo-noche text-sm mb-4 line-clamp-3">&ldquo;{review.comment}&rdquo;</p>
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-pueblo-noche">{(review.profile as any)?.full_name || 'Usuario'}</span>
                       {(review.business as any)?.slug && (
@@ -1234,7 +1234,7 @@ export default async function Home() {
               <p className="text-pueblo-barroco text-xs font-semibold uppercase tracking-widest mb-2">Pro</p>
               <p className="text-4xl font-extrabold text-pueblo-crema mb-1">$120</p>
               <p className="text-pueblo-crema/40 text-xs mb-5">MXN/mes · $4/día</p>
-              <ul className="space-y-2 text-sm text-pueblo-crema/100 flex-1 mb-6">
+              <ul className="space-y-2 text-sm text-pueblo-crema flex-1 mb-6">
                 <li className="flex items-center gap-2"><span className="text-pueblo-barroco">✓</span> Catálogo de productos</li>
                 <li className="flex items-center gap-2"><span className="text-pueblo-barroco">✓</span> Recibe pedidos en línea</li>
                 <li className="flex items-center gap-2"><span className="text-pueblo-barroco">✓</span> Tus productos en el Chatbot IA 🤖</li>
