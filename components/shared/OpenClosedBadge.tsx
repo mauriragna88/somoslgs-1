@@ -13,12 +13,18 @@ export default function OpenClosedBadge({ businessHours, size = 'sm' }: OpenClos
   const [isOpen, setIsOpen] = useState<boolean | null>(null)
 
   useEffect(() => {
-    setIsOpen(isBusinessOpen(businessHours))
+    const updateOpenState = () => {
+      try {
+        setIsOpen(isBusinessOpen(businessHours))
+      } catch (_error) {
+        setIsOpen(null)
+      }
+    }
+
+    updateOpenState()
 
     // Actualizar cada 60 segundos
-    const interval = setInterval(() => {
-      setIsOpen(isBusinessOpen(businessHours))
-    }, 60_000)
+    const interval = setInterval(updateOpenState, 60_000)
 
     return () => clearInterval(interval)
   }, [businessHours])

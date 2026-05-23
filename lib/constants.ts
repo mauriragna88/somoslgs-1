@@ -28,6 +28,8 @@ export const DEFAULT_BUSINESS_HOURS: BusinessHours = {
 export function isBusinessOpen(hours: BusinessHours | null | undefined): boolean | null {
   if (!hours) return null
 
+  if (!hours.weekdays || !hours.saturday || !hours.sunday) return null
+
   // Obtener hora actual en Mexico City
   const now = new Date()
   const mexicoTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Mexico_City' }))
@@ -43,7 +45,7 @@ export function isBusinessOpen(hours: BusinessHours | null | undefined): boolean
     schedule = hours.weekdays
   }
 
-  if (schedule.closed || !schedule.open || !schedule.close) return false
+  if (!schedule || schedule.closed || !schedule.open || !schedule.close) return false
 
   const [openH, openM] = schedule.open.split(':').map(Number)
   const [closeH, closeM] = schedule.close.split(':').map(Number)

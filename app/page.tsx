@@ -21,6 +21,14 @@ import PWAInstallInline from '@/components/PWAInstallInline'
 
 export const revalidate = 3600
 
+const LOCAL_BLOG_IMAGE = '/blog/lagos-pueblo-magico.jpg'
+
+function resolveBlogImageUrl(imageUrl: string | null | undefined) {
+  if (!imageUrl) return imageUrl
+
+  return imageUrl.includes('images.unsplash.com') ? LOCAL_BLOG_IMAGE : imageUrl
+}
+
 interface HomeCategory {
   id: string
   name: string
@@ -113,7 +121,10 @@ export default async function Home() {
     .order('published_at', { ascending: false })
     .limit(3)
 
-  const latestPosts = (blogPosts as BlogPost[]) || []
+  const latestPosts = ((blogPosts as BlogPost[]) || []).map((post) => ({
+    ...post,
+    featured_image_url: resolveBlogImageUrl(post.featured_image_url),
+  }))
 
   // Fetch top reviews for testimonials section
   const { data: topReviews } = await supabase
@@ -295,35 +306,28 @@ export default async function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-pueblo-noche via-pueblo-noche/40 to-transparent" />
         </div>
-      </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          CATEGORIES — Full-bleed warm strip
-      ═══════════════════════════════════════════════════════════ */}
-      <section className="py-6 bg-pueblo-crema border-y border-pueblo-canteraLight/30">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap items-center justify-center gap-2.5">
+        {/* Categories overlay — integrated into hero */}
+        <div className="pueblo-hero-categories">
+          <div className="pueblo-hero-categories-inner">
             {categories && categories.length > 0 ? (
               <>
-                {categories.slice(0, 6).map((category, i) => (
-                  <ScrollReveal key={category.id} direction="up" delay={i * 60}>
-                    <Link
-                      href={`/categorias/${category.slug}`}
-                      className="group flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-pueblo-canteraLight/50 hover:border-pueblo-barroco/60 hover:bg-pueblo-barroco/5 hover:shadow-pueblo-soft hover:scale-105 transition-all duration-300"
-                    >
-                      <span className="text-lg group-hover:scale-110 transition-transform duration-300">{category.icon || '📦'}</span>
-                      <span className="font-medium text-sm text-pueblo-noche group-hover:text-pueblo-cantera transition-colors">
-                        {category.name}
-                      </span>
-                    </Link>
-                  </ScrollReveal>
+                {categories.slice(0, 8).map((category) => (
+                  <Link
+                    key={category.id}
+                    href={`/categorias/${category.slug}`}
+                    className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/90 text-sm font-medium hover:bg-white/20 hover:border-pueblo-barroco/60 transition-all"
+                  >
+                    <span className="text-base">{category.icon || '📦'}</span>
+                    <span>{category.name}</span>
+                  </Link>
                 ))}
-                {catCount > 6 && (
+                {catCount > 8 && (
                   <Link
                     href="/categorias"
-                    className="flex items-center gap-1.5 px-4 py-2.5 bg-pueblo-cantera/10 text-pueblo-cantera rounded-full font-semibold text-sm hover:bg-pueblo-cantera/20 transition-colors"
+                    className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 bg-pueblo-barroco/20 border border-pueblo-barroco/40 rounded-full text-pueblo-barroco text-sm font-semibold hover:bg-pueblo-barroco/30 transition-all"
                   >
-                    +{catCount - 6} m&aacute;s
+                    +{catCount - 8} m&aacute;s
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                     </svg>
@@ -332,23 +336,25 @@ export default async function Home() {
               </>
             ) : (
               <>
-                <Link href="/buscar?q=restaurantes" className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-pueblo-canteraLight hover:border-pueblo-cantera/50 hover:shadow-pueblo-soft transition-all">
-                  <span className="text-lg">🍔</span><span className="font-medium text-sm text-pueblo-noche">Restaurantes</span>
+                <Link href="/buscar?q=restaurantes" className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/90 text-sm font-medium hover:bg-white/20 transition-all">
+                  <span className="text-base">🍔</span><span>Restaurantes</span>
                 </Link>
-                <Link href="/buscar?q=tiendas" className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-pueblo-canteraLight hover:border-pueblo-cantera/50 hover:shadow-pueblo-soft transition-all">
-                  <span className="text-lg">🛒</span><span className="font-medium text-sm text-pueblo-noche">Tiendas</span>
+                <Link href="/buscar?q=tiendas" className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/90 text-sm font-medium hover:bg-white/20 transition-all">
+                  <span className="text-base">🛒</span><span>Tiendas</span>
                 </Link>
-                <Link href="/buscar?q=servicios" className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-pueblo-canteraLight hover:border-pueblo-cantera/50 hover:shadow-pueblo-soft transition-all">
-                  <span className="text-lg">🔧</span><span className="font-medium text-sm text-pueblo-noche">Servicios</span>
+                <Link href="/buscar?q=servicios" className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/90 text-sm font-medium hover:bg-white/20 transition-all">
+                  <span className="text-base">🔧</span><span>Servicios</span>
                 </Link>
-                <Link href="/categorias" className="flex items-center gap-1.5 px-4 py-2.5 bg-pueblo-cantera/10 text-pueblo-cantera rounded-full font-semibold text-sm hover:bg-pueblo-cantera/20 transition-colors">
-                  Ver todas →
+                <Link href="/categorias" className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 bg-pueblo-barroco/20 border border-pueblo-barroco/40 rounded-full text-pueblo-barroco text-sm font-semibold hover:bg-pueblo-barroco/30 transition-all">
+                  Ver todas &rarr;
                 </Link>
               </>
             )}
           </div>
         </div>
       </section>
+
+
 
       {/* Lateral banners (desktop xl+ only) */}
       <div className="hidden xl:block fixed left-2 top-1/2 -translate-y-1/2 z-30 w-[130px]">
@@ -414,23 +420,9 @@ export default async function Home() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          PHOTO BREAK 2 — Puente full-bleed
+          DIAGONAL TRANSITION — Geometric separator replacing photo break
       ═══════════════════════════════════════════════════════════ */}
-      <div className="pueblo-photo-break h-48 md:h-64 relative">
-        <Image
-          src="/tourism/puente-panoramica.jpg"
-          alt="Puente colonial sobre el r&iacute;o Lagos de Moreno"
-          fill
-          className="object-cover"
-          quality={80}
-        />
-        <div className="absolute inset-0 z-10 flex items-end pb-6 md:pb-10 px-6 md:px-16">
-          <div>
-            <p className="text-pueblo-barroco/80 text-[10px] tracking-[0.3em] uppercase font-bold mb-1">Arquitectura Colonial</p>
-            <p className="text-white text-2xl md:text-4xl font-black tracking-tight">Puente sobre el R&iacute;o</p>
-          </div>
-        </div>
-      </div>
+      <div className="pueblo-diagonal-transition" />
 
       {/* ═══════════════════════════════════════════════════════════
           FALLING BUSINESS — Asymmetric two-column
@@ -488,27 +480,32 @@ export default async function Home() {
           <div className="absolute top-0 left-1/4 w-72 h-72 md:w-[40rem] md:h-[40rem] bg-pueblo-barroco/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 right-1/4 w-64 h-64 md:w-[30rem] md:h-[30rem] bg-pueblo-cantera/6 rounded-full blur-3xl pointer-events-none" />
           <div className="container mx-auto px-4 relative z-10">
-            <div className="mb-8">
-              <FeaturedHeader />
-            </div>
+            <div className="pueblo-featured-offset">
+              <ScrollReveal direction="left">
+                <div className="mb-8 md:mb-0">
+                  <FeaturedHeader />
+                </div>
+              </ScrollReveal>
+              <div>
+                <ScrollReveal direction="right" delay={200}>
+                  <PremiumSlider businesses={featuredBusinesses} />
+                </ScrollReveal>
 
-            <ScrollReveal direction="up" delay={200}>
-              <PremiumSlider businesses={featuredBusinesses} />
-            </ScrollReveal>
-
-            <ScrollReveal direction="up" delay={300}>
-              <div className="text-center mt-8">
-                <Link
-                  href="/descubre"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-pueblo-barroco/20 border border-pueblo-barroco/30 text-pueblo-crema font-medium rounded-full hover:bg-pueblo-barroco/25 transition-all"
-                >
-                  Ver todos los negocios
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
+                <ScrollReveal direction="up" delay={300}>
+                  <div className="text-center mt-8">
+                    <Link
+                      href="/descubre"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-pueblo-barroco/20 border border-pueblo-barroco/30 text-pueblo-crema font-medium rounded-full hover:bg-pueblo-barroco/25 transition-all"
+                    >
+                      Ver todos los negocios
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
+                </ScrollReveal>
               </div>
-            </ScrollReveal>
+            </div>
           </div>
         </section>
       )}
@@ -1053,7 +1050,7 @@ export default async function Home() {
       )}
 
       {/* ═══════════════════════════════════════════════════════════
-          CHATBOT CTA — Bold editorial section
+          CHATBOT + WHATSAPP CTA — Composed editorial section
       ═══════════════════════════════════════════════════════════ */}
       <section className="py-16 bg-pueblo-noche relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 md:w-[30rem] md:h-[30rem] bg-pueblo-barroco/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
@@ -1072,7 +1069,7 @@ export default async function Home() {
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                YA DISPONIBLE — Escr&iacute;benos en WhatsApp →
+                YA DISPONIBLE — Escr&iacute;benos en WhatsApp &rarr;
               </a>
             </div>
 
@@ -1090,7 +1087,7 @@ export default async function Home() {
             </p>
 
             {/* Feature cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
               <div className="bg-pueblo-crema/5 backdrop-blur-sm rounded-2xl p-6 border border-pueblo-crema/10 hover:border-pueblo-cantera/40 hover:bg-pueblo-crema/10 transition-all group">
                 <div className="w-14 h-14 bg-gradient-to-br from-red-500/20 to-red-600/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <svg className="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1125,6 +1122,31 @@ export default async function Home() {
                 <p className="text-pueblo-crema/50 text-sm leading-relaxed">
                   Transferencia, efectivo al recibir, o tarjeta. Tu cliente elige c&oacute;mo pagar y t&uacute; recibes el pedido completo y claro.
                 </p>
+              </div>
+            </div>
+
+            {/* WhatsApp embedded card — merged CTA */}
+            <div className="max-w-3xl mx-auto mb-10">
+              <div className="pueblo-cta-whatsapp-card flex flex-col sm:flex-row items-center gap-5 p-6 md:p-8">
+                <div className="flex-shrink-0">
+                  <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
+                    <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="flex-1 text-center sm:text-left">
+                  <h3 className="text-xl font-bold text-white mb-1">&iquest;Te interesa el chatbot de WhatsApp?</h3>
+                  <p className="text-white/80 text-sm">Solo $300 MXN/mes &mdash; tu WhatsApp vende solo</p>
+                </div>
+                <a
+                  href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20chatbot%20para%20mi%20negocio%20en%20SomosLagos"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-white text-[#25D366] font-bold rounded-full hover:bg-white/90 transition-all shadow-lg"
+                >
+                  Escr&iacute;beme por WhatsApp
+                </a>
               </div>
             </div>
 
@@ -1188,44 +1210,6 @@ export default async function Home() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          WHATSAPP CTA — Gold gradient strip
-      ═══════════════════════════════════════════════════════════ */}
-      <section className="py-12 bg-gradient-to-r from-pueblo-barroco via-pueblo-cantera to-pueblo-barroco relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4wNCI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyem0wLTMwVjBoLTEydjRoMTJ6TTI0IDI0aDEydi0ySDI0djJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex-1 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-                <span className="text-4xl">🤖</span>
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-extrabold text-pueblo-noche leading-tight">
-                    &iquest;Te interesa el chatbot de WhatsApp?
-                  </h2>
-                  <p className="text-pueblo-noche/70 font-medium">
-                    Solo $300 MXN/mes — tu WhatsApp vende solo
-                  </p>
-                </div>
-              </div>
-              <p className="text-pueblo-noche/55 text-sm max-w-lg">
-                M&aacute;ndame un WhatsApp y te platico c&oacute;mo funciona. Sin compromiso, resolvemos todas tus dudas.
-              </p>
-            </div>
-            <a
-              href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20chatbot%20para%20mi%20negocio%20en%20SomosLagos"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] hover:bg-[#1fb855] text-white font-bold text-lg rounded-full shadow-pueblo hover:shadow-pueblo-soft hover:scale-105 transition-all"
-            >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-              </svg>
-              Escr&iacute;beme por WhatsApp
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════════
           TRUST — Horizontal counter strip
       ═══════════════════════════════════════════════════════════ */}
       <section className="py-16 bg-pueblo-crema/50 relative overflow-hidden">
@@ -1242,53 +1226,60 @@ export default async function Home() {
           </div>
           </ScrollReveal>
 
-          {/* Counters row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-12">
-            <div className="text-center p-6 pueblo-card rounded-2xl border border-pueblo-canteraLight/60 hover:border-pueblo-barroco/40 hover:shadow-pueblo hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
-              <div className="w-14 h-14 bg-gradient-to-br from-pueblo-cantera/20 to-pueblo-cantera/5 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-7 h-7 text-pueblo-cantera" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          {/* Asymmetric editorial counters — dominant + supporting */}
+          <div className="pueblo-counter-grid max-w-5xl mx-auto mb-12">
+            {/* Dominant counter */}
+            <div className="pueblo-card rounded-2xl border border-pueblo-canteraLight/60 p-8 md:p-10 flex flex-col items-center justify-center text-center hover:border-pueblo-barroco/40 hover:shadow-pueblo transition-all group">
+              <div className="w-20 h-20 bg-gradient-to-br from-pueblo-cantera/25 to-pueblo-cantera/5 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-10 h-10 text-pueblo-cantera" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
-              <p className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-cantera to-pueblo-terracotta mb-1">
+              <p className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pueblo-cantera via-pueblo-terracotta to-pueblo-cantera mb-2">
                 <AnimatedCounter target={businessDisplayCount} suffix="+" />
               </p>
-              <h3 className="font-bold text-pueblo-noche mb-1 text-sm">Negocios</h3>
-              <p className="text-xs text-pueblo-terracotta/60">Verificados y activos</p>
+              <h3 className="font-bold text-pueblo-noche text-lg mb-1">Negocios Locales</h3>
+              <p className="text-sm text-pueblo-terracotta/60">Verificados y activos en Lagos de Moreno</p>
             </div>
-            <div className="text-center p-6 pueblo-card rounded-2xl border border-pueblo-canteraLight/60 hover:border-pueblo-barroco/40 hover:shadow-pueblo hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
-              <div className="w-14 h-14 bg-gradient-to-br from-pueblo-barroco/20 to-pueblo-barroco/5 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-7 h-7 text-pueblo-barroco" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
+            {/* Supporting counters */}
+            <div className="flex flex-col gap-4">
+              <div className="pueblo-card rounded-2xl border border-pueblo-canteraLight/60 p-5 flex items-center gap-4 hover:border-pueblo-barroco/40 hover:shadow-pueblo hover:-translate-y-0.5 transition-all group">
+                <div className="w-12 h-12 bg-gradient-to-br from-pueblo-barroco/20 to-pueblo-barroco/5 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-6 h-6 text-pueblo-barroco" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-barroco to-pueblo-cantera">
+                    <AnimatedCounter target={catCount} suffix="+" />
+                  </p>
+                  <h3 className="font-bold text-pueblo-noche text-sm">Categor&iacute;as</h3>
+                </div>
               </div>
-              <p className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-barroco to-pueblo-cantera mb-1">
-                <AnimatedCounter target={catCount} suffix="+" />
-              </p>
-              <h3 className="font-bold text-pueblo-noche mb-1 text-sm">Categor&iacute;as</h3>
-              <p className="text-xs text-pueblo-terracotta/60">Para todo lo que necesitas</p>
-            </div>
-            <div className="text-center p-6 pueblo-card rounded-2xl border border-pueblo-canteraLight/60 hover:border-pueblo-barroco/40 hover:shadow-pueblo hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
-              <div className="w-14 h-14 bg-gradient-to-br from-pueblo-agave/20 to-pueblo-agave/5 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-7 h-7 text-pueblo-agave" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+              <div className="pueblo-card rounded-2xl border border-pueblo-canteraLight/60 p-5 flex items-center gap-4 hover:border-pueblo-barroco/40 hover:shadow-pueblo hover:-translate-y-0.5 transition-all group">
+                <div className="w-12 h-12 bg-gradient-to-br from-pueblo-agave/20 to-pueblo-agave/5 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-6 h-6 text-pueblo-agave" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-agave to-pueblo-cantera">24/7</p>
+                  <h3 className="font-bold text-pueblo-noche text-sm">Siempre Activo</h3>
+                </div>
               </div>
-              <p className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-agave to-pueblo-cantera mb-1">24/7</p>
-              <h3 className="font-bold text-pueblo-noche mb-1 text-sm">Siempre Activo</h3>
-              <p className="text-xs text-pueblo-terracotta/60">Busca en cualquier momento</p>
-            </div>
-            <div className="text-center p-6 pueblo-card rounded-2xl border border-pueblo-canteraLight/60 hover:border-pueblo-barroco/40 hover:shadow-pueblo hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
-              <div className="w-14 h-14 bg-gradient-to-br from-pueblo-barroco/20 to-pueblo-barroco/5 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-7 h-7 text-pueblo-barroco" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+              <div className="pueblo-card rounded-2xl border border-pueblo-canteraLight/60 p-5 flex items-center gap-4 hover:border-pueblo-barroco/40 hover:shadow-pueblo hover:-translate-y-0.5 transition-all group">
+                <div className="w-12 h-12 bg-gradient-to-br from-pueblo-barroco/20 to-pueblo-barroco/5 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-6 h-6 text-pueblo-barroco" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-barroco to-pueblo-cantera">
+                    <AnimatedCounter target={100} suffix="%" />
+                  </p>
+                  <h3 className="font-bold text-pueblo-noche text-sm">Gratis</h3>
+                </div>
               </div>
-              <p className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pueblo-barroco to-pueblo-cantera mb-1">
-                <AnimatedCounter target={100} suffix="%" />
-              </p>
-              <h3 className="font-bold text-pueblo-noche mb-1 text-sm">Gratis</h3>
-              <p className="text-xs text-pueblo-terracotta/60">Sin costo de registro</p>
             </div>
           </div>
         </div>

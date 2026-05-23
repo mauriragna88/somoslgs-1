@@ -24,6 +24,14 @@ const CATEGORY_LABELS: Record<string, string> = {
   'negocios-destacados': 'Negocios Destacados',
 }
 
+const LOCAL_BLOG_IMAGE = '/blog/lagos-pueblo-magico.jpg'
+
+function resolveBlogImageUrl(imageUrl: string | null | undefined) {
+  if (!imageUrl) return imageUrl
+
+  return imageUrl.includes('images.unsplash.com') ? LOCAL_BLOG_IMAGE : imageUrl
+}
+
 export default async function BlogPage() {
   const supabase = createServiceClient()
 
@@ -33,7 +41,10 @@ export default async function BlogPage() {
     .eq('status', 'published')
     .order('published_at', { ascending: false })
 
-  const blogPosts = (posts as BlogPost[]) || []
+  const blogPosts = ((posts as BlogPost[]) || []).map((post) => ({
+    ...post,
+    featured_image_url: resolveBlogImageUrl(post.featured_image_url),
+  }))
 
   return (
     <main className="min-h-screen bg-gray-50">

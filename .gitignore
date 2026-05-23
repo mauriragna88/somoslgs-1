@@ -62,3 +62,6 @@ nul
 next-env.d.ts
 
 .vercel
+
+# local Playwright MCP artifacts
+.playwright-mcp/
