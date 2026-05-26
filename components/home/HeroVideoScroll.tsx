@@ -28,27 +28,27 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const rafRef = useRef<number>(0)
-  const blobUrlRef = useRef<string>('')
   const [progress, setProgress] = useState(0)
   const [videoReady, setVideoReady] = useState(false)
   const [visibleFloats, setVisibleFloats] = useState(0)
 
-  // Blob preload
+  // Video load: set src directly, play+pause to make it seekable
   useEffect(() => {
-    fetch('/assets/lagos-city-build.mp4')
-      .then(r => r.blob())
-      .then(blob => {
-        const url = URL.createObjectURL(blob)
-        blobUrlRef.current = url
-        if (videoRef.current) {
-          videoRef.current.src = url
-          videoRef.current.load()
-        }
-        setVideoReady(true)
-      })
-      .catch(() => setVideoReady(false))
+    const video = videoRef.current
+    if (!video) return
+
+    const onReady = () => {
+      video.play()
+        .then(() => { video.pause(); setVideoReady(true) })
+        .catch(() => setVideoReady(true))
+    }
+
+    video.addEventListener('loadedmetadata', onReady, { once: true })
+    video.src = '/assets/lagos-city-build.mp4'
+    video.load()
+
     return () => {
-      if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current)
+      video.removeEventListener('loadedmetadata', onReady)
       cancelAnimationFrame(rafRef.current)
     }
   }, [])
@@ -102,7 +102,7 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
           muted
           playsInline
           preload="auto"
-          style={{ filter: 'brightness(0.55)' }}
+          style={{ filter: 'brightness(0.75)' }}
         />
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)] via-transparent to-transparent opacity-70" />
