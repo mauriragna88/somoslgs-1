@@ -48,17 +48,18 @@ export default async function AdminEditBusinessPage({ params }: PageProps) {
       <div className="flex items-center gap-3 mb-6">
         <Link
           href={`/admin/negocios/${params.id}`}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
+          className="p-2 rounded-lg transition-colors flex-shrink-0"
+          style={{ color: 'var(--muted)' }}
         >
           ← Volver
         </Link>
         <div className="min-w-0">
-          <h1 className="text-xl md:text-2xl font-bold text-gray-900">Editar Negocio</h1>
-          <p className="text-gray-600 text-sm truncate">{business.name}</p>
+          <h1 className="text-xl md:text-2xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Editar Negocio</h1>
+          <p className="text-sm truncate" style={{ color: 'var(--muted)' }}>{business.name}</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-4 md:p-6">
+      <div className="bg-white rounded-2xl p-4 md:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
         <AdminEditBusinessForm
           business={{
             ...business,

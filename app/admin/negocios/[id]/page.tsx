@@ -209,26 +209,29 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         <div className="flex items-center gap-4 mb-3">
           <Link
             href="/admin/negocios"
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 rounded-xl transition-colors"
+            style={{ color: 'var(--muted)' }}
           >
             ← Volver
           </Link>
           <div className="min-w-0 flex-1">
-            <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">{business.name}</h1>
-            <p className="text-gray-600 text-sm">{business.category?.name || 'Sin categoría'}</p>
+            <h1 className="text-xl md:text-2xl font-bold truncate" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>{business.name}</h1>
+            <p className="text-sm" style={{ color: 'var(--muted)' }}>{business.category?.name || 'Sin categoría'}</p>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Link
             href={`/admin/negocios/${business.id}/editar`}
-            className="px-3 py-1.5 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg transition-colors"
+            className="px-3 py-1.5 text-sm font-medium rounded-xl transition-colors"
+            style={{ background: 'rgba(255,107,53,0.08)', color: 'var(--coral)' }}
           >
             Editar
           </Link>
           <Link
             href={`/negocios/${business.slug}`}
             target="_blank"
-            className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
+            className="px-3 py-1.5 text-sm font-medium rounded-xl transition-colors"
+            style={{ background: 'var(--cream)', color: 'var(--ink-soft)' }}
           >
             Ver Público
           </Link>
@@ -240,7 +243,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         {/* Left Column - Main Info */}
         <div className="lg:col-span-2 space-y-6">
           {/* Business Card */}
-          <div className="bg-white rounded-xl shadow-sm p-4 md:p-6">
+          <div className="bg-white rounded-2xl p-4 md:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
             <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
               {business.logo_url ? (
                 <Image
@@ -251,7 +254,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                   className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl object-cover flex-shrink-0"
                 />
               ) : (
-                <div className="w-16 h-16 sm:w-24 sm:h-24 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg,var(--coral),var(--gold))' }}>
                   <span className="text-2xl sm:text-4xl text-white font-bold">
                     {business.name[0].toUpperCase()}
                   </span>
@@ -273,23 +276,23 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                     </span>
                   )}
                 </div>
-                <p className="text-gray-600 text-sm mb-3">{business.description || 'Sin descripción'}</p>
+                <p className="text-sm mb-3" style={{ color: 'var(--muted)' }}>{business.description || 'Sin descripción'}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                   <div>
-                    <span className="text-gray-500">Tel:</span>
-                    <span className="ml-1 font-medium">{business.phone}</span>
+                    <span style={{ color: 'var(--muted)' }}>Tel:</span>
+                    <span className="ml-1 font-medium" style={{ color: 'var(--ink-soft)' }}>{business.phone}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500">WA:</span>
-                    <span className="ml-1 font-medium">{business.whatsapp || 'N/A'}</span>
+                    <span style={{ color: 'var(--muted)' }}>WA:</span>
+                    <span className="ml-1 font-medium" style={{ color: 'var(--ink-soft)' }}>{business.whatsapp || 'N/A'}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500">Email:</span>
-                    <span className="ml-1 font-medium break-all">{business.email || 'N/A'}</span>
+                    <span style={{ color: 'var(--muted)' }}>Email:</span>
+                    <span className="ml-1 font-medium break-all" style={{ color: 'var(--ink-soft)' }}>{business.email || 'N/A'}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500">Dir:</span>
-                    <span className="ml-1 font-medium">{business.address}</span>
+                    <span style={{ color: 'var(--muted)' }}>Dir:</span>
+                    <span className="ml-1 font-medium" style={{ color: 'var(--ink-soft)' }}>{business.address}</span>
                   </div>
                 </div>
               </div>
@@ -298,80 +301,80 @@ export default async function BusinessDetailPage({ params }: PageProps) {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                   <span className="text-xl">📦</span>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">{productsCount || 0}</p>
-                  <p className="text-xs text-gray-500">Productos</p>
+                  <p className="text-2xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{productsCount || 0}</p>
+                  <p className="text-xs" style={{ color: 'var(--muted)' }}>Productos</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                   <span className="text-xl">🛒</span>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">{ordersCount || 0}</p>
-                  <p className="text-xs text-gray-500">Pedidos Total</p>
+                  <p className="text-2xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{ordersCount || 0}</p>
+                  <p className="text-xs" style={{ color: 'var(--muted)' }}>Pedidos Total</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
                   <span className="text-xl">⏳</span>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-yellow-600">{pendingOrders}</p>
-                  <p className="text-xs text-gray-500">Pendientes</p>
+                  <p className="text-2xl font-bold text-yellow-600" style={{ fontFamily: 'var(--display)' }}>{pendingOrders}</p>
+                  <p className="text-xs" style={{ color: 'var(--muted)' }}>Pendientes</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
                   <span className="text-xl">💰</span>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-green-600">{formatCurrency(totalRevenue)}</p>
-                  <p className="text-xs text-gray-500">Ingresos Total</p>
+                  <p className="text-2xl font-bold text-green-600" style={{ fontFamily: 'var(--display)' }}>{formatCurrency(totalRevenue)}</p>
+                  <p className="text-xs" style={{ color: 'var(--muted)' }}>Ingresos Total</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
                   <span className="text-xl">👁</span>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-teal-600">{totalViews}</p>
-                  <p className="text-xs text-gray-500">Visitas</p>
+                  <p className="text-2xl font-bold text-teal-600" style={{ fontFamily: 'var(--display)' }}>{totalViews}</p>
+                  <p className="text-xs" style={{ color: 'var(--muted)' }}>Visitas</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Recent Orders */}
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-              <h3 className="font-bold text-gray-900">Últimos Pedidos</h3>
-              <span className="text-sm text-gray-500">Este mes: {formatCurrency(thisMonthRevenue)}</span>
+          <div className="bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <div className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+              <h3 className="font-bold" style={{ color: 'var(--ink)' }}>Últimos Pedidos</h3>
+              <span className="text-sm" style={{ color: 'var(--muted)' }}>Este mes: {formatCurrency(thisMonthRevenue)}</span>
             </div>
             {typedOrders.length > 0 ? (
-              <div className="divide-y divide-gray-100">
-                {typedOrders.slice(0, 5).map((order) => (
-                  <div key={order.id} className="p-3 sm:p-4 flex items-center justify-between hover:bg-gray-50 gap-2">
+              <div>
+                {typedOrders.slice(0, 5).map((order, i) => (
+                  <div key={order.id} className="p-3 sm:p-4 flex items-center justify-between gap-2" style={i > 0 ? { borderTop: '1px solid rgba(0,0,0,0.05)' } : {}}>
                     <div>
-                      <p className="font-medium text-gray-900">#{order.order_number}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium" style={{ color: 'var(--ink)' }}>#{order.order_number}</p>
+                      <p className="text-sm" style={{ color: 'var(--muted)' }}>
                         {new Date(order.created_at).toLocaleDateString('es-MX', {
                           day: 'numeric',
                           month: 'short',
@@ -389,13 +392,13 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                       }`}>
                         {order.status}
                       </span>
-                      <span className="font-bold text-gray-900">{formatCurrency(order.total)}</span>
+                      <span className="font-bold" style={{ color: 'var(--coral)' }}>{formatCurrency(order.total)}</span>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="p-8 text-center text-gray-500">
+              <div className="p-8 text-center" style={{ color: 'var(--muted)' }}>
                 <span className="text-4xl block mb-2">📭</span>
                 <p>No hay pedidos aún</p>
               </div>
@@ -403,26 +406,26 @@ export default async function BusinessDetailPage({ params }: PageProps) {
           </div>
 
           {/* Products Preview */}
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="font-bold text-gray-900">Productos ({productsCount || 0})</h3>
+          <div className="bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <div className="p-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+              <h3 className="font-bold" style={{ color: 'var(--ink)' }}>Productos ({productsCount || 0})</h3>
             </div>
             {(products as ProductData[] || []).length > 0 ? (
-              <div className="divide-y divide-gray-100">
-                {(products as ProductData[]).map((product) => (
-                  <div key={product.id} className="p-4 flex items-center justify-between hover:bg-gray-50">
+              <div>
+                {(products as ProductData[]).map((product, i) => (
+                  <div key={product.id} className="p-4 flex items-center justify-between" style={i > 0 ? { borderTop: '1px solid rgba(0,0,0,0.05)' } : {}}>
                     <div>
-                      <p className="font-medium text-gray-900">{product.name}</p>
+                      <p className="font-medium" style={{ color: 'var(--ink)' }}>{product.name}</p>
                       <span className={`text-xs ${product.is_available ? 'text-green-600' : 'text-red-600'}`}>
                         {product.is_available ? 'Disponible' : 'No disponible'}
                       </span>
                     </div>
-                    <span className="font-bold text-primary">{formatCurrency(product.price)}</span>
+                    <span className="font-bold" style={{ color: 'var(--coral)' }}>{formatCurrency(product.price)}</span>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="p-8 text-center text-gray-500">
+              <div className="p-8 text-center" style={{ color: 'var(--muted)' }}>
                 <span className="text-4xl block mb-2">📦</span>
                 <p>No hay productos</p>
                 {business.subscription_tier === 'gratis' && (
@@ -446,19 +449,19 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         {/* Right Column - Subscription & Owner */}
         <div className="space-y-6">
           {/* Subscription Card */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-bold text-gray-900 mb-4">Suscripción</h3>
+          <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <h3 className="font-bold mb-4" style={{ color: 'var(--ink)' }}>Suscripción</h3>
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">Plan Actual</span>
+                <span style={{ color: 'var(--muted)' }}>Plan Actual</span>
                 <span className={`px-3 py-1 text-sm font-bold rounded-full ${currentPlanInfo.color}`}>
                   {currentPlanInfo.label} - ${currentPlanInfo.price}/mes
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">Estado</span>
+                <span style={{ color: 'var(--muted)' }}>Estado</span>
                 <span className={`font-semibold ${
                   business.subscription_status === 'active' ? 'text-green-600' : 'text-red-600'
                 }`}>
@@ -467,7 +470,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">Días Restantes</span>
+                <span style={{ color: 'var(--muted)' }}>Días Restantes</span>
                 <span className={`font-semibold ${daysInfo.color}`}>
                   {daysInfo.text}
                 </span>
@@ -475,8 +478,8 @@ export default async function BusinessDetailPage({ params }: PageProps) {
 
               {business.subscription_expires_at && (
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Vence</span>
-                  <span className="text-gray-900">
+                  <span style={{ color: 'var(--muted)' }}>Vence</span>
+                  <span style={{ color: 'var(--ink)' }}>
                     {new Date(business.subscription_expires_at).toLocaleDateString('es-MX', {
                       day: 'numeric',
                       month: 'long',
@@ -486,9 +489,9 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                 </div>
               )}
 
-              <div className="pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-500 mb-2">Registrado el</p>
-                <p className="font-medium">
+              <div className="pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+                <p className="text-sm mb-2" style={{ color: 'var(--muted)' }}>Registrado el</p>
+                <p className="font-medium" style={{ color: 'var(--ink-soft)' }}>
                   {new Date(business.created_at).toLocaleDateString('es-MX', {
                     day: 'numeric',
                     month: 'long',
@@ -500,23 +503,23 @@ export default async function BusinessDetailPage({ params }: PageProps) {
           </div>
 
           {/* Owner Card */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-bold text-gray-900 mb-4">Dueño del Negocio</h3>
+          <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <h3 className="font-bold mb-4" style={{ color: 'var(--ink)' }}>Dueño del Negocio</h3>
 
             {business.owner ? (
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-gray-500">Nombre</p>
-                  <p className="font-medium">{business.owner.full_name}</p>
+                  <p className="text-sm" style={{ color: 'var(--muted)' }}>Nombre</p>
+                  <p className="font-medium" style={{ color: 'var(--ink-soft)' }}>{business.owner.full_name}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium">{business.owner.email}</p>
+                  <p className="text-sm" style={{ color: 'var(--muted)' }}>Email</p>
+                  <p className="font-medium" style={{ color: 'var(--ink-soft)' }}>{business.owner.email}</p>
                 </div>
                 {business.owner.phone && (
                   <div>
-                    <p className="text-sm text-gray-500">Teléfono</p>
-                    <p className="font-medium">{business.owner.phone}</p>
+                    <p className="text-sm" style={{ color: 'var(--muted)' }}>Teléfono</p>
+                    <p className="font-medium" style={{ color: 'var(--ink-soft)' }}>{business.owner.phone}</p>
                   </div>
                 )}
                 <div className="pt-3">
@@ -535,12 +538,13 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                 <span className="px-3 py-1 text-sm font-semibold rounded-full bg-amber-100 text-amber-800">
                   Sin dueño asignado
                 </span>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>
                   Este negocio no tiene un dueño vinculado. Puedes asignar uno desde la tabla de negocios o al editar.
                 </p>
                 <Link
                   href={`/admin/negocios/${business.id}/editar`}
-                  className="inline-flex items-center px-4 py-2 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg transition-colors"
+                  className="inline-flex items-center px-4 py-2 text-white font-medium rounded-lg transition-colors"
+                  style={{ background: 'var(--coral)' }}
                 >
                   Asignar Dueño
                 </Link>
@@ -553,7 +557,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
 
           {/* Upgrade Suggestions */}
           {currentPlanInfo.nextPlan && (
-            <div className="bg-gradient-to-br from-primary to-primary-dark rounded-xl shadow-sm p-6 text-white">
+            <div className="rounded-2xl p-6 text-white" style={{ background: 'linear-gradient(135deg,var(--coral),#E2541F)', boxShadow: 'var(--shadow-card)' }}>
               <h3 className="font-bold mb-2">💡 Sugerencias de Mejora</h3>
               <p className="text-white/80 text-sm mb-4">
                 Este negocio podría beneficiarse del siguiente plan:
@@ -574,34 +578,34 @@ export default async function BusinessDetailPage({ params }: PageProps) {
           )}
 
           {/* Quick Stats */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-bold text-gray-900 mb-4">Resumen Rápido</h3>
+          <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <h3 className="font-bold mb-4" style={{ color: 'var(--ink)' }}>Resumen Rápido</h3>
             <div className="space-y-3">
-              <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                <span className="text-gray-600">Pedidos completados</span>
+              <div className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <span style={{ color: 'var(--muted)' }}>Pedidos completados</span>
                 <span className="font-bold text-green-600">{completedOrders.length}</span>
               </div>
-              <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                <span className="text-gray-600">Pedidos este mes</span>
-                <span className="font-bold">{thisMonthOrders.length}</span>
+              <div className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <span style={{ color: 'var(--muted)' }}>Pedidos este mes</span>
+                <span className="font-bold" style={{ color: 'var(--ink)' }}>{thisMonthOrders.length}</span>
               </div>
-              <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                <span className="text-gray-600">Ticket promedio</span>
-                <span className="font-bold">
+              <div className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <span style={{ color: 'var(--muted)' }}>Ticket promedio</span>
+                <span className="font-bold" style={{ color: 'var(--ink)' }}>
                   {completedOrders.length > 0
                     ? formatCurrency(totalRevenue / completedOrders.length)
                     : '$0'
                   }
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                <span className="text-gray-600">Productos activos</span>
-                <span className="font-bold">
+              <div className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <span style={{ color: 'var(--muted)' }}>Productos activos</span>
+                <span className="font-bold" style={{ color: 'var(--ink)' }}>
                   {(products as ProductData[] || []).filter(p => p.is_available).length}
                 </span>
               </div>
               <div className="flex items-center justify-between py-2">
-                <span className="text-gray-600">Visitas este mes</span>
+                <span style={{ color: 'var(--muted)' }}>Visitas este mes</span>
                 <span className="font-bold text-teal-600">{viewsThisMonth || 0}</span>
               </div>
             </div>

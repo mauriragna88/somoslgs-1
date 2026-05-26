@@ -16,8 +16,8 @@ export default async function NewBusinessPage() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Agregar Nuevo Negocio</h1>
-        <p className="text-gray-600 mt-1">Completa el formulario para registrar un nuevo negocio</p>
+        <h1 className="text-3xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Agregar Nuevo Negocio</h1>
+        <p className="mt-1" style={{ color: 'var(--muted)' }}>Completa el formulario para registrar un nuevo negocio</p>
       </div>
 
       {/* Form */}
