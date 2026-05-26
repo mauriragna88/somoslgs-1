@@ -38,6 +38,7 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
 
     // 1. Buffer the video via direct src — avoids blob: CSP restrictions
     async function preload() {
+      if (!video) return
       video.src = '/assets/lagos-city-build.mp4'
       video.preload = 'auto'
 
