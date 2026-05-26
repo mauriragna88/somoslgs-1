@@ -140,15 +140,15 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="SomosLagos"
-              width={36}
-              height={36}
+              width={64}
+              height={64}
               className="rounded-xl"
               priority
             />
             <div className="flex flex-col leading-none">
               <span
                 className="font-bold tracking-tight"
-                style={{ fontFamily: 'var(--display)', color: 'var(--ink)', fontSize: '18px' }}
+                style={{ fontFamily: 'var(--display)', color: 'var(--ink)', fontSize: '22px' }}
               >
                 Somos<span style={{ color: 'var(--coral)' }}>Lagos</span>
               </span>
