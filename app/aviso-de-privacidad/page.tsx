@@ -13,15 +13,15 @@ export const metadata: Metadata = {
 
 export default function AvisoDePrivacidadPage() {
   return (
-    <main className="min-h-screen bg-surface py-12">
+    <main className="min-h-screen py-12" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 max-w-3xl">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
-          <h1 className="text-3xl font-bold text-secondary mb-2">Aviso de Privacidad</h1>
-          <p className="text-sm text-gray-400 mb-8">Ultima actualizacion: 1 de marzo de 2026</p>
+        <div className="bg-white rounded-2xl p-8 md:p-12" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.06)' }}>
+          <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Aviso de Privacidad</h1>
+          <p className="text-sm mb-8" style={{ color: 'var(--muted)' }}>Ultima actualizacion: 1 de marzo de 2026</p>
 
-          <div className="prose prose-gray max-w-none space-y-6 text-sm leading-relaxed text-gray-700">
+          <div className="prose prose-gray max-w-none space-y-6 text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">1. Identidad del Responsable</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>1. Identidad del Responsable</h2>
               <p>
                 <strong>SomosLagos</strong> (en adelante &ldquo;la Plataforma&rdquo;), con domicilio en Lagos de Moreno, Jalisco, Mexico,
                 es responsable del tratamiento de sus datos personales conforme a la Ley Federal de Proteccion de Datos Personales
@@ -32,7 +32,7 @@ export default function AvisoDePrivacidadPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">2. Datos Personales Recabados</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>2. Datos Personales Recabados</h2>
               <p>Para las finalidades descritas en este aviso, podemos recabar los siguientes datos personales:</p>
               <ul className="list-disc pl-5 space-y-1 mt-2">
                 <li>Nombre completo</li>
@@ -50,7 +50,7 @@ export default function AvisoDePrivacidadPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">3. Finalidades del Tratamiento</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>3. Finalidades del Tratamiento</h2>
               <p>Sus datos personales seran utilizados para las siguientes finalidades:</p>
               <h3 className="font-semibold text-secondary mt-4 mb-2">Finalidades primarias (necesarias):</h3>
               <ul className="list-disc pl-5 space-y-1">
@@ -74,7 +74,7 @@ export default function AvisoDePrivacidadPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">4. Transferencia de Datos</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>4. Transferencia de Datos</h2>
               <p>
                 Sus datos personales pueden ser transferidos y tratados por terceros proveedores de tecnologia
                 necesarios para la operacion de la plataforma:
@@ -92,7 +92,7 @@ export default function AvisoDePrivacidadPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">5. Derechos ARCO</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>5. Derechos ARCO</h2>
               <p>
                 Usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento de sus datos
                 personales (derechos ARCO). Para ejercer estos derechos, envie un correo electronico a{' '}
@@ -109,7 +109,7 @@ export default function AvisoDePrivacidadPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">6. Cookies y Tecnologias de Rastreo</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>6. Cookies y Tecnologias de Rastreo</h2>
               <p>
                 La Plataforma utiliza cookies y tecnologias similares para:
               </p>
@@ -125,7 +125,7 @@ export default function AvisoDePrivacidadPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">7. Cambios al Aviso de Privacidad</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>7. Cambios al Aviso de Privacidad</h2>
               <p>
                 Nos reservamos el derecho de modificar este Aviso de Privacidad en cualquier momento.
                 Las modificaciones estaran disponibles en esta misma pagina:{' '}
@@ -134,7 +134,7 @@ export default function AvisoDePrivacidadPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">8. Consentimiento</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>8. Consentimiento</h2>
               <p>
                 Al registrarse en la Plataforma y aceptar los terminos durante el proceso de registro,
                 usted otorga su consentimiento para el tratamiento de sus datos personales conforme a
@@ -143,8 +143,8 @@ export default function AvisoDePrivacidadPage() {
             </section>
           </div>
 
-          <div className="mt-10 pt-6 border-t border-gray-100">
-            <Link href="/" className="text-sm text-primary hover:text-primary-dark font-medium">
+          <div className="mt-10 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+            <Link href="/" className="text-sm font-medium" style={{ color: 'var(--coral)' }}>
               ← Volver al inicio
             </Link>
           </div>

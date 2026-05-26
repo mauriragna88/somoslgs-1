@@ -115,16 +115,17 @@ export default function MisArticulosPage() {
   )}`
 
   return (
-    <main className="min-h-screen bg-surface">
+    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-secondary">Mis articulos</h1>
-            <p className="text-gray-500 text-sm mt-1">{listings.length} articulo{listings.length !== 1 ? 's' : ''}</p>
+            <h1 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Mis articulos</h1>
+            <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>{listings.length} articulo{listings.length !== 1 ? 's' : ''}</p>
           </div>
           <Link
             href="/marketplace/publicar"
-            className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 text-sm"
+            className="px-6 py-2.5 text-white font-semibold rounded-xl transition-all text-sm"
+            style={{ background: 'var(--coral)' }}
           >
             + Publicar
           </Link>
@@ -132,17 +133,18 @@ export default function MisArticulosPage() {
 
         {loading ? (
           <div className="text-center py-16">
-            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-gray-500">Cargando articulos...</p>
+            <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: 'var(--coral)', borderTopColor: 'transparent' }} />
+            <p style={{ color: 'var(--muted)' }}>Cargando articulos...</p>
           </div>
         ) : listings.length === 0 ? (
           <div className="text-center py-16">
             <span className="text-5xl mb-4 block">&#128230;</span>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">No tienes articulos</h2>
-            <p className="text-gray-600 mb-6">Publica tu primer articulo en el marketplace</p>
+            <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--ink)' }}>No tienes articulos</h2>
+            <p className="mb-6" style={{ color: 'var(--muted)' }}>Publica tu primer articulo en el marketplace</p>
             <Link
               href="/marketplace/publicar"
-              className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+              className="inline-block px-6 py-3 text-white font-semibold rounded-lg transition-colors"
+              style={{ background: 'var(--coral)' }}
             >
               Publicar articulo
             </Link>
@@ -160,11 +162,14 @@ export default function MisArticulosPage() {
               return (
                 <div
                   key={listing.id}
-                  className={`bg-white rounded-xl border p-4 ${featured ? 'border-accent/50 ring-1 ring-accent/20' : 'border-gray-100'}`}
+                  className="bg-white rounded-2xl p-4"
+                  style={featured
+                    ? { boxShadow: 'var(--shadow-card)', border: '1px solid rgba(245,185,66,0.4)' }
+                    : { boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.05)' }}
                 >
                   <div className="flex flex-col sm:flex-row gap-4">
                     {/* Image */}
-                    <div className="w-full sm:w-24 h-24 relative rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+                    <div className="w-full sm:w-24 h-24 relative rounded-lg overflow-hidden flex-shrink-0" style={{ background: 'var(--cream)' }}>
                       {listing.images?.[0] ? (
                         <Image src={listing.images[0]} alt={listing.title} fill sizes="96px" className="object-cover" />
                       ) : (
@@ -175,17 +180,17 @@ export default function MisArticulosPage() {
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <h3 className="font-semibold text-secondary truncate">{listing.title}</h3>
+                        <h3 className="font-semibold truncate" style={{ color: 'var(--ink)' }}>{listing.title}</h3>
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
                           {status.text}
                         </span>
                         {featured && (
-                          <span className="px-2 py-0.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold">
+                          <span className="px-2 py-0.5 rounded-full text-xs font-bold" style={{ background: 'rgba(245,185,66,0.2)', color: 'var(--gold)' }}>
                             &#11088; Destacado
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-500 mb-1">
+                      <p className="text-sm mb-1" style={{ color: 'var(--muted)' }}>
                         {listing.price_type === 'gratis' ? 'Gratis'
                           : listing.price_type === 'intercambio' ? 'Intercambio'
                           : formatCurrency(listing.price)}
@@ -201,7 +206,8 @@ export default function MisArticulosPage() {
                         {leadCountNum > 0 && (
                           <button
                             onClick={() => toggleLeads(listing)}
-                            className="text-xs font-medium text-primary hover:text-primary-dark transition-colors"
+                            className="text-xs font-medium transition-colors"
+                            style={{ color: 'var(--coral)' }}
                           >
                             {leadCountNum} interesado{leadCountNum !== 1 ? 's' : ''}
                             {leads ? ' ▲' : ' ▼'}
@@ -216,7 +222,8 @@ export default function MisArticulosPage() {
                         <>
                           <Link
                             href={`/marketplace/editar/${listing.id}`}
-                            className="px-3 py-1.5 text-xs font-medium text-primary border border-primary/30 rounded-lg hover:bg-primary/5 transition-colors"
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
+                            style={{ color: 'var(--coral)', border: '1px solid rgba(255,107,53,0.3)' }}
                           >
                             Editar
                           </Link>
@@ -249,25 +256,25 @@ export default function MisArticulosPage() {
 
                   {/* Expanded leads section */}
                   {loadingLeads[listing.id] && (
-                    <div className="mt-3 pt-3 border-t border-gray-100 text-center">
-                      <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+                    <div className="mt-3 pt-3 text-center" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+                      <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin mx-auto" style={{ borderColor: 'var(--coral)', borderTopColor: 'transparent' }} />
                     </div>
                   )}
 
                   {leads && leads.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-gray-100">
-                      <h4 className="text-sm font-semibold text-secondary mb-2">Personas interesadas</h4>
+                    <div className="mt-3 pt-3" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+                      <h4 className="text-sm font-semibold mb-2" style={{ color: 'var(--ink)' }}>Personas interesadas</h4>
                       <div className="space-y-2">
                         {leads.map((lead: any) => (
-                          <div key={lead.id} className="flex items-center justify-between bg-surface rounded-lg p-2">
+                          <div key={lead.id} className="flex items-center justify-between rounded-lg p-2" style={{ background: 'var(--cream)' }}>
                             <div>
-                              <p className="text-sm font-medium text-secondary">
+                              <p className="text-sm font-medium" style={{ color: 'var(--ink-soft)' }}>
                                 {lead.buyer?.full_name || 'Usuario'}
                               </p>
                               {lead.message && (
-                                <p className="text-xs text-gray-500 mt-0.5">&quot;{lead.message}&quot;</p>
+                                <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>&quot;{lead.message}&quot;</p>
                               )}
-                              <p className="text-xs text-gray-400">{formatDate(lead.created_at)}</p>
+                              <p className="text-xs" style={{ color: 'var(--muted)' }}>{formatDate(lead.created_at)}</p>
                             </div>
                             {featured && lead.buyer?.phone && (
                               <a
@@ -296,7 +303,8 @@ export default function MisArticulosPage() {
                             href={featureWhatsAppUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block px-4 py-2 bg-accent hover:bg-accent-dark text-secondary text-xs font-bold rounded-lg transition-colors"
+                            className="inline-block px-4 py-2 text-xs font-bold rounded-lg transition-colors"
+                            style={{ background: 'var(--gold)', color: 'var(--ink)' }}
                           >
                             Destacar por ${MARKETPLACE_FEATURED_PRICE} / 7 dias
                           </a>
@@ -306,7 +314,7 @@ export default function MisArticulosPage() {
                   )}
 
                   {leads && leads.length === 0 && (
-                    <div className="mt-3 pt-3 border-t border-gray-100 text-center text-sm text-gray-500">
+                    <div className="mt-3 pt-3 text-center text-sm" style={{ borderTop: '1px solid rgba(0,0,0,0.07)', color: 'var(--muted)' }}>
                       Aun no hay interesados en este articulo
                     </div>
                   )}

@@ -64,16 +64,16 @@ export default function UpdatePasswordPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--cream)' }}>
         <div className="max-w-md w-full">
-          <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+          <div className="bg-white rounded-2xl p-8 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="text-xl font-bold text-secondary mb-2">Contraseña actualizada</h2>
-            <p className="text-gray-600">
+            <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--ink)' }}>Contraseña actualizada</h2>
+            <p style={{ color: 'var(--muted)' }}>
               Redirigiendo al login...
             </p>
           </div>
@@ -84,19 +84,23 @@ export default function UpdatePasswordPage() {
 
   if (tokenExpired) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--cream)' }}>
         <div className="max-w-md w-full">
-          <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+          <div className="bg-white rounded-2xl p-8 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-bold text-secondary mb-2">Enlace expirado</h2>
-            <p className="text-gray-600 mb-4">
+            <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--ink)' }}>Enlace expirado</h2>
+            <p className="mb-4" style={{ color: 'var(--muted)' }}>
               El enlace de recuperacion ha expirado. Solicita uno nuevo.
             </p>
-            <Link href="/reset-password" className="inline-block bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+            <Link
+              href="/reset-password"
+              className="inline-block text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+              style={{ background: 'var(--coral)' }}
+            >
               Solicitar nuevo enlace
             </Link>
           </div>
@@ -106,14 +110,14 @@ export default function UpdatePasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--cream)' }}>
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">SomosLagos</h1>
-          <p className="text-gray-600 mt-2">Establece tu nueva contraseña</p>
+          <h1 className="text-4xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>SomosLagos</h1>
+          <p className="mt-2" style={{ color: 'var(--muted)' }}>Establece tu nueva contraseña</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-2xl p-8" style={{ boxShadow: 'var(--shadow-card)' }}>
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
@@ -122,7 +126,7 @@ export default function UpdatePasswordPage() {
             )}
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-soft)' }}>
                 Nueva contraseña
               </label>
               <input
@@ -130,18 +134,19 @@ export default function UpdatePasswordPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 rounded-xl focus:outline-none"
+                style={{ border: '1px solid rgba(0,0,0,0.15)', color: 'var(--ink)' }}
                 placeholder="••••••••"
                 required
                 disabled={loading}
               />
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
                 Mínimo 12 caracteres, mayúsculas, minúsculas, números y símbolos
               </p>
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-soft)' }}>
                 Confirmar contraseña
               </label>
               <input
@@ -149,7 +154,8 @@ export default function UpdatePasswordPage() {
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 rounded-xl focus:outline-none"
+                style={{ border: '1px solid rgba(0,0,0,0.15)', color: 'var(--ink)' }}
                 placeholder="••••••••"
                 required
                 disabled={loading}
@@ -159,14 +165,15 @@ export default function UpdatePasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full text-white font-semibold py-3 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: 'var(--coral)' }}
             >
               {loading ? 'Actualizando...' : 'Actualizar contraseña'}
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-600">
-            <Link href="/login" className="text-primary hover:text-primary-dark font-semibold">
+          <div className="mt-6 text-center text-sm">
+            <Link href="/login" className="font-semibold" style={{ color: 'var(--coral)' }}>
               Volver al login
             </Link>
           </div>

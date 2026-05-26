@@ -13,15 +13,15 @@ export const metadata: Metadata = {
 
 export default function TerminosPage() {
   return (
-    <main className="min-h-screen bg-surface py-12">
+    <main className="min-h-screen py-12" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 max-w-3xl">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
-          <h1 className="text-3xl font-bold text-secondary mb-2">Terminos y Condiciones</h1>
-          <p className="text-sm text-gray-400 mb-8">Ultima actualizacion: 1 de marzo de 2026</p>
+        <div className="bg-white rounded-2xl p-8 md:p-12" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.06)' }}>
+          <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Terminos y Condiciones</h1>
+          <p className="text-sm mb-8" style={{ color: 'var(--muted)' }}>Ultima actualizacion: 1 de marzo de 2026</p>
 
-          <div className="prose prose-gray max-w-none space-y-6 text-sm leading-relaxed text-gray-700">
+          <div className="prose prose-gray max-w-none space-y-6 text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">1. Aceptacion de los Terminos</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>1. Aceptacion de los Terminos</h2>
               <p>
                 Al acceder y utilizar la plataforma <strong>SomosLagos</strong> (www.somoslagos.com.mx),
                 usted acepta estos Terminos y Condiciones en su totalidad. Si no esta de acuerdo con
@@ -30,7 +30,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">2. Descripcion del Servicio</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>2. Descripcion del Servicio</h2>
               <p>
                 SomosLagos es una plataforma digital que conecta negocios locales con la comunidad de
                 Lagos de Moreno, Jalisco. Ofrecemos:
@@ -45,7 +45,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">3. Registro de Usuarios</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>3. Registro de Usuarios</h2>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Debe ser mayor de 18 anos para registrarse</li>
                 <li>La informacion proporcionada debe ser veraz y actualizada</li>
@@ -56,7 +56,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">4. Registro de Negocios</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>4. Registro de Negocios</h2>
               <ul className="list-disc pl-5 space-y-1">
                 <li>El negocio registrado debe operar legalmente en Lagos de Moreno o zona metropolitana</li>
                 <li>La informacion del negocio (nombre, direccion, telefono, fotos) sera publica</li>
@@ -67,7 +67,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">5. Marketplace</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>5. Marketplace</h2>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Los articulos publicados deben ser legales y cumplir con la legislacion mexicana</li>
                 <li>SomosLagos <strong>no interviene</strong> en las transacciones entre compradores y vendedores</li>
@@ -78,7 +78,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">6. Contenido Prohibido</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>6. Contenido Prohibido</h2>
               <p>Queda estrictamente prohibido publicar:</p>
               <ul className="list-disc pl-5 space-y-1 mt-2">
                 <li>Contenido ilegal, difamatorio, amenazante o discriminatorio</li>
@@ -95,7 +95,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">7. Opiniones y Calificaciones</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>7. Opiniones y Calificaciones</h2>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Las opiniones deben reflejar experiencias reales con el negocio</li>
                 <li>No se permiten opiniones falsas, difamatorias o con lenguaje ofensivo</li>
@@ -105,7 +105,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">8. Propiedad Intelectual</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>8. Propiedad Intelectual</h2>
               <p>
                 El diseno, codigo, logotipos y contenido original de SomosLagos son propiedad de sus creadores
                 y estan protegidos por las leyes de propiedad intelectual de Mexico.
@@ -117,7 +117,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">9. Pagos y Suscripciones</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>9. Pagos y Suscripciones</h2>
               <ul className="list-disc pl-5 space-y-1">
                 <li>El plan Gratis no tiene costo y no requiere pago</li>
                 <li>Los planes Pro y Avanzado requieren pago mensual segun los precios publicados</li>
@@ -128,7 +128,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">10. Limitacion de Responsabilidad</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>10. Limitacion de Responsabilidad</h2>
               <p>
                 SomosLagos actua como intermediario tecnologico y <strong>no se hace responsable</strong> de:
               </p>
@@ -142,7 +142,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">11. Cancelacion de Cuenta</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>11. Cancelacion de Cuenta</h2>
               <p>
                 Usted puede solicitar la cancelacion de su cuenta en cualquier momento enviando un correo a{' '}
                 <strong>mauri.ragna@gmail.com</strong>. Al cancelar su cuenta:
@@ -155,7 +155,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">12. Ley Aplicable</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>12. Ley Aplicable</h2>
               <p>
                 Estos Terminos y Condiciones se rigen por las leyes de los Estados Unidos Mexicanos.
                 Para cualquier controversia derivada del uso de la plataforma, las partes se someten a la
@@ -164,7 +164,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">13. Modificaciones</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>13. Modificaciones</h2>
               <p>
                 SomosLagos se reserva el derecho de modificar estos Terminos y Condiciones en cualquier momento.
                 Las modificaciones seran publicadas en esta pagina y entraran en vigor inmediatamente.
@@ -173,7 +173,7 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-secondary mt-8 mb-3">14. Contacto</h2>
+              <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>14. Contacto</h2>
               <p>
                 Para cualquier duda o aclaracion sobre estos Terminos y Condiciones, puede contactarnos en:
               </p>
@@ -184,11 +184,11 @@ export default function TerminosPage() {
             </section>
           </div>
 
-          <div className="mt-10 pt-6 border-t border-gray-100 flex gap-4">
-            <Link href="/" className="text-sm text-primary hover:text-primary-dark font-medium">
+          <div className="mt-10 pt-6 flex gap-4" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+            <Link href="/" className="text-sm font-medium" style={{ color: 'var(--coral)' }}>
               ← Volver al inicio
             </Link>
-            <Link href="/aviso-de-privacidad" className="text-sm text-primary hover:text-primary-dark font-medium">
+            <Link href="/aviso-de-privacidad" className="text-sm font-medium" style={{ color: 'var(--coral)' }}>
               Aviso de Privacidad
             </Link>
           </div>

@@ -154,25 +154,25 @@ export default async function ListingDetailPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <main className="min-h-screen bg-surface">
+      <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
         {/* Breadcrumb */}
-        <div className="bg-white border-b border-gray-100">
+        <div className="bg-white" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
           <div className="container mx-auto px-4 py-3">
-            <nav className="text-sm text-gray-500 flex items-center gap-2">
-              <Link href="/marketplace" className="hover:text-primary transition-colors">Marketplace</Link>
+            <nav className="text-sm flex items-center gap-2" style={{ color: 'var(--muted)' }}>
+              <Link href="/marketplace" className="transition-colors hover:opacity-70">Marketplace</Link>
               <span>/</span>
               {typedListing.category && (
                 <>
                   <Link
                     href={`/marketplace?category=${typedListing.category.id}`}
-                    className="hover:text-primary transition-colors"
+                    className="transition-colors hover:opacity-70"
                   >
                     {typedListing.category.name}
                   </Link>
                   <span>/</span>
                 </>
               )}
-              <span className="text-gray-700 truncate">{typedListing.title}</span>
+              <span className="truncate" style={{ color: 'var(--ink-soft)' }}>{typedListing.title}</span>
             </nav>
           </div>
         </div>
@@ -205,7 +205,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
               </div>
 
               {/* Title */}
-              <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-2">{typedListing.title}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>{typedListing.title}</h1>
 
               {/* Price */}
               <div className="mb-4">
@@ -215,11 +215,11 @@ export default async function ListingDetailPage({ params }: PageProps) {
                   <span className="text-3xl font-bold text-purple-600">Intercambio</span>
                 ) : (
                   <div>
-                    <span className="text-3xl font-bold text-secondary">
+                    <span className="text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>
                       {formatCurrency(typedListing.price)}
                     </span>
                     {typedListing.price_type === 'negociable' && (
-                      <span className="text-sm text-gray-500 ml-2">{priceTypeLabel}</span>
+                      <span className="text-sm ml-2" style={{ color: 'var(--muted)' }}>{priceTypeLabel}</span>
                     )}
                   </div>
                 )}
@@ -228,45 +228,45 @@ export default async function ListingDetailPage({ params }: PageProps) {
               {/* Description */}
               {typedListing.description && (
                 <div className="mb-6">
-                  <h2 className="font-semibold text-secondary mb-2">Descripción</h2>
-                  <p className="text-gray-600 whitespace-pre-wrap leading-relaxed">{typedListing.description}</p>
+                  <h2 className="font-semibold mb-2" style={{ color: 'var(--ink)' }}>Descripción</h2>
+                  <p className="whitespace-pre-wrap leading-relaxed" style={{ color: 'var(--muted)' }}>{typedListing.description}</p>
                 </div>
               )}
 
               {/* Details */}
-              <div className="bg-white rounded-xl border border-gray-100 p-4 mb-6 space-y-2">
+              <div className="bg-white rounded-2xl p-4 mb-6 space-y-2" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.06)' }}>
                 {typedListing.location && (
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm" style={{ color: 'var(--muted)' }}>
                     <span className="mr-2 text-accent">&#128205;</span>
                     {typedListing.location}
                   </div>
                 )}
                 {typedListing.category && (
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm" style={{ color: 'var(--muted)' }}>
                     <span className="mr-2">{typedListing.category.icon}</span>
                     {typedListing.category.name}
                   </div>
                 )}
-                <div className="flex items-center text-sm text-gray-500">
+                <div className="flex items-center text-sm" style={{ color: 'var(--muted)' }}>
                   <span className="mr-2">&#128065;</span>
                   {typedListing.views} vista{typedListing.views !== 1 ? 's' : ''}
                 </div>
-                <div className="flex items-center text-sm text-gray-500">
+                <div className="flex items-center text-sm" style={{ color: 'var(--muted)' }}>
                   <span className="mr-2">&#128197;</span>
                   Publicado el {formatDate(typedListing.created_at)}
                 </div>
               </div>
 
               {/* Seller */}
-              <div className="bg-white rounded-xl border border-gray-100 p-4 mb-6">
-                <h3 className="font-semibold text-secondary mb-2">Vendedor</h3>
+              <div className="bg-white rounded-2xl p-4 mb-6" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                <h3 className="font-semibold mb-2" style={{ color: 'var(--ink)' }}>Vendedor</h3>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  <div className="w-10 h-10 text-white rounded-full flex items-center justify-center text-sm font-bold" style={{ background: 'linear-gradient(135deg,var(--coral),var(--gold))' }}>
                     {(typedListing.seller?.full_name || '?')[0].toUpperCase()}
                   </div>
                   <div>
-                    <p className="font-medium text-secondary">{typedListing.seller?.full_name || 'Usuario'}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="font-medium" style={{ color: 'var(--ink-soft)' }}>{typedListing.seller?.full_name || 'Usuario'}</p>
+                    <p className="text-xs" style={{ color: 'var(--muted)' }}>
                       Miembro desde {typedListing.seller?.created_at ? formatDate(typedListing.seller.created_at) : 'N/A'}
                       {sellerCount ? ` · ${sellerCount} artículo${sellerCount !== 1 ? 's' : ''}` : ''}
                     </p>
@@ -320,7 +320,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
           {/* Similar Listings */}
           {similar && similar.length > 0 && (
             <section className="mt-12">
-              <h2 className="text-xl font-bold text-secondary mb-6">Artículos similares</h2>
+              <h2 className="text-xl font-bold mb-6" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Artículos similares</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {(similar as MarketplaceListing[]).map((item) => (
                   <ListingCard key={item.id} listing={item} />

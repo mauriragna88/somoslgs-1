@@ -49,11 +49,11 @@ export default async function EditarListingPage({ params }: PageProps) {
     new Date(listing.featured_until) > new Date()
 
   return (
-    <main className="min-h-screen bg-surface">
+    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-2xl md:text-3xl font-bold text-secondary mb-2">Editar artículo</h1>
-          <p className="text-gray-500 mb-8">Modifica los detalles de tu publicación.</p>
+          <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Editar artículo</h1>
+          <p className="mb-8" style={{ color: 'var(--muted)' }}>Modifica los detalles de tu publicación.</p>
 
           <ListingForm
             categories={(categories || []) as MarketplaceCategory[]}

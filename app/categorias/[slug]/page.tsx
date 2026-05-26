@@ -226,7 +226,7 @@ export default async function CategoriaPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen pueblo-shell">
+    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
@@ -241,34 +241,34 @@ export default async function CategoriaPage({ params }: PageProps) {
       />
 
       {/* Header */}
-      <div className="bg-gradient-to-b from-pueblo-crema via-pueblo-crema/80 to-transparent border-b border-pueblo-canteraLight/30 py-8">
+      <div className="py-8" style={{ background: 'var(--cream)', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
         <div className="container mx-auto px-4">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-pueblo-terracotta/60 mb-4">
-            <Link href="/" className="hover:text-pueblo-cantera transition-colors">Inicio</Link>
+          <nav className="flex items-center gap-2 text-sm mb-4" style={{ color: 'var(--muted)' }}>
+            <Link href="/" className="hover:opacity-70 transition-opacity">Inicio</Link>
             <span>/</span>
-            <Link href="/categorias" className="hover:text-pueblo-cantera transition-colors">Categorias</Link>
+            <Link href="/categorias" className="hover:opacity-70 transition-opacity">Categorias</Link>
             <span>/</span>
-            <span className="text-pueblo-noche font-medium">{category.name}</span>
+            <span className="font-medium" style={{ color: 'var(--ink)' }}>{category.name}</span>
           </nav>
 
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-pueblo-canteraLight/50 to-pueblo-barroco/20 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--sand)' }}>
               <span className="text-2xl">{category.icon || '📁'}</span>
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-pueblo-noche">
+              <h1 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
                 {category.name} en Lagos de Moreno
               </h1>
-              <p className="text-pueblo-terracotta/70">
+              <p style={{ color: 'var(--muted)' }}>
                 {businesses.length} negocio{businesses.length !== 1 ? 's' : ''} encontrado{businesses.length !== 1 ? 's' : ''}
               </p>
             </div>
           </div>
 
           {/* SEO intro paragraph */}
-          <div className="pueblo-divider mb-4"></div>
-          <p className="text-sm text-pueblo-terracotta/70 max-w-3xl leading-relaxed">
+          <div className="h-px my-4" style={{ background: 'rgba(0,0,0,0.08)' }}></div>
+          <p className="text-sm max-w-3xl leading-relaxed" style={{ color: 'var(--muted)' }}>
             {intro}
           </p>
         </div>
@@ -289,18 +289,19 @@ export default async function CategoriaPage({ params }: PageProps) {
           </div>
         ) : (
           <div className="text-center py-16">
-            <div className="w-24 h-24 bg-pueblo-canteraLight/30 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--cream)' }}>
               <span className="text-5xl">{category.icon || '📁'}</span>
             </div>
-            <h2 className="text-2xl font-bold text-pueblo-noche mb-2">
+            <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--ink)' }}>
               No hay negocios en {category.name}
             </h2>
-            <p className="text-pueblo-terracotta/60 mb-6">
+            <p className="mb-6" style={{ color: 'var(--muted)' }}>
               Aun no hay negocios registrados en esta categoria
             </p>
             <Link
               href="/registrar-negocio"
-              className="inline-block px-6 py-3 bg-gradient-to-r from-pueblo-cantera to-pueblo-terracotta text-pueblo-crema font-semibold rounded-xl hover:shadow-pueblo-soft transition-all"
+              className="inline-block px-6 py-3 text-white font-semibold rounded-xl transition-all"
+              style={{ background: 'var(--coral)' }}
             >
               Registrar mi negocio
             </Link>
@@ -310,16 +311,17 @@ export default async function CategoriaPage({ params }: PageProps) {
         {/* Other Categories */}
         {allCategories && allCategories.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-xl font-bold text-pueblo-noche mb-4">Otras categorias</h2>
+            <h2 className="text-xl font-bold mb-4" style={{ color: 'var(--ink)' }}>Otras categorias</h2>
             <div className="flex flex-wrap gap-3">
               {allCategories.map((cat) => (
                 <Link
                   key={cat.id}
                   href={`/categorias/${cat.slug}`}
-                  className="flex items-center gap-2 px-4 py-2.5 pueblo-card rounded-full hover:shadow-pueblo-soft transition-all text-sm"
+                  className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full transition-all text-sm"
+                  style={{ boxShadow: 'var(--shadow-card)', color: 'var(--ink)' }}
                 >
                   <span>{cat.icon || '📁'}</span>
-                  <span className="font-medium text-pueblo-noche hover:text-pueblo-cantera">{cat.name}</span>
+                  <span className="font-medium">{cat.name}</span>
                 </Link>
               ))}
             </div>
@@ -328,19 +330,19 @@ export default async function CategoriaPage({ params }: PageProps) {
 
         {/* FAQ — SEO: People Also Ask */}
         <div className="mt-12">
-          <h2 className="text-xl font-bold text-pueblo-noche mb-4">
+          <h2 className="text-xl font-bold mb-4" style={{ color: 'var(--ink)' }}>
             Preguntas frecuentes sobre {category.name.toLowerCase()} en Lagos de Moreno
           </h2>
           <div className="space-y-3">
             {faqs.map((faq) => (
-              <details key={faq.q} className="group pueblo-card rounded-xl overflow-hidden">
-                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-pueblo-noche hover:text-pueblo-cantera transition-colors list-none [&::-webkit-details-marker]:hidden text-sm">
+              <details key={faq.q} className="group bg-white rounded-xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold transition-colors list-none [&::-webkit-details-marker]:hidden text-sm" style={{ color: 'var(--ink)' }}>
                   {faq.q}
-                  <svg className="w-4 h-4 text-pueblo-terracotta/50 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" style={{ color: 'var(--muted)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div className="px-5 pb-4 text-sm text-pueblo-terracotta/70 leading-relaxed">
+                <div className="px-5 pb-4 text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
                   {faq.a}
                 </div>
               </details>
@@ -349,16 +351,17 @@ export default async function CategoriaPage({ params }: PageProps) {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 bg-gradient-to-r from-pueblo-noche via-pueblo-terracotta to-pueblo-cantera rounded-2xl p-8 text-center text-pueblo-crema relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-pueblo-barroco/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div className="mt-12 rounded-2xl p-8 text-center text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg,var(--coral),#E2541F)' }}>
+          <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" style={{ background: 'rgba(255,255,255,0.1)' }}></div>
           <div className="relative">
             <h2 className="text-2xl font-bold mb-2">¿Tienes un negocio de {category.name.toLowerCase()}?</h2>
-            <p className="text-pueblo-crema/80 mb-6">
+            <p className="mb-6" style={{ color: 'rgba(255,255,255,0.85)' }}>
               Registrate gratis y aparece en esta pagina
             </p>
             <Link
               href="/registrar-negocio"
-              className="inline-block px-8 py-3 bg-pueblo-barroco text-pueblo-noche font-bold rounded-full hover:bg-pueblo-barroco/90 transition-colors shadow-pueblo-soft"
+              className="inline-block px-8 py-3 font-bold rounded-full transition-colors"
+              style={{ background: 'var(--gold)', color: 'var(--ink)' }}
             >
               Registrar mi Negocio GRATIS
             </Link>

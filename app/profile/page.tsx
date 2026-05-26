@@ -29,10 +29,10 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <h1 className="text-3xl font-bold text-secondary mb-2">Configuracion</h1>
-        <p className="text-gray-500 mb-8">Administra tu cuenta y preferencias</p>
+        <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Configuracion</h1>
+        <p className="mb-8" style={{ color: 'var(--muted)' }}>Administra tu cuenta y preferencias</p>
 
         <ProfileForm
           profile={profileData}

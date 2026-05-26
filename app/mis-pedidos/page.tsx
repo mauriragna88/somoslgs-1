@@ -58,19 +58,20 @@ export default async function MisPedidosPage() {
   const pastOrders = orders?.filter(o => !activeStatuses.includes(o.status)) || []
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-secondary mb-2">Mis Pedidos</h1>
-        <p className="text-gray-500 mb-8">Historial de todos tus pedidos</p>
+        <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Mis Pedidos</h1>
+        <p className="mb-8" style={{ color: 'var(--muted)' }}>Historial de todos tus pedidos</p>
 
         {!orders || orders.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-sm p-12 text-center">
+          <div className="bg-white rounded-2xl p-12 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
             <span className="text-6xl block mb-4">📦</span>
-            <h2 className="text-xl font-bold text-secondary mb-2">No tienes pedidos aun</h2>
-            <p className="text-gray-500 mb-6">Explora negocios locales y haz tu primer pedido</p>
+            <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--ink)' }}>No tienes pedidos aun</h2>
+            <p className="mb-6" style={{ color: 'var(--muted)' }}>Explora negocios locales y haz tu primer pedido</p>
             <Link
               href="/buscar"
-              className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-full transition-colors"
+              className="inline-flex items-center px-6 py-3 text-white font-semibold rounded-full transition-colors"
+              style={{ background: 'var(--coral)' }}
             >
               Explorar negocios
             </Link>
@@ -80,8 +81,8 @@ export default async function MisPedidosPage() {
             {/* Active Orders */}
             {activeOrders.length > 0 && (
               <section>
-                <h2 className="text-lg font-semibold text-secondary mb-4 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+                <h2 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: 'var(--ink)' }}>
+                  <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--coral)' }}></span>
                   Pedidos activos ({activeOrders.length})
                 </h2>
                 <div className="space-y-4">
@@ -95,7 +96,7 @@ export default async function MisPedidosPage() {
             {/* Past Orders */}
             {pastOrders.length > 0 && (
               <section>
-                <h2 className="text-lg font-semibold text-secondary mb-4">
+                <h2 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink)' }}>
                   Pedidos anteriores ({pastOrders.length})
                 </h2>
                 <div className="space-y-4">
@@ -150,9 +151,9 @@ function OrderCard({ order }: { order: Order }) {
   )
 
   return (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden ${borderColor}`}>
+    <div className={`bg-white rounded-2xl overflow-hidden ${borderColor}`} style={{ boxShadow: 'var(--shadow-card)' }}>
       {/* Header */}
-      <div className="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100">
+      <div className="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
         <div className="flex items-center gap-3">
           {order.business?.logo_url ? (
             <Image
@@ -163,8 +164,8 @@ function OrderCard({ order }: { order: Order }) {
               className="w-10 h-10 rounded-lg object-cover"
             />
           ) : (
-            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-              <span className="text-primary font-bold">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,107,53,0.1)' }}>
+              <span className="font-bold" style={{ color: 'var(--coral)' }}>
                 {order.business?.name?.[0]?.toUpperCase() || '?'}
               </span>
             </div>
@@ -173,14 +174,15 @@ function OrderCard({ order }: { order: Order }) {
             {order.business ? (
               <Link
                 href={`/negocios/${order.business.slug}`}
-                className="font-semibold text-secondary hover:text-primary transition-colors"
+                className="font-semibold transition-colors"
+                style={{ color: 'var(--ink)' }}
               >
                 {order.business.name}
               </Link>
             ) : (
-              <span className="font-semibold text-secondary">Negocio</span>
+              <span className="font-semibold" style={{ color: 'var(--ink)' }}>Negocio</span>
             )}
-            <div className="flex items-center gap-2 text-xs text-gray-500">
+            <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--muted)' }}>
               <span>{order.order_number}</span>
               <span>·</span>
               <span>{formatDateTime(order.created_at)}</span>
@@ -197,33 +199,33 @@ function OrderCard({ order }: { order: Order }) {
         <div className="space-y-2 mb-4">
           {order.order_items.map((item) => (
             <div key={item.id} className="flex justify-between text-sm">
-              <span className="text-gray-700">
+              <span style={{ color: 'var(--ink-soft)' }}>
                 {item.quantity}x {item.product_name}
               </span>
-              <span className="text-gray-500">{formatCurrency(item.subtotal)}</span>
+              <span style={{ color: 'var(--muted)' }}>{formatCurrency(item.subtotal)}</span>
             </div>
           ))}
         </div>
 
         {/* Totals breakdown */}
-        <div className="space-y-1 pt-3 border-t border-gray-100 text-sm">
-          <div className="flex justify-between text-gray-500">
+        <div className="space-y-1 pt-3 text-sm" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+          <div className="flex justify-between" style={{ color: 'var(--muted)' }}>
             <span>Subtotal</span>
             <span>{formatCurrency(order.subtotal)}</span>
           </div>
           {order.delivery_fee > 0 && (
-            <div className="flex justify-between text-gray-500">
+            <div className="flex justify-between" style={{ color: 'var(--muted)' }}>
               <span>Envio</span>
               <span>{formatCurrency(order.delivery_fee)}</span>
             </div>
           )}
           {order.service_fee > 0 && (
-            <div className="flex justify-between text-gray-500">
+            <div className="flex justify-between" style={{ color: 'var(--muted)' }}>
               <span>Servicio</span>
               <span>{formatCurrency(order.service_fee)}</span>
             </div>
           )}
-          <div className="flex justify-between font-bold text-secondary text-base pt-1">
+          <div className="flex justify-between font-bold text-base pt-1" style={{ color: 'var(--ink)' }}>
             <span>Total</span>
             <span>{formatCurrency(order.total)}</span>
           </div>
@@ -248,7 +250,7 @@ function OrderCard({ order }: { order: Order }) {
 
         {/* Action buttons */}
         {!isCancelled && !isCompleted && (
-          <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t border-gray-100">
+          <div className="flex flex-wrap gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
             {/* WhatsApp contact */}
             {order.business?.whatsapp && (
               <a
@@ -264,7 +266,8 @@ function OrderCard({ order }: { order: Order }) {
             {order.business?.slug && (
               <Link
                 href={`/negocios/${order.business.slug}`}
-                className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary-dark text-white text-sm font-medium rounded-lg transition-colors"
+                className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-2.5 text-white text-sm font-medium rounded-lg transition-colors"
+                style={{ background: 'var(--coral)' }}
               >
                 <span>🔄</span> Volver a Pedir
               </Link>
@@ -274,13 +277,14 @@ function OrderCard({ order }: { order: Order }) {
 
         {/* Completed/Cancelled message */}
         {isCompleted && (
-          <div className="mt-4 pt-4 border-t border-gray-100">
+          <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
             <div className="flex items-center justify-between">
               <p className="text-sm text-green-600 font-medium">✅ Pedido completado</p>
               {order.business?.slug && (
                 <Link
                   href={`/negocios/${order.business.slug}`}
-                  className="text-sm text-primary hover:underline font-medium"
+                  className="text-sm font-medium hover:underline"
+                  style={{ color: 'var(--coral)' }}
                 >
                   Volver a pedir
                 </Link>
@@ -289,7 +293,7 @@ function OrderCard({ order }: { order: Order }) {
           </div>
         )}
         {isCancelled && (
-          <div className="mt-4 pt-4 border-t border-gray-100">
+          <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
             <p className="text-sm text-red-600 font-medium">❌ Pedido cancelado</p>
           </div>
         )}
