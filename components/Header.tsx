@@ -21,7 +21,15 @@ export default function Header() {
   const [showMenu, setShowMenu] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [scrolled, setScrolled] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+
+  // Scroll listener for transparent → frosted glass transition
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     const supabase = createClient()
@@ -108,64 +116,87 @@ export default function Header() {
       .slice(0, 2)
   }
 
+  const NAV_LINKS = [
+    { label: 'Explorar', href: '/categorias' },
+    { label: 'Descubre Lagos', href: '/descubre' },
+    { label: 'Para negocios', href: '/registrar-negocio' },
+    { label: 'Qué Hacer', href: '/que-hacer-en-lagos-de-moreno' },
+    { label: 'Planes', href: '/planes' },
+  ]
+
   return (
     <>
-    <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? 'bg-[rgba(255,253,248,0.88)] backdrop-blur-xl shadow-sm py-3'
+            : 'bg-transparent py-4'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-6">
+
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <Image
               src="/logo.png"
               alt="SomosLagos"
-              width={44}
-              height={44}
-              className="w-10 h-10 md:w-11 md:h-11"
+              width={36}
+              height={36}
+              className="rounded-xl"
               priority
             />
-            <span className="text-xl font-bold hidden sm:inline">
-              <span className="text-secondary">Somos</span><span className="text-primary">Lagos</span>
-            </span>
+            <div className="flex flex-col leading-none">
+              <span
+                className="font-bold tracking-tight"
+                style={{ fontFamily: 'var(--display)', color: 'var(--ink)', fontSize: '18px' }}
+              >
+                Somos<span style={{ color: 'var(--coral)' }}>Lagos</span>
+              </span>
+              <span
+                className="font-semibold uppercase"
+                style={{ color: 'var(--muted)', fontSize: '9px', letterSpacing: '0.12em' }}
+              >
+                Pueblo mágico · MX
+              </span>
+            </div>
           </Link>
 
-          {/* Search Bar - Desktop */}
-          <div className="hidden md:block flex-1 max-w-xs mx-4">
-            <SmartSearch variant="header" />
-          </div>
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {NAV_LINKS.map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="px-3.5 py-2 rounded-full text-sm font-medium transition-colors hover:bg-black/5"
+                style={{ color: 'var(--ink-soft)' }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
 
-          {/* Desktop Nav + Auth */}
-          <div className="hidden md:flex items-center space-x-1">
-            <Link href="/categorias" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
-              Categorias
-            </Link>
-            <Link href="/marketplace" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
-              Marketplace
-            </Link>
-            <Link href="/que-hacer-en-lagos-de-moreno" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
-              Qué Hacer
-            </Link>
-            <Link href="/planes" className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary rounded-lg hover:bg-primary/5 transition-colors">
-              Planes
-            </Link>
-
-            <div className="w-px h-6 bg-gray-200 mx-2"></div>
-
+          {/* Desktop Auth Actions */}
+          <div className="hidden md:flex items-center gap-2">
             {loading ? (
-              <div className="w-24 h-9 bg-gray-100 animate-pulse rounded-lg"></div>
+              <div className="w-24 h-9 bg-black/10 animate-pulse rounded-full" />
             ) : user && profile ? (
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setShowMenu(!showMenu)}
-                  className="flex items-center space-x-2 px-3 py-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-2 px-2 py-1.5 rounded-full hover:bg-black/5 transition-colors"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark text-white rounded-full flex items-center justify-center text-xs font-semibold">
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
+                    style={{ background: 'var(--coral)' }}
+                  >
                     {getInitials(profile.full_name)}
                   </div>
-                  <span className="text-sm font-medium text-gray-700 max-w-[100px] truncate">
+                  <span className="text-sm font-medium max-w-[100px] truncate" style={{ color: 'var(--ink)' }}>
                     {profile.full_name.split(' ')[0]}
                   </span>
                   <svg
-                    className={`w-4 h-4 text-gray-400 transition-transform ${showMenu ? 'rotate-180' : ''}`}
+                    className={`w-4 h-4 transition-transform ${showMenu ? 'rotate-180' : ''}`}
+                    style={{ color: 'var(--ink-soft)' }}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -176,16 +207,25 @@ export default function Header() {
 
                 {showMenu && (
                   <>
-                    <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)}></div>
-                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50">
-                      <div className="px-4 py-3 border-b border-gray-100">
-                        <p className="text-sm font-semibold text-gray-900">{profile.full_name}</p>
-                        <p className="text-xs text-gray-500 capitalize">{profile.role.replace('_', ' ')}</p>
+                    <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
+                    <div
+                      className="absolute right-0 mt-2 w-56 py-1 z-50"
+                      style={{
+                        background: 'white',
+                        border: '1px solid var(--hairline)',
+                        boxShadow: 'var(--shadow-card)',
+                        borderRadius: '16px',
+                      }}
+                    >
+                      <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--hairline)' }}>
+                        <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{profile.full_name}</p>
+                        <p className="text-xs capitalize" style={{ color: 'var(--muted)' }}>{profile.role.replace('_', ' ')}</p>
                       </div>
 
                       <Link
                         href={getDashboardLink()}
-                        className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
+                        style={{ color: 'var(--ink)' }}
                         onClick={() => setShowMenu(false)}
                       >
                         <span className="mr-3">{profile.role === 'admin' ? '⚙️' : profile.role === 'business_owner' ? '📊' : '👤'}</span>
@@ -197,7 +237,8 @@ export default function Header() {
                       {profile.role === 'customer' && (
                         <Link
                           href="/registrar-negocio"
-                          className="flex items-center px-4 py-2.5 text-sm text-primary font-semibold hover:bg-primary/5 transition-colors"
+                          className="flex items-center px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-black/5"
+                          style={{ color: 'var(--coral)' }}
                           onClick={() => setShowMenu(false)}
                         >
                           <span className="mr-3">✨</span>
@@ -207,7 +248,8 @@ export default function Header() {
 
                       <Link
                         href="/mis-pedidos"
-                        className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
+                        style={{ color: 'var(--ink)' }}
                         onClick={() => setShowMenu(false)}
                       >
                         <span className="mr-3">📦</span>
@@ -216,14 +258,15 @@ export default function Header() {
 
                       <Link
                         href="/profile"
-                        className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
+                        style={{ color: 'var(--ink)' }}
                         onClick={() => setShowMenu(false)}
                       >
                         <span className="mr-3">⚙️</span>
                         Configuracion
                       </Link>
 
-                      <div className="border-t border-gray-100 my-1"></div>
+                      <div className="border-t my-1" style={{ borderColor: 'var(--hairline)' }} />
 
                       <button
                         onClick={handleLogout}
@@ -237,76 +280,62 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <div className="flex items-center space-x-2">
+              <>
                 <Link
                   href="/login"
-                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                  className="px-4 py-2 rounded-full text-sm font-medium border transition-colors hover:bg-black/5"
+                  style={{ borderColor: 'var(--hairline)', color: 'var(--ink-soft)' }}
                 >
-                  Entrar
+                  Iniciar sesión
                 </Link>
                 <Link
-                  href="/registro"
-                  className="px-5 py-2 text-sm font-semibold bg-gradient-to-r from-primary to-primary-dark text-white rounded-full transition-all shadow-sm hover:shadow-md hover:scale-105"
+                  href="/registrar-negocio"
+                  className="px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:opacity-90"
+                  style={{ background: 'var(--coral)' }}
                 >
-                  Registrarse
+                  + Registrar negocio
                 </Link>
-              </div>
+              </>
             )}
           </div>
 
-          {/* Mobile: Search + Login/Avatar + Hamburger */}
-          <div className="flex items-center space-x-1 md:hidden">
-            <Link
-              href="/buscar"
-              aria-label="Buscar"
-              className="p-2 text-gray-600 hover:text-primary rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </Link>
-
-            {/* Mobile: Direct login button or user avatar */}
-            {!loading && !user && (
-              <Link
-                href="/login"
-                className="px-3 py-1.5 text-xs font-semibold bg-primary text-white rounded-full hover:bg-primary-dark transition-colors"
+          {/* Mobile bar */}
+          <div className="flex md:hidden items-center gap-2">
+            {loading ? (
+              <div className="w-8 h-8 rounded-full bg-black/10 animate-pulse" />
+            ) : user ? (
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
+                style={{ background: 'var(--coral)' }}
               >
-                Entrar
+                {getInitials(profile?.full_name || '')}
+              </button>
+            ) : (
+              <Link
+                href="/registrar-negocio"
+                className="px-3.5 py-2 rounded-full text-sm font-semibold text-white"
+                style={{ background: 'var(--coral)' }}
+              >
+                Registrar
               </Link>
             )}
-            {!loading && user && profile && (
-              <Link
-                href={getDashboardLink()}
-                aria-label="Mi cuenta"
-                className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark text-white rounded-full flex items-center justify-center text-xs font-semibold"
-              >
-                {getInitials(profile.full_name)}
-              </Link>
-            )}
-
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? 'Cerrar menu' : 'Abrir menu'}
-              className="p-2 text-gray-600 hover:text-primary rounded-lg hover:bg-gray-100 transition-colors"
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-2 rounded-full hover:bg-black/5 transition-colors"
+              style={{ color: 'var(--ink)' }}
+              aria-label="Menú"
             >
-              {mobileMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+              </svg>
             </button>
           </div>
+
         </div>
-      </div>
+      </header>
 
-    </header>
-
-      {/* Mobile Menu - Full screen overlay (outside header to avoid sticky clipping) */}
+      {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <>
           {/* Backdrop */}
@@ -314,17 +343,24 @@ export default function Header() {
             className="md:hidden fixed inset-0 bg-black/30 z-[60]"
             onClick={() => setMobileMenuOpen(false)}
           />
-          {/* Menu panel */}
-          <div className="md:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white z-[70] shadow-2xl flex flex-col">
-            {/* Menu header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
-              <span className="text-lg font-bold">
-                <span className="text-secondary">Somos</span><span className="text-primary">Lagos</span>
+          {/* Drawer panel */}
+          <div
+            className="md:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm z-[70] shadow-2xl flex flex-col"
+            style={{ background: '#FFFDF8' }}
+          >
+            {/* Drawer header */}
+            <div
+              className="flex items-center justify-between px-4 py-3 border-b"
+              style={{ borderColor: 'var(--hairline)' }}
+            >
+              <span className="text-lg font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
+                Somos<span style={{ color: 'var(--coral)' }}>Lagos</span>
               </span>
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Cerrar menu"
-                className="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100"
+                className="p-2 rounded-full hover:bg-black/5 transition-colors"
+                style={{ color: 'var(--ink)' }}
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -334,61 +370,72 @@ export default function Header() {
 
             {/* Scrollable content */}
             <div className="flex-1 overflow-y-auto">
-              {/* Auth Section - FIRST so it's always visible */}
-              <div className="px-4 py-4 border-b border-gray-100 bg-gray-50/50">
-                {loading ? (
-                  <div className="h-12 bg-gray-100 animate-pulse rounded-lg"></div>
-                ) : user && profile ? (
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
-                        {getInitials(profile.full_name)}
+              {/* Auth Section */}
+              <div className="px-4 py-4 border-b" style={{ borderColor: 'var(--hairline)' }}>
+                <div
+                  className="rounded-2xl p-3"
+                  style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid var(--hairline)' }}
+                >
+                  {loading ? (
+                    <div className="h-12 bg-black/10 animate-pulse rounded-lg" />
+                  ) : user && profile ? (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold text-white flex-shrink-0"
+                          style={{ background: 'var(--coral)' }}
+                        >
+                          {getInitials(profile.full_name)}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold truncate" style={{ color: 'var(--ink)' }}>{profile.full_name}</p>
+                          <p className="text-xs capitalize" style={{ color: 'var(--muted)' }}>{profile.role.replace('_', ' ')}</p>
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold text-gray-900 truncate">{profile.full_name}</p>
-                        <p className="text-xs text-gray-500 capitalize">{profile.role.replace('_', ' ')}</p>
+                      <div className="flex gap-2">
+                        <Link
+                          href={getDashboardLink()}
+                          className="flex-1 text-center px-3 py-2 text-sm font-semibold text-white rounded-lg transition-colors hover:opacity-90"
+                          style={{ background: 'var(--coral)' }}
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {profile.role === 'admin' ? '⚙️ Admin Panel' :
+                           profile.role === 'business_owner' ? '📊 Mi Dashboard' :
+                           '👤 Mi Perfil'}
+                        </Link>
+                        <button
+                          onClick={handleLogout}
+                          className="px-3 py-2 text-sm font-medium text-red-600 border border-red-200 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          Salir
+                        </button>
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                  ) : (
+                    <div className="flex gap-3">
                       <Link
-                        href={getDashboardLink()}
-                        className="flex-1 text-center px-3 py-2 text-sm font-semibold bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors"
+                        href="/login"
+                        className="flex-1 text-center px-4 py-2.5 text-sm font-semibold rounded-lg border-2 transition-colors hover:bg-black/5"
+                        style={{ color: 'var(--coral)', borderColor: 'var(--coral)' }}
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        {profile.role === 'admin' ? '⚙️ Admin Panel' :
-                         profile.role === 'business_owner' ? '📊 Mi Dashboard' :
-                         '👤 Mi Perfil'}
+                        Iniciar sesión
                       </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="px-3 py-2 text-sm font-medium text-red-600 border border-red-200 hover:bg-red-50 rounded-lg transition-colors"
+                      <Link
+                        href="/registrar-negocio"
+                        className="flex-1 text-center px-4 py-2.5 text-sm font-semibold text-white rounded-lg transition-colors hover:opacity-90"
+                        style={{ background: 'var(--coral)' }}
+                        onClick={() => setMobileMenuOpen(false)}
                       >
-                        Salir
-                      </button>
+                        Registrar negocio
+                      </Link>
                     </div>
-                  </div>
-                ) : (
-                  <div className="flex gap-3">
-                    <Link
-                      href="/login"
-                      className="flex-1 text-center px-4 py-2.5 text-sm font-semibold text-primary border-2 border-primary rounded-lg hover:bg-primary/5 transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Entrar
-                    </Link>
-                    <Link
-                      href="/registro"
-                      className="flex-1 text-center px-4 py-2.5 text-sm font-semibold bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Registrarse
-                    </Link>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
 
-              {/* Search */}
-              <div className="px-4 py-3 border-b border-gray-100">
+              {/* Mobile Search */}
+              <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--hairline)' }}>
                 <SmartSearch variant="mobile" onNavigate={() => setMobileMenuOpen(false)} />
               </div>
 
@@ -396,35 +443,48 @@ export default function Header() {
               <nav className="py-2">
                 <Link
                   href="/categorias"
-                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                  style={{ color: 'var(--ink)' }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <span className="text-lg">📂</span> Categorias
+                  <span className="text-lg">📂</span> Explorar
+                </Link>
+                <Link
+                  href="/descubre"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                  style={{ color: 'var(--ink)' }}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="text-lg">🏛️</span> Descubre Lagos
                 </Link>
                 <Link
                   href="/buscar"
-                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                  style={{ color: 'var(--ink)' }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <span className="text-lg">🔍</span> Explorar Negocios
                 </Link>
                 <Link
                   href="/marketplace"
-                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                  style={{ color: 'var(--ink)' }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <span className="text-lg">🛒</span> Marketplace
                 </Link>
                 <Link
                   href="/que-hacer-en-lagos-de-moreno"
-                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                  style={{ color: 'var(--ink)' }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <span className="text-lg">🏛️</span> Qué Hacer
+                  <span className="text-lg">🗺️</span> Qué Hacer
                 </Link>
                 <Link
                   href="/planes"
-                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                  style={{ color: 'var(--ink)' }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <span className="text-lg">💎</span> Planes
@@ -432,7 +492,8 @@ export default function Header() {
                 {user && (
                   <Link
                     href="/profile"
-                    className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                    style={{ color: 'var(--ink)' }}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <span className="text-lg">⚙️</span> Configuracion
@@ -441,7 +502,8 @@ export default function Header() {
                 {!loading && !user && (
                   <Link
                     href="/registrar-negocio"
-                    className="flex items-center gap-3 px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition-colors"
+                    className="flex items-center gap-3 px-5 py-3 text-sm font-semibold transition-colors hover:opacity-90"
+                    style={{ color: 'var(--coral)' }}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <span className="text-lg">✨</span> Registra tu Negocio GRATIS
@@ -450,7 +512,8 @@ export default function Header() {
                 {user && profile?.role === 'customer' && (
                   <Link
                     href="/registrar-negocio"
-                    className="flex items-center gap-3 px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition-colors"
+                    className="flex items-center gap-3 px-5 py-3 text-sm font-semibold transition-colors hover:opacity-90"
+                    style={{ color: 'var(--coral)' }}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <span className="text-lg">✨</span> Registra tu Negocio GRATIS
@@ -458,27 +521,27 @@ export default function Header() {
                 )}
                 {user && profile?.role === 'admin' && (
                   <>
-                    <div className="border-t border-gray-200 my-1"></div>
-                    <p className="px-5 py-2 text-xs font-semibold text-gray-400 uppercase">Admin</p>
-                    <Link href="/admin/negocios" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                    <div className="border-t my-1" style={{ borderColor: 'var(--hairline)' }} />
+                    <p className="px-5 py-2 text-xs font-semibold uppercase" style={{ color: 'var(--muted)' }}>Admin</p>
+                    <Link href="/admin/negocios" className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5" style={{ color: 'var(--ink)' }} onClick={() => setMobileMenuOpen(false)}>
                       <span className="text-lg">🏪</span> Negocios
                     </Link>
-                    <Link href="/admin/usuarios" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/admin/usuarios" className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5" style={{ color: 'var(--ink)' }} onClick={() => setMobileMenuOpen(false)}>
                       <span className="text-lg">👥</span> Usuarios
                     </Link>
-                    <Link href="/admin/pagos" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/admin/pagos" className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5" style={{ color: 'var(--ink)' }} onClick={() => setMobileMenuOpen(false)}>
                       <span className="text-lg">💳</span> Pagos
                     </Link>
-                    <Link href="/admin/categorias" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/admin/categorias" className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5" style={{ color: 'var(--ink)' }} onClick={() => setMobileMenuOpen(false)}>
                       <span className="text-lg">📂</span> Categorias
                     </Link>
-                    <Link href="/admin/publicidad" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/admin/publicidad" className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5" style={{ color: 'var(--ink)' }} onClick={() => setMobileMenuOpen(false)}>
                       <span className="text-lg">📢</span> Publicidad
                     </Link>
-                    <Link href="/admin/marketplace" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/admin/marketplace" className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5" style={{ color: 'var(--ink)' }} onClick={() => setMobileMenuOpen(false)}>
                       <span className="text-lg">🛒</span> Marketplace Admin
                     </Link>
-                    <Link href="/admin/blog" className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/admin/blog" className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5" style={{ color: 'var(--ink)' }} onClick={() => setMobileMenuOpen(false)}>
                       <span className="text-lg">✍️</span> Blog
                     </Link>
                   </>
