@@ -227,23 +227,6 @@ export default async function HomePage() {
         catCount={catCount}
       />
 
-      {/* Lateral banners (desktop xl+ only) */}
-      <div className="hidden xl:block fixed left-2 top-1/2 -translate-y-1/2 z-30 w-[130px]">
-        <BannerDisplay placement="home_left" />
-      </div>
-      <div className="hidden xl:block fixed right-2 top-1/2 -translate-y-1/2 z-30 w-[130px]">
-        <BannerDisplay placement="home_right" />
-      </div>
-
-      {/* Banner: Home Top */}
-      <div className="container mx-auto px-4 py-6" style={{ background: 'var(--ivory)' }}>
-        <BannerDisplay placement="home_top" />
-      </div>
-
-      {/* PWA install prompt */}
-      <div className="container mx-auto px-4 pb-2" style={{ background: 'var(--ivory)' }}>
-        <PWAInstallInline variant="hero" />
-      </div>
 
       {/* ═══════════════════════════════════════════════════════════
           2. CATEGORIES — What are you looking for?
@@ -746,11 +729,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Banner: Home Middle */}
-      <div className="container mx-auto px-4 py-6">
-        <BannerDisplay placement="home_middle" />
-      </div>
-
       {/* ═══════════════════════════════════════════════════════════
           7. COMMERCE / WHATSAPP
       ═══════════════════════════════════════════════════════════ */}
@@ -1177,13 +1155,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Mobile banners */}
-      <div className="xl:hidden container mx-auto px-4 py-4">
-        <BannerDisplay placement="home_left" forceHorizontal />
-      </div>
-      <div className="xl:hidden container mx-auto px-4 pb-4">
-        <BannerDisplay placement="home_right" forceHorizontal />
-      </div>
     </main>
   )
 }

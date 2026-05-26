@@ -1,7 +1,7 @@
 'use client'
-import { useState } from 'react'
 import SearchForm from '@/components/home/SearchForm'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Category { id: string; name: string; icon: string; slug: string }
 interface HeroVideoScrollProps {
@@ -11,38 +11,21 @@ interface HeroVideoScrollProps {
 }
 
 export default function HeroVideoScroll({ categories, businessCount, catCount }: HeroVideoScrollProps) {
-  const [videoError, setVideoError] = useState(false)
-
   return (
     <section className="relative h-screen min-h-[600px] overflow-hidden">
-      {/* Video background */}
-      {!videoError ? (
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/assets/lagos-city-build.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/tourism/parroquia.jpeg"
-          onError={() => setVideoError(true)}
-          style={{ filter: 'brightness(0.65)' }}
-        />
-      ) : (
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: 'url(/tourism/parroquia.jpeg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            filter: 'brightness(0.65)',
-          }}
-        />
-      )}
+      {/* Hero background image */}
+      <Image
+        src="/tourism/panoramica-lagos.jpg"
+        alt="Lagos de Moreno, Jalisco — Pueblo Mágico"
+        fill
+        sizes="100vw"
+        className="object-cover"
+        priority
+        style={{ filter: 'brightness(0.6)' }}
+      />
 
-      {/* Gradient overlay — darkens bottom for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)] via-[var(--ink)]/30 to-transparent" />
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)] via-[var(--ink)]/20 to-transparent" />
 
       {/* Content */}
       <div className="relative h-full flex flex-col items-center justify-center px-4 text-center">
