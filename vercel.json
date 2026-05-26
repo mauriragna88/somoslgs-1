@@ -1,13 +1,10 @@
 {
   "version": 2,
   "builds": [
-    { "src": "somoslagos4/index.html", "use": "@vercel/static" },
-    { "src": "somoslagos4/styles.css", "use": "@vercel/static" },
-    { "src": "somoslagos4/assets/**", "use": "@vercel/static" }
+    { "src": "somoslagos4/**/*", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/styles.css", "dest": "/somoslagos4/styles.css" },
-    { "src": "/assets/(.*)", "dest": "/somoslagos4/assets/$1" },
-    { "src": "/(.*)", "dest": "/somoslagos4/index.html" }
+    { "src": "/", "dest": "/somoslagos4/index.html" },
+    { "src": "/(.*)", "dest": "/somoslagos4/$1" }
   ]
 }
