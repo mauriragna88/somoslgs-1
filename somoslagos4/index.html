@@ -1,0 +1,1363 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SomosLagos · El punto digital de Lagos de Moreno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============== HEADER ============== -->
+<header class="site-header" id="siteHeader">
+  <div class="container header-row">
+    <a href="#" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>
+        Somos<span style="color:var(--coral)">Lagos</span>
+        <small>Pueblo mágico · MX</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#categorias">Explorar</a>
+      <a href="#descubre">Descubre Lagos</a>
+      <a href="#planes">Para negocios</a>
+      <a href="#mapa">Zonas</a>
+      <a href="#ayuda">Ayuda</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn--ghost btn--sm">Iniciar sesión</button>
+      <button class="btn btn--coral btn--sm">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        Registrar negocio
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============== HERO (scroll-synced video) ============== -->
+<section class="hero" id="hero">
+  <div class="hero__pin">
+    <video class="hero__video"
+           id="heroVideo"
+           preload="auto"
+           muted
+           playsinline
+           webkit-playsinline
+           disablepictureinpicture
+           tabindex="-1"></video>
+    <div class="hero__tint"></div>
+
+    <!-- loading overlay while we fully buffer the video -->
+    <div class="hero__loader" id="heroLoader">
+      <div class="loader-card">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Cargando Lagos<span class="dots"><span>.</span><span>.</span><span>.</span></span></div>
+        <div class="loader-bar"><div class="loader-bar__fill" id="heroLoaderBar"></div></div>
+      </div>
+    </div>
+
+    <!-- progress steps on the right -->
+    <div class="hero__progress" aria-hidden="true">
+      <div class="step" data-step="0"><span class="dot"></span><span>Plaza</span></div>
+      <div class="step" data-step="1"><span class="dot"></span><span>Comercios</span></div>
+      <div class="step" data-step="2"><span class="dot"></span><span>Servicios</span></div>
+      <div class="step" data-step="3"><span class="dot"></span><span>Conectados</span></div>
+    </div>
+
+    <div class="hero__content">
+      <div class="hero__top">
+        <span class="hero__eyebrow">
+          <span class="pin">✦</span>
+          Hecho para Lagos de Moreno, Jalisco
+        </span>
+        <h1 class="hero__title">
+          Todo Lagos <em>vive</em><br>en un solo lugar
+        </h1>
+        <p class="hero__sub">
+          Explora negocios, comida, servicios, turismo y experiencias locales.
+          Si tienes negocio, regístralo gratis y haz que más personas te encuentren.
+        </p>
+
+        <form class="hero__search-wrap" onsubmit="event.preventDefault();">
+          <div class="hero__search">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="heroSearch" type="text" placeholder="Busca tacos, talleres, hoteles, neverías…" aria-label="Qué buscas" />
+            <span class="divider"></span>
+            <span class="where">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Lagos de Moreno
+            </span>
+            <button type="submit">
+              Buscar
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </form>
+
+        <div class="hero__chips">
+          <button class="chip"><span class="dot" style="background:var(--coral)"></span>Restaurantes</button>
+          <button class="chip"><span class="dot" style="background:var(--gold)"></span>Neverías</button>
+          <button class="chip"><span class="dot" style="background:var(--turquoise)"></span>Hoteles</button>
+          <button class="chip"><span class="dot" style="background:var(--green)"></span>Talleres</button>
+          <button class="chip"><span class="dot" style="background:var(--terracotta)"></span>Farmacias</button>
+          <button class="chip"><span class="dot" style="background:var(--buga)"></span>Belleza</button>
+          <button class="chip"><span class="dot" style="background:#25D366"></span>Pedir por WhatsApp</button>
+          <button class="chip"><span class="dot" style="background:var(--blue)"></span>Turismo</button>
+        </div>
+
+        <div class="hero__ctas">
+          <button class="btn btn--white">
+            Explorar negocios
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+          <button class="btn btn--ghost-light">Registrar mi negocio · gratis</button>
+        </div>
+      </div>
+
+      <div class="hero__floats" id="heroFloats">
+        <div class="hero-float" style="top: 28%; left: 24px;" data-appear="0.15">
+          <span class="thumb">🌮</span>
+          <div>
+            <div class="name">Las Antojadas</div>
+            <div class="meta">Tacos · Centro</div>
+          </div>
+          <span class="pulse"></span>
+        </div>
+        <div class="hero-float" style="top: 42%; right: 24px;" data-appear="0.30">
+          <span class="thumb t-blue">🏨</span>
+          <div>
+            <div class="name">Casa Cantera</div>
+            <div class="meta">Hotel · 4.8 ★</div>
+          </div>
+          <span class="pulse"></span>
+        </div>
+        <div class="hero-float" style="bottom: 28%; left: 24px;" data-appear="0.50">
+          <span class="thumb t-green">🍦</span>
+          <div>
+            <div class="name">Neverías Don Pancho</div>
+            <div class="meta">Postres · 4.9 ★</div>
+          </div>
+          <span class="pulse"></span>
+        </div>
+        <div class="hero-float" style="bottom: 14%; right: 24px;" data-appear="0.68">
+          <span class="thumb t-pink">💇‍♀️</span>
+          <div>
+            <div class="name">Estudio Bugambilia</div>
+            <div class="meta">Belleza · Centro</div>
+          </div>
+          <span class="pulse"></span>
+        </div>
+        <div class="hero-float" style="top: 60%; left: 24px;" data-appear="0.82">
+          <span class="thumb t-gold">☕</span>
+          <div>
+            <div class="name">Café Cantera 1563</div>
+            <div class="meta">Brunch · Galeana</div>
+          </div>
+          <span class="pulse"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__hint">
+      Scroll para descubrir
+      <span class="line"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CATEGORIES ============== -->
+<section class="section section--ivory" id="categorias">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__l">
+        <div class="eyebrow reveal"><span class="sq"></span>¿Qué buscas hoy?</div>
+        <h2 class="reveal reveal-d1">El directorio <em>vivo</em> de Lagos<br>en categorías claras.</h2>
+      </div>
+      <div class="section-head__r reveal reveal-d2">
+        Más de <strong>1,800 negocios locales</strong> agrupados por lo que la gente realmente busca cada día. Toca una categoría y descubre quién está cerca, abierto y con buenas reseñas.
+      </div>
+    </div>
+
+    <div class="cats">
+      <a href="#" class="cat cat--coral reveal">
+        <div class="cat__icon">🌮</div>
+        <div class="cat__title">Comer</div>
+        <div class="cat__sub">Tacos, birria, antojitos y más</div>
+        <div class="cat__count">412 negocios</div>
+        <div class="cat__deco"></div>
+      </a>
+      <a href="#" class="cat cat--gold reveal reveal-d1">
+        <div class="cat__icon">🛍️</div>
+        <div class="cat__title">Comprar</div>
+        <div class="cat__sub">Boutiques, mercados, tiendas</div>
+        <div class="cat__count">328 tiendas</div>
+        <div class="cat__deco"></div>
+      </a>
+      <a href="#" class="cat cat--turq reveal reveal-d2">
+        <div class="cat__icon">🛠️</div>
+        <div class="cat__title">Servicios</div>
+        <div class="cat__sub">Plomería, talleres, soluciones</div>
+        <div class="cat__count">214 servicios</div>
+        <div class="cat__deco"></div>
+      </a>
+      <a href="#" class="cat cat--green reveal reveal-d3">
+        <div class="cat__icon">💊</div>
+        <div class="cat__title">Salud</div>
+        <div class="cat__sub">Médicos, farmacias, clínicas</div>
+        <div class="cat__count">96 lugares</div>
+        <div class="cat__deco"></div>
+      </a>
+      <a href="#" class="cat cat--buga reveal reveal-d4">
+        <div class="cat__icon">💅</div>
+        <div class="cat__title">Belleza</div>
+        <div class="cat__sub">Salones, spas, barberías</div>
+        <div class="cat__count">142 estudios</div>
+        <div class="cat__deco"></div>
+      </a>
+      <a href="#" class="cat cat--blue reveal">
+        <div class="cat__icon">🏨</div>
+        <div class="cat__title">Hospedaje</div>
+        <div class="cat__sub">Hoteles, hostales, posadas</div>
+        <div class="cat__count">58 opciones</div>
+        <div class="cat__deco"></div>
+      </a>
+      <a href="#" class="cat cat--terr reveal reveal-d1">
+        <div class="cat__icon">📷</div>
+        <div class="cat__title">Turismo</div>
+        <div class="cat__sub">Rincones, rutas, miradores</div>
+        <div class="cat__count">37 lugares</div>
+        <div class="cat__deco"></div>
+      </a>
+      <a href="#" class="cat cat--rose reveal reveal-d2">
+        <div class="cat__icon">🎭</div>
+        <div class="cat__title">Entretenimiento</div>
+        <div class="cat__sub">Bares, eventos, cultura</div>
+        <div class="cat__count">88 lugares</div>
+        <div class="cat__deco"></div>
+      </a>
+      <a href="#" class="cat cat--wa reveal reveal-d3">
+        <div class="cat__icon">💬</div>
+        <div class="cat__title">Pide por WhatsApp</div>
+        <div class="cat__sub">Compra y recibe directo</div>
+        <div class="cat__count">512 negocios</div>
+        <div class="cat__deco"></div>
+      </a>
+      <a href="#" class="cat cat--ink reveal reveal-d4">
+        <div class="cat__icon">✨</div>
+        <div class="cat__title">Ver todas</div>
+        <div class="cat__sub">Explora el directorio completo</div>
+        <div class="cat__count">+1,800 negocios</div>
+        <div class="cat__deco"></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FEATURED BUSINESSES ============== -->
+<section class="section section--cream">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__l">
+        <div class="eyebrow reveal"><span class="sq" style="background:var(--gold)"></span>Negocios que mueven Lagos</div>
+        <h2 class="reveal reveal-d1">Los favoritos <em>de hoy</em>,<br>recomendados por vecinos.</h2>
+      </div>
+      <div class="section-head__r reveal reveal-d2">
+        Curados por la comunidad y posicionados por reseñas reales. Esta semana sobresalen estos lugares en el corazón del pueblo.
+      </div>
+    </div>
+
+    <div class="biz-filters reveal">
+      <button class="tab is-active">Destacados</button>
+      <button class="tab">Abiertos ahora</button>
+      <button class="tab">Nuevos</button>
+      <button class="tab">Mejor calificados</button>
+      <button class="tab">Cerca del Centro</button>
+      <button class="tab">Aceptan WhatsApp</button>
+    </div>
+
+    <div class="biz-grid">
+      <article class="biz reveal">
+        <div class="biz__media">
+          <div class="ph ph-stripe ph-coral" data-label="FOTO · Plato de birria"></div>
+          <span class="biz__badge"><span class="b-dot"></span>Abierto · cierra 10:30 PM</span>
+          <button class="biz__fav" aria-label="Guardar">♡</button>
+        </div>
+        <div class="biz__body">
+          <div class="biz__cat">Comida · Birriería</div>
+          <div class="biz__name">Birriería Doña Cuca</div>
+          <div class="biz__meta">Centro Histórico <span class="dot"></span> $ $ <span class="dot"></span> 12 min</div>
+          <div class="biz__rating"><span class="stars">★★★★★</span> 4.9 · 312 reseñas</div>
+          <div class="biz__row">
+            <button class="btn btn--primary">Ver perfil</button>
+            <button class="btn btn--wa btn--sm" aria-label="WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.337 11.891-11.893 11.891a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.711.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="biz reveal reveal-d1">
+        <div class="biz__media">
+          <div class="ph ph-stripe ph-turq" data-label="FOTO · Lobby del hotel"></div>
+          <span class="biz__badge"><span class="b-dot" style="background:var(--turquoise)"></span>Disponible este finde</span>
+          <button class="biz__fav">♡</button>
+        </div>
+        <div class="biz__body">
+          <div class="biz__cat">Hospedaje · Hotel boutique</div>
+          <div class="biz__name">Hotel Casa Cantera</div>
+          <div class="biz__meta">Av. Hidalgo <span class="dot"></span> $$$ <span class="dot"></span> 2 km</div>
+          <div class="biz__rating"><span class="stars">★★★★★</span> 4.8 · 187 reseñas</div>
+          <div class="biz__row">
+            <button class="btn btn--primary">Ver perfil</button>
+            <button class="btn btn--wa btn--sm">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.337 11.891-11.893 11.891a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.711.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="biz reveal reveal-d2">
+        <div class="biz__media">
+          <div class="ph ph-stripe ph-gold" data-label="FOTO · Conos de helado"></div>
+          <span class="biz__badge"><span class="b-dot" style="background:var(--gold)"></span>Recomendado · 9.7</span>
+          <button class="biz__fav">♡</button>
+        </div>
+        <div class="biz__body">
+          <div class="biz__cat">Postres · Nevería</div>
+          <div class="biz__name">Neverías Don Pancho</div>
+          <div class="biz__meta">Plaza Principal <span class="dot"></span> $ <span class="dot"></span> 5 min</div>
+          <div class="biz__rating"><span class="stars">★★★★★</span> 4.9 · 528 reseñas</div>
+          <div class="biz__row">
+            <button class="btn btn--primary">Ver perfil</button>
+            <button class="btn btn--wa btn--sm">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.337 11.891-11.893 11.891a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="biz reveal">
+        <div class="biz__media">
+          <div class="ph ph-stripe ph-green" data-label="FOTO · Mecánico trabajando"></div>
+          <span class="biz__badge"><span class="b-dot" style="background:var(--green)"></span>Atiende hoy mismo</span>
+          <button class="biz__fav">♡</button>
+        </div>
+        <div class="biz__body">
+          <div class="biz__cat">Servicios · Taller</div>
+          <div class="biz__name">Taller Mecánico El Roble</div>
+          <div class="biz__meta">Col. San Felipe <span class="dot"></span> $$ <span class="dot"></span> 8 min</div>
+          <div class="biz__rating"><span class="stars">★★★★★</span> 4.7 · 96 reseñas</div>
+          <div class="biz__row">
+            <button class="btn btn--primary">Ver perfil</button>
+            <button class="btn btn--wa btn--sm">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.337 11.891-11.893 11.891a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="biz reveal reveal-d1">
+        <div class="biz__media">
+          <div class="ph ph-stripe ph-buga" data-label="FOTO · Salón de belleza"></div>
+          <span class="biz__badge"><span class="b-dot" style="background:var(--buga)"></span>Cita el mismo día</span>
+          <button class="biz__fav">♡</button>
+        </div>
+        <div class="biz__body">
+          <div class="biz__cat">Belleza · Salón &amp; Spa</div>
+          <div class="biz__name">Estudio Bugambilia</div>
+          <div class="biz__meta">Centro <span class="dot"></span> $$ <span class="dot"></span> 6 min</div>
+          <div class="biz__rating"><span class="stars">★★★★★</span> 4.8 · 142 reseñas</div>
+          <div class="biz__row">
+            <button class="btn btn--primary">Ver perfil</button>
+            <button class="btn btn--wa btn--sm">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.337 11.891-11.893 11.891a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="biz reveal reveal-d2">
+        <div class="biz__media">
+          <div class="ph ph-stripe ph-terr" data-label="FOTO · Café de especialidad"></div>
+          <span class="biz__badge"><span class="b-dot" style="background:var(--terracotta)"></span>Nuevo en Lagos</span>
+          <button class="biz__fav">♡</button>
+        </div>
+        <div class="biz__body">
+          <div class="biz__cat">Café · Brunch</div>
+          <div class="biz__name">Café Cantera 1563</div>
+          <div class="biz__meta">Calle Galeana <span class="dot"></span> $$ <span class="dot"></span> 4 min</div>
+          <div class="biz__rating"><span class="stars">★★★★☆</span> 4.6 · 71 reseñas</div>
+          <div class="biz__row">
+            <button class="btn btn--primary">Ver perfil</button>
+            <button class="btn btn--wa btn--sm">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.337 11.891-11.893 11.891a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div style="display:flex; justify-content:center; margin-top:42px;">
+      <button class="btn btn--primary btn--lg">
+        Ver todos los negocios
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============== HOW IT WORKS ============== -->
+<section class="section section--ivory">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__l">
+        <div class="eyebrow reveal"><span class="sq" style="background:var(--turquoise)"></span>Así funciona SomosLagos</div>
+        <h2 class="reveal reveal-d1">Encontrar algo bueno en Lagos<br>nunca había sido tan <em>fácil</em>.</h2>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step__num">1</div>
+        <div class="step__title">Busca lo que necesitas</div>
+        <div class="step__body">Escribe lo que buscas o explora por categoría. Filtramos por cercanía, horario y reseñas.</div>
+        <div class="step__visual">
+          <div style="position:absolute; inset:18px; background:white; border-radius:14px; box-shadow:var(--shadow-soft); display:flex; align-items:center; padding:0 14px; gap:10px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <span style="color:var(--ink-soft); font-size:14px;">tacos al pastor cerca de mí</span>
+            <span style="margin-left:auto; background:var(--coral); color:white; padding:6px 12px; border-radius:999px; font-size:12px; font-weight:600;">Buscar</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal reveal-d1">
+        <div class="step__num">2</div>
+        <div class="step__title">Descubre negocios reales</div>
+        <div class="step__body">Mira fotos, menú, horarios y reseñas de la gente de Lagos. Todo verificado.</div>
+        <div class="step__visual">
+          <div style="position:absolute; inset:14px; display:flex; gap:8px;">
+            <div style="flex:1; background:linear-gradient(135deg,#FF8957,var(--coral)); border-radius:12px;"></div>
+            <div style="flex:1; background:linear-gradient(135deg,#FFD27A,var(--gold)); border-radius:12px;"></div>
+            <div style="flex:1; background:linear-gradient(135deg,#6DD9E8,var(--turquoise)); border-radius:12px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal reveal-d2">
+        <div class="step__num">3</div>
+        <div class="step__title">Contacta, visita o compra</div>
+        <div class="step__body">Llama, escribe por WhatsApp, abre el mapa o haz tu pedido. Sin intermediarios.</div>
+        <div class="step__visual">
+          <div style="position:absolute; left:14px; right:14px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px;">
+            <div style="background:white; border-radius:10px; padding:8px 12px; box-shadow:var(--shadow-soft); display:flex; align-items:center; gap:8px; font-size:12px;">
+              <span style="width:26px;height:26px;border-radius:999px;background:#25D366;color:white;display:grid;place-items:center;">💬</span>
+              <span><b>¡Hola!</b> ¿Tienen mesa para 4 esta noche?</span>
+            </div>
+            <div style="background:#DCF8C6; border-radius:10px; padding:8px 12px; align-self:flex-end; font-size:12px;">¡Claro! Te apartamos a las 8 ✨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== GROW BUSINESS ============== -->
+<section class="section section--sand" id="planes-intro">
+  <div class="container">
+    <div class="grow reveal">
+      <div>
+        <div class="eyebrow" style="color:var(--gold)"><span class="sq" style="background:var(--gold)"></span>Para dueños de negocio</div>
+        <h2>Si tu negocio no está aquí, estás dejando pasar <em>clientes</em>.</h2>
+        <p>Más de 30 mil personas buscan en Lagos cada semana. Pon tu negocio donde la ciudad ya está mirando: con perfil profesional, fotos, ubicación, WhatsApp y herramientas para vender.</p>
+
+        <div class="grow__benefits">
+          <div class="grow__benefit"><span class="check">✓</span>Aparece en búsquedas locales</div>
+          <div class="grow__benefit"><span class="check">✓</span>Perfil con fotos y menú</div>
+          <div class="grow__benefit"><span class="check">✓</span>Botón directo de WhatsApp</div>
+          <div class="grow__benefit"><span class="check">✓</span>Ubicación y horarios reales</div>
+          <div class="grow__benefit"><span class="check">✓</span>Reseñas verificadas</div>
+          <div class="grow__benefit"><span class="check">✓</span>Estadísticas de visitas</div>
+        </div>
+
+        <div class="grow__ctas">
+          <button class="btn btn--coral btn--lg">
+            Registrar mi negocio · gratis
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+          <button class="btn btn--ghost-light btn--lg">Ver planes</button>
+        </div>
+      </div>
+
+      <div style="position:relative;">
+        <div class="shop-preview">
+          <div class="shop-preview__head">
+            <div class="shop-preview__logo">B</div>
+            <div style="flex:1;">
+              <div class="shop-preview__title">Birriería Doña Cuca</div>
+              <div class="shop-preview__meta">
+                <span class="shop-preview__verified">✓ Verificado</span>
+                <span>Centro · Abierto ahora</span>
+              </div>
+            </div>
+          </div>
+          <div class="shop-preview__photos">
+            <div class="ph ph-stripe ph-coral"></div>
+            <div class="ph ph-stripe ph-gold"></div>
+            <div class="ph ph-stripe ph-terr"></div>
+            <div class="ph ph-stripe ph-green"></div>
+            <div class="ph ph-stripe ph-turq"></div>
+          </div>
+          <div class="shop-preview__row">
+            <div class="shop-preview__stat"><span class="v">+2,134</span><span class="l">visitas / mes</span></div>
+            <div class="shop-preview__stat"><span class="v">+89%</span><span class="l">clics a WhatsApp</span></div>
+          </div>
+          <div class="shop-preview__cta">
+            <button class="btn btn--primary">Ver menú</button>
+            <button class="btn btn--wa">WhatsApp</button>
+          </div>
+        </div>
+        <div class="notif" style="top:-12px; left:-22px; animation: float 4s ease-in-out infinite;">
+          <span class="nico" style="background:var(--green)">✓</span>
+          Nuevo cliente vía WhatsApp
+        </div>
+        <div class="notif" style="bottom:8px; right:-30px; animation: float 4s ease-in-out 1.5s infinite;">
+          <span class="nico" style="background:var(--gold); color:var(--ink)">★</span>
+          Nueva reseña 5 estrellas
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+  </style>
+</section>
+
+<!-- ============== DISCOVER LAGOS ============== -->
+<section class="section section--ivory" id="descubre">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__l">
+        <div class="eyebrow reveal"><span class="sq" style="background:var(--terracotta)"></span>Lagos para descubrir</div>
+        <h2 class="reveal reveal-d1">Un pueblo mágico <em>vivo</em>,<br>contado por su gente.</h2>
+      </div>
+      <div class="section-head__r reveal reveal-d2">
+        Cantera labrada, callecitas empedradas, sabores que no encuentras en otro lado. Rincones de Lagos para visitar, fotografiar y volver a contar.
+      </div>
+    </div>
+
+    <div class="discover-grid">
+      <a href="#" class="disc disc--tall reveal">
+        <div class="disc__media ph ph-stripe ph-terr" data-label="FOTO · Catedral al atardecer"></div>
+        <div class="disc__shade"></div>
+        <div class="disc__body">
+          <span class="disc__cat">Centro Histórico</span>
+          <div class="disc__title">Catedral de la Asunción</div>
+          <div class="disc__sub">Cantera rosa, 1700s · 12 lugares cercanos</div>
+        </div>
+      </a>
+      <a href="#" class="disc reveal reveal-d1">
+        <div class="disc__media ph ph-stripe ph-coral" data-label="FOTO · Callejón típico"></div>
+        <div class="disc__shade"></div>
+        <div class="disc__body">
+          <span class="disc__cat">Ruta a pie</span>
+          <div class="disc__title">Callejones del Centro</div>
+          <div class="disc__sub">8 paradas · 1.5 km</div>
+        </div>
+      </a>
+      <a href="#" class="disc reveal reveal-d2">
+        <div class="disc__media ph ph-stripe ph-gold" data-label="FOTO · Plaza principal"></div>
+        <div class="disc__shade"></div>
+        <div class="disc__body">
+          <span class="disc__cat">Plaza</span>
+          <div class="disc__title">Jardín Principal</div>
+          <div class="disc__sub">El corazón del pueblo</div>
+        </div>
+      </a>
+      <a href="#" class="disc reveal reveal-d3">
+        <div class="disc__media ph ph-stripe ph-turq" data-label="FOTO · Mercado típico"></div>
+        <div class="disc__shade"></div>
+        <div class="disc__body">
+          <span class="disc__cat">Mercado</span>
+          <div class="disc__title">Mercado Hidalgo</div>
+          <div class="disc__sub">Sabores locales · todos los días</div>
+        </div>
+      </a>
+      <a href="#" class="disc reveal reveal-d4">
+        <div class="disc__media ph ph-stripe ph-buga" data-label="FOTO · Festival cultural"></div>
+        <div class="disc__shade"></div>
+        <div class="disc__body">
+          <span class="disc__cat">Evento</span>
+          <div class="disc__title">Feria de Agosto</div>
+          <div class="disc__sub">Cultura, música y tradición</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== COMMERCE (Compra, pide y conecta) ============== -->
+<section class="section section--cream">
+  <div class="container">
+    <div class="commerce">
+      <div class="commerce__copy reveal">
+        <div class="eyebrow"><span class="sq" style="background:var(--green)"></span>Compra, pide y conecta</div>
+        <h2>Tu pedido a Lagos,<br>a un <em>mensaje</em> de distancia.</h2>
+        <p>Habla directamente con el negocio. Sin intermediarios, sin comisiones extrañas. Si tienen WhatsApp, ya casi tienes tu pedido en la puerta.</p>
+
+        <div class="commerce__feats">
+          <div class="commerce__feat">
+            <span class="fi" style="background:#25D366">💬</span>
+            <div><h4>Pide por WhatsApp</h4><p>Inicia la conversación con el botón directo del perfil del negocio.</p></div>
+          </div>
+          <div class="commerce__feat">
+            <span class="fi" style="background:var(--coral)">📋</span>
+            <div><h4>Mira menús y catálogos</h4><p>Cada negocio sube fotos, precios y disponibilidad actualizada.</p></div>
+          </div>
+          <div class="commerce__feat">
+            <span class="fi" style="background:var(--gold); color:var(--ink)">📍</span>
+            <div><h4>Llega, recoge o que te llegue</h4><p>El negocio decide cómo entregar. Tú decides cómo recibirlo.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal reveal-d1" style="display:flex; justify-content:center;">
+        <div class="phone">
+          <div class="phone__screen">
+            <div class="phone__bar">
+              <span class="pavatar"></span>
+              <div>
+                <div>Birriería Doña Cuca</div>
+                <div style="font-size:10px; opacity:0.7; font-weight:400;">en línea ahora</div>
+              </div>
+            </div>
+            <div class="phone__chat">
+              <div class="bubble bubble--in">¡Buenos días! ¿Cómo le puedo ayudar? 🌮</div>
+              <div class="bubble bubble--out">Quiero 1 kg de birria para llevar a las 2 pm</div>
+              <div class="bubble bubble--in bubble--card">
+                <div class="img ph ph-stripe ph-coral"></div>
+                <div class="meta">
+                  <b>1 kg de birria + 20 tortillas</b>
+                  $280 MXN · Listo a las 2:00 PM
+                </div>
+              </div>
+              <div class="bubble bubble--out">Perfecto, voy por ello 🙌</div>
+              <div class="bubble bubble--in">Le esperamos 💛 <span class="time">2:03 PM</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PLANS ============== -->
+<section class="section section--ivory" id="planes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__l">
+        <div class="eyebrow reveal"><span class="sq" style="background:var(--buga)"></span>Planes para negocios</div>
+        <h2 class="reveal reveal-d1">Empieza gratis. <em>Crece</em> cuando quieras.</h2>
+      </div>
+      <div class="section-head__r reveal reveal-d2">
+        Todos los planes incluyen perfil público, WhatsApp y mapa. Sube de nivel para destacar, vender más y aparecer arriba.
+      </div>
+    </div>
+
+    <div class="plans">
+      <div class="plan reveal">
+        <div class="plan__name">Gratis</div>
+        <div class="plan__sub">Empieza a aparecer</div>
+        <div class="plan__price">
+          <span class="plan__price-val">$0</span>
+          <span class="plan__price-cur">MXN</span>
+          <span class="plan__price-per">/ siempre</span>
+        </div>
+        <ul class="plan__feats">
+          <li>Perfil público básico</li>
+          <li>Hasta 5 fotos</li>
+          <li>WhatsApp y teléfono</li>
+          <li>Ubicación en mapa</li>
+        </ul>
+        <button class="btn btn--ghost">Empezar gratis</button>
+      </div>
+
+      <div class="plan reveal reveal-d1">
+        <div class="plan__name">Emprendedor</div>
+        <div class="plan__sub">Hazte ver mejor</div>
+        <div class="plan__price">
+          <span class="plan__price-val">$199</span>
+          <span class="plan__price-cur">MXN</span>
+          <span class="plan__price-per">/ mes</span>
+        </div>
+        <ul class="plan__feats">
+          <li>Todo del plan Gratis</li>
+          <li>Hasta 20 fotos + menú PDF</li>
+          <li>Badge de verificado</li>
+          <li>Estadísticas de visitas</li>
+        </ul>
+        <button class="btn btn--primary">Elegir Emprendedor</button>
+      </div>
+
+      <div class="plan plan--featured reveal reveal-d2">
+        <span class="plan__tag">Más popular</span>
+        <div class="plan__name">Pro</div>
+        <div class="plan__sub">Vende más</div>
+        <div class="plan__price">
+          <span class="plan__price-val">$499</span>
+          <span class="plan__price-cur" style="color:rgba(255,253,248,0.6)">MXN</span>
+          <span class="plan__price-per" style="color:rgba(255,253,248,0.6)">/ mes</span>
+        </div>
+        <ul class="plan__feats">
+          <li>Todo del plan Emprendedor</li>
+          <li>Posición prioritaria en categoría</li>
+          <li>Catálogo de productos</li>
+          <li>Promociones y banners</li>
+          <li>Soporte personalizado</li>
+        </ul>
+        <button class="btn btn--coral">Elegir Pro</button>
+      </div>
+
+      <div class="plan reveal reveal-d3">
+        <div class="plan__name">Avanzado</div>
+        <div class="plan__sub">Destaca como líder</div>
+        <div class="plan__price">
+          <span class="plan__price-val">$999</span>
+          <span class="plan__price-cur">MXN</span>
+          <span class="plan__price-per">/ mes</span>
+        </div>
+        <ul class="plan__feats">
+          <li>Todo del plan Pro</li>
+          <li>Aparece en el Home</li>
+          <li>Campañas dirigidas por zona</li>
+          <li>Gestor de cuenta dedicado</li>
+        </ul>
+        <button class="btn btn--ghost">Hablar con ventas</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== MAP / ZONES ============== -->
+<section class="section section--cream" id="mapa">
+  <div class="container">
+    <div class="map-wrap">
+      <div class="map-side">
+        <div class="eyebrow reveal"><span class="sq" style="background:var(--blue)"></span>Hecho para Lagos</div>
+        <h2 class="reveal reveal-d1">Tu ciudad,<br>en un solo <em>mapa</em>.</h2>
+        <p class="reveal reveal-d2">Recorre por colonias, mira qué negocios laten cerca y descubre nuevas zonas. SomosLagos pertenece a la ciudad y está hecho para ella.</p>
+
+        <div class="map-zones reveal reveal-d2" id="mapZones">
+          <button class="map-zone-chip is-active" data-zone="all"><span class="zc-dot" style="background:var(--ink)"></span>Todas las zonas</button>
+          <button class="map-zone-chip" data-zone="centro"><span class="zc-dot" style="background:var(--coral)"></span>Centro</button>
+          <button class="map-zone-chip" data-zone="sanfelipe"><span class="zc-dot" style="background:var(--gold)"></span>San Felipe</button>
+          <button class="map-zone-chip" data-zone="laluz"><span class="zc-dot" style="background:var(--turquoise)"></span>La Luz</button>
+          <button class="map-zone-chip" data-zone="moya"><span class="zc-dot" style="background:var(--green)"></span>Moya</button>
+          <button class="map-zone-chip" data-zone="cumbres"><span class="zc-dot" style="background:var(--buga)"></span>Las Cumbres</button>
+          <button class="map-zone-chip" data-zone="tecuan"><span class="zc-dot" style="background:var(--terracotta)"></span>El Tecuán</button>
+        </div>
+
+        <div class="map-stats">
+          <div class="map-stat reveal reveal-d3"><div class="v" id="mapBizCount">+1,800</div><div class="l" id="mapBizLabel">negocios registrados</div></div>
+          <div class="map-stat reveal reveal-d3"><div class="v">22</div><div class="l">zonas y colonias</div></div>
+          <div class="map-stat reveal reveal-d4"><div class="v">+30k</div><div class="l">búsquedas semanales</div></div>
+          <div class="map-stat reveal reveal-d4"><div class="v">100%</div><div class="l">de Lagos de Moreno</div></div>
+        </div>
+      </div>
+
+      <div class="map-canvas reveal reveal-d1" id="mapCanvas">
+        <!-- decorative city plan -->
+        <svg class="map-svg" viewBox="0 0 600 520" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="dots" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1" fill="rgba(31,41,55,0.08)"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="600" height="520" fill="url(#dots)"/>
+
+          <!-- river -->
+          <path d="M-20 230 C 100 190, 200 300, 320 250 S 540 210, 640 250"
+                fill="none" stroke="rgba(34,184,207,0.45)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M-20 230 C 100 190, 200 300, 320 250 S 540 210, 640 250"
+                fill="none" stroke="rgba(34,184,207,0.18)" stroke-width="16" stroke-linecap="round"/>
+
+          <!-- secondary road -->
+          <path d="M-20 380 C 90 340, 220 420, 340 380 S 540 360, 640 400"
+                fill="none" stroke="rgba(255,107,53,0.30)" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+
+          <!-- streets grid -->
+          <g stroke="rgba(31,41,55,0.10)" stroke-width="1.2">
+            <path d="M0 90 L600 90"/>
+            <path d="M0 160 L600 160"/>
+            <path d="M0 290 L600 290"/>
+            <path d="M0 350 L600 350"/>
+            <path d="M0 440 L600 440"/>
+            <path d="M80 0 L80 520"/>
+            <path d="M180 0 L180 520"/>
+            <path d="M280 0 L280 520"/>
+            <path d="M380 0 L380 520"/>
+            <path d="M480 0 L480 520"/>
+            <path d="M560 0 L560 520"/>
+          </g>
+
+          <!-- blocks (subtle filled shapes) -->
+          <g fill="rgba(245,185,66,0.10)">
+            <rect x="100" y="100" width="60" height="50" rx="4"/>
+            <rect x="200" y="180" width="70" height="100" rx="4"/>
+            <rect x="320" y="100" width="60" height="50" rx="4"/>
+            <rect x="420" y="180" width="60" height="100" rx="4"/>
+            <rect x="100" y="370" width="60" height="60" rx="4"/>
+            <rect x="500" y="370" width="60" height="60" rx="4"/>
+          </g>
+
+          <!-- plaza marker (Catedral) -->
+          <g>
+            <circle cx="295" cy="250" r="50" fill="rgba(245,185,66,0.18)"/>
+            <circle cx="295" cy="250" r="30" fill="rgba(245,185,66,0.32)"/>
+            <circle cx="295" cy="250" r="14" fill="#F5B942"/>
+            <path d="M295 240 v-12 M291 232 h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <text x="310" y="225" font-family="Bricolage Grotesque, sans-serif" font-size="13" font-weight="700" fill="#334155">Catedral</text>
+            <text x="310" y="240" font-family="DM Sans, sans-serif" font-size="10" fill="#64748B">Plaza Principal</text>
+          </g>
+
+          <!-- animated routes -->
+          <path id="route1" class="map-route" d="M144 168 Q 220 240 295 250 T 480 130"/>
+          <path id="route2" class="map-route r2" d="M295 250 Q 200 360 174 408 T 420 408"/>
+          <path id="route3" class="map-route r3" d="M295 250 Q 380 210 488 198 T 488 360"/>
+
+          <!-- compass -->
+          <g transform="translate(548,52)">
+            <circle r="24" fill="white" stroke="rgba(31,41,55,0.12)"/>
+            <path d="M0 -16 L4 0 L0 16 L-4 0 Z" fill="#FF6B35"/>
+            <text x="0" y="-28" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#334155">N</text>
+          </g>
+        </svg>
+
+        <!-- live activity badge -->
+        <div class="map-live">
+          <span class="live-dot"></span>
+          <span><b>1,824</b> negocios activos · ahora</span>
+        </div>
+
+        <!-- activity ticker -->
+        <div class="map-ticker">
+          <div class="map-ticker__head"><span class="ld"></span>Actividad en vivo</div>
+          <div class="map-ticker__list" id="mapTicker">
+            <!-- filled by JS -->
+          </div>
+        </div>
+
+        <!-- moving live dot -->
+        <div class="map-mover" id="mapMover" style="top:32%; left:24%;"></div>
+
+        <!-- zone pins -->
+        <div class="map-pin is-coral is-active"
+             data-zone="centro" data-name="Centro Histórico" data-icon="🌮"
+             data-meta="Comida · Cultura · Tradición" data-count="412"
+             style="top:32%; left:24%;">
+          <span class="mico" style="background:var(--coral)">🌮</span>
+          Centro <span class="mcnt">412</span>
+        </div>
+        <div class="map-pin is-gold"
+             data-zone="sanfelipe" data-name="San Felipe" data-icon="🛍️"
+             data-meta="Tiendas · Servicios · Familia" data-count="186"
+             style="top:58%; left:48%;">
+          <span class="mico" style="background:var(--gold); color:var(--ink)">🛍️</span>
+          San Felipe <span class="mcnt">186</span>
+        </div>
+        <div class="map-pin is-turq"
+             data-zone="laluz" data-name="La Luz" data-icon="🏨"
+             data-meta="Hospedaje · Restaurantes" data-count="94"
+             style="top:24%; left:68%;">
+          <span class="mico" style="background:var(--turquoise)">🏨</span>
+          La Luz <span class="mcnt">94</span>
+        </div>
+        <div class="map-pin is-green"
+             data-zone="moya" data-name="Moya" data-icon="🛠️"
+             data-meta="Talleres · Industria local" data-count="128"
+             style="top:74%; left:30%;">
+          <span class="mico" style="background:var(--green)">🛠️</span>
+          Moya <span class="mcnt">128</span>
+        </div>
+        <div class="map-pin is-buga"
+             data-zone="cumbres" data-name="Las Cumbres" data-icon="💅"
+             data-meta="Belleza · Bienestar · Cafés" data-count="76"
+             style="top:78%; left:72%;">
+          <span class="mico" style="background:var(--buga)">💅</span>
+          Las Cumbres <span class="mcnt">76</span>
+        </div>
+        <div class="map-pin is-terr"
+             data-zone="tecuan" data-name="El Tecuán" data-icon="📷"
+             data-meta="Turismo · Naturaleza" data-count="42"
+             style="top:38%; left:82%;">
+          <span class="mico" style="background:var(--terracotta)">📷</span>
+          El Tecuán <span class="mcnt">42</span>
+        </div>
+
+        <!-- detail panel -->
+        <div class="map-detail" id="mapDetail">
+          <div class="md-icon" id="mdIcon">🌮</div>
+          <div>
+            <div class="md-name" id="mdName">Centro Histórico</div>
+            <div class="md-sub">
+              <span id="mdMeta">Comida · Cultura · Tradición</span>
+              <span class="dot"></span>
+              <span><b id="mdCount">412</b> negocios</span>
+            </div>
+          </div>
+          <a href="#" class="md-cta">
+            Explorar
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== TRUST ============== -->
+<section class="section section--ivory">
+  <div class="container">
+    <div class="trust">
+      <div>
+        <div class="eyebrow reveal"><span class="sq" style="background:var(--green)"></span>Comunidad SomosLagos</div>
+        <h2 class="reveal reveal-d1">Hecho con Lagos,<br>para <em>Lagos</em>.</h2>
+        <p class="reveal reveal-d2" style="color:var(--ink-soft); font-size:17px; margin-top:12px;">
+          Negocios reales, vecinos reales, recomendaciones reales. Esta es la red local que el pueblo construye cada día.
+        </p>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-card reveal">
+          <div class="top">
+            <div class="avatar" style="background:linear-gradient(135deg,var(--coral),var(--gold));">M</div>
+            <div><div class="who">María Gpe.</div><div class="role">Birriería Doña Cuca</div></div>
+          </div>
+          <div class="quote">Desde que estoy en SomosLagos, llegan clientes nuevos cada semana. Ya nos buscan por WhatsApp.</div>
+        </div>
+        <div class="trust-card reveal reveal-d1">
+          <div class="top">
+            <div class="avatar" style="background:linear-gradient(135deg,var(--turquoise),var(--blue));">J</div>
+            <div><div class="who">Jorge R.</div><div class="role">Vecino · Centro</div></div>
+          </div>
+          <div class="quote">Por fin un solo lugar para encontrar lo de Lagos sin perderme entre redes. Lo uso a diario.</div>
+        </div>
+        <div class="trust-card reveal reveal-d2">
+          <div class="top">
+            <div class="avatar" style="background:linear-gradient(135deg,var(--buga),var(--coral));">A</div>
+            <div><div class="who">Ana L.</div><div class="role">Estudio Bugambilia</div></div>
+          </div>
+          <div class="quote">Las citas se me llenaron solas. La gente nos encuentra desde su celular.</div>
+        </div>
+        <div class="trust-card reveal reveal-d1">
+          <div class="top">
+            <div class="avatar" style="background:linear-gradient(135deg,var(--green),var(--turquoise));">R</div>
+            <div><div class="who">Roberto V.</div><div class="role">Taller El Roble</div></div>
+          </div>
+          <div class="quote">Antes dependía del boca a boca. Ahora me agendan por WhatsApp desde el celular.</div>
+        </div>
+        <div class="trust-card reveal reveal-d2">
+          <div class="top">
+            <div class="avatar" style="background:linear-gradient(135deg,var(--gold),var(--terracotta));">S</div>
+            <div><div class="who">Sofía M.</div><div class="role">Turista · CDMX</div></div>
+          </div>
+          <div class="quote">Llegué de visita y armé todo desde la app. Lagos por dentro, no sólo lo turístico.</div>
+        </div>
+        <div class="trust-card reveal reveal-d3">
+          <div class="top">
+            <div class="avatar" style="background:linear-gradient(135deg,var(--terracotta),var(--coral));">C</div>
+            <div><div class="who">Carlos H.</div><div class="role">Café Cantera 1563</div></div>
+          </div>
+          <div class="quote">Abrimos hace 3 meses y SomosLagos ya nos puso en el mapa. Literal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FINAL CTA ============== -->
+<section class="section section--ivory" style="padding-top:0;">
+  <div class="container">
+    <div class="final-cta reveal">
+      <div class="eyebrow" style="color:rgba(255,253,248,0.8); justify-content:center; display:flex;"><span class="sq" style="background:rgba(255,253,248,0.5)"></span>Tu lugar en Lagos te está esperando</div>
+      <h2>Haz que te <em>encuentren</em><br>donde todos buscan.</h2>
+      <p>Únete al nuevo punto digital de Lagos de Moreno. Sé parte de la comunidad que mueve al pueblo cada día.</p>
+      <div class="final-cta__ctas">
+        <button class="btn btn--white btn--lg">
+          Registrar mi negocio
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+        <button class="btn btn--ghost-light btn--lg">Explorar negocios</button>
+        <button class="btn btn--ghost-light btn--lg">Ver planes</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#" class="brand">
+          <span class="brand-mark"></span>
+          <span>Somos<span style="color:var(--coral)">Lagos</span><small>El punto digital de Lagos</small></span>
+        </a>
+        <p style="margin-top:18px; font-size:14px; max-width:38ch;">
+          Plataforma local independiente, hecha en Lagos de Moreno, Jalisco. Para que todo lo bueno del pueblo viva en un solo lugar.
+        </p>
+        <div style="margin-top:18px; display:flex; gap:8px;">
+          <a href="#" style="width:36px;height:36px;border-radius:999px;background:rgba(255,253,248,0.08);display:grid;place-items:center;">𝕀𝕘</a>
+          <a href="#" style="width:36px;height:36px;border-radius:999px;background:rgba(255,253,248,0.08);display:grid;place-items:center;">𝔽</a>
+          <a href="#" style="width:36px;height:36px;border-radius:999px;background:rgba(255,253,248,0.08);display:grid;place-items:center;">𝕋</a>
+          <a href="#" style="width:36px;height:36px;border-radius:999px;background:rgba(255,253,248,0.08);display:grid;place-items:center;">𝕐</a>
+        </div>
+      </div>
+      <div>
+        <h5>Explorar</h5>
+        <ul>
+          <li><a href="#">Comer</a></li>
+          <li><a href="#">Comprar</a></li>
+          <li><a href="#">Servicios</a></li>
+          <li><a href="#">Turismo</a></li>
+          <li><a href="#">Eventos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Negocios</h5>
+        <ul>
+          <li><a href="#">Registrar negocio</a></li>
+          <li><a href="#">Planes y precios</a></li>
+          <li><a href="#">Casos de éxito</a></li>
+          <li><a href="#">Centro de ayuda</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Comunidad</h5>
+        <ul>
+          <li><a href="#">Sobre nosotros</a></li>
+          <li><a href="#">Blog local</a></li>
+          <li><a href="#">Embajadores</a></li>
+          <li><a href="#">Sé colaborador</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="#">Términos</a></li>
+          <li><a href="#">Privacidad</a></li>
+          <li><a href="#">Cookies</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SomosLagos · Hecho con 💛 en Lagos de Moreno, Jal.</span>
+      <span>Pueblo mágico · México</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ====== Header scrolled state ====== */
+const header = document.getElementById('siteHeader');
+const onScroll = () => {
+  header.classList.toggle('is-scrolled', window.scrollY > 24);
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* ====== Scroll-synced hero video ======
+   Strategy: fully download the video as a Blob URL FIRST. Only then start
+   mapping scroll -> currentTime. This avoids the seek-stutter you get when
+   the moov atom isn't at the start and the browser hasn't buffered enough.
+   On every animation frame we lerp the video's currentTime toward the
+   scroll-derived target — much smoother than slamming currentTime on every
+   scroll event. */
+const hero = document.getElementById('hero');
+const video = document.getElementById('heroVideo');
+const progressSteps = document.querySelectorAll('.hero__progress .step');
+const loader = document.getElementById('heroLoader');
+const loaderBar = document.getElementById('heroLoaderBar');
+
+let videoReady = false;
+let videoDuration = 0;
+let targetTime = 0;
+let currentTime = 0;
+let seeking = false;
+let pendingSeek = null;
+
+/* 1) Download the video as Blob so we *know* it's fully buffered */
+async function preloadVideo() {
+  try {
+    const res = await fetch('assets/lagos-city-build.mp4');
+    if (!res.ok) throw new Error('fetch failed');
+    const total = +res.headers.get('content-length') || 0;
+    const reader = res.body.getReader();
+    const chunks = [];
+    let received = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+      received += value.length;
+      if (total) {
+        const pct = Math.min(1, received / total);
+        loaderBar.style.transform = `scaleX(${pct})`;
+      } else {
+        // indeterminate-ish — bump bar based on chunks count
+        loaderBar.style.transform = `scaleX(${Math.min(0.92, received / 2000000)})`;
+      }
+    }
+    const blob = new Blob(chunks, { type: 'video/mp4' });
+    const url = URL.createObjectURL(blob);
+    loaderBar.style.transform = 'scaleX(1)';
+    video.src = url;
+    await new Promise((resolve) => {
+      const ready = () => { video.removeEventListener('loadeddata', ready); resolve(); };
+      video.addEventListener('loadeddata', ready);
+      if (video.readyState >= 2) ready();
+    });
+    videoDuration = video.duration || 1;
+    try { video.currentTime = 0; } catch(e) {}
+    videoReady = true;
+    loader.classList.add('is-hidden');
+  } catch (err) {
+    // Fallback to direct src if fetch isn't allowed (e.g. file://)
+    console.warn('Blob preload failed, falling back to direct src', err);
+    video.src = 'assets/lagos-city-build.mp4';
+    await new Promise((resolve) => {
+      const ready = () => { video.removeEventListener('canplaythrough', ready); resolve(); };
+      video.addEventListener('canplaythrough', ready);
+    });
+    videoDuration = video.duration || 1;
+    videoReady = true;
+    loader.classList.add('is-hidden');
+  }
+}
+preloadVideo();
+
+/* 2) On scroll, just update the *target* time. */
+function updateTargetFromScroll() {
+  const rect = hero.getBoundingClientRect();
+  const totalScroll = hero.offsetHeight - window.innerHeight;
+  let p = (-rect.top) / totalScroll;
+  p = Math.max(0, Math.min(1, p));
+  // pull back slightly from the very end so the last frame stays visible
+  targetTime = p * Math.max(0, (videoDuration - 0.08));
+  // active steps
+  const stepIdx = Math.min(progressSteps.length - 1, Math.floor(p * progressSteps.length));
+  progressSteps.forEach((s, i) => s.classList.toggle('is-active', i <= stepIdx));
+}
+window.addEventListener('scroll', updateTargetFromScroll, { passive: true });
+window.addEventListener('resize', updateTargetFromScroll);
+
+/* 3) Each rAF, lerp the actual currentTime toward target. Only issue a new
+      seek when we're not already seeking, to avoid stacking up seek requests. */
+function tick() {
+  requestAnimationFrame(tick);
+  if (!videoReady) return;
+  // smooth toward target
+  const diff = targetTime - currentTime;
+  if (Math.abs(diff) < 0.005) return;
+  // Lerp factor: how quickly we catch up. Higher = snappier.
+  currentTime += diff * 0.22;
+  if (!seeking) {
+    try {
+      seeking = true;
+      video.currentTime = currentTime;
+    } catch(e) { seeking = false; }
+  } else {
+    pendingSeek = currentTime;
+  }
+}
+requestAnimationFrame(tick);
+
+video.addEventListener('seeking', () => { seeking = true; });
+video.addEventListener('seeked', () => {
+  seeking = false;
+  if (pendingSeek !== null) {
+    const t = pendingSeek;
+    pendingSeek = null;
+    try { seeking = true; video.currentTime = t; } catch(e) { seeking = false; }
+  }
+});
+
+/* iOS sometimes needs a play()+pause() bootstrap to unlock currentTime seeks */
+function nudgeVideoOnce() {
+  if (!video.src) { window.addEventListener('touchstart', nudgeVideoOnce, { once: true, passive: true }); return; }
+  const p = video.play();
+  if (p && typeof p.then === 'function') {
+    p.then(() => { video.pause(); }).catch(() => {});
+  } else { try { video.pause(); } catch(e) {} }
+  window.removeEventListener('touchstart', nudgeVideoOnce);
+  window.removeEventListener('click', nudgeVideoOnce);
+}
+window.addEventListener('touchstart', nudgeVideoOnce, { once: true, passive: true });
+window.addEventListener('click', nudgeVideoOnce, { once: true });
+
+updateTargetFromScroll();
+
+/* ====== Reveal-on-scroll ====== */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('is-in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ====== Filter tabs (visual only) ====== */
+document.querySelectorAll('.biz-filters .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.biz-filters .tab').forEach(t => t.classList.remove('is-active'));
+    tab.classList.add('is-active');
+  });
+});
+
+/* ====== Search chip → fills the input ====== */
+document.querySelectorAll('.hero__chips .chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const input = document.getElementById('heroSearch');
+    input.value = chip.textContent.trim();
+    input.focus();
+  });
+});
+
+/* ====== Hero floating business chips — appear progressively as the
+   city is being built (driven by scroll progress through the hero). */
+const heroFloats = document.querySelectorAll('.hero-float');
+function updateFloats() {
+  const rect = hero.getBoundingClientRect();
+  const totalScroll = hero.offsetHeight - window.innerHeight;
+  let p = (-rect.top) / totalScroll;
+  p = Math.max(0, Math.min(1, p));
+  heroFloats.forEach(el => {
+    const threshold = parseFloat(el.dataset.appear || '0');
+    el.classList.toggle('is-on', p >= threshold);
+  });
+}
+window.addEventListener('scroll', updateFloats, { passive: true });
+window.addEventListener('resize', updateFloats);
+updateFloats();
+
+/* ====== Interactive map ====== */
+(function initMap(){
+  const canvas = document.getElementById('mapCanvas');
+  if (!canvas) return;
+  const pins = canvas.querySelectorAll('.map-pin');
+  const detail = document.getElementById('mapDetail');
+  const mdIcon = document.getElementById('mdIcon');
+  const mdName = document.getElementById('mdName');
+  const mdMeta = document.getElementById('mdMeta');
+  const mdCount = document.getElementById('mdCount');
+  const mover = document.getElementById('mapMover');
+  const zoneChips = document.querySelectorAll('#mapZones .map-zone-chip');
+  const bizCount = document.getElementById('mapBizCount');
+  const bizLabel = document.getElementById('mapBizLabel');
+  const ticker = document.getElementById('mapTicker');
+
+  const palette = {
+    centro: { c: 'var(--coral)', text: '#FF6B35' },
+    sanfelipe: { c: 'var(--gold)', text: '#E09A1B' },
+    laluz: { c: 'var(--turquoise)', text: '#22B8CF' },
+    moya: { c: 'var(--green)', text: '#22C55E' },
+    cumbres: { c: 'var(--buga)', text: '#D946EF' },
+    tecuan: { c: 'var(--terracotta)', text: '#C86B4A' },
+  };
+
+  function activate(pin) {
+    pins.forEach(p => p.classList.remove('is-active'));
+    pin.classList.add('is-active');
+
+    const zone = pin.dataset.zone;
+    const color = palette[zone] || palette.centro;
+    mdIcon.textContent = pin.dataset.icon;
+    mdIcon.style.background = `linear-gradient(135deg, ${color.text}, var(--gold))`;
+    mdName.textContent = pin.dataset.name;
+    mdMeta.textContent = pin.dataset.meta;
+    mdCount.textContent = pin.dataset.count;
+
+    // sync zone chip
+    zoneChips.forEach(c => c.classList.toggle('is-active', c.dataset.zone === zone));
+
+    // move the live dot to this pin
+    mover.style.top = pin.style.top;
+    mover.style.left = pin.style.left;
+    mover.style.background = color.text;
+    mover.style.boxShadow = `0 0 0 4px ${color.text}33, 0 0 18px ${color.text}88`;
+  }
+
+  pins.forEach(pin => {
+    pin.addEventListener('click', () => activate(pin));
+    pin.addEventListener('mouseenter', () => activate(pin));
+  });
+
+  zoneChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const zone = chip.dataset.zone;
+      if (zone === 'all') {
+        zoneChips.forEach(c => c.classList.toggle('is-active', c.dataset.zone === 'all'));
+        pins.forEach(p => p.classList.remove('is-active'));
+        // show overall stats
+        bizCount.textContent = '+1,800';
+        bizLabel.textContent = 'negocios registrados';
+        return;
+      }
+      const pin = canvas.querySelector(`.map-pin[data-zone="${zone}"]`);
+      if (pin) {
+        activate(pin);
+        bizCount.textContent = pin.dataset.count;
+        bizLabel.textContent = 'en ' + pin.dataset.name;
+      }
+    });
+  });
+
+  /* moving dot — cycle through pins automatically */
+  const pinList = Array.from(pins);
+  let mIdx = 0;
+  setInterval(() => {
+    mIdx = (mIdx + 1) % pinList.length;
+    const pin = pinList[mIdx];
+    const zone = pin.dataset.zone;
+    const color = palette[zone] || palette.centro;
+    mover.style.top = pin.style.top;
+    mover.style.left = pin.style.left;
+    mover.style.background = color.text;
+    mover.style.boxShadow = `0 0 0 4px ${color.text}33, 0 0 18px ${color.text}88`;
+  }, 2400);
+
+  /* live ticker — pseudo-real activity events */
+  const events = [
+    { who: 'Birriería Doña Cuca', what: 'recibió un pedido por WhatsApp', zone: 'Centro', color: '#FF6B35' },
+    { who: 'Estudio Bugambilia', what: 'agendó una cita', zone: 'Cumbres', color: '#D946EF' },
+    { who: 'Hotel Casa Cantera', what: 'tuvo una reserva nueva', zone: 'La Luz', color: '#22B8CF' },
+    { who: 'Taller El Roble', what: 'fue contactado', zone: 'Moya', color: '#22C55E' },
+    { who: 'Neverías Don Pancho', what: 'subió fotos nuevas', zone: 'Centro', color: '#FF6B35' },
+    { who: 'Café Cantera 1563', what: 'recibió 5 ★', zone: 'Centro', color: '#C86B4A' },
+    { who: 'Boutique Petra', what: 'se registró', zone: 'San Felipe', color: '#F5B942' },
+    { who: 'Pizzería Rincón', what: 'aceptó pedidos por WhatsApp', zone: 'San Felipe', color: '#F5B942' },
+  ];
+  let eIdx = 0;
+  function pushEvent() {
+    const ev = events[eIdx % events.length];
+    eIdx++;
+    const row = document.createElement('div');
+    row.className = 'map-ticker__row';
+    row.innerHTML = `<span class="tdot" style="background:${ev.color}"></span><span><b>${ev.who}</b> ${ev.what} <span style="color:var(--muted)">· ${ev.zone}</span></span>`;
+    ticker.prepend(row);
+    while (ticker.children.length > 4) ticker.removeChild(ticker.lastChild);
+  }
+  pushEvent(); pushEvent(); pushEvent();
+  setInterval(pushEvent, 3200);
+})();
+</script>
+
+</body>
+</html>
