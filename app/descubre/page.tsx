@@ -63,28 +63,50 @@ export default async function DescubrePage() {
   const newest = all.filter(b => new Date(b.created_at) > twoWeeksAgo)
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <section className="bg-white border-b border-gray-100">
-        <div className="container mx-auto px-4 py-12 md:py-16 text-center">
-          <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Explora</span>
-          <h1 className="text-3xl md:text-4xl font-bold text-secondary mb-3">
-            Descubre Negocios en Lagos
+    <main className="min-h-screen pueblo-shell">
+
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--terracotta)] via-[var(--coral)] to-[var(--gold)]">
+        {/* Decorative background blobs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-80 h-80 bg-[var(--gold)]/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
+        </div>
+
+        <div className="relative container mx-auto px-4 py-16 md:py-24 text-center">
+          <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-5 bg-white/15 border-white/30 text-white">
+            Turismo · Lagos de Moreno
+          </span>
+          <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-4 tracking-tight">
+            Descubre Negocios<br className="hidden md:block" /> en Lagos
           </h1>
-          <p className="text-gray-500 max-w-lg mx-auto">
-            Conoce lo mejor que Lagos de Moreno tiene para ofrecer
+          <p className="text-lg md:text-xl text-white/85 max-w-xl mx-auto leading-relaxed">
+            <em className="font-[family-name:var(--font-serif)] not-italic">Conoce lo mejor que este Pueblo Mágico tiene para ofrecer</em>
           </p>
+        </div>
+
+        {/* Wave bottom edge */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+            <path d="M0 48L48 44C96 40 192 32 288 28C384 24 480 24 576 26.7C672 29.3 768 34.7 864 36C960 37.3 1056 34.7 1152 32C1248 29.3 1344 26.7 1392 25.3L1440 24V48H0Z" fill="#FFFDF8"/>
+          </svg>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-10 max-w-6xl">
-        {/* Nuevos */}
+      <div className="container mx-auto px-4 py-12 max-w-6xl">
+
+        {/* ── Nuevos ── */}
         {newest.length > 0 && (
-          <section className="mb-14">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">&#127382;</span>
-              <h2 className="text-2xl font-bold text-secondary">Nuevos en SomosLagos</h2>
+          <section className="mb-16">
+            <div className="flex items-center gap-4 mb-3">
+              <div>
+                <p className="pueblo-eyebrow inline-block px-3 py-1 text-xs rounded-full mb-2">Recién llegados</p>
+                <h2 className="pueblo-accent-line font-[family-name:var(--font-display)] text-2xl md:text-3xl font-bold text-[var(--ink)]">
+                  Nuevos en SomosLagos
+                </h2>
+              </div>
             </div>
+            <div className="pueblo-divider mb-8" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {newest.map(b => (
                 <BusinessCard key={b.id} business={b} />
@@ -93,13 +115,16 @@ export default async function DescubrePage() {
           </section>
         )}
 
-        {/* Avanzado — Slider + Large Cards */}
+        {/* ── Avanzado — Slider + Large Cards ── */}
         {avanzado.length > 0 && (
-          <section className="mb-14">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">&#11088;</span>
-              <h2 className="text-2xl font-bold text-secondary">Negocios Verificados</h2>
+          <section className="mb-16">
+            <div className="mb-3">
+              <p className="pueblo-eyebrow inline-block px-3 py-1 text-xs rounded-full mb-2">Selección premium</p>
+              <h2 className="pueblo-accent-line font-[family-name:var(--font-display)] text-2xl md:text-3xl font-bold text-[var(--ink)]">
+                Negocios Verificados
+              </h2>
             </div>
+            <div className="pueblo-divider mb-8" />
             <PremiumSlider businesses={avanzado} />
             {avanzado.length > 1 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
@@ -111,13 +136,16 @@ export default async function DescubrePage() {
           </section>
         )}
 
-        {/* Pro — Horizontal Cards */}
+        {/* ── Pro — Horizontal Cards ── */}
         {pro.length > 0 && (
-          <section className="mb-14">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">&#127942;</span>
-              <h2 className="text-2xl font-bold text-secondary">Negocios Pro</h2>
+          <section className="mb-16">
+            <div className="mb-3">
+              <p className="pueblo-eyebrow inline-block px-3 py-1 text-xs rounded-full mb-2">Destacados</p>
+              <h2 className="pueblo-accent-line font-[family-name:var(--font-display)] text-2xl md:text-3xl font-bold text-[var(--ink)]">
+                Negocios Pro
+              </h2>
             </div>
+            <div className="pueblo-divider mb-8" />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {pro.map(b => (
                 <BusinessCard key={b.id} business={b} />
@@ -126,14 +154,19 @@ export default async function DescubrePage() {
           </section>
         )}
 
-        {/* Gratis */}
+        {/* ── Gratis ── */}
         {gratis.length > 0 && (
-          <section className="mb-14">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">&#128205;</span>
-              <h2 className="text-2xl font-bold text-secondary">Todos los Negocios</h2>
+          <section className="mb-16">
+            <div className="mb-3">
+              <p className="pueblo-eyebrow inline-block px-3 py-1 text-xs rounded-full mb-2">Directorio completo</p>
+              <h2 className="pueblo-accent-line font-[family-name:var(--font-display)] text-2xl md:text-3xl font-bold text-[var(--ink)]">
+                Todos los Negocios
+              </h2>
             </div>
-            <p className="text-gray-400 text-sm mb-5">Encuentra de todo en Lagos de Moreno — conoce lo que ofrecen</p>
+            <p className="text-[var(--muted)] text-sm mb-6 ml-6">
+              Encuentra de todo en Lagos de Moreno — conoce lo que ofrecen
+            </p>
+            <div className="pueblo-divider mb-8" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {gratis.map(b => (
                 <BusinessCard key={b.id} business={b} />
@@ -142,33 +175,52 @@ export default async function DescubrePage() {
           </section>
         )}
 
+        {/* ── Empty state ── */}
         {all.length === 0 && (
-          <div className="text-center py-20">
-            <span className="text-5xl block mb-4">&#127978;</span>
-            <p className="text-gray-500 text-lg mb-2">Aun no hay negocios registrados</p>
-            <Link href="/registrar-negocio" className="text-primary font-semibold hover:underline">
-              Se el primero en registrarte
+          <div className="text-center py-24">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[var(--coral)]/10 mb-6">
+              <svg className="w-10 h-10 text-[var(--coral)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <p className="text-[var(--ink-soft)] text-lg mb-2 font-medium">Aún no hay negocios registrados</p>
+            <p className="text-[var(--muted)] text-sm mb-6">Sé el primero en poner a Lagos en el mapa</p>
+            <Link
+              href="/registrar-negocio"
+              className="inline-block rounded-full bg-[var(--coral)] text-white px-6 py-3 font-semibold hover:bg-[var(--coral-deep)] transition-colors"
+            >
+              Registrarme GRATIS
             </Link>
           </div>
         )}
 
-        {/* CTA */}
-        <section className="text-center py-12 mt-4">
-          <div className="bg-gradient-to-br from-secondary to-primary/90 rounded-3xl p-8 md:p-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              &iquest;Tienes un negocio en Lagos?
-            </h2>
-            <p className="text-white/80 mb-6 max-w-md mx-auto">
-              Registrate gratis y aparece aqui para que miles de personas te encuentren
-            </p>
-            <Link
-              href="/registrar-negocio"
-              className="inline-block bg-accent hover:bg-accent-dark text-secondary px-8 py-3 rounded-full font-bold text-lg transition-all hover:scale-105"
-            >
-              Registrar mi Negocio GRATIS
-            </Link>
+        {/* ── CTA banner ── */}
+        <section className="py-4 mt-4">
+          <div className="relative overflow-hidden rounded-[var(--r-xl)] bg-gradient-to-br from-[var(--ink)] via-[var(--terracotta)] to-[var(--coral)] p-8 md:p-12 text-center">
+            {/* Decorative circles */}
+            <div className="absolute top-0 left-0 w-64 h-64 bg-[var(--gold)]/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-80 h-80 bg-[var(--coral)]/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3 pointer-events-none" />
+
+            <div className="relative">
+              <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-5 bg-white/15 border-white/25 text-white">
+                Para negocios locales
+              </span>
+              <h2 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl font-bold text-white mb-3">
+                ¿Tienes un negocio en Lagos?
+              </h2>
+              <p className="text-white/80 mb-8 max-w-md mx-auto leading-relaxed">
+                Regístrate gratis y aparece aquí para que miles de personas te encuentren
+              </p>
+              <Link
+                href="/registrar-negocio"
+                className="inline-block rounded-full bg-[var(--gold)] text-[var(--ink)] px-8 py-3.5 font-bold text-base hover:bg-[var(--gold-deep)] transition-colors shadow-lg"
+              >
+                Registrar mi Negocio GRATIS
+              </Link>
+            </div>
           </div>
         </section>
+
       </div>
     </main>
   )

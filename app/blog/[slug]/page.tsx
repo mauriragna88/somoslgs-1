@@ -10,12 +10,12 @@ import ReadingProgress from '@/components/blog/ReadingProgress'
 
 export const revalidate = 1800
 
-const CATEGORY_META: Record<string, { label: string; color: string; bg: string; icon: string }> = {
-  'general':             { label: 'General',             color: 'text-gray-700',    bg: 'bg-gray-100',    icon: '📝' },
-  'guias-locales':       { label: 'Guía Local',          color: 'text-primary',     bg: 'bg-primary/10',  icon: '🗺️' },
-  'tips':                { label: 'Tips',                 color: 'text-accent-dark', bg: 'bg-accent/10',   icon: '💡' },
-  'noticias':            { label: 'Noticias',             color: 'text-blue-700',    bg: 'bg-blue-50',     icon: '📰' },
-  'negocios-destacados': { label: 'Negocios Destacados', color: 'text-purple-700',  bg: 'bg-purple-50',   icon: '⭐' },
+const CATEGORY_META: Record<string, { label: string; icon: string }> = {
+  'general':             { label: 'General',             icon: '📝' },
+  'guias-locales':       { label: 'Guía Local',          icon: '🗺️' },
+  'tips':                { label: 'Tips',                 icon: '💡' },
+  'noticias':            { label: 'Noticias',             icon: '📰' },
+  'negocios-destacados': { label: 'Negocios Destacados', icon: '⭐' },
 }
 
 // Extract h2/h3 headings for TOC
@@ -25,7 +25,7 @@ function extractHeadings(md: string): { id: string; text: string; level: number 
     .filter(l => l.startsWith('## ') || l.startsWith('### '))
     .map(l => {
       const level = l.startsWith('### ') ? 3 : 2
-      const text = l.replace(/^#{2,3}\s+/, '').replace(/[^\w\s\u00C0-\u024F]/g, '').trim()
+      const text = l.replace(/^#{2,3}\s+/, '').replace(/[^\w\sÀ-ɏ]/g, '').trim()
       const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
       return { id, text: l.replace(/^#{2,3}\s+/, '').trim(), level }
     })
@@ -97,54 +97,24 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[var(--ivory)]">
       <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }} />
 
-      {/* ── HERO ────────────────────────────────────────────────── */}
-      <div
-        className="relative min-h-[70vh] flex items-end overflow-hidden"
+      {/* ── HERO ──────────────────────────────────────────────────── */}
+      <div className="pueblo-photo-break relative min-h-[70vh] flex items-end overflow-hidden"
         style={blogPost.featured_image_url ? {
           backgroundImage: `url(${blogPost.featured_image_url})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         } : undefined}
       >
-        {/* Background */}
-        {blogPost.featured_image_url ? (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-          </>
-        ) : (
-          <>
-            {/* Animated gradient hero */}
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary via-primary/90 to-secondary/80" />
-            {/* Decorative grid */}
-            <div className="absolute inset-0 opacity-10" style={{
-              backgroundImage: 'repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(255,255,255,.15) 48px,rgba(255,255,255,.15) 49px),repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(255,255,255,.15) 48px,rgba(255,255,255,.15) 49px)',
-            }} />
-            {/* Big emoji decoration */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-8 pointer-events-none select-none">
-              <span className="text-[220px] leading-none blur-sm">
-                {blogPost.category === 'guias-locales' ? '🗺️' : blogPost.category === 'noticias' ? '📰' : '✍️'}
-              </span>
-            </div>
-            {/* Floating emoji particles */}
-            {[
-              { e: '🌮', x: '8%',  y: '20%', size: '3xl', delay: '0s'   },
-              { e: '🍔', x: '85%', y: '15%', size: '2xl', delay: '0.4s' },
-              { e: '🍺', x: '15%', y: '70%', size: '2xl', delay: '0.8s' },
-              { e: '☕', x: '78%', y: '65%', size: '3xl', delay: '0.2s' },
-              { e: '🥩', x: '45%', y: '12%', size: 'xl',  delay: '1s'   },
-              { e: '🍣', x: '92%', y: '45%', size: 'xl',  delay: '0.6s' },
-            ].map((p, i) => (
-              <div key={i} className={`absolute text-${p.size} opacity-20 animate-float pointer-events-none select-none`}
-                style={{ left: p.x, top: p.y, animationDelay: p.delay, filter: 'blur(1px)' }}>
-                {p.e}
-              </div>
-            ))}
-          </>
+        {/* fallback gradient when no image */}
+        {!blogPost.featured_image_url && (
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--coral)] via-[var(--gold)] to-[var(--ink)]" />
         )}
+        {/* dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
         {/* Hero content */}
         <div className="relative container mx-auto px-4 max-w-4xl pb-14 pt-32">
@@ -159,7 +129,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* Category + reading time */}
           <div className="flex flex-wrap items-center gap-3 mb-5">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent text-secondary text-xs font-bold rounded-full shadow-lg">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[var(--gold)] text-[var(--ink)] text-xs font-bold rounded-full shadow-lg">
               <span>{cat.icon}</span> {cat.label}
             </span>
             <span className="text-white/60 text-sm flex items-center gap-1.5">
@@ -175,7 +145,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-5 drop-shadow-lg">
+          <h1 className="text-3xl md:text-5xl font-[family-name:var(--font-display)] font-extrabold text-white leading-tight mb-5 drop-shadow-lg">
             {blogPost.title}
           </h1>
 
@@ -186,12 +156,12 @@ export default async function BlogPostPage({ params }: PageProps) {
             </p>
           )}
 
-          {/* Date + share quick */}
+          {/* Author row + share */}
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">SL</div>
+              <div className="w-10 h-10 bg-[var(--coral)] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">SL</div>
               <div>
-                <p className="text-white font-semibold text-sm">SomosLagos</p>
+                <p className="text-white font-semibold text-sm font-[family-name:var(--font-display)]">SomosLagos</p>
                 {blogPost.published_at && (
                   <time className="text-white/60 text-xs" dateTime={blogPost.published_at}>
                     {new Date(blogPost.published_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })}
@@ -208,24 +178,25 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* ── BODY: TOC + CONTENT ───────────────────────────────────── */}
+      {/* ── BODY: TOC + CONTENT ─────────────────────────────────── */}
       <div className="container mx-auto px-4 py-12 max-w-6xl">
         <div className="flex gap-10 items-start">
 
           {/* ── TOC sidebar (desktop) ── */}
           {toc.length > 2 && (
             <aside className="hidden lg:block w-64 flex-shrink-0">
-              <div className="sticky top-8 bg-gray-50 rounded-2xl border border-gray-100 p-5 shadow-sm">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Contenido</p>
+              <div className="sticky top-8 bg-white rounded-2xl border border-[var(--hairline)] p-5"
+                style={{ boxShadow: 'var(--shadow-card)' }}>
+                <p className="text-xs font-bold text-[var(--muted)] uppercase tracking-widest mb-4">Contenido</p>
                 <nav className="space-y-1">
                   {toc.map((item) => (
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className={`block text-sm leading-snug py-1.5 transition-colors hover:text-primary ${
+                      className={`block text-sm leading-snug py-1.5 transition-colors hover:text-[var(--coral)] ${
                         item.level === 2
-                          ? 'text-gray-700 font-semibold border-l-2 border-transparent hover:border-primary pl-3'
-                          : 'text-gray-500 pl-6 border-l-2 border-transparent hover:border-primary/40'
+                          ? 'text-[var(--ink-soft)] font-semibold border-l-2 border-transparent hover:border-[var(--coral)] pl-3'
+                          : 'text-[var(--muted)] pl-6 border-l-2 border-transparent hover:border-[var(--coral)]/40'
                       }`}
                     >
                       {item.text}
@@ -233,9 +204,9 @@ export default async function BlogPostPage({ params }: PageProps) {
                   ))}
                 </nav>
                 {/* CTA within TOC */}
-                <div className="mt-6 p-3 bg-primary/8 rounded-xl border border-primary/15">
-                  <p className="text-xs text-primary font-semibold mb-2">¿Tienes un negocio?</p>
-                  <Link href="/registrar-negocio" className="text-xs text-primary hover:underline font-medium">
+                <div className="mt-6 p-3 bg-[var(--coral)]/8 rounded-xl border border-[var(--coral)]/15">
+                  <p className="text-xs text-[var(--coral)] font-semibold mb-2">¿Tienes un negocio?</p>
+                  <Link href="/registrar-negocio" className="text-xs text-[var(--coral)] hover:underline font-medium">
                     Regístralo gratis →
                   </Link>
                 </div>
@@ -245,43 +216,43 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* ── Article ── */}
           <article className="flex-1 min-w-0">
-            {/* Decorative top accent */}
-            <div className="h-1 w-20 bg-gradient-to-r from-primary to-accent rounded-full mb-8" />
+            {/* Gold/coral top accent line */}
+            <div className="h-1 w-20 bg-gradient-to-r from-[var(--coral)] to-[var(--gold)] rounded-full mb-8" />
 
-            {/* Content with custom markdown styling */}
+            {/* Content with pueblo mágico markdown styling */}
             <div className="prose prose-lg max-w-none
-              prose-headings:font-extrabold
-              prose-h1:text-4xl prose-h1:text-secondary
-              prose-h2:text-2xl prose-h2:text-secondary prose-h2:mt-12 prose-h2:mb-4
-              prose-h3:text-lg prose-h3:text-secondary prose-h3:mt-8 prose-h3:mb-2
-              prose-p:text-gray-600 prose-p:leading-relaxed prose-p:mb-4
-              prose-strong:text-secondary prose-strong:font-bold
-              prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium
-              prose-ul:my-4 prose-ul:space-y-2 prose-li:text-gray-600 prose-li:marker:text-primary
-              prose-hr:my-10 prose-hr:border-gray-100
-              prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:bg-accent/5 prose-blockquote:rounded-r-xl prose-blockquote:py-3 prose-blockquote:not-italic
+              prose-headings:font-[family-name:var(--font-display)] prose-headings:font-extrabold
+              prose-h1:text-4xl prose-h1:text-[var(--ink)]
+              prose-h2:text-2xl prose-h2:text-[var(--ink)] prose-h2:mt-12 prose-h2:mb-4
+              prose-h3:text-lg prose-h3:text-[var(--ink)] prose-h3:mt-8 prose-h3:mb-2
+              prose-p:text-[var(--ink-soft)] prose-p:leading-relaxed prose-p:mb-4
+              prose-strong:text-[var(--ink)] prose-strong:font-bold
+              prose-a:text-[var(--coral)] prose-a:no-underline hover:prose-a:underline prose-a:font-medium
+              prose-ul:my-4 prose-ul:space-y-2 prose-li:text-[var(--ink-soft)] prose-li:marker:text-[var(--coral)]
+              prose-hr:my-10 prose-hr:border-[var(--hairline)]
+              prose-blockquote:border-l-4 prose-blockquote:border-[var(--coral)] prose-blockquote:bg-[var(--coral)]/5 prose-blockquote:rounded-r-xl prose-blockquote:py-3 prose-blockquote:not-italic
               prose-img:rounded-2xl prose-img:shadow-lg
-              prose-code:text-primary prose-code:bg-primary/8 prose-code:rounded prose-code:px-1.5">
+              prose-code:text-[var(--coral)] prose-code:bg-[var(--coral)]/8 prose-code:rounded prose-code:px-1.5">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  // Custom h2: big colored section header with ID for TOC
+                  // Custom h2: big section header with ID for TOC
                   h2: ({ children }) => {
                     const text = String(children)
-                    const id = text.replace(/[^\w\s\u00C0-\u024F]/g, '').trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+                    const id = text.replace(/[^\w\sÀ-ɏ]/g, '').trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
                     return (
-                      <h2 id={id} className="scroll-mt-20 flex items-center gap-3 text-2xl font-extrabold text-secondary mt-12 mb-4 pb-3 border-b-2 border-gray-100">
+                      <h2 id={id} className="scroll-mt-20 flex items-center gap-3 text-2xl font-[family-name:var(--font-display)] font-extrabold text-[var(--ink)] mt-12 mb-4 pb-3 border-b border-[var(--hairline)]">
                         <span className="text-2xl">{text.codePointAt(0) && text.codePointAt(0)! > 0x2000 ? Array.from(text)[0] : ''}</span>
                         <span>{text.codePointAt(0) && text.codePointAt(0)! > 0x2000 ? text.slice(Array.from(text)[0].length).trimStart() : text}</span>
                       </h2>
                     )
                   },
-                  // Custom h3: restaurant/business name with accent left border
+                  // Custom h3: left coral border accent
                   h3: ({ children }) => {
                     const text = String(children)
-                    const id = text.replace(/[^\w\s\u00C0-\u024F]/g, '').trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+                    const id = text.replace(/[^\w\sÀ-ɏ]/g, '').trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
                     return (
-                      <h3 id={id} className="scroll-mt-20 text-lg font-bold text-secondary mt-8 mb-2 pl-4 border-l-4 border-primary/60 bg-primary/4 py-2 rounded-r-lg">
+                      <h3 id={id} className="scroll-mt-20 text-lg font-[family-name:var(--font-display)] font-bold text-[var(--ink)] mt-8 mb-2 pl-4 border-l-4 border-[var(--coral)] bg-[var(--coral)]/5 py-2 rounded-r-lg">
                         {children}
                       </h3>
                     )
@@ -289,24 +260,22 @@ export default async function BlogPostPage({ params }: PageProps) {
                   // Custom hr: decorative divider
                   hr: () => (
                     <div className="my-10 flex items-center gap-4">
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
-                      <span className="text-gray-300 text-xl">✦</span>
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--hairline)] to-transparent" />
+                      <span className="text-[var(--gold)] text-xl">✦</span>
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--hairline)] to-transparent" />
                     </div>
                   ),
-                  // Custom blockquote: tip/highlight box
+                  // Custom blockquote: left coral bar highlight box
                   blockquote: ({ children }) => (
-                    <div className="my-6 p-5 bg-accent/8 border border-accent/20 rounded-2xl flex gap-3">
+                    <div className="my-6 p-5 bg-[var(--gold)]/8 border-l-4 border-[var(--gold)] rounded-r-2xl flex gap-3">
                       <span className="text-2xl flex-shrink-0 mt-0.5">💡</span>
-                      <div className="text-gray-700 leading-relaxed [&>p]:mb-0 [&>p]:text-gray-700">{children}</div>
+                      <div className="text-[var(--ink-soft)] leading-relaxed [&>p]:mb-0 [&>p]:text-[var(--ink-soft)]">{children}</div>
                     </div>
                   ),
-                  // Paragraphs — detect tip patterns
-                  p: ({ children }) => {
-                    const text = String(children)
-                    // Bold first sentence as lead paragraph for first p
-                    return <p className="text-gray-600 leading-relaxed mb-4">{children}</p>
-                  },
+                  // Paragraphs
+                  p: ({ children }) => (
+                    <p className="text-[var(--ink-soft)] leading-relaxed mb-4">{children}</p>
+                  ),
                 }}
               >
                 {blogPost.content}
@@ -317,7 +286,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             {blogPost.tags && blogPost.tags.length > 0 && (
               <div className="mt-10 flex flex-wrap gap-2">
                 {blogPost.tags.map((tag: string) => (
-                  <span key={tag} className="px-3 py-1.5 bg-gray-100 text-gray-600 text-sm rounded-full font-medium hover:bg-primary/10 hover:text-primary transition-colors">
+                  <span key={tag} className="px-3 py-1.5 bg-[var(--hairline-soft)] text-[var(--ink-soft)] text-sm rounded-full font-medium hover:bg-[var(--coral)]/10 hover:text-[var(--coral)] transition-colors">
                     #{tag}
                   </span>
                 ))}
@@ -325,8 +294,8 @@ export default async function BlogPostPage({ params }: PageProps) {
             )}
 
             {/* ── Share bar ── */}
-            <div className="mt-12 p-6 bg-gradient-to-br from-secondary to-primary/90 rounded-2xl">
-              <p className="text-white font-bold text-lg mb-1">¿Te fue útil este artículo?</p>
+            <div className="mt-12 p-6 rounded-2xl bg-gradient-to-br from-[var(--ink)] to-[var(--coral)]/80">
+              <p className="text-white font-[family-name:var(--font-display)] font-bold text-lg mb-1">¿Te fue útil este artículo?</p>
               <p className="text-white/70 text-sm mb-5">Compártelo con tus amigos en Lagos de Moreno</p>
               <div className="flex flex-wrap gap-3">
                 <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
@@ -348,12 +317,16 @@ export default async function BlogPostPage({ params }: PageProps) {
             </div>
 
             {/* ── CTA register ── */}
-            <div className="mt-8 p-6 border-2 border-dashed border-primary/30 rounded-2xl text-center bg-primary/3">
-              <p className="text-2xl mb-2">🏪</p>
-              <p className="font-bold text-secondary mb-1">¿Tienes un negocio en Lagos de Moreno?</p>
-              <p className="text-sm text-gray-500 mb-4">Regístralo gratis en SomosLagos y llega a miles de clientes locales</p>
+            <div className="mt-8 p-6 border border-dashed border-[var(--coral)]/30 rounded-2xl text-center bg-[var(--coral)]/4">
+              <div className="w-12 h-12 bg-[var(--coral)]/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg className="w-6 h-6 text-[var(--coral)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <p className="font-[family-name:var(--font-display)] font-bold text-[var(--ink)] mb-1">¿Tienes un negocio en Lagos de Moreno?</p>
+              <p className="text-sm text-[var(--muted)] mb-4">Regístralo gratis en SomosLagos y llega a miles de clientes locales</p>
               <Link href="/registrar-negocio"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-full transition-all hover:scale-105 shadow-lg shadow-primary/20">
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--coral)] hover:bg-[var(--coral-deep)] text-white font-semibold rounded-full transition-all hover:scale-105 shadow-lg shadow-[var(--coral)]/20">
                 Registrar mi negocio — GRATIS
               </Link>
             </div>
@@ -361,18 +334,18 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* ── RELATED POSTS ────────────────────────────────────────── */}
+      {/* ── RELATED POSTS ─────────────────────────────────────────── */}
       {related.length > 0 && (
-        <section className="bg-gray-50 py-16 border-t border-gray-100">
+        <section className="bg-[var(--cream)] py-16 border-t border-[var(--hairline)]">
           <div className="container mx-auto px-4 max-w-5xl">
             <div className="flex items-center gap-3 mb-8">
-              <div className="h-1 w-8 bg-gradient-to-r from-primary to-accent rounded-full" />
-              <h2 className="text-xl font-extrabold text-secondary">Más artículos</h2>
+              <div className="h-1 w-8 bg-gradient-to-r from-[var(--coral)] to-[var(--gold)] rounded-full" />
+              <h2 className="text-xl font-[family-name:var(--font-display)] font-extrabold text-[var(--ink)]">Más artículos</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {related.map((rp) => (
                 <Link key={rp.id} href={`/blog/${rp.slug}`}
-                  className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                  className="pueblo-card group overflow-hidden hover:-translate-y-1 transition-all duration-300">
                   {rp.featured_image_url ? (
                     <div className="relative h-44 overflow-hidden">
                       <Image src={rp.featured_image_url} alt={rp.title} fill sizes="400px"
@@ -380,22 +353,21 @@ export default async function BlogPostPage({ params }: PageProps) {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     </div>
                   ) : (
-                    <div className="h-44 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/15 flex items-center justify-center relative overflow-hidden">
-                      <span className="text-6xl opacity-30 group-hover:scale-110 transition-transform duration-500">
+                    <div className="h-44 bg-gradient-to-br from-[var(--coral)]/15 via-[var(--gold)]/10 to-[var(--ivory)] flex items-center justify-center">
+                      <span className="text-5xl opacity-30">
                         {(CATEGORY_META[rp.category] || CATEGORY_META['general']).icon}
                       </span>
-                      <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent" />
                     </div>
                   )}
                   <div className="p-4">
-                    <span className={`text-xs font-bold px-2 py-1 rounded-full mb-2 inline-block ${(CATEGORY_META[rp.category] || CATEGORY_META['general']).bg} ${(CATEGORY_META[rp.category] || CATEGORY_META['general']).color}`}>
+                    <span className="pueblo-category-pill mb-2 inline-block">
                       {(CATEGORY_META[rp.category] || CATEGORY_META['general']).label}
                     </span>
-                    <h3 className="font-bold text-secondary group-hover:text-primary transition-colors line-clamp-2 mt-1 leading-snug">
+                    <h3 className="font-[family-name:var(--font-display)] font-bold text-[var(--ink)] group-hover:text-[var(--coral)] transition-colors line-clamp-2 mt-1 leading-snug">
                       {rp.title}
                     </h3>
                     {rp.excerpt && (
-                      <p className="text-gray-500 text-sm mt-1.5 line-clamp-2">{rp.excerpt}</p>
+                      <p className="text-[var(--muted)] text-sm mt-1.5 line-clamp-2">{rp.excerpt}</p>
                     )}
                   </div>
                 </Link>
@@ -406,8 +378,8 @@ export default async function BlogPostPage({ params }: PageProps) {
       )}
 
       {/* Back to blog */}
-      <div className="py-8 text-center border-t border-gray-100">
-        <Link href="/blog" className="inline-flex items-center gap-2 text-primary hover:underline font-semibold">
+      <div className="py-8 text-center border-t border-[var(--hairline)]">
+        <Link href="/blog" className="inline-flex items-center gap-2 text-[var(--coral)] hover:underline font-semibold">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           Ver todos los artículos
         </Link>

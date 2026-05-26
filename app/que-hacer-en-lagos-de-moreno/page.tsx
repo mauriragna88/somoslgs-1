@@ -153,7 +153,7 @@ export default async function QueHacerPage() {
   }
 
   return (
-    <main className="min-h-screen pueblo-shell">
+    <main className="min-h-screen bg-[var(--ivory)]">
       {/* JSON-LD */}
       <script
         type="application/ld+json"
@@ -168,8 +168,8 @@ export default async function QueHacerPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      {/* ── Hero Section ── */}
+      <section className="relative overflow-hidden" style={{ minHeight: '520px' }}>
         {/* Background photo */}
         <Image
           src="/tourism/templo-calvario.jpg"
@@ -179,101 +179,118 @@ export default async function QueHacerPage() {
           priority
           sizes="100vw"
         />
-        {/* Warm dark overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-pueblo-noche/80 via-pueblo-noche/60 to-pueblo-noche/85" />
+        {/* Warm layered overlay — darker at top and bottom for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--ink)]/85 via-[var(--ink)]/55 to-[var(--ink)]/90" />
+        {/* Warm coral tint layer */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-[var(--terracotta)]/30 via-transparent to-[var(--gold)]/15" />
 
         <div className="relative container mx-auto px-4 py-20 md:py-28">
           {/* Breadcrumb */}
           <nav className="mb-8" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-pueblo-crema/60">
+            <ol className="flex items-center gap-2 text-sm text-white/60">
               <li>
-                <Link href="/" className="hover:text-pueblo-barroco transition-colors">Inicio</Link>
+                <Link href="/" className="hover:text-[var(--gold)] transition-colors">
+                  Inicio
+                </Link>
               </li>
               <li>
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </li>
-              <li className="text-pueblo-barroco font-medium">Qué Hacer</li>
+              <li className="text-[var(--gold)] font-medium">Qué Hacer</li>
             </ol>
           </nav>
 
           <div className="max-w-3xl">
-            <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-6">
-              Pueblo Mágico de Jalisco
+            <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-6 bg-white/12 border-white/25 text-white">
+              Pueblo Mágico · Jalisco
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+            <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
               Qué Hacer en{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pueblo-barroco to-pueblo-cantera">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--gold)] to-[var(--coral)]">
                 Lagos de Moreno
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-pueblo-crema/85 leading-relaxed max-w-2xl">
-              Tu guía completa para descubrir los mejores lugares, actividades y experiencias en Lagos de Moreno.
-              Explora este Pueblo Mágico y conoce los negocios locales que lo hacen especial.
+            <p className="text-lg md:text-xl text-white/85 leading-relaxed max-w-2xl">
+              Tu guía completa para descubrir los mejores lugares, actividades y experiencias en Lagos de Moreno.{' '}
+              <em className="font-[family-name:var(--font-serif)] not-italic">
+                Explora este Pueblo Mágico y conoce los negocios locales que lo hacen especial.
+              </em>
             </p>
           </div>
 
-          {/* Stats */}
+          {/* Stats row */}
           <div className="flex flex-wrap gap-4 mt-10">
-            <div className="flex items-center gap-3 bg-pueblo-barroco/15 backdrop-blur-sm border border-pueblo-barroco/25 rounded-2xl px-5 py-3">
-              <span className="text-2xl">🏛️</span>
+            <div className="flex items-center gap-3 bg-[var(--gold)]/15 backdrop-blur-sm border border-[var(--gold)]/25 rounded-2xl px-5 py-3">
+              <svg className="w-6 h-6 text-[var(--gold)] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
               <div>
-                <p className="text-xl font-bold text-pueblo-barroco">{ZONES.length}</p>
-                <p className="text-xs text-pueblo-crema/70">Lugares Emblemáticos</p>
+                <p className="text-xl font-bold text-[var(--gold)]">{ZONES.length}</p>
+                <p className="text-xs text-white/70">Lugares Emblemáticos</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-pueblo-cantera/15 backdrop-blur-sm border border-pueblo-cantera/25 rounded-2xl px-5 py-3">
-              <span className="text-2xl">🎯</span>
+            <div className="flex items-center gap-3 bg-[var(--coral)]/15 backdrop-blur-sm border border-[var(--coral)]/25 rounded-2xl px-5 py-3">
+              <svg className="w-6 h-6 text-[var(--coral)] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+              </svg>
               <div>
-                <p className="text-xl font-bold text-pueblo-cantera">{ACTIVITIES.length}</p>
-                <p className="text-xs text-pueblo-crema/70">Actividades</p>
+                <p className="text-xl font-bold text-[var(--coral)]">{ACTIVITIES.length}</p>
+                <p className="text-xs text-white/70">Actividades</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-pueblo-agave/15 backdrop-blur-sm border border-pueblo-agave/25 rounded-2xl px-5 py-3">
-              <span className="text-2xl">🏪</span>
+            <div className="flex items-center gap-3 bg-[var(--green)]/15 backdrop-blur-sm border border-[var(--green)]/25 rounded-2xl px-5 py-3">
+              <svg className="w-6 h-6 text-[var(--green)] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
               <div>
-                <p className="text-xl font-bold text-pueblo-agave">{totalBusinesses || 0}+</p>
-                <p className="text-xs text-pueblo-crema/70">Negocios Locales</p>
+                <p className="text-xl font-bold text-[var(--green)]">{totalBusinesses || 0}+</p>
+                <p className="text-xs text-white/70">Negocios Locales</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Wave divider */}
+        {/* Wave divider into warm ivory */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 60L48 55C96 50 192 40 288 35C384 30 480 30 576 33.3C672 36.7 768 43.3 864 45C960 46.7 1056 43.3 1152 40C1248 36.7 1344 33.3 1392 31.7L1440 30V60H1392C1344 60 1248 60 1152 60C1056 60 960 60 864 60C768 60 672 60 576 60C480 60 384 60 288 60C192 60 96 60 48 60H0Z" fill="#FDF6EE"/>
+            <path d="M0 60L48 55C96 50 192 40 288 35C384 30 480 30 576 33.3C672 36.7 768 43.3 864 45C960 46.7 1056 43.3 1152 40C1248 36.7 1344 33.3 1392 31.7L1440 30V60H1392C1344 60 1248 60 1152 60C1056 60 960 60 864 60C768 60 672 60 576 60C480 60 384 60 288 60C192 60 96 60 48 60H0Z" fill="#FFFDF8"/>
           </svg>
         </div>
       </section>
 
-      {/* Intro SEO */}
-      <section className="py-12">
+      {/* ── Intro SEO ── */}
+      <section className="py-14">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <p className="text-pueblo-terracotta/80 leading-relaxed text-lg">
-              Lagos de Moreno es un <strong className="text-pueblo-noche">Pueblo Mágico de Jalisco</strong> que te espera con sus calles
-              empedradas, arquitectura colonial y una rica tradición cultural. Declarado <strong className="text-pueblo-noche">Patrimonio
-              de la Humanidad por la UNESCO</strong> en 2010, este destino te ofrece historia, gastronomía,
-              arte y la calidez de su gente. Aquí encontrarás todo lo que necesitas para planear tu visita
-              y descubrir los negocios locales que hacen de Lagos un lugar único.
+            <p className="text-[var(--ink-soft)] leading-relaxed text-lg">
+              Lagos de Moreno es un{' '}
+              <strong className="text-[var(--terracotta)]">Pueblo Mágico de Jalisco</strong>{' '}
+              que te espera con sus calles empedradas, arquitectura colonial y una rica tradición cultural.
+              Declarado{' '}
+              <strong className="text-[var(--ink)]">Patrimonio de la Humanidad por la UNESCO</strong>{' '}
+              en 2010, este destino te ofrece historia, gastronomía, arte y la calidez de su gente.
+              Aquí encontrarás todo lo que necesitas para planear tu visita y descubrir los negocios
+              locales que hacen de Lagos un lugar único.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Video de Lagos de Moreno */}
+      <div className="pueblo-divider mx-auto max-w-4xl" />
+
+      {/* ── Video de Lagos de Moreno ── */}
       <section className="py-16">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="text-center mb-10">
             <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-4">
               Conoce Lagos
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-pueblo-noche mb-3">
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl font-bold text-[var(--ink)] mb-3">
               Un vistazo a nuestra ciudad
             </h2>
-            <p className="text-pueblo-terracotta/70 max-w-xl mx-auto">
+            <p className="text-[var(--muted)] max-w-xl mx-auto">
               Lagos de Moreno en imágenes — Pueblo Mágico de Jalisco
             </p>
           </div>
@@ -281,17 +298,19 @@ export default async function QueHacerPage() {
         </div>
       </section>
 
-      {/* Zonas Emblemáticas */}
+      <div className="pueblo-divider mx-auto max-w-4xl" />
+
+      {/* ── Zonas Emblemáticas ── */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-4">
               Imperdibles
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-pueblo-noche mb-3">
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl font-bold text-[var(--ink)] mb-3">
               Lugares Emblemáticos para Visitar
             </h2>
-            <p className="text-pueblo-terracotta/70 max-w-xl mx-auto">
+            <p className="text-[var(--muted)] max-w-xl mx-auto">
               Los rincones más icónicos de Lagos de Moreno que no te puedes perder
             </p>
           </div>
@@ -304,17 +323,19 @@ export default async function QueHacerPage() {
         </div>
       </section>
 
-      {/* Actividades y Experiencias */}
+      <div className="pueblo-divider mx-auto max-w-4xl" />
+
+      {/* ── Actividades y Experiencias ── */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-4">
               Experiencias
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-pueblo-noche mb-3">
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl font-bold text-[var(--ink)] mb-3">
               Actividades y Experiencias
             </h2>
-            <p className="text-pueblo-terracotta/70 max-w-xl mx-auto">
+            <p className="text-[var(--muted)] max-w-xl mx-auto">
               Todo lo que puedes hacer en Lagos de Moreno, acompañado de los mejores negocios locales
             </p>
           </div>
@@ -332,26 +353,29 @@ export default async function QueHacerPage() {
         </div>
       </section>
 
-      {/* CTA — Registrar negocio */}
-      <section className="py-20 bg-gradient-to-r from-pueblo-noche via-pueblo-terracotta to-pueblo-cantera relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-64 h-64 bg-pueblo-barroco/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-80 h-80 bg-pueblo-cantera/10 rounded-full blur-3xl" />
+      {/* ── CTA — Registrar negocio ── */}
+      <section className="py-20 relative overflow-hidden bg-gradient-to-r from-[var(--ink)] via-[var(--terracotta)] to-[var(--coral)]">
+        {/* Decorative blobs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-10 left-10 w-64 h-64 bg-[var(--gold)]/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-80 h-80 bg-[var(--coral)]/10 rounded-full blur-3xl" />
         </div>
 
         <div className="relative container mx-auto px-4 text-center">
-          <span className="text-5xl mb-6 block">🏪</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-pueblo-crema mb-4">
+          <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-6 bg-white/15 border-white/25 text-white">
+            Para negocios locales
+          </span>
+          <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl font-bold text-white mb-4">
             ¿Tienes un negocio en Lagos de Moreno?
           </h2>
-          <p className="text-pueblo-crema/80 text-lg max-w-xl mx-auto mb-8">
+          <p className="text-white/80 text-lg max-w-xl mx-auto mb-8 leading-relaxed">
             Registra tu negocio gratis en SomosLagos y aparece en nuestra guía turística.
             Miles de visitantes descubrirán lo que ofreces.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/registrar-negocio"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-pueblo-barroco text-pueblo-noche font-bold rounded-full shadow-pueblo hover:shadow-pueblo-soft hover:scale-105 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--gold)] text-[var(--ink)] px-8 py-4 font-bold text-base hover:bg-[var(--gold-deep)] transition-colors shadow-lg"
             >
               Registrar mi Negocio GRATIS
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -360,7 +384,7 @@ export default async function QueHacerPage() {
             </Link>
             <Link
               href="/buscar"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-pueblo-crema font-bold rounded-full border border-pueblo-crema/20 hover:bg-white/20 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 text-white px-8 py-4 font-bold text-base hover:bg-white/10 transition-colors"
             >
               Explorar Negocios
             </Link>

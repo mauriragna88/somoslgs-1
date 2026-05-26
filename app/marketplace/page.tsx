@@ -125,18 +125,21 @@ export default async function MarketplacePage({
   if (order) currentParams.order = order
 
   return (
-    <main className="min-h-screen bg-surface">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-100 py-8">
+    <main className="min-h-screen bg-[var(--ivory)]">
+      {/* ── HEADER ──────────────────────────────────────────────── */}
+      <div className="bg-white border-b border-[var(--hairline)] py-10">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-secondary">Marketplace</h1>
-              <p className="text-gray-500 text-sm mt-1">Compra y vende en Lagos de Moreno</p>
+              <span className="pueblo-eyebrow mb-2 inline-block">Marketplace · Lagos de Moreno</span>
+              <h1 className="text-2xl md:text-3xl font-[family-name:var(--font-display)] font-bold text-[var(--ink)]">
+                Compra y Vende
+              </h1>
+              <p className="text-[var(--muted)] text-sm mt-1">Artículos nuevos y usados en tu ciudad</p>
             </div>
             <Link
               href="/marketplace/publicar"
-              className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 text-sm"
+              className="rounded-full bg-[var(--coral)] text-white px-6 py-3 font-semibold hover:bg-[var(--coral-deep)] transition-colors shadow-lg shadow-[var(--coral)]/20 text-sm"
             >
               + Publicar artículo
             </Link>
@@ -151,14 +154,14 @@ export default async function MarketplacePage({
                   name="q"
                   defaultValue={query}
                   placeholder="Buscar artículos..."
-                  className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full px-4 py-3 bg-[var(--ivory)] border border-[var(--hairline)] rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--coral)]/30 focus:border-[var(--coral)] transition-all"
                 />
               </div>
               <div className="w-full md:w-44">
                 <select
                   name="condition"
                   defaultValue={condition}
-                  className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full px-4 py-3 bg-[var(--ivory)] border border-[var(--hairline)] rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--coral)]/30 focus:border-[var(--coral)] transition-all"
                 >
                   <option value="">Todas las condiciones</option>
                   {Object.entries(MARKETPLACE_CONDITIONS).map(([key, label]) => (
@@ -168,7 +171,7 @@ export default async function MarketplacePage({
               </div>
               <button
                 type="submit"
-                className="px-8 py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20"
+                className="rounded-full bg-[var(--coral)] text-white px-8 py-3 font-semibold hover:bg-[var(--coral-deep)] transition-colors shadow-md"
               >
                 Buscar
               </button>
@@ -183,7 +186,7 @@ export default async function MarketplacePage({
                   defaultValue={priceMin}
                   placeholder="Precio mín."
                   min="0"
-                  className="w-full px-4 py-2.5 bg-surface border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full px-4 py-2.5 bg-[var(--ivory)] border border-[var(--hairline)] rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[var(--coral)]/30 focus:border-[var(--coral)] transition-all"
                 />
               </div>
               <div className="w-full sm:w-36">
@@ -193,14 +196,14 @@ export default async function MarketplacePage({
                   defaultValue={priceMax}
                   placeholder="Precio máx."
                   min="0"
-                  className="w-full px-4 py-2.5 bg-surface border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full px-4 py-2.5 bg-[var(--ivory)] border border-[var(--hairline)] rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[var(--coral)]/30 focus:border-[var(--coral)] transition-all"
                 />
               </div>
               <div className="w-full sm:w-52">
                 <select
                   name="order"
                   defaultValue={order}
-                  className="w-full px-4 py-2.5 bg-surface border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full px-4 py-2.5 bg-[var(--ivory)] border border-[var(--hairline)] rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[var(--coral)]/30 focus:border-[var(--coral)] transition-all"
                 >
                   <option value="">Ordenar: Recientes primero</option>
                   <option value="price_asc">Precio: Menor a mayor</option>
@@ -223,9 +226,10 @@ export default async function MarketplacePage({
           {/* Results */}
           <div className="lg:col-span-3">
             <div className="mb-6">
-              <p className="text-gray-600">
-                {listings?.length || 0} artículo{(listings?.length || 0) !== 1 ? 's' : ''}
-                {query && <span> para &ldquo;<strong>{query}</strong>&rdquo;</span>}
+              <p className="text-[var(--ink-soft)] text-sm">
+                <span className="font-semibold text-[var(--ink)]">{listings?.length || 0}</span>{' '}
+                artículo{(listings?.length || 0) !== 1 ? 's' : ''}
+                {query && <span> para &ldquo;<strong className="text-[var(--coral)]">{query}</strong>&rdquo;</span>}
               </p>
             </div>
 
@@ -236,47 +240,47 @@ export default async function MarketplacePage({
                 ))}
               </div>
             ) : (
-              <div className="text-center py-16 animate-fade-in-up">
+              <div className="text-center py-16">
                 {/* Shopping bag icon */}
-                <div className="w-28 h-28 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-14 h-14 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-28 h-28 bg-gradient-to-br from-[var(--coral)]/10 to-[var(--gold)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-14 h-14 text-[var(--coral)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                   </svg>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  {query ? 'Sin resultados' : '¡Se el primero en publicar!'}
+                <h2 className="text-2xl font-[family-name:var(--font-display)] font-bold text-[var(--ink)] mb-2">
+                  {query ? 'Sin resultados' : '¡Sé el primero en publicar!'}
                 </h2>
-                <p className="text-gray-500 mb-8 max-w-md mx-auto">
+                <p className="text-[var(--muted)] mb-8 max-w-md mx-auto">
                   {query
-                    ? `No encontramos articulos para "${query}". Intenta con otras palabras.`
-                    : 'El marketplace esta listo para ti. Publica lo que ya no uses y dale una segunda vida.'}
+                    ? `No encontramos artículos para "${query}". Intenta con otras palabras.`
+                    : 'El marketplace está listo para ti. Publica lo que ya no uses y dale una segunda vida.'}
                 </p>
                 <Link
                   href="/marketplace/publicar"
-                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 hover:scale-105"
+                  className="inline-flex items-center gap-2 rounded-full bg-[var(--coral)] text-white px-8 py-3.5 font-semibold hover:bg-[var(--coral-deep)] transition-all hover:scale-105 shadow-lg shadow-[var(--coral)]/20"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
-                  Publicar mi primer articulo
+                  Publicar mi primer artículo
                 </Link>
 
                 {/* Quick benefits */}
-                <div className="flex flex-wrap justify-center gap-6 mt-10 text-sm text-gray-500">
+                <div className="flex flex-wrap justify-center gap-6 mt-10 text-sm text-[var(--muted)]">
                   <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-[var(--coral)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     100% Gratis
                   </div>
                   <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-[var(--coral)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Facil y rapido
+                    Fácil y rápido
                   </div>
                   <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-[var(--coral)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Contacto directo
