@@ -36,37 +36,26 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
     if (!video || !section) return
     const s = state.current
 
-    // 1. Download video as blob so it's fully buffered before scrubbing
+    // 1. Buffer the video via direct src — avoids blob: CSP restrictions
     async function preload() {
-      try {
-        const res = await fetch('/assets/lagos-city-build.mp4')
-        if (!res.ok) throw new Error('fetch failed')
-        const total = +(res.headers.get('content-length') ?? 0)
-        const reader = res.body!.getReader()
-        const chunks: Uint8Array[] = []
-        let received = 0
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-          chunks.push(value)
-          received += value.length
-          setLoadPct(total ? Math.min(1, received / total) : Math.min(0.92, received / 2_000_000))
+      video.src = '/assets/lagos-city-build.mp4'
+      video.preload = 'auto'
+
+      // Track download progress via buffered ranges
+      const onProgress = () => {
+        if (video.buffered.length > 0 && video.duration) {
+          setLoadPct(video.buffered.end(video.buffered.length - 1) / video.duration)
         }
-        const blob = new Blob(chunks, { type: 'video/mp4' })
-        video.src = URL.createObjectURL(blob)
-        await new Promise<void>(resolve => {
-          const onReady = () => { video.removeEventListener('loadeddata', onReady); resolve() }
-          video.addEventListener('loadeddata', onReady)
-          if (video.readyState >= 2) resolve()
-        })
-      } catch {
-        // fallback: direct src
-        video.src = '/assets/lagos-city-build.mp4'
-        await new Promise<void>(resolve => {
-          const onReady = () => { video.removeEventListener('canplaythrough', onReady); resolve() }
-          video.addEventListener('canplaythrough', onReady)
-        })
       }
+      video.addEventListener('progress', onProgress)
+
+      await new Promise<void>(resolve => {
+        if (video.readyState >= 4) { resolve(); return }
+        const onReady = () => { video.removeEventListener('canplaythrough', onReady); resolve() }
+        video.addEventListener('canplaythrough', onReady)
+      })
+
+      video.removeEventListener('progress', onProgress)
       s.duration = video.duration || 1
       s.ready = true
       setVideoReady(true)

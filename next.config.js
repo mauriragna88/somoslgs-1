@@ -71,6 +71,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
               "font-src 'self' fonts.gstatic.com",
               "img-src 'self' *.supabase.co *.tile.openstreetmap.org unpkg.com images.unsplash.com blob: data:",
+              "media-src 'self' blob:",
               "connect-src 'self' *.supabase.co wss://*.supabase.co *.conekta.io *.tile.openstreetmap.org *.openstreetmap.org unpkg.com",
               "frame-src 'self' pay.conekta.com",
               "object-src 'none'",
