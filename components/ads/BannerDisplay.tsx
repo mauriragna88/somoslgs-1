@@ -45,7 +45,7 @@ function BlockRevealOverlay({ onDone }: { onDone: () => void }) {
             <div
               key={`${row}-${col}`}
               style={{
-                background: `linear-gradient(135deg, #0F766E, #0D5E58)`,
+                background: `linear-gradient(135deg, #FF6B35, #E2541F)`,
                 borderRight: '1px solid rgba(153,246,228,0.15)',
                 borderBottom: '1px solid rgba(153,246,228,0.15)',
                 transformOrigin: 'left center',
@@ -154,7 +154,7 @@ export default function BannerDisplay({ placement, className = '', userTier, for
         <div className={`${className}`}>
           <button
             onClick={handleExpand}
-            className="w-10 h-10 rounded-full bg-primary/90 hover:bg-primary text-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-110 mx-auto"
+            className="w-10 h-10 rounded-full text-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-110 mx-auto" style={{ background: 'var(--coral)' }}
             aria-label="Ver publicidad"
             title="Ver publicidad"
           >
@@ -264,9 +264,9 @@ export default function BannerDisplay({ placement, className = '', userTier, for
               <div className="hidden sm:block absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-white to-transparent" />
             </div>
             <div className="flex-1 p-4 sm:p-5 flex flex-col justify-center">
-              <h3 className="font-bold text-secondary text-base sm:text-lg leading-tight mb-1 group-hover:text-primary transition-colors line-clamp-1">{banner.title}</h3>
+              <h3 className="font-bold text-[#1F2937] text-base sm:text-lg leading-tight mb-1 group-hover:text-[#FF6B35] transition-colors line-clamp-1">{banner.title}</h3>
               {banner.description && <p className="text-sm text-gray-500 line-clamp-2 mb-2">{banner.description}</p>}
-              <span className="inline-flex items-center gap-1.5 text-sm text-primary font-semibold group-hover:gap-2 transition-all">
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-2 transition-all" style={{ color: 'var(--coral)' }}>
                 Conocer mas
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
               </span>
@@ -280,7 +280,7 @@ export default function BannerDisplay({ placement, className = '', userTier, for
         )}
 
         {/* Accent top line */}
-        <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-primary via-accent to-primary opacity-60" />
+        <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-[#FF6B35] via-[#F5B942] to-[#FF6B35] opacity-60" />
         {actionButton}
       </div>
     )
@@ -303,7 +303,7 @@ export default function BannerDisplay({ placement, className = '', userTier, for
       <div className={`${className}`}>
         <button
           onClick={handleExpand}
-          className="w-10 h-10 rounded-full bg-primary/90 hover:bg-primary text-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-110 mx-auto"
+          className="w-10 h-10 rounded-full text-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-110 mx-auto" style={{ background: 'var(--coral)' }}
           aria-label="Ver publicidad"
           title="Ver publicidad"
         >

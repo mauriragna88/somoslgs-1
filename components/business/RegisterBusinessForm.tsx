@@ -224,15 +224,15 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
       {/* Progress Steps */}
       <div className="bg-gray-50 px-8 py-6 border-b border-gray-200">
         <div className="flex items-center justify-center gap-4">
-          <div className={`flex items-center gap-2 ${step === 1 ? 'text-primary font-semibold' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 1 ? 'bg-primary text-white' : 'bg-gray-300'}`}>
+          <div className={`flex items-center gap-2 ${step === 1 ? 'font-semibold' : 'text-gray-400'}`} style={step === 1 ? { color: 'var(--coral)' } : undefined}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 1 ? 'text-white' : 'bg-gray-300'}`} style={step === 1 ? { background: 'var(--coral)' } : undefined}>
               1
             </div>
             <span>Información</span>
           </div>
           <div className="w-12 h-1 bg-gray-300"></div>
-          <div className={`flex items-center gap-2 ${step === 2 ? 'text-primary font-semibold' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 2 ? 'bg-primary text-white' : 'bg-gray-300'}`}>
+          <div className={`flex items-center gap-2 ${step === 2 ? 'font-semibold' : 'text-gray-400'}`} style={step === 2 ? { color: 'var(--coral)' } : undefined}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 2 ? 'text-white' : 'bg-gray-300'}`} style={step === 2 ? { background: 'var(--coral)' } : undefined}>
               2
             </div>
             <span>Plan</span>
@@ -268,7 +268,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
                 placeholder="Ej: Tacos El Güero"
                 required
               />
@@ -281,7 +281,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
               <select
                 value={formData.category_id}
                 onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
                 required
               >
                 <option value="">Selecciona una categoría</option>
@@ -300,7 +300,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
                 placeholder="Describe tu negocio, qué vendes, qué te hace único..."
                 rows={4}
                 required
@@ -318,7 +318,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                 type="text"
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
                 placeholder="Calle, número, colonia"
                 required
               />
@@ -333,7 +333,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
                   placeholder="4741234567"
                   maxLength={10}
                   required
@@ -348,7 +348,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                   type="tel"
                   value={formData.whatsapp}
                   onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value.replace(/\D/g, '') })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
                   placeholder="4741234567"
                   maxLength={10}
                 />
@@ -363,7 +363,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
                 placeholder="negocio@ejemplo.com"
               />
             </div>
@@ -385,7 +385,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                     onClick={() => setFormData({ ...formData, business_type: option.value })}
                     className={`p-4 border-2 rounded-xl text-center transition-all ${
                       formData.business_type === option.value
-                        ? 'border-primary bg-primary/5 text-primary'
+                        ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)] text-[#FF6B35]'
                         : 'border-gray-200 hover:border-gray-300 text-gray-700'
                     }`}
                   >
@@ -402,7 +402,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
             <button
               type="button"
               onClick={handleNext}
-              className="w-full bg-primary hover:bg-primary-dark text-white py-4 rounded-lg font-semibold transition-colors"
+              className="w-full text-white py-4 rounded-lg font-semibold transition-colors" style={{ background: 'var(--coral)' }}
             >
               Continuar →
             </button>
@@ -426,7 +426,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                   onClick={() => setFormData({ ...formData, subscription_tier: plan.id as any })}
                   className={`relative p-6 border-2 rounded-xl cursor-pointer transition-all hover:shadow-lg ${
                     formData.subscription_tier === plan.id
-                      ? 'border-primary bg-primary/5 shadow-lg'
+                      ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)] shadow-lg'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
@@ -440,7 +440,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
 
                   {plan.isFree && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-primary to-primary-dark text-white px-4 py-1 rounded-full text-xs font-bold">
+                      <span className="text-white px-4 py-1 rounded-full text-xs font-bold" style={{ background: 'linear-gradient(135deg, var(--coral), #E2541F)' }}>
                         GRATIS
                       </span>
                     </div>
@@ -452,16 +452,16 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
                     <p className="text-sm text-gray-600 mb-3">{plan.description}</p>
                     <div className="mb-2">
                       {plan.isFree ? (
-                        <span className="text-3xl font-bold text-primary">Gratis</span>
+                        <span className="text-3xl font-bold" style={{ color: 'var(--coral)' }}>Gratis</span>
                       ) : (
                         <>
-                          <span className="text-3xl font-bold text-primary">{plan.price}</span>
+                          <span className="text-3xl font-bold" style={{ color: 'var(--coral)' }}>{plan.price}</span>
                           <span className="text-gray-600 text-sm ml-1">{plan.period}</span>
                         </>
                       )}
                     </div>
                     {plan.dailyPrice && (
-                      <p className="text-xs text-accent-dark font-semibold mt-1">{plan.dailyPrice} — menos que un cafe</p>
+                      <p className="text-xs font-semibold mt-1" style={{ color: 'var(--gold-deep)' }}>{plan.dailyPrice} — menos que un cafe</p>
                     )}
                   </div>
 
@@ -482,7 +482,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
 
                   {formData.subscription_tier === plan.id && (
                     <div className="text-center">
-                      <span className="inline-block bg-primary text-white px-4 py-2 rounded-lg font-semibold">
+                      <span className="inline-block text-white px-4 py-2 rounded-lg font-semibold" style={{ background: 'var(--coral)' }}>
                         ✓ Plan Seleccionado
                       </span>
                     </div>
@@ -534,7 +534,7 @@ export default function RegisterBusinessForm({ categories, isAdmin = false }: Re
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-primary hover:bg-primary-dark text-white py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 text-white py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed" style={{ background: 'var(--coral)' }}
               >
                 {loading ? 'Registrando...' : isFreePlan ? 'Registrar mi Negocio Gratis' : 'Registrar mi Negocio'}
               </button>

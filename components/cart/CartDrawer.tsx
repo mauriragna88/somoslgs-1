@@ -87,7 +87,7 @@ export default function CartDrawer() {
               <p className="text-gray-500">Tu carrito está vacío</p>
               <button
                 onClick={closeCart}
-                className="mt-4 text-primary hover:underline"
+                className="mt-4 hover:underline" style={{ color: 'var(--coral)' }}
               >
                 Seguir comprando
               </button>
@@ -114,7 +114,7 @@ export default function CartDrawer() {
                   {/* Details */}
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium text-gray-900 truncate">{item.name}</h3>
-                    <p className="text-primary font-bold">{formatCurrency(item.price)}</p>
+                    <p className="font-bold" style={{ color: 'var(--coral)' }}>{formatCurrency(item.price)}</p>
 
                     {/* Options */}
                     {item.selected_options && Object.keys(item.selected_options).length > 0 && (
@@ -172,7 +172,7 @@ export default function CartDrawer() {
               <Link
                 href={`/checkout/${businessSlug}`}
                 onClick={closeCart}
-                className="block w-full py-3 bg-primary hover:bg-primary-dark text-white text-center font-bold rounded-lg transition-colors"
+                className="block w-full py-3 text-white text-center font-bold rounded-lg transition-colors" style={{ background: 'var(--coral)' }}
               >
                 Proceder al Pago
               </Link>

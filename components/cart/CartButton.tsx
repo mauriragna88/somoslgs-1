@@ -12,7 +12,7 @@ export default function CartButton() {
   return (
     <button
       onClick={openCart}
-      className="fixed bottom-6 right-6 bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-3 z-30 transition-all hover:scale-105"
+      className="fixed bottom-6 right-6 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-3 z-30 transition-all hover:scale-105" style={{ background: 'var(--coral)' }}
     >
       <div className="relative">
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

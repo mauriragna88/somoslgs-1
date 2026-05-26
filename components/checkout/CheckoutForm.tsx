@@ -252,7 +252,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
           ¡Pedido Recibido!
         </h2>
         <p className="text-gray-600 mb-2">Tu numero de pedido es:</p>
-        <p className="text-3xl font-bold text-primary mb-6">
+        <p className="text-3xl font-bold mb-6" style={{ color: 'var(--coral)' }}>
           {orderSuccess.orderNumber}
         </p>
 
@@ -280,7 +280,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
         <div className="space-y-3">
           <Link
             href={`/negocios/${business.slug}`}
-            className="block w-full py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors text-center"
+            className="block w-full py-3 text-white font-bold rounded-lg transition-colors text-center" style={{ background: 'var(--coral)' }}
           >
             Volver al Negocio
           </Link>
@@ -306,7 +306,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
         </p>
         <Link
           href={`/negocios/${business.slug}`}
-          className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors"
+          className="inline-block px-6 py-3 text-white font-bold rounded-lg transition-colors" style={{ background: 'var(--coral)' }}
         >
           Ver Productos
         </Link>
@@ -360,7 +360,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
             )}
             <div className="flex justify-between text-lg font-bold text-gray-900 pt-1">
               <span>Total</span>
-              <span className="text-primary">{formatCurrency(total)}</span>
+              <span style={{ color: 'var(--coral)' }}>{formatCurrency(total)}</span>
             </div>
           </div>
         </div>
@@ -380,7 +380,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
               value={formData.customer_name}
               onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
               placeholder="Tu nombre completo"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
             />
           </div>
           <div>
@@ -393,7 +393,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
               value={formData.customer_phone}
               onChange={(e) => setFormData({ ...formData, customer_phone: e.target.value })}
               placeholder="10 digitos"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
             />
           </div>
           <div>
@@ -405,7 +405,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
               value={formData.customer_email}
               onChange={(e) => setFormData({ ...formData, customer_email: e.target.value })}
               placeholder="tu@email.com"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
             />
           </div>
         </div>
@@ -425,7 +425,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
             }}
             className={`p-4 rounded-xl border-2 text-left transition-all ${
               formData.delivery_type === 'pickup'
-                ? 'border-primary bg-primary/5'
+                ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)]'
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
@@ -441,7 +441,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
             onClick={() => setFormData({ ...formData, delivery_type: 'delivery', payment_method: formData.payment_method === 'cash' ? '' : formData.payment_method })}
             className={`p-4 rounded-xl border-2 text-left transition-all ${
               formData.delivery_type === 'delivery'
-                ? 'border-primary bg-primary/5'
+                ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)]'
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
@@ -462,7 +462,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
               onChange={(e) => setFormData({ ...formData, delivery_address: e.target.value })}
               placeholder="Calle, numero, colonia..."
               rows={2}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
             />
           </div>
         )}
@@ -483,7 +483,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
               }}
               className={`w-full p-4 rounded-xl border-2 text-left transition-all flex items-center gap-4 ${
                 formData.payment_method === 'cash'
-                  ? 'border-primary bg-primary/5'
+                  ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)]'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
@@ -495,7 +495,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
                 <p className="text-sm text-gray-500">Pagas al recoger tu pedido</p>
               </div>
               {formData.payment_method === 'cash' && (
-                <div className="ml-auto text-primary text-2xl">✓</div>
+                <div className="ml-auto text-2xl" style={{ color: 'var(--coral)' }}>✓</div>
               )}
             </button>
           )}
@@ -506,7 +506,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
             onClick={() => setFormData({ ...formData, payment_method: 'transfer' })}
             className={`w-full p-4 rounded-xl border-2 text-left transition-all flex items-center gap-4 ${
               formData.payment_method === 'transfer'
-                ? 'border-primary bg-primary/5'
+                ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)]'
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
@@ -520,7 +520,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
               </p>
             </div>
             {formData.payment_method === 'transfer' && (
-              <div className="ml-auto text-primary text-2xl">✓</div>
+              <div className="ml-auto text-2xl" style={{ color: 'var(--coral)' }}>✓</div>
             )}
           </button>
 
@@ -551,7 +551,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
                 }}
                 className={`w-full p-4 rounded-xl border-2 text-left transition-all flex items-center gap-4 ${
                   formData.payment_method === 'card'
-                    ? 'border-primary bg-primary/5'
+                    ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)]'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
@@ -563,7 +563,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
                   <p className="text-sm text-gray-500">Visa, Mastercard, Amex</p>
                 </div>
                 {formData.payment_method === 'card' && (
-                  <div className="ml-auto text-primary text-2xl">✓</div>
+                  <div className="ml-auto text-2xl" style={{ color: 'var(--coral)' }}>✓</div>
                 )}
               </button>
             )
@@ -736,7 +736,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
           placeholder="Instrucciones especiales, alergias, etc..."
           rows={3}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
         />
       </div>
 
@@ -751,7 +751,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
       <button
         type="submit"
         disabled={submitting || !formData.payment_method}
-        className="w-full py-4 bg-primary hover:bg-primary-dark text-white text-lg font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-4 text-white text-lg font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed" style={{ background: 'var(--coral)' }}
       >
         {submitting ? 'Procesando...' : `Confirmar Pedido - ${formatCurrency(total)}`}
       </button>
