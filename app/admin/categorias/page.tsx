@@ -62,8 +62,8 @@ export default async function AdminCategoriasPage() {
     <div>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Categorías</h1>
-        <p className="text-sm sm:text-base text-gray-600 mt-1">Negocios organizados por categoría</p>
+        <h1 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Categorías</h1>
+        <p className="text-sm sm:text-base mt-1" style={{ color: 'var(--muted)' }}>Negocios organizados por categoría</p>
       </div>
 
       {/* Stats by Plan */}
@@ -100,15 +100,15 @@ export default async function AdminCategoriasPage() {
       {/* Categories with Businesses */}
       <div className="space-y-8">
         {categoriesWithBusinesses.map((category) => (
-          <div key={category.id} className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div key={category.id} className="bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
             {/* Category Header */}
-            <div className="p-4 bg-gray-50 border-b border-gray-200">
+            <div className="p-4" style={{ background: 'var(--cream)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <span className="text-2xl sm:text-3xl">{category.icon || '📦'}</span>
                   <div>
-                    <h2 className="text-base sm:text-xl font-bold text-gray-900">{category.name}</h2>
-                    <p className="text-xs sm:text-sm text-gray-500">{category.businesses.length} negocios</p>
+                    <h2 className="text-base sm:text-xl font-bold" style={{ color: 'var(--ink)' }}>{category.name}</h2>
+                    <p className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>{category.businesses.length} negocios</p>
                   </div>
                 </div>
                 <div className="hidden sm:flex items-center gap-2">
@@ -163,7 +163,7 @@ export default async function AdminCategoriasPage() {
                 </div>
               </div>
             ) : (
-              <div className="p-8 text-center text-gray-500">
+              <div className="p-8 text-center" style={{ color: 'var(--muted)' }}>
                 <p>No hay negocios en esta categoría</p>
               </div>
             )}

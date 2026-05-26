@@ -108,12 +108,13 @@ export default async function AdminBusinessesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Negocios</h1>
-          <p className="text-gray-600 mt-1 text-sm sm:text-base">Gestiona todos los negocios registrados</p>
+          <h1 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Negocios</h1>
+          <p className="mt-1 text-sm sm:text-base" style={{ color: 'var(--muted)' }}>Gestiona todos los negocios registrados</p>
         </div>
         <Link
           href="/admin/negocios/nuevo"
-          className="px-4 py-2.5 sm:px-6 sm:py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-center text-sm sm:text-base"
+          className="px-4 py-2.5 sm:px-6 sm:py-3 text-white font-semibold rounded-xl transition-colors text-center text-sm sm:text-base"
+          style={{ background: 'var(--coral)' }}
         >
           + Agregar Negocio
         </Link>
@@ -121,91 +122,91 @@ export default async function AdminBusinessesPage() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4 mb-6">
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">🏪</span>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{typedBusinesses.length}</p>
-              <p className="text-xs text-gray-500">Total</p>
+              <p className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>{typedBusinesses.length}</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Total</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">💰</span>
             </div>
             <div>
               <p className="text-2xl font-bold text-green-600">{payingCount}</p>
-              <p className="text-xs text-gray-500">De Pago</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>De Pago</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">🎁</span>
             </div>
             <div>
               <p className="text-2xl font-bold text-teal-600">{courtesyCount}</p>
-              <p className="text-xs text-gray-500">Cortesia</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Cortesia</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">✅</span>
             </div>
             <div>
               <p className="text-2xl font-bold text-green-600">{activeCount}</p>
-              <p className="text-xs text-gray-500">Activos</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Activos</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">⚠️</span>
             </div>
             <div>
               <p className="text-2xl font-bold text-yellow-600">{expiringCount}</p>
-              <p className="text-xs text-gray-500">Por Vencer</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Por Vencer</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">❌</span>
             </div>
             <div>
               <p className="text-2xl font-bold text-red-600">{expiredCount}</p>
-              <p className="text-xs text-gray-500">Vencidos</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Vencidos</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">👤</span>
             </div>
             <div>
               <p className="text-2xl font-bold text-amber-600">{noOwnerCount}</p>
-              <p className="text-xs text-gray-500">Sin Dueno</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Sin Dueno</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
               <svg className="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -215,7 +216,7 @@ export default async function AdminBusinessesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-indigo-600">{totalViews.toLocaleString()}</p>
-              <p className="text-xs text-gray-500">Vistas</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Vistas</p>
             </div>
           </div>
         </div>

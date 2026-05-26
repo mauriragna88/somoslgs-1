@@ -27,31 +27,31 @@ export default async function AdminUsersPage() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Usuarios</h1>
-        <p className="text-gray-600 mt-1">Gestiona todos los usuarios del sistema</p>
+        <h1 className="text-3xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Usuarios</h1>
+        <p className="mt-1" style={{ color: 'var(--muted)' }}>Gestiona todos los usuarios del sistema</p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <p className="text-sm text-gray-600 font-medium">Total Usuarios</p>
-          <p className="text-3xl font-bold text-gray-900 mt-2">{users?.length || 0}</p>
+        <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Total Usuarios</p>
+          <p className="text-3xl font-bold mt-2" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{users?.length || 0}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <p className="text-sm text-gray-600 font-medium">Administradores</p>
-          <p className="text-3xl font-bold text-purple-600 mt-2">
+        <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Administradores</p>
+          <p className="text-3xl font-bold text-purple-600 mt-2" style={{ fontFamily: 'var(--display)' }}>
             {users?.filter(u => u.role === 'admin').length || 0}
           </p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <p className="text-sm text-gray-600 font-medium">Dueños de Negocio</p>
-          <p className="text-3xl font-bold text-blue-600 mt-2">
+        <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Dueños de Negocio</p>
+          <p className="text-3xl font-bold text-blue-600 mt-2" style={{ fontFamily: 'var(--display)' }}>
             {users?.filter(u => u.role === 'business_owner').length || 0}
           </p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <p className="text-sm text-gray-600 font-medium">Clientes</p>
-          <p className="text-3xl font-bold text-green-600 mt-2">
+        <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Clientes</p>
+          <p className="text-3xl font-bold text-green-600 mt-2" style={{ fontFamily: 'var(--display)' }}>
             {users?.filter(u => u.role === 'customer').length || 0}
           </p>
         </div>

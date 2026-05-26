@@ -48,8 +48,8 @@ export default async function AdminPagosPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Gestión de Pagos</h1>
-        <p className="text-gray-600 mt-1 text-sm sm:text-base">
+        <h1 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Gestión de Pagos</h1>
+        <p className="mt-1 text-sm sm:text-base" style={{ color: 'var(--muted)' }}>
           Revisa y aprueba los comprobantes de pago
         </p>
       </div>
@@ -96,7 +96,7 @@ export default async function AdminPagosPage() {
       {/* Pending Payments */}
       {pendingTransactions.length > 0 && (
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
             Pagos Pendientes de Aprobación
           </h2>
           <div className="grid gap-6">
@@ -113,64 +113,64 @@ export default async function AdminPagosPage() {
       {/* Recent Approved */}
       {approvedTransactions.length > 0 && (
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
             Pagos Aprobados Recientemente
           </h2>
           {/* Mobile Cards */}
           <div className="lg:hidden space-y-3">
             {approvedTransactions.slice(0, 10).map((transaction) => (
-              <div key={transaction.id} className="bg-white rounded-xl shadow-sm p-4">
+              <div key={transaction.id} className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
                 <div className="flex items-center justify-between mb-2">
                   {/* @ts-ignore */}
-                  <p className="font-semibold text-gray-900">{transaction.businesses?.name}</p>
+                  <p className="font-semibold" style={{ color: 'var(--ink)' }}>{transaction.businesses?.name}</p>
                   <span className="px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded capitalize">{transaction.subscription_tier}</span>
                 </div>
                 <div className="space-y-1 text-sm">
                   {/* @ts-ignore */}
-                  <p className="text-gray-600">{transaction.profiles?.full_name}</p>
+                  <p style={{ color: 'var(--muted)' }}>{transaction.profiles?.full_name}</p>
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-gray-900">${transaction.amount.toLocaleString('es-MX')} MXN</span>
-                    <span className="text-gray-400">{new Date(transaction.created_at).toLocaleDateString('es-MX')}</span>
+                    <span className="font-semibold" style={{ color: 'var(--ink)' }}>${transaction.amount.toLocaleString('es-MX')} MXN</span>
+                    <span style={{ color: 'var(--muted)' }}>{new Date(transaction.created_at).toLocaleDateString('es-MX')}</span>
                   </div>
                   {transaction.proof_url && (
-                    <a href={transaction.proof_url} target="_blank" rel="noopener noreferrer" className="text-primary text-sm">Ver comprobante</a>
+                    <a href={transaction.proof_url} target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: 'var(--coral)' }}>Ver comprobante</a>
                   )}
                 </div>
               </div>
             ))}
           </div>
           {/* Desktop Table */}
-          <div className="hidden lg:block bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="hidden lg:block bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead style={{ background: 'var(--cream)' }}>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Negocio</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dueño</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Plan</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Comprobante</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase" style={{ color: 'var(--muted)' }}>Negocio</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase" style={{ color: 'var(--muted)' }}>Dueño</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase" style={{ color: 'var(--muted)' }}>Plan</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase" style={{ color: 'var(--muted)' }}>Monto</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase" style={{ color: 'var(--muted)' }}>Fecha</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase" style={{ color: 'var(--muted)' }}>Comprobante</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y" style={{ borderColor: 'rgba(0,0,0,0.05)' }}>
                 {approvedTransactions.slice(0, 10).map((transaction) => (
                   <tr key={transaction.id}>
                     {/* @ts-ignore */}
-                    <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{transaction.businesses?.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap font-medium" style={{ color: 'var(--ink)' }}>{transaction.businesses?.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {/* @ts-ignore */}
-                      <p className="text-sm text-gray-900">{transaction.profiles?.full_name}</p>
+                      <p className="text-sm" style={{ color: 'var(--ink)' }}>{transaction.profiles?.full_name}</p>
                       {/* @ts-ignore */}
-                      <p className="text-xs text-gray-500">{transaction.profiles?.email}</p>
+                      <p className="text-xs" style={{ color: 'var(--muted)' }}>{transaction.profiles?.email}</p>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded capitalize">{transaction.subscription_tier}</span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">${transaction.amount.toLocaleString('es-MX')} MXN</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(transaction.created_at).toLocaleDateString('es-MX')}</td>
+                    <td className="px-6 py-4 whitespace-nowrap font-semibold" style={{ color: 'var(--ink)' }}>${transaction.amount.toLocaleString('es-MX')} MXN</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: 'var(--muted)' }}>{new Date(transaction.created_at).toLocaleDateString('es-MX')}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {transaction.proof_url && (
-                        <a href={transaction.proof_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark text-sm">Ver</a>
+                        <a href={transaction.proof_url} target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: 'var(--coral)' }}>Ver</a>
                       )}
                     </td>
                   </tr>
@@ -182,14 +182,14 @@ export default async function AdminPagosPage() {
       )}
 
       {pendingTransactions.length === 0 && approvedTransactions.length === 0 && (
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="bg-white rounded-2xl p-12 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'var(--cream)' }}>
             <span className="text-4xl">📄</span>
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">
+          <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--ink)' }}>
             No hay pagos registrados
           </h3>
-          <p className="text-gray-600">
+          <p style={{ color: 'var(--muted)' }}>
             Los comprobantes de pago aparecerán aquí cuando los negocios los suban
           </p>
         </div>
