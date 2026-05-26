@@ -48,13 +48,13 @@ const config: Config = {
           light: '#F5E6D8',
         },
         pueblo: {
-          cantera: '#C4745E',
-          terracotta: '#8B5E3C',
-          barroco: '#D4A843',
-          crema: '#FDF6EE',
-          agave: '#5B8C3E',
-          noche: '#2C1810',
-          canteraLight: '#F1D2C7',
+          cantera:      '#FF6B35',   // coral (was #C4745E)
+          terracotta:   '#C86B4A',   // terracotta-deep (was #8B5E3C)
+          barroco:      '#F5B942',   // gold (was #D4A843)
+          crema:        '#FFFDF8',   // ivory (was #FDF6EE)
+          agave:        '#22C55E',   // green (was #5B8C3E)
+          noche:        '#1F2937',   // ink (was #2C1810)
+          canteraLight: '#FFE8DE',   // coral-light (was #F1D2C7)
         },
         surface: {
           DEFAULT: '#F8FAFC',
@@ -62,8 +62,10 @@ const config: Config = {
         },
       },
       boxShadow: {
-        pueblo: '0 24px 70px rgba(44, 24, 16, 0.16)',
-        'pueblo-soft': '0 16px 40px rgba(139, 94, 60, 0.12)',
+        'pueblo':            '0 24px 70px rgba(31, 41, 55, 0.16)',
+        'pueblo-soft':       '0 16px 40px rgba(31, 41, 55, 0.12)',
+        'pueblo-card':       'var(--shadow-card)',
+        'pueblo-card-hover': 'var(--shadow-card-hover)',
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.6s ease-out both',

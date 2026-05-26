@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Bricolage_Grotesque, DM_Sans, Instrument_Serif } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -12,6 +12,9 @@ import PWARegister from '@/components/PWARegister'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 
 const inter = Inter({ subsets: ['latin'] })
+const bricolageGrotesque = Bricolage_Grotesque({ subsets: ['latin'], display: 'swap', variable: '--font-display' })
+const dmSans = DM_Sans({ subsets: ['latin'], display: 'swap', variable: '--font-body' })
+const instrumentSerif = Instrument_Serif({ subsets: ['latin'], display: 'swap', variable: '--font-serif', weight: '400' })
 
 export const metadata: Metadata = {
   title: {
@@ -69,7 +72,7 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className={inter.className}>
+      <body className={`${bricolageGrotesque.variable} ${dmSans.variable} ${instrumentSerif.variable} ${inter.className}`}>
         <CartProvider>
           <Header />
           {children}
