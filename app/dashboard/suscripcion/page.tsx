@@ -108,18 +108,18 @@ export default async function SuscripcionPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Mi Suscripcion</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Mi Suscripcion</h1>
+        <p style={{ color: 'var(--muted)' }}>
           Gestiona el plan de <span className="font-medium">{business.name}</span>
         </p>
       </div>
 
       {/* Current Plan Card */}
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+      <div className="bg-white rounded-2xl p-6 mb-8" style={{ boxShadow: 'var(--shadow-card)' }}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>
                 Plan {currentPlan.name}
               </h2>
               {business.is_active ? (
@@ -132,16 +132,16 @@ export default async function SuscripcionPage() {
                 </span>
               )}
             </div>
-            <p className="text-3xl font-bold text-primary">
+            <p className="text-3xl font-bold" style={{ color: 'var(--coral)' }}>
               {currentPlan.isFree ? 'Gratis' : `$${currentPlan.price}`}
-              {!currentPlan.isFree && <span className="text-base font-normal text-gray-500">/mes</span>}
+              {!currentPlan.isFree && <span className="text-base font-normal" style={{ color: 'var(--muted)' }}>/mes</span>}
             </p>
           </div>
 
           {business.subscription_expires_at && (
             <div className="text-right">
-              <p className="text-sm text-gray-500">Vencimiento</p>
-              <p className="font-medium text-gray-900">
+              <p className="text-sm" style={{ color: 'var(--muted)' }}>Vencimiento</p>
+              <p className="font-medium" style={{ color: 'var(--ink)' }}>
                 {formatDate(business.subscription_expires_at)}
               </p>
               <p className={`text-sm font-medium ${expiration.color}`}>
@@ -152,11 +152,11 @@ export default async function SuscripcionPage() {
         </div>
 
         {/* Features */}
-        <div className="border-t pt-4">
-          <h3 className="text-sm font-medium text-gray-500 mb-3">Tu plan incluye:</h3>
+        <div className="pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+          <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--muted)' }}>Tu plan incluye:</h3>
           <ul className="space-y-2">
             {currentPlan.features.map((feature, i) => (
-              <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
+              <li key={i} className="flex items-center gap-2 text-sm" style={{ color: 'var(--ink-soft)' }}>
                 <span className="text-green-500 flex-shrink-0">✓</span>
                 {feature}
               </li>
@@ -170,7 +170,8 @@ export default async function SuscripcionPage() {
         {!business.is_active && (
           <Link
             href="/dashboard/pago"
-            className="flex items-center gap-4 p-4 bg-primary hover:bg-primary-dark text-white rounded-xl transition-colors"
+            className="flex items-center gap-4 p-4 text-white rounded-xl transition-colors"
+            style={{ background: 'var(--coral)' }}
           >
             <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <span className="text-2xl">💳</span>
@@ -199,34 +200,35 @@ export default async function SuscripcionPage() {
 
         <Link
           href="/dashboard"
-          className="flex items-center gap-4 p-4 bg-white hover:bg-gray-50 border border-gray-200 rounded-xl transition-colors"
+          className="flex items-center gap-4 p-4 bg-white rounded-xl transition-colors"
+          style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.07)' }}
         >
-          <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--cream)' }}>
             <span className="text-2xl">📊</span>
           </div>
           <div>
-            <p className="font-bold text-gray-900">Ir al Dashboard</p>
-            <p className="text-sm text-gray-500">Ver resumen de tu negocio</p>
+            <p className="font-bold" style={{ color: 'var(--ink)' }}>Ir al Dashboard</p>
+            <p className="text-sm" style={{ color: 'var(--muted)' }}>Ver resumen de tu negocio</p>
           </div>
         </Link>
       </div>
 
       {/* Next Plan Recommendation */}
       {nextPlan && (
-        <div className="bg-gradient-to-r from-primary/5 to-accent/5 border-2 border-primary/20 rounded-xl p-6 mb-8">
+        <div className="rounded-2xl p-6 mb-8" style={{ background: 'rgba(255,107,53,0.05)', border: '2px solid rgba(255,107,53,0.2)' }}>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-gray-500 mb-1">Siguiente nivel</p>
-              <h2 className="text-2xl font-bold text-gray-900">Plan {nextPlan.name}</h2>
-              <p className="text-3xl font-bold text-primary mt-1">
-                ${nextPlan.price}<span className="text-base font-normal text-gray-500">/mes</span>
+              <p className="text-sm font-medium mb-1" style={{ color: 'var(--muted)' }}>Siguiente nivel</p>
+              <h2 className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>Plan {nextPlan.name}</h2>
+              <p className="text-3xl font-bold mt-1" style={{ color: 'var(--coral)' }}>
+                ${nextPlan.price}<span className="text-base font-normal" style={{ color: 'var(--muted)' }}>/mes</span>
               </p>
               {nextPlan.dailyPrice && (
-                <p className="text-sm text-accent-dark font-semibold">Solo {nextPlan.dailyPrice} — menos que un cafe</p>
+                <p className="text-sm font-semibold" style={{ color: 'var(--gold)' }}>Solo {nextPlan.dailyPrice} — menos que un cafe</p>
               )}
               <ul className="mt-3 space-y-1">
                 {nextPlan.features.map((f, i) => (
-                  <li key={i} className="text-sm text-gray-600 flex items-center gap-2">
+                  <li key={i} className="text-sm flex items-center gap-2" style={{ color: 'var(--muted)' }}>
                     <span className="text-green-500">✓</span> {f}
                   </li>
                 ))}
@@ -235,7 +237,8 @@ export default async function SuscripcionPage() {
             <div className="flex-shrink-0">
               <Link
                 href="/dashboard/pago"
-                className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors text-center"
+                className="inline-block px-6 py-3 text-white font-bold rounded-xl transition-colors text-center"
+                style={{ background: 'var(--coral)' }}
               >
                 Mejorar a {nextPlan.name}
               </Link>
@@ -246,36 +249,36 @@ export default async function SuscripcionPage() {
 
       {/* All Plans */}
       <div className="mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Todos los Planes</h2>
+        <h2 className="text-xl font-bold mb-4" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Todos los Planes</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {Object.entries(planDetails).map(([key, plan]) => {
             const isCurrent = key === business.subscription_tier
             return (
               <div
                 key={key}
-                className={`rounded-xl p-4 ${
-                  isCurrent
-                    ? 'bg-primary/5 border-2 border-primary'
-                    : 'bg-white border border-gray-200'
-                }`}
+                className="rounded-2xl p-4 bg-white"
+                style={isCurrent
+                  ? { border: '2px solid var(--coral)', background: 'rgba(255,107,53,0.04)', boxShadow: 'var(--shadow-card)' }
+                  : { border: '1px solid rgba(0,0,0,0.07)', boxShadow: 'var(--shadow-card)' }
+                }
               >
                 {isCurrent && (
-                  <span className="inline-block px-2 py-0.5 bg-primary text-white text-xs font-bold rounded mb-2">
+                  <span className="inline-block px-2 py-0.5 text-white text-xs font-bold rounded mb-2" style={{ background: 'var(--coral)' }}>
                     ACTUAL
                   </span>
                 )}
-                <h3 className="font-bold text-gray-900">{plan.name}</h3>
-                <p className="text-2xl font-bold text-primary">
+                <h3 className="font-bold" style={{ color: 'var(--ink)' }}>{plan.name}</h3>
+                <p className="text-2xl font-bold" style={{ color: 'var(--coral)' }}>
                   {plan.isFree ? 'Gratis' : `$${plan.price}`}
-                  {!plan.isFree && <span className="text-sm font-normal text-gray-500">/mes</span>}
+                  {!plan.isFree && <span className="text-sm font-normal" style={{ color: 'var(--muted)' }}>/mes</span>}
                 </p>
                 {plan.dailyPrice && (
-                  <p className="text-xs text-accent-dark font-semibold mb-2">Solo {plan.dailyPrice}</p>
+                  <p className="text-xs font-semibold mb-2" style={{ color: 'var(--gold)' }}>Solo {plan.dailyPrice}</p>
                 )}
                 {!plan.dailyPrice && <div className="mb-3" />}
                 <ul className="space-y-1">
                   {plan.features.slice(0, 4).map((f, i) => (
-                    <li key={i} className="text-xs text-gray-600 flex items-start gap-1">
+                    <li key={i} className="text-xs flex items-start gap-1" style={{ color: 'var(--muted)' }}>
                       <span className="text-green-500 mt-0.5">✓</span>
                       {f}
                     </li>
@@ -285,7 +288,7 @@ export default async function SuscripcionPage() {
             )
           })}
         </div>
-        <p className="text-sm text-gray-500 mt-4 text-center">
+        <p className="text-sm mt-4 text-center" style={{ color: 'var(--muted)' }}>
           Para cambiar de plan, contactanos por WhatsApp o email
         </p>
       </div>

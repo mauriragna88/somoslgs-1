@@ -75,13 +75,14 @@ export default async function ProductsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{pageTitle}</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">Gestiona el catálogo de tu negocio</p>
+          <h1 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>{pageTitle}</h1>
+          <p className="text-sm sm:text-base mt-1" style={{ color: 'var(--muted)' }}>Gestiona el catálogo de tu negocio</p>
         </div>
         {canManageProducts && (
           <Link
             href="/dashboard/productos/nuevo"
-            className="px-4 py-2 sm:px-6 sm:py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-sm sm:text-base text-center"
+            className="px-4 py-2 sm:px-6 sm:py-3 text-white font-semibold rounded-xl transition-colors text-sm sm:text-base text-center"
+            style={{ background: 'var(--coral)' }}
           >
             {addLabel}
           </Link>
@@ -90,44 +91,44 @@ export default async function ProductsPage() {
 
       {!selectedBusiness ? (
         /* No tiene negocios */
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-          <p className="text-gray-600">No tienes negocios registrados</p>
+        <div className="bg-white rounded-2xl p-12 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <p style={{ color: 'var(--muted)' }}>No tienes negocios registrados</p>
         </div>
       ) : !canManageProducts ? (
         /* Plan no permite productos */
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-          <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="bg-white rounded-2xl p-12 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--cream)' }}>
             <span className="text-5xl">🔒</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Desbloquea tu Catalogo</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-2xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Desbloquea tu Catalogo</h2>
+          <p className="mb-6" style={{ color: 'var(--muted)' }}>
             Tu plan actual <strong className="capitalize">{selectedBusiness.subscription_tier}</strong> no incluye catalogo de productos.
             <br />
             Con el plan <strong>Pro</strong> puedes vender directamente desde SomosLagos.
           </p>
           <div className="flex flex-col md:flex-row justify-center gap-4">
-            <div className="bg-green-50 border-2 border-green-500 rounded-lg p-4 text-left">
+            <div className="rounded-2xl p-4 text-left" style={{ background: 'rgba(255,107,53,0.05)', border: '2px solid var(--coral)' }}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">🛍️</span>
-                <h3 className="font-semibold text-gray-900">Plan Pro</h3>
+                <h3 className="font-semibold" style={{ color: 'var(--ink)' }}>Plan Pro</h3>
               </div>
-              <p className="text-2xl font-bold text-green-600">$120<span className="text-sm font-normal text-gray-500"> MXN/mes</span></p>
-              <p className="text-xs text-accent-dark font-semibold mb-2">Solo $4 MXN/día — menos que un café</p>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <p className="text-2xl font-bold" style={{ color: 'var(--coral)' }}>$120<span className="text-sm font-normal" style={{ color: 'var(--muted)' }}> MXN/mes</span></p>
+              <p className="text-xs font-semibold mb-2" style={{ color: 'var(--gold)' }}>Solo $4 MXN/día — menos que un café</p>
+              <ul className="text-sm space-y-1" style={{ color: 'var(--muted)' }}>
                 <li>✓ Catalogo de productos ilimitado</li>
                 <li>✓ Recibe pedidos en linea</li>
                 <li>✓ Pagos por transferencia y tarjeta</li>
                 <li>✓ Hasta 15 fotos</li>
               </ul>
             </div>
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-left">
+            <div className="rounded-2xl p-4 text-left" style={{ background: 'rgba(168,85,247,0.05)', border: '1px solid rgba(168,85,247,0.25)' }}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">⭐</span>
-                <h3 className="font-semibold text-gray-900">Plan Avanzado</h3>
+                <h3 className="font-semibold" style={{ color: 'var(--ink)' }}>Plan Avanzado</h3>
               </div>
-              <p className="text-2xl font-bold text-purple-600">$180<span className="text-sm font-normal text-gray-500"> MXN/mes</span></p>
-              <p className="text-xs text-accent-dark font-semibold mb-2">Solo $6 MXN/día</p>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <p className="text-2xl font-bold text-purple-600">$180<span className="text-sm font-normal" style={{ color: 'var(--muted)' }}> MXN/mes</span></p>
+              <p className="text-xs font-semibold mb-2" style={{ color: 'var(--gold)' }}>Solo $6 MXN/día</p>
+              <ul className="text-sm space-y-1" style={{ color: 'var(--muted)' }}>
                 <li>✓ Todo lo de Pro</li>
                 <li>✓ Destacado en busquedas</li>
                 <li>✓ Estadisticas avanzadas</li>
@@ -137,7 +138,8 @@ export default async function ProductsPage() {
           </div>
           <Link
             href="/dashboard/suscripcion"
-            className="inline-flex items-center mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+            className="inline-flex items-center mt-6 px-6 py-3 text-white font-semibold rounded-xl transition-colors"
+            style={{ background: 'var(--coral)' }}
           >
             Actualizar Plan
           </Link>
@@ -148,9 +150,9 @@ export default async function ProductsPage() {
           {products.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
-                <div key={product.id} className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div key={product.id} className="bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
                   {/* Imagen */}
-                  <div className="relative h-48 bg-gray-200">
+                  <div className="relative h-48" style={{ background: 'var(--cream)' }}>
                     {product.images && product.images.length > 0 ? (
                       <Image
                         src={product.images[0]}
@@ -181,23 +183,24 @@ export default async function ProductsPage() {
 
                   {/* Info */}
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{product.name}</h3>
+                    <h3 className="text-lg font-semibold mb-1" style={{ color: 'var(--ink)' }}>{product.name}</h3>
                     {product.description && (
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
+                      <p className="text-sm mb-3 line-clamp-2" style={{ color: 'var(--muted)' }}>{product.description}</p>
                     )}
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-2xl font-bold text-primary">
+                        <p className="text-2xl font-bold" style={{ color: 'var(--coral)' }}>
                           {formatCurrency(product.price)}
                         </p>
                         {product.stock_quantity !== null && (
-                          <p className="text-xs text-gray-500">Stock: {product.stock_quantity}</p>
+                          <p className="text-xs" style={{ color: 'var(--muted)' }}>Stock: {product.stock_quantity}</p>
                         )}
                       </div>
                       <div className="flex gap-2">
                         <Link
                           href={`/dashboard/productos/${product.id}`}
-                          className="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-colors"
+                          className="px-4 py-2 text-sm font-semibold rounded-xl transition-colors"
+                          style={{ border: '1px solid rgba(0,0,0,0.12)', color: 'var(--ink-soft)' }}
                         >
                           Editar
                         </Link>
@@ -213,19 +216,20 @@ export default async function ProductsPage() {
             </div>
           ) : (
             /* No hay productos/servicios */
-            <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="bg-white rounded-2xl p-12 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
+              <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--cream)' }}>
                 <span className="text-5xl">{emptyIcon}</span>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              <h2 className="text-2xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
                 {bType === 'servicios' ? 'No tienes servicios' : bType === 'ambos' ? 'No tienes productos ni servicios' : 'No tienes productos'}
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="mb-6" style={{ color: 'var(--muted)' }}>
                 {bType === 'servicios' ? 'Comienza agregando tu primer servicio' : 'Comienza agregando tu primer producto al catálogo'}
               </p>
               <Link
                 href="/dashboard/productos/nuevo"
-                className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                className="inline-block px-6 py-3 text-white font-semibold rounded-xl transition-colors"
+                style={{ background: 'var(--coral)' }}
               >
                 {bType === 'servicios' ? '+ Agregar Primer Servicio' : '+ Agregar Primer Producto'}
               </Link>
