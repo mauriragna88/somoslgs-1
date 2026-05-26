@@ -210,7 +210,7 @@ export default async function BusinessPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-[var(--ivory)]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
@@ -230,16 +230,16 @@ export default async function BusinessPage({ params }: PageProps) {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)]/60 via-[var(--ink)]/20 to-transparent" />
         </div>
       )}
 
       {/* Hero Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-white border-b" style={{ borderColor: 'var(--hairline)' }}>
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row gap-6 items-start">
             {/* Logo */}
-            <div className={`w-32 h-32 rounded-xl overflow-hidden bg-gray-200 flex-shrink-0 relative ${business.cover_url ? '-mt-20 ring-4 ring-white shadow-lg' : ''}`}>
+            <div className={`w-32 h-32 rounded-xl overflow-hidden bg-gray-200 flex-shrink-0 relative ${business.cover_url ? '-mt-20 ring-4 ring-white shadow-xl' : ''}`}>
               {business.logo_url ? (
                 <Image
                   src={business.logo_url}
@@ -249,7 +249,7 @@ export default async function BusinessPage({ params }: PageProps) {
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-primary">
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--coral)] to-[var(--gold)]">
                   <span className="text-5xl text-white font-bold">
                     {business.name[0].toUpperCase()}
                   </span>
@@ -261,35 +261,40 @@ export default async function BusinessPage({ params }: PageProps) {
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 {business.category && (
-                  <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
+                  <span className="px-3 py-1 bg-[var(--coral)]/10 text-[var(--coral-deep)] rounded-full text-xs font-semibold uppercase tracking-wide">
                     {business.category.icon} {business.category.name}
                   </span>
                 )}
               </div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl font-bold text-gray-900">{business.name}</h1>
+                <h1
+                  className="font-[family-name:var(--font-display)] text-3xl font-bold"
+                  style={{ color: 'var(--ink)' }}
+                >
+                  {business.name}
+                </h1>
                 <OpenClosedBadge businessHours={business.business_hours} size="md" />
                 <FavoriteButton businessId={business.id} size="md" />
               </div>
               {business.description && (
-                <p className="text-gray-600 mb-4">{business.description}</p>
+                <p className="text-[var(--muted)] mb-4">{business.description}</p>
               )}
 
               {/* Contact Info */}
               <div className="flex flex-wrap gap-4 text-sm">
                 {business.address && (
-                  <div className="flex items-center text-gray-600">
+                  <div className="flex items-center text-[var(--muted)]">
                     <span className="mr-2">📍</span>
                     {business.address}
                     {business.neighborhood && (
-                      <span className="ml-1 text-gray-500">· Col. {business.neighborhood}</span>
+                      <span className="ml-1" style={{ color: 'var(--muted)' }}>· Col. {business.neighborhood}</span>
                     )}
                   </div>
                 )}
                 {business.phone && (
                   <a
                     href={`tel:${business.phone}`}
-                    className="flex items-center text-primary hover:underline"
+                    className="flex items-center text-[var(--coral)] hover:underline"
                   >
                     <span className="mr-2">📞</span>
                     {business.phone}
@@ -300,7 +305,7 @@ export default async function BusinessPage({ params }: PageProps) {
                     href={business.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center text-primary hover:underline"
+                    className="flex items-center text-[var(--coral)] hover:underline"
                   >
                     <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
@@ -359,8 +364,8 @@ export default async function BusinessPage({ params }: PageProps) {
             {/* Action Buttons */}
             <div className="flex-shrink-0 flex flex-col gap-2">
               {isFeatured && (
-                <span className="inline-flex items-center justify-center px-3 py-1 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full border border-accent/30">
-                  ⭐ Negocio Verificado
+                <span className="inline-flex items-center justify-center px-3 py-1 bg-[var(--gold)]/10 text-[var(--ink)] text-sm font-semibold rounded-full border border-[var(--gold)]/30">
+                  ✓ Negocio Verificado
                 </span>
               )}
               {canWhatsApp && business.whatsapp && (
@@ -368,7 +373,7 @@ export default async function BusinessPage({ params }: PageProps) {
                   href={`https://wa.me/52${business.whatsapp}?text=Hola, vi tu negocio en SomosLagos y me gustaría más información`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
+                  className="inline-flex items-center px-6 py-3 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-semibold rounded-full transition-colors"
                 >
                   <span className="mr-2">💬</span>
                   Contactar por WhatsApp
@@ -378,7 +383,7 @@ export default async function BusinessPage({ params }: PageProps) {
                 href={`https://wa.me/?text=${encodeURIComponent(`Mira este negocio en Lagos de Moreno: ${business.name} 👉 https://www.somoslagos.com.mx/negocios/${business.slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 border-2 border-green-500 text-green-600 hover:bg-green-50 font-semibold rounded-lg transition-colors"
+                className="inline-flex items-center justify-center px-4 py-2 text-sm border border-[var(--hairline)] text-[var(--muted)] hover:bg-[var(--hairline-soft)] font-semibold rounded-full transition-colors"
               >
                 <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
@@ -398,20 +403,29 @@ export default async function BusinessPage({ params }: PageProps) {
       {/* Map Section */}
       {canMap && business.latitude && business.longitude && (
         <div className="container mx-auto px-4 py-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Ubicación</h2>
-          <MapDisplay
-            latitude={business.latitude}
-            longitude={business.longitude}
-            businessName={business.name}
-            address={business.address}
-          />
+          <div className="bg-white rounded-[var(--r-lg)] shadow-[var(--shadow-soft)] p-6 mb-6">
+            <h2
+              className="font-[family-name:var(--font-display)] text-xl font-bold mb-4"
+              style={{ color: 'var(--ink)' }}
+            >
+              Ubicación
+            </h2>
+            <MapDisplay
+              latitude={business.latitude}
+              longitude={business.longitude}
+              businessName={business.name}
+              address={business.address}
+            />
+          </div>
         </div>
       )}
 
       {/* Hours Section */}
       {business.business_hours && (
         <div className="container mx-auto px-4 py-6">
-          <BusinessHoursDisplay hours={business.business_hours} />
+          <div className="bg-white rounded-[var(--r-lg)] shadow-[var(--shadow-soft)] p-6 mb-6">
+            <BusinessHoursDisplay hours={business.business_hours} />
+          </div>
         </div>
       )}
 
@@ -429,7 +443,10 @@ export default async function BusinessPage({ params }: PageProps) {
               {/* Products */}
               {productItems.length > 0 && (
                 <section className="mb-12">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  <h2
+                    className="font-[family-name:var(--font-display)] text-2xl font-bold mb-6"
+                    style={{ color: 'var(--ink)' }}
+                  >
                     {bType === 'ambos' ? 'Productos' : bType === 'servicios' ? 'Servicios' : 'Productos'}
                   </h2>
                   <ProductList
@@ -446,7 +463,12 @@ export default async function BusinessPage({ params }: PageProps) {
               {/* Services */}
               {serviceItems.length > 0 && (
                 <section className="mb-12">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Servicios</h2>
+                  <h2
+                    className="font-[family-name:var(--font-display)] text-2xl font-bold mb-6"
+                    style={{ color: 'var(--ink)' }}
+                  >
+                    Servicios
+                  </h2>
                   <ProductList
                     products={serviceItems}
                     businessId={business.id}
@@ -463,9 +485,12 @@ export default async function BusinessPage({ params }: PageProps) {
 
         {/* No Products Message */}
         {canShowProducts && products.length === 0 && (
-          <div className="text-center py-12 bg-white rounded-xl shadow-sm">
+          <div
+            className="bg-white rounded-[var(--r-lg)] shadow-[var(--shadow-card)] p-8 text-center border"
+            style={{ borderColor: 'var(--hairline-soft)' }}
+          >
             <span className="text-6xl mb-4 block">{business.business_type === 'servicios' ? '🔧' : '📦'}</span>
-            <p className="text-gray-600">
+            <p className="text-[var(--muted)]">
               {business.business_type === 'servicios'
                 ? 'Este negocio aún no ha agregado servicios'
                 : business.business_type === 'ambos'
@@ -478,16 +503,24 @@ export default async function BusinessPage({ params }: PageProps) {
         {/* Contact Section for non-product plans */}
         {!canShowProducts && (
           <>
-            <div className="bg-white rounded-xl shadow-sm p-8 text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Contacta a {business.name}</h2>
-              <p className="text-gray-600 mb-6">
+            <div
+              className="bg-white rounded-[var(--r-lg)] p-8 text-center"
+              style={{ boxShadow: 'var(--shadow-card)', border: '1px solid var(--hairline-soft)' }}
+            >
+              <h2
+                className="font-[family-name:var(--font-display)] text-2xl font-bold mb-4"
+                style={{ color: 'var(--ink)' }}
+              >
+                Contacta a {business.name}
+              </h2>
+              <p className="text-[var(--muted)] mb-6">
                 Comunicate directamente con este negocio para conocer sus productos y servicios
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 {business.phone && (
                   <a
                     href={`tel:${business.phone}`}
-                    className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                    className="inline-flex items-center px-6 py-3 bg-[var(--coral)] hover:bg-[var(--coral-deep)] text-white font-semibold rounded-full transition-colors"
                   >
                     <span className="mr-2">📞</span>
                     Llamar
@@ -498,7 +531,7 @@ export default async function BusinessPage({ params }: PageProps) {
                     href={`https://wa.me/52${business.whatsapp}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
+                    className="inline-flex items-center px-6 py-3 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-semibold rounded-full transition-colors"
                   >
                     <span className="mr-2">💬</span>
                     WhatsApp
@@ -508,16 +541,16 @@ export default async function BusinessPage({ params }: PageProps) {
             </div>
 
             {/* Upsell: vende tus productos aqui */}
-            <div className="mt-6 bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20 rounded-xl p-6 text-center">
+            <div className="mt-6 bg-gradient-to-r from-[var(--coral)]/5 to-[var(--gold)]/5 border border-[var(--coral)]/20 rounded-xl p-6 text-center">
               <p className="text-sm font-semibold text-gray-700 mb-1">
                 ¿Es tu negocio? Vende tus productos aqui
               </p>
               <p className="text-xs text-gray-500 mb-3">
-                Con el Plan Pro por solo <span className="font-bold text-primary">$4 MXN/día</span> puedes mostrar tu catalogo y recibir pedidos
+                Con el Plan Pro por solo <span className="font-bold text-[var(--coral)]">$4 MXN/día</span> puedes mostrar tu catalogo y recibir pedidos
               </p>
               <Link
                 href="/registrar-negocio"
-                className="inline-block px-5 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition-colors"
+                className="inline-block px-5 py-2 bg-[var(--coral)] hover:bg-[var(--coral-deep)] text-white text-sm font-semibold rounded-full transition-colors"
               >
                 Ver planes
               </Link>
@@ -545,7 +578,7 @@ export default async function BusinessPage({ params }: PageProps) {
         <div className="mt-8 text-center">
           <Link
             href="/buscar"
-            className="text-primary hover:underline"
+            className="text-[var(--coral)] hover:underline"
           >
             ← Volver a la búsqueda
           </Link>

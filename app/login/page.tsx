@@ -105,27 +105,32 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center px-4">
+    <div className="min-h-screen pueblo-shell flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">SomosLagos</h1>
-          <p className="text-gray-600 mt-2">Inicia sesión en tu cuenta</p>
+          <h1 className="font-[family-name:var(--font-display)] text-4xl font-bold" style={{ color: 'var(--ink)' }}>
+            Somos<span style={{ color: 'var(--coral)' }}>Lagos</span>
+          </h1>
+          <p className="mt-2" style={{ color: 'var(--muted)' }}>Inicia sesión para continuar</p>
         </div>
 
         {/* Card de Login */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div
+          className="bg-white rounded-[var(--r-xl)] p-8"
+          style={{ boxShadow: 'var(--shadow-card)' }}
+        >
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Error message */}
             {(error || searchParams.get('error') === 'oauth') && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
                 {error || 'Error al iniciar sesion con Google. Intenta de nuevo.'}
               </div>
             )}
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink)' }}>
                 Email
               </label>
               <input
@@ -133,7 +138,18 @@ function LoginForm() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none focus:ring-1 transition-colors"
+                style={{
+                  borderColor: 'var(--hairline)',
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'var(--coral)'
+                  e.target.style.boxShadow = '0 0 0 1px var(--coral)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--hairline)'
+                  e.target.style.boxShadow = 'none'
+                }}
                 placeholder="tu@email.com"
                 required
                 disabled={loading}
@@ -142,7 +158,7 @@ function LoginForm() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink)' }}>
                 Contraseña
               </label>
               <input
@@ -150,7 +166,18 @@ function LoginForm() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none focus:ring-1 transition-colors"
+                style={{
+                  borderColor: 'var(--hairline)',
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'var(--coral)'
+                  e.target.style.boxShadow = '0 0 0 1px var(--coral)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--hairline)'
+                  e.target.style.boxShadow = 'none'
+                }}
                 placeholder="••••••••"
                 required
                 disabled={loading}
@@ -159,7 +186,7 @@ function LoginForm() {
 
             {/* Forgot password */}
             <div className="text-right">
-              <Link href="/reset-password" className="text-sm text-primary hover:text-primary-dark">
+              <Link href="/reset-password" className="text-sm hover:underline" style={{ color: 'var(--coral)' }}>
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
@@ -168,7 +195,10 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-full text-white font-semibold py-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ backgroundColor: 'var(--coral)' }}
+              onMouseEnter={(e) => { if (!loading) (e.target as HTMLButtonElement).style.backgroundColor = 'var(--coral-deep)' }}
+              onMouseLeave={(e) => { (e.target as HTMLButtonElement).style.backgroundColor = 'var(--coral)' }}
             >
               {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
             </button>
@@ -176,9 +206,9 @@ function LoginForm() {
 
           {/* Divider - O continuar con */}
           <div className="mt-6 flex items-center gap-4">
-            <div className="flex-1 h-px bg-gray-200"></div>
-            <span className="text-sm text-gray-500">o continuar con</span>
-            <div className="flex-1 h-px bg-gray-200"></div>
+            <div className="flex-1 h-px" style={{ backgroundColor: 'var(--hairline)' }}></div>
+            <span className="text-sm" style={{ color: 'var(--muted)' }}>o continuar con</span>
+            <div className="flex-1 h-px" style={{ backgroundColor: 'var(--hairline)' }}></div>
           </div>
 
           {/* Google Login */}
@@ -186,7 +216,10 @@ function LoginForm() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={googleLoading || loading}
-            className="mt-4 w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-4 w-full flex items-center justify-center gap-3 px-4 py-3 border rounded-[var(--r-md)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ borderColor: 'var(--hairline)' }}
+            onMouseEnter={(e) => { (e.target as HTMLButtonElement).style.backgroundColor = 'var(--hairline-soft)' }}
+            onMouseLeave={(e) => { (e.target as HTMLButtonElement).style.backgroundColor = 'transparent' }}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -194,15 +227,15 @@ function LoginForm() {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
-            <span className="font-medium text-gray-700">
+            <span className="font-medium" style={{ color: 'var(--ink)' }}>
               {googleLoading ? 'Conectando...' : 'Continuar con Google'}
             </span>
           </button>
 
           {/* Link a registro */}
-          <div className="mt-6 text-center text-sm text-gray-600">
+          <div className="mt-6 text-center text-sm" style={{ color: 'var(--muted)' }}>
             ¿No tienes cuenta?{' '}
-            <Link href="/registro" className="text-primary hover:text-primary-dark font-semibold">
+            <Link href="/registro" className="font-semibold hover:underline" style={{ color: 'var(--coral)' }}>
               Registrate aqui
             </Link>
           </div>
@@ -210,7 +243,7 @@ function LoginForm() {
 
         {/* Back to home */}
         <div className="text-center mt-6">
-          <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
+          <Link href="/" className="text-sm hover:underline" style={{ color: 'var(--muted)' }}>
             ← Volver al inicio
           </Link>
         </div>
@@ -222,8 +255,8 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Cargando...</div>
+      <div className="min-h-screen pueblo-shell flex items-center justify-center">
+        <div className="animate-pulse" style={{ color: 'var(--muted)' }}>Cargando...</div>
       </div>
     }>
       <LoginForm />

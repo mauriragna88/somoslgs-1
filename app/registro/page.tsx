@@ -119,20 +119,40 @@ function RegisterForm() {
     })
   }
 
+  const inputStyle = {
+    borderColor: 'var(--hairline)',
+  }
+
+  const inputFocusHandlers = {
+    onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
+      e.target.style.borderColor = 'var(--coral)'
+      e.target.style.boxShadow = '0 0 0 1px var(--coral)'
+    },
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+      e.target.style.borderColor = 'var(--hairline)'
+      e.target.style.boxShadow = 'none'
+    },
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen pueblo-shell flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">SomosLagos</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="font-[family-name:var(--font-display)] text-4xl font-bold" style={{ color: 'var(--ink)' }}>
+            Somos<span style={{ color: 'var(--coral)' }}>Lagos</span>
+          </h1>
+          <p className="mt-2" style={{ color: 'var(--muted)' }}>
             {ref === 'registrar-negocio'
               ? 'Crea tu cuenta para registrar tu negocio'
               : 'Crea tu cuenta gratis'}
           </p>
           {ref === 'registrar-negocio' && (
-            <div className="mt-4 bg-primary/10 border border-primary/20 rounded-lg p-3">
-              <p className="text-sm text-primary font-semibold">
+            <div
+              className="mt-4 rounded-[var(--r-md)] p-3"
+              style={{ backgroundColor: 'color-mix(in srgb, var(--coral) 8%, transparent)', border: '1px solid color-mix(in srgb, var(--coral) 20%, transparent)' }}
+            >
+              <p className="text-sm font-semibold" style={{ color: 'var(--coral-deep)' }}>
                 Después de crear tu cuenta, continuarás con el registro de tu negocio
               </p>
             </div>
@@ -140,7 +160,10 @@ function RegisterForm() {
         </div>
 
         {/* Card de Registro */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div
+          className="bg-white rounded-[var(--r-xl)] p-8"
+          style={{ boxShadow: 'var(--shadow-card)' }}
+        >
           {/* Error message */}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm mb-5">
@@ -153,7 +176,10 @@ function RegisterForm() {
             type="button"
             onClick={handleGoogleRegister}
             disabled={googleLoading || loading}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 border rounded-[var(--r-md)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ borderColor: 'var(--hairline)' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--hairline-soft)' }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent' }}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -161,22 +187,22 @@ function RegisterForm() {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
-            <span className="font-medium text-gray-700">
+            <span className="font-medium" style={{ color: 'var(--ink)' }}>
               {googleLoading ? 'Conectando...' : 'Registrarse con Google'}
             </span>
           </button>
 
           {/* Divider */}
           <div className="my-5 flex items-center gap-4">
-            <div className="flex-1 h-px bg-gray-200"></div>
-            <span className="text-sm text-gray-500">o con email</span>
-            <div className="flex-1 h-px bg-gray-200"></div>
+            <div className="flex-1 h-px" style={{ backgroundColor: 'var(--hairline)' }}></div>
+            <span className="text-sm" style={{ color: 'var(--muted)' }}>o con email</span>
+            <div className="flex-1 h-px" style={{ backgroundColor: 'var(--hairline)' }}></div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Nombre completo */}
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="fullName" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink)' }}>
                 Nombre completo *
               </label>
               <input
@@ -185,7 +211,9 @@ function RegisterForm() {
                 type="text"
                 value={formData.fullName}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none transition-colors"
+                style={inputStyle}
+                {...inputFocusHandlers}
                 placeholder="Juan Pérez"
                 required
                 disabled={loading}
@@ -194,7 +222,7 @@ function RegisterForm() {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink)' }}>
                 Email *
               </label>
               <input
@@ -203,7 +231,9 @@ function RegisterForm() {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none transition-colors"
+                style={inputStyle}
+                {...inputFocusHandlers}
                 placeholder="tu@email.com"
                 required
                 disabled={loading}
@@ -212,7 +242,7 @@ function RegisterForm() {
 
             {/* Teléfono */}
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="phone" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink)' }}>
                 Teléfono (10 dígitos)
               </label>
               <input
@@ -221,7 +251,9 @@ function RegisterForm() {
                 type="tel"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none transition-colors"
+                style={inputStyle}
+                {...inputFocusHandlers}
                 placeholder="4741234567"
                 maxLength={10}
                 disabled={loading}
@@ -230,7 +262,7 @@ function RegisterForm() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink)' }}>
                 Contraseña *
               </label>
               <input
@@ -239,19 +271,21 @@ function RegisterForm() {
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none transition-colors"
+                style={inputStyle}
+                {...inputFocusHandlers}
                 placeholder="••••••••"
                 required
                 disabled={loading}
               />
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs" style={{ color: 'var(--muted)' }}>
                 Mínimo 12 caracteres, debe incluir mayúsculas, minúsculas, números y símbolos
               </p>
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink)' }}>
                 Confirmar contraseña *
               </label>
               <input
@@ -260,7 +294,9 @@ function RegisterForm() {
                 type="password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none transition-colors"
+                style={inputStyle}
+                {...inputFocusHandlers}
                 placeholder="••••••••"
                 required
                 disabled={loading}
@@ -274,16 +310,17 @@ function RegisterForm() {
                 type="checkbox"
                 checked={acceptedTerms}
                 onChange={(e) => setAcceptedTerms(e.target.checked)}
-                className="mt-1 h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+                className="mt-1 h-4 w-4 rounded border-gray-300 focus:ring-1"
+                style={{ accentColor: 'var(--coral)' }}
                 disabled={loading}
               />
-              <label htmlFor="acceptTerms" className="text-sm text-gray-600">
+              <label htmlFor="acceptTerms" className="text-sm" style={{ color: 'var(--muted)' }}>
                 He leido y acepto el{' '}
-                <Link href="/aviso-de-privacidad" target="_blank" className="text-primary hover:text-primary-dark font-medium underline">
+                <Link href="/aviso-de-privacidad" target="_blank" className="font-medium underline hover:opacity-80" style={{ color: 'var(--coral)' }}>
                   Aviso de Privacidad
                 </Link>{' '}
                 y los{' '}
-                <Link href="/terminos" target="_blank" className="text-primary hover:text-primary-dark font-medium underline">
+                <Link href="/terminos" target="_blank" className="font-medium underline hover:opacity-80" style={{ color: 'var(--coral)' }}>
                   Terminos y Condiciones
                 </Link>
               </label>
@@ -293,16 +330,19 @@ function RegisterForm() {
             <button
               type="submit"
               disabled={loading || !acceptedTerms}
-              className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-full text-white font-semibold py-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ backgroundColor: 'var(--coral)' }}
+              onMouseEnter={(e) => { if (!loading && acceptedTerms) (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--coral-deep)' }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--coral)' }}
             >
               {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
             </button>
           </form>
 
           {/* Divider */}
-          <div className="mt-6 text-center text-sm text-gray-600">
+          <div className="mt-6 text-center text-sm" style={{ color: 'var(--muted)' }}>
             ¿Ya tienes cuenta?{' '}
-            <Link href="/login" className="text-primary hover:text-primary-dark font-semibold">
+            <Link href="/login" className="font-semibold hover:underline" style={{ color: 'var(--coral)' }}>
               Inicia sesión
             </Link>
           </div>
@@ -310,7 +350,7 @@ function RegisterForm() {
 
         {/* Back to home */}
         <div className="text-center mt-6">
-          <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
+          <Link href="/" className="text-sm hover:underline" style={{ color: 'var(--muted)' }}>
             ← Volver al inicio
           </Link>
         </div>
@@ -322,8 +362,8 @@ function RegisterForm() {
 export default function RegisterPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Cargando...</div>
+      <div className="min-h-screen pueblo-shell flex items-center justify-center">
+        <div className="animate-pulse" style={{ color: 'var(--muted)' }}>Cargando...</div>
       </div>
     }>
       <RegisterForm />
