@@ -31,14 +31,13 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
   const state = useRef({ currentTime: 0, targetTime: 0, seeking: false, pendingSeek: null as number | null, duration: 1, ready: false })
 
   useEffect(() => {
-    const video = videoRef.current
-    const section = sectionRef.current
+    const video = videoRef.current!
+    const section = sectionRef.current!
     if (!video || !section) return
     const s = state.current
 
     // 1. Buffer the video via direct src — avoids blob: CSP restrictions
     async function preload() {
-      if (!video) return
       video.src = '/assets/lagos-city-build.mp4'
       video.preload = 'auto'
 
