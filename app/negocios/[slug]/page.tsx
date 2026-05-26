@@ -239,7 +239,7 @@ export default async function BusinessPage({ params }: PageProps) {
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row gap-6 items-start">
             {/* Logo */}
-            <div className={`w-32 h-32 rounded-xl overflow-hidden bg-gray-200 flex-shrink-0 relative ${business.cover_url ? '-mt-20 ring-4 ring-white shadow-xl' : ''}`}>
+            <div className={`w-32 h-32 rounded-xl overflow-hidden flex-shrink-0 relative ${business.cover_url ? '-mt-20 ring-4 ring-white shadow-xl' : ''}`} style={{ background: 'var(--cream)' }}>
               {business.logo_url ? (
                 <Image
                   src={business.logo_url}
@@ -542,10 +542,10 @@ export default async function BusinessPage({ params }: PageProps) {
 
             {/* Upsell: vende tus productos aqui */}
             <div className="mt-6 bg-gradient-to-r from-[var(--coral)]/5 to-[var(--gold)]/5 border border-[var(--coral)]/20 rounded-xl p-6 text-center">
-              <p className="text-sm font-semibold text-gray-700 mb-1">
+              <p className="text-sm font-semibold mb-1" style={{ color: 'var(--ink-soft)' }}>
                 ¿Es tu negocio? Vende tus productos aqui
               </p>
-              <p className="text-xs text-gray-500 mb-3">
+              <p className="text-xs mb-3" style={{ color: 'var(--muted)' }}>
                 Con el Plan Pro por solo <span className="font-bold text-[var(--coral)]">$4 MXN/día</span> puedes mostrar tu catalogo y recibir pedidos
               </p>
               <Link
