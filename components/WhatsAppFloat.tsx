@@ -7,7 +7,7 @@ export default function WhatsAppFloat() {
       <div className="pointer-events-auto bg-white rounded-2xl shadow-xl px-4 py-3 border border-gray-100 max-w-[210px] relative">
         <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45"></div>
         <p className="text-xs text-gray-400 leading-tight mb-0.5">Asistente con IA 🤖</p>
-        <p className="text-sm font-semibold text-secondary leading-tight">¿No encuentras lo que buscas? ¡Pregúntame!</p>
+        <p className="text-sm font-semibold leading-tight" style={{ color: 'var(--ink)' }}>¿No encuentras lo que buscas? ¡Pregúntame!</p>
       </div>
 
       {/* WhatsApp button */}

@@ -76,7 +76,7 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
           </div>
           <button
             onClick={() => router.push('/dashboard')}
-            className="mt-6 px-6 py-2 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+            className="mt-6 px-6 py-2 text-white font-semibold rounded-lg transition-colors" style={{ background: 'var(--coral)' }}
           >
             Ir al Dashboard
           </button>
@@ -87,7 +87,7 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
           {/* Opcion 1: Transferencia Bancaria */}
           <button
             onClick={() => setPaymentMethod('transfer')}
-            className="bg-white rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-lg transition-all p-4 sm:p-6 md:p-8 text-left"
+            className="bg-white rounded-xl border-2 border-gray-200 hover:border-[#FF6B35] hover:shadow-lg transition-all p-4 sm:p-6 md:p-8 text-left"
           >
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -119,7 +119,7 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
             <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="flex items-center justify-between">
                 <span className="text-gray-600 text-sm">Total a pagar:</span>
-                <span className="text-2xl font-bold text-primary">
+                <span className="text-2xl font-bold" style={{ color: 'var(--coral)' }}>
                   ${amount.toLocaleString('es-MX')} <span className="text-sm">MXN</span>
                 </span>
               </div>
@@ -129,7 +129,7 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
           {/* Opcion 2: Pago con Tarjeta (Conekta) */}
           <button
             onClick={() => setPaymentMethod('conekta')}
-            className="bg-white rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-lg transition-all p-4 sm:p-6 md:p-8 text-left relative overflow-hidden"
+            className="bg-white rounded-xl border-2 border-gray-200 hover:border-[#FF6B35] hover:shadow-lg transition-all p-4 sm:p-6 md:p-8 text-left relative overflow-hidden"
           >
             <div className="absolute top-4 right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
               INSTANTANEO
@@ -164,7 +164,7 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
             <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="flex items-center justify-between">
                 <span className="text-gray-600 text-sm">Total a pagar:</span>
-                <span className="text-2xl font-bold text-primary">
+                <span className="text-2xl font-bold" style={{ color: 'var(--coral)' }}>
                   ${amount.toLocaleString('es-MX')} <span className="text-sm">MXN</span>
                 </span>
               </div>
@@ -206,7 +206,7 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
             <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="flex items-center justify-between">
                 <span className="text-gray-600 text-sm">Total a pagar:</span>
-                <span className="text-2xl font-bold text-primary">
+                <span className="text-2xl font-bold" style={{ color: 'var(--coral)' }}>
                   ${amount.toLocaleString('es-MX')} <span className="text-sm">MXN</span>
                 </span>
               </div>
@@ -237,7 +237,7 @@ export default function PaymentForm({ business, amount, bankDetails }: PaymentFo
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-gray-600">Monto:</span>
-              <span className="text-sm font-bold text-primary">${amount.toLocaleString('es-MX')} MXN</span>
+              <span className="text-sm font-bold" style={{ color: 'var(--coral)' }}>${amount.toLocaleString('es-MX')} MXN</span>
             </div>
           </div>
 

@@ -27,18 +27,18 @@ export default function MarketplaceSidebar({
   return (
     <aside className="hidden lg:block lg:col-span-1">
       <div className="bg-white rounded-2xl border border-gray-100 p-5 sticky top-24">
-        <h3 className="font-bold text-secondary mb-4 text-sm uppercase tracking-wide">Categorías</h3>
+        <h3 className="font-bold mb-4 text-sm uppercase tracking-wide" style={{ color: 'var(--ink)' }}>Categorías</h3>
         <nav className="space-y-1">
           <Link
             href={buildUrl(searchParams, { category: '' })}
             className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors ${
               !activeCategory
-                ? 'bg-primary/10 text-primary font-bold'
+                ? 'bg-[rgba(255,107,53,0.1)] text-[#FF6B35] font-bold'
                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
             }`}
           >
             <span>Todas</span>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${!activeCategory ? 'bg-primary/20 text-primary' : 'bg-gray-100 text-gray-500'}`}>
+            <span className={`text-xs px-2 py-0.5 rounded-full ${!activeCategory ? 'bg-[rgba(255,107,53,0.2)] text-[#FF6B35]' : 'bg-gray-100 text-gray-500'}`}>
               {totalCount}
             </span>
           </Link>
@@ -48,7 +48,7 @@ export default function MarketplaceSidebar({
               href={buildUrl(searchParams, { category: cat.id })}
               className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors ${
                 activeCategory === cat.id
-                  ? 'bg-primary/10 text-primary font-bold'
+                  ? 'bg-[rgba(255,107,53,0.1)] text-[#FF6B35] font-bold'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }`}
             >
@@ -57,7 +57,7 @@ export default function MarketplaceSidebar({
                 {cat.name}
               </span>
               <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ml-2 ${
-                activeCategory === cat.id ? 'bg-primary/20 text-primary' : 'bg-gray-100 text-gray-500'
+                activeCategory === cat.id ? 'bg-[rgba(255,107,53,0.2)] text-[#FF6B35]' : 'bg-gray-100 text-gray-500'
               }`}>
                 {cat.count}
               </span>

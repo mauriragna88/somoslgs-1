@@ -51,8 +51,8 @@ export default function UpsellModal({ children, businessName }: UpsellModalProps
             <p className="text-gray-600 mb-4">
               Con el Plan Emprendedor tu negocio se ve profesional: portada personalizada, redes sociales y mas fotos para atraer clientes.
             </p>
-            <div className="bg-primary/5 rounded-xl p-4 mb-6">
-              <p className="text-primary font-bold text-2xl">$2 <span className="text-sm font-normal text-gray-500">al dia</span></p>
+            <div className="rounded-xl p-4 mb-6" style={{ background: 'rgba(255,107,53,0.05)' }}>
+              <p className="font-bold text-2xl" style={{ color: 'var(--coral)' }}>$2 <span className="text-sm font-normal text-gray-500">al dia</span></p>
               <p className="text-xs text-gray-400 mb-3">$60 MXN/mes — menos que un cafe diario</p>
               <ul className="text-sm text-gray-600 space-y-1 text-left">
                 <li className="flex items-center gap-2">
@@ -71,7 +71,7 @@ export default function UpsellModal({ children, businessName }: UpsellModalProps
             </div>
             <Link
               href="/registrar-negocio"
-              className="block w-full px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+              className="block w-full px-6 py-3 text-white font-semibold rounded-lg transition-colors" style={{ background: 'var(--coral)' }}
             >
               Ver todos los planes
             </Link>

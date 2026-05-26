@@ -6,7 +6,7 @@ import useReducedMotionPreference from './useReducedMotionPreference'
 const Inner = dynamic(() => import('./FallingBusinessInner'), {
   ssr: false,
   loading: () => (
-    <div className="w-full aspect-video bg-secondary rounded-2xl animate-pulse" />
+    <div className="w-full aspect-video rounded-2xl animate-pulse" style={{ background: 'var(--ink)' }} />
   ),
 })
 

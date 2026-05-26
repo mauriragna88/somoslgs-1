@@ -181,7 +181,7 @@ export default function UploadProofSection({ transaction, business, bankDetails 
             </div>
             <div className="flex justify-between pt-2 border-t">
               <span className="text-gray-600">Monto:</span>
-              <span className="font-bold text-primary text-lg">
+              <span className="font-bold text-lg" style={{ color: 'var(--coral)' }}>
                 ${transaction.amount.toLocaleString('es-MX')} MXN
               </span>
             </div>
@@ -269,7 +269,7 @@ export default function UploadProofSection({ transaction, business, bankDetails 
           <button
             type="submit"
             disabled={!proofFile || uploading}
-            className="w-full bg-primary hover:bg-primary-dark text-white py-4 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full text-white py-4 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed" style={{ background: 'var(--coral)' }}
           >
             {uploading ? 'Enviando...' : 'Enviar Comprobante'}
           </button>

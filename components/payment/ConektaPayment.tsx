@@ -82,7 +82,7 @@ export default function ConektaPayment({
           </div>
           <div className="flex items-center justify-between pt-4 border-t border-gray-200">
             <span className="text-gray-600">Total a pagar:</span>
-            <span className="text-3xl font-bold text-primary">
+            <span className="text-3xl font-bold" style={{ color: 'var(--coral)' }}>
               ${amount.toLocaleString('es-MX')}{' '}
               <span className="text-lg">MXN</span>
             </span>

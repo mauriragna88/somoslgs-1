@@ -2,15 +2,15 @@ import Link from 'next/link'
 
 export default function ReviewsCTA() {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/5 via-amber-50 to-primary/5 border border-primary/10 p-8 text-center">
+    <div className="relative overflow-hidden rounded-2xl border p-8 text-center" style={{ background: 'linear-gradient(135deg, rgba(255,107,53,0.05), #fffbeb, rgba(255,107,53,0.05))', borderColor: 'rgba(255,107,53,0.1)' }}>
       {/* Decorative stars */}
       <div className="absolute top-4 left-6 text-amber-200 text-2xl opacity-60">&#9733;</div>
       <div className="absolute top-8 right-10 text-amber-200 text-lg opacity-40">&#9733;</div>
-      <div className="absolute bottom-6 left-16 text-primary/10 text-3xl">&#9733;</div>
+      <div className="absolute bottom-6 left-16 text-3xl" style={{ color: 'rgba(255,107,53,0.1)' }}>&#9733;</div>
       <div className="absolute bottom-4 right-6 text-amber-200 text-xl opacity-50">&#9733;</div>
 
       <div className="relative">
-        <h3 className="text-xl font-bold text-secondary mb-2">Comparte tu experiencia</h3>
+        <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--ink)' }}>Comparte tu experiencia</h3>
         <p className="text-gray-500 mb-6 max-w-md mx-auto">
           Tu opinion ayuda a otros a encontrar los mejores negocios en Lagos de Moreno
         </p>
@@ -18,13 +18,13 @@ export default function ReviewsCTA() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/registro"
-            className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-primary/20 transition-all"
+            className="inline-flex items-center justify-center px-6 py-3 text-white font-semibold rounded-xl hover:shadow-lg transition-all" style={{ background: 'linear-gradient(135deg, var(--coral), #E2541F)' }}
           >
             Crear cuenta gratis
           </Link>
           <Link
             href="/login"
-            className="inline-flex items-center justify-center px-6 py-3 border-2 border-primary/30 text-primary font-semibold rounded-xl hover:bg-primary/5 transition-all"
+            className="inline-flex items-center justify-center px-6 py-3 border-2 font-semibold rounded-xl transition-all" style={{ borderColor: 'rgba(255,107,53,0.3)', color: 'var(--coral)' }}
           >
             Ya tengo cuenta
           </Link>

@@ -132,7 +132,7 @@ export default function OrderForm({
       {cartCount > 0 && !showCart && !showOrderForm && !orderSuccess && (
         <button
           onClick={() => setShowCart(true)}
-          className="fixed bottom-6 right-6 bg-primary hover:bg-primary-dark text-white px-6 py-4 rounded-full shadow-lg flex items-center gap-3 z-40 transition-all hover:scale-105"
+          className="fixed bottom-6 right-6 text-white px-6 py-4 rounded-full shadow-lg flex items-center gap-3 z-40 transition-all hover:scale-105" style={{ background: 'var(--coral)' }}
         >
           <span className="text-2xl">🛒</span>
           <span className="font-bold">{cartCount} productos</span>
@@ -181,7 +181,7 @@ export default function OrderForm({
                     >
                       <div className="flex-1">
                         <p className="font-medium">{item.product.name}</p>
-                        <p className="text-primary font-bold">
+                        <p className="font-bold" style={{ color: 'var(--coral)' }}>
                           {formatCurrency(item.product.price)}
                         </p>
                       </div>
@@ -197,7 +197,7 @@ export default function OrderForm({
                         </span>
                         <button
                           onClick={() => updateQuantity(item.product.id, 1)}
-                          className="w-8 h-8 bg-primary text-white rounded-full hover:bg-primary-dark"
+                          className="w-8 h-8 text-white rounded-full" style={{ background: 'var(--coral)' }}
                         >
                           +
                         </button>
@@ -212,7 +212,7 @@ export default function OrderForm({
               <div className="p-4 border-t border-gray-200">
                 <div className="flex justify-between mb-4">
                   <span className="font-bold">Total:</span>
-                  <span className="text-xl font-bold text-primary">
+                  <span className="text-xl font-bold" style={{ color: 'var(--coral)' }}>
                     {formatCurrency(cartTotal)}
                   </span>
                 </div>
@@ -221,7 +221,7 @@ export default function OrderForm({
                     setShowCart(false)
                     setShowOrderForm(true)
                   }}
-                  className="w-full py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors"
+                  className="w-full py-3 text-white font-bold rounded-lg transition-colors" style={{ background: 'var(--coral)' }}
                 >
                   Continuar Pedido
                 </button>
@@ -257,7 +257,7 @@ export default function OrderForm({
                   onChange={(e) =>
                     setFormData({ ...formData, customer_name: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
               </div>
 
@@ -272,7 +272,7 @@ export default function OrderForm({
                   onChange={(e) =>
                     setFormData({ ...formData, customer_phone: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
               </div>
 
@@ -286,7 +286,7 @@ export default function OrderForm({
                   onChange={(e) =>
                     setFormData({ ...formData, customer_email: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
               </div>
 
@@ -304,7 +304,7 @@ export default function OrderForm({
                       onChange={() =>
                         setFormData({ ...formData, delivery_type: 'pickup' })
                       }
-                      className="text-primary"
+                      className="text-[#FF6B35]"
                     />
                     <span>🏪 Recoger en tienda</span>
                   </label>
@@ -317,7 +317,7 @@ export default function OrderForm({
                       onChange={() =>
                         setFormData({ ...formData, delivery_type: 'delivery' })
                       }
-                      className="text-primary"
+                      className="text-[#FF6B35]"
                     />
                     <span>🚚 Envío a domicilio</span>
                   </label>
@@ -336,7 +336,7 @@ export default function OrderForm({
                       setFormData({ ...formData, delivery_address: e.target.value })
                     }
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                   />
                 </div>
               )}
@@ -352,7 +352,7 @@ export default function OrderForm({
                   }
                   placeholder="Instrucciones especiales..."
                   rows={2}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
               </div>
 
@@ -368,7 +368,7 @@ export default function OrderForm({
                       payment_method: e.target.value as 'cash' | 'card' | 'transfer',
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 >
                   <option value="cash">💵 Efectivo</option>
                   <option value="card">💳 Tarjeta</option>
@@ -392,7 +392,7 @@ export default function OrderForm({
                   ))}
                   <div className="border-t pt-2 mt-2 font-bold flex justify-between">
                     <span>Total</span>
-                    <span className="text-primary">{formatCurrency(cartTotal)}</span>
+                    <span style={{ color: 'var(--coral)' }}>{formatCurrency(cartTotal)}</span>
                   </div>
                 </div>
               </div>
@@ -400,7 +400,7 @@ export default function OrderForm({
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors disabled:opacity-50"
+                className="w-full py-3 text-white font-bold rounded-lg transition-colors disabled:opacity-50" style={{ background: 'var(--coral)' }}
               >
                 {submitting ? 'Procesando...' : 'Confirmar Pedido'}
               </button>
@@ -420,7 +420,7 @@ export default function OrderForm({
             <p className="text-gray-600 mb-2">
               Tu número de pedido es:
             </p>
-            <p className="text-2xl font-bold text-primary mb-6">
+            <p className="text-2xl font-bold mb-6" style={{ color: 'var(--coral)' }}>
               {orderSuccess.orderNumber}
             </p>
             <p className="text-sm text-gray-500 mb-6">

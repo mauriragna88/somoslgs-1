@@ -90,7 +90,7 @@ export default function PWAInstallPrompt() {
         {!isIOS && deferredPrompt && (
           <button
             onClick={handleInstall}
-            className="flex-shrink-0 bg-primary hover:bg-primary-dark text-white font-semibold px-4 py-2 rounded-xl text-sm transition-colors"
+            className="flex-shrink-0 text-white font-semibold px-4 py-2 rounded-xl text-sm transition-colors" style={{ background: 'var(--coral)' }}
           >
             Instalar
           </button>

@@ -75,7 +75,7 @@ export default function ReportButton({ listingId }: ReportButtonProps) {
           <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowModal(false)} />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
-              <h3 className="text-lg font-bold text-secondary mb-4">Reportar artículo</h3>
+              <h3 className="text-lg font-bold mb-4" style={{ color: 'var(--ink)' }}>Reportar artículo</h3>
 
               <div className="space-y-3 mb-4">
                 {Object.entries(MARKETPLACE_REPORT_REASONS).map(([key, label]) => (
@@ -86,7 +86,7 @@ export default function ReportButton({ listingId }: ReportButtonProps) {
                       value={key}
                       checked={reason === key}
                       onChange={(e) => setReason(e.target.value)}
-                      className="w-4 h-4 text-primary focus:ring-primary"
+                      className="w-4 h-4 text-[#FF6B35] focus:ring-[#FF6B35]"
                     />
                     <span className="text-sm text-gray-700">{label}</span>
                   </label>

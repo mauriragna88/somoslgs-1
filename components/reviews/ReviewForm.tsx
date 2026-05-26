@@ -18,10 +18,10 @@ export default function ReviewForm({ businessId, existingReview, onReviewSubmitt
 
   if (existingReview) {
     return (
-      <div className="bg-primary/5 border border-primary/10 rounded-xl p-4">
+      <div className="rounded-xl p-4" style={{ background: 'rgba(255,107,53,0.05)', border: '1px solid rgba(255,107,53,0.1)' }}>
         <div className="flex items-center gap-2 mb-1">
           <StarRating value={existingReview.rating} size="sm" />
-          <span className="text-sm text-primary font-medium">Ya dejaste tu opinion</span>
+          <span className="text-sm font-medium" style={{ color: 'var(--coral)' }}>Ya dejaste tu opinion</span>
         </div>
         {existingReview.comment && (
           <p className="text-sm text-gray-600 mt-1">{existingReview.comment}</p>
@@ -78,7 +78,7 @@ export default function ReviewForm({ businessId, existingReview, onReviewSubmitt
         placeholder="Escribe tu opinion (opcional)"
         maxLength={500}
         rows={3}
-        className="w-full mt-4 px-4 py-3 border border-gray-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all text-sm"
+        className="w-full mt-4 px-4 py-3 border border-gray-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/30 focus:border-[#FF6B35] transition-all text-sm"
       />
       <div className="flex items-center justify-between mt-1">
         <span className="text-xs text-gray-400">{comment.length}/500</span>
@@ -91,7 +91,7 @@ export default function ReviewForm({ businessId, existingReview, onReviewSubmitt
       <button
         type="submit"
         disabled={loading || rating === 0}
-        className="mt-3 w-full sm:w-auto px-6 py-2.5 bg-primary hover:bg-primary-dark disabled:bg-gray-300 text-white font-semibold rounded-xl transition-colors text-sm"
+        className="mt-3 w-full sm:w-auto px-6 py-2.5 disabled:bg-gray-300 text-white font-semibold rounded-xl transition-colors text-sm" style={{ background: 'var(--coral)' }}
       >
         {loading ? 'Enviando...' : 'Enviar opinion'}
       </button>

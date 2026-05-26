@@ -74,7 +74,7 @@ export default function ProductList({
         return (
           <div
             key={product.id}
-            className="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+            className="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-[rgba(255,107,53,0.3)] hover:shadow-lg transition-all duration-300"
           >
             {/* Product Image - compact */}
             <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
@@ -88,14 +88,14 @@ export default function ProductList({
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(255,107,53,0.1)' }}>
                     <span className="text-3xl">{product.type === 'servicio' ? '🔧' : '📦'}</span>
                   </div>
                 </div>
               )}
               {/* Price badge overlay */}
               <div className="absolute bottom-2 left-2">
-                <span className="inline-block px-2.5 py-1 bg-white/95 backdrop-blur-sm text-primary font-bold text-sm rounded-full shadow-sm">
+                <span className="inline-block px-2.5 py-1 bg-white/95 backdrop-blur-sm font-bold text-sm rounded-full shadow-sm" style={{ color: 'var(--coral)' }}>
                   {formatCurrency(product.price)}
                 </span>
               </div>
@@ -115,17 +115,17 @@ export default function ProductList({
               {/* Action Button */}
               {canReceiveOrders ? (
                 quantity > 0 ? (
-                  <div className="flex items-center justify-between bg-primary/5 rounded-xl px-2 py-1.5">
+                  <div className="flex items-center justify-between rounded-xl px-2 py-1.5" style={{ background: 'rgba(255,107,53,0.05)' }}>
                     <button
                       onClick={() => handleUpdateQuantity(product.id, -1)}
                       className="w-7 h-7 bg-white rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-600 font-bold shadow-sm transition-colors"
                     >
                       -
                     </button>
-                    <span className="font-bold text-primary text-sm">{quantity}</span>
+                    <span className="font-bold text-sm" style={{ color: 'var(--coral)' }}>{quantity}</span>
                     <button
                       onClick={() => handleUpdateQuantity(product.id, 1)}
-                      className="w-7 h-7 bg-primary text-white rounded-lg hover:bg-primary-dark flex items-center justify-center font-bold shadow-sm transition-colors"
+                      className="w-7 h-7 text-white rounded-lg flex items-center justify-center font-bold shadow-sm transition-colors" style={{ background: 'var(--coral)' }}
                     >
                       +
                     </button>
@@ -133,7 +133,7 @@ export default function ProductList({
                 ) : (
                   <button
                     onClick={() => handleAdd(product)}
-                    className="w-full py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-xl transition-colors"
+                    className="w-full py-2 text-white text-sm font-semibold rounded-xl transition-colors" style={{ background: 'var(--coral)' }}
                   >
                     + Agregar
                   </button>

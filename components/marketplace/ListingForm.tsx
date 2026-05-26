@@ -185,7 +185,7 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
 
       {/* Photos */}
       <div>
-        <label className="block text-sm font-semibold text-secondary mb-2">
+        <label className="block text-sm font-semibold text-[#1F2937] mb-2">
           Fotos ({images.length}/{maxPhotos})
         </label>
         <div className="grid grid-cols-4 gap-3">
@@ -212,7 +212,7 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
-              className="aspect-square border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-gray-400 hover:border-primary hover:text-primary transition-colors disabled:opacity-50"
+              className="aspect-square border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-gray-400 hover:border-[#FF6B35] hover:text-[#FF6B35] transition-colors disabled:opacity-50"
             >
               {uploading ? (
                 <span className="text-xs">Subiendo...</span>
@@ -244,28 +244,28 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
 
       {/* Title */}
       <div>
-        <label className="block text-sm font-semibold text-secondary mb-1">Título *</label>
+        <label className="block text-sm font-semibold text-[#1F2937] mb-1">Título *</label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="¿Qué estás vendiendo?"
           maxLength={100}
-          className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] focus:border-[#FF6B35] transition-all"
         />
         <p className="text-xs text-gray-400 mt-1">{title.length}/100</p>
       </div>
 
       {/* Description */}
       <div>
-        <label className="block text-sm font-semibold text-secondary mb-1">Descripción *</label>
+        <label className="block text-sm font-semibold text-[#1F2937] mb-1">Descripción *</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Describe el artículo, su estado, marcas, medidas, etc."
           maxLength={1000}
           rows={4}
-          className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"
+          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] focus:border-[#FF6B35] transition-all resize-none"
         />
         <p className="text-xs text-gray-400 mt-1">{description.length}/1000</p>
       </div>
@@ -273,11 +273,11 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
       {/* Price + Type */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-semibold text-secondary mb-1">Tipo de precio</label>
+          <label className="block text-sm font-semibold text-[#1F2937] mb-1">Tipo de precio</label>
           <select
             value={priceType}
             onChange={(e) => setPriceType(e.target.value as any)}
-            className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] focus:border-[#FF6B35] transition-all"
           >
             {Object.entries(MARKETPLACE_PRICE_TYPES).map(([key, label]) => (
               <option key={key} value={key}>{label}</option>
@@ -285,7 +285,7 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
           </select>
         </div>
         <div>
-          <label className="block text-sm font-semibold text-secondary mb-1">Precio (MXN)</label>
+          <label className="block text-sm font-semibold text-[#1F2937] mb-1">Precio (MXN)</label>
           <input
             type="number"
             value={price}
@@ -294,14 +294,14 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
             min="0"
             step="0.01"
             disabled={priceType === 'gratis' || priceType === 'intercambio'}
-            className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all disabled:opacity-50"
+            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] focus:border-[#FF6B35] transition-all disabled:opacity-50"
           />
         </div>
       </div>
 
       {/* Condition */}
       <div>
-        <label className="block text-sm font-semibold text-secondary mb-1">Condición</label>
+        <label className="block text-sm font-semibold text-[#1F2937] mb-1">Condición</label>
         <div className="flex gap-3">
           {Object.entries(MARKETPLACE_CONDITIONS).map(([key, label]) => (
             <button
@@ -310,7 +310,7 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
               onClick={() => setCondition(key as any)}
               className={`flex-1 py-2.5 text-sm font-medium rounded-xl border-2 transition-all ${
                 condition === key
-                  ? 'border-primary bg-primary/10 text-primary'
+                  ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.1)] text-[#FF6B35]'
                   : 'border-gray-200 text-gray-600 hover:border-gray-300'
               }`}
             >
@@ -322,11 +322,11 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
 
       {/* Category */}
       <div>
-        <label className="block text-sm font-semibold text-secondary mb-1">Categoría</label>
+        <label className="block text-sm font-semibold text-[#1F2937] mb-1">Categoría</label>
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] focus:border-[#FF6B35] transition-all"
         >
           <option value="">Seleccionar categoría</option>
           {categories.map((cat) => (
@@ -337,27 +337,27 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
 
       {/* Location */}
       <div>
-        <label className="block text-sm font-semibold text-secondary mb-1">Ubicación / Colonia</label>
+        <label className="block text-sm font-semibold text-[#1F2937] mb-1">Ubicación / Colonia</label>
         <input
           type="text"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           placeholder="Ej: Centro, Col. Lomas..."
           maxLength={200}
-          className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] focus:border-[#FF6B35] transition-all"
         />
       </div>
 
       {/* WhatsApp */}
       <div>
-        <label className="block text-sm font-semibold text-secondary mb-1">WhatsApp *</label>
+        <label className="block text-sm font-semibold text-[#1F2937] mb-1">WhatsApp *</label>
         <input
           type="tel"
           value={whatsapp}
           onChange={(e) => setWhatsapp(e.target.value)}
           placeholder="Ej: 4741234567"
           maxLength={20}
-          className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] focus:border-[#FF6B35] transition-all"
         />
       </div>
 
@@ -372,7 +372,7 @@ export default function ListingForm({ categories, listing, userWhatsapp, photoLi
       <button
         type="submit"
         disabled={saving || uploading}
-        className="w-full py-3.5 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 disabled:opacity-50"
+        className="w-full py-3.5 text-white font-bold rounded-xl transition-all hover:shadow-lg disabled:opacity-50" style={{ background: 'linear-gradient(135deg, var(--coral), #E2541F)' }}
       >
         {saving ? 'Guardando...' : isEditing ? 'Guardar cambios' : 'Publicar artículo'}
       </button>

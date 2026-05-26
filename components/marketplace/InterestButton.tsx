@@ -91,7 +91,7 @@ export default function InterestButton({
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-bold text-secondary mb-2">Mostrar interes</h3>
+            <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--ink)' }}>Mostrar interes</h3>
             <p className="text-sm text-gray-600 mb-4">
               El vendedor vera que estas interesado. Puedes agregar un mensaje opcional.
             </p>
@@ -102,7 +102,7 @@ export default function InterestButton({
               placeholder="Ej: Hola, me interesa tu articulo. Esta disponible?"
               maxLength={500}
               rows={3}
-              className="w-full px-4 py-3 bg-surface border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none text-sm mb-4"
+              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] focus:border-[#FF6B35] transition-all resize-none text-sm mb-4"
             />
 
             <div className="flex gap-3">

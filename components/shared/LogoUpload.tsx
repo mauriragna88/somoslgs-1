@@ -183,7 +183,7 @@ export default function LogoUpload({
               className="w-full h-full flex flex-col items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
             >
               {uploading ? (
-                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-[#FF6B35] border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
                   <svg className="w-8 h-8 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -221,7 +221,7 @@ export default function LogoUpload({
 
       {/* Uploading indicator */}
       {uploading && (
-        <p className="text-sm text-primary">Subiendo imagen...</p>
+        <p className="text-sm" style={{ color: 'var(--coral)' }}>Subiendo imagen...</p>
       )}
     </div>
   )

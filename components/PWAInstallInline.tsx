@@ -69,13 +69,13 @@ export default function PWAInstallInline({ variant }: Props) {
         {isIOS ? (
           <span>
             Toca{' '}
-            <svg className="w-3.5 h-3.5 inline text-accent mx-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5 inline mx-0.5" style={{ color: 'var(--gold)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
             </svg>
             → &quot;Agregar a inicio&quot;
           </span>
         ) : (
-          <button onClick={handleInstall} className="font-semibold text-accent hover:text-accent-light transition-colors">
+          <button onClick={handleInstall} className="font-semibold text-[#F5B942] hover:text-[#E09A1B] transition-colors">
             Instala la app gratis
           </button>
         )}
@@ -90,7 +90,7 @@ export default function PWAInstallInline({ variant }: Props) {
   return (
     <div className="mb-8 flex items-center justify-between gap-4 bg-white/5 border border-white/10 rounded-2xl px-5 py-4">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center flex-shrink-0">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,53,0.2)' }}>
           <span className="text-xl">📲</span>
         </div>
         <div>
@@ -112,7 +112,7 @@ export default function PWAInstallInline({ variant }: Props) {
         {!isIOS && deferredPrompt && (
           <button
             onClick={handleInstall}
-            className="px-4 py-2 bg-primary hover:bg-primary-dark text-white font-semibold text-xs rounded-xl transition-colors"
+            className="px-4 py-2 text-white font-semibold text-xs rounded-xl transition-colors" style={{ background: 'var(--coral)' }}
           >
             Instalar
           </button>

@@ -7,7 +7,7 @@ import useReducedMotionPreference from './useReducedMotionPreference'
 const Inner = dynamic(() => import('./ParroquiaRevealInner'), {
   ssr: false,
   loading: () => (
-    <div className="w-full aspect-video bg-secondary rounded-2xl animate-pulse" />
+    <div className="w-full aspect-video rounded-2xl animate-pulse" style={{ background: 'var(--ink)' }} />
   ),
 })
 
@@ -15,12 +15,12 @@ export default function ParroquiaReveal() {
   const prefersReducedMotion = useReducedMotionPreference()
 
   if (prefersReducedMotion === null) {
-    return <div className="w-full aspect-video bg-secondary rounded-2xl" />
+    return <div className="w-full aspect-video rounded-2xl" style={{ background: 'var(--ink)' }} />
   }
 
   if (prefersReducedMotion) {
     return (
-      <div className="relative w-full aspect-video overflow-hidden rounded-2xl bg-secondary">
+      <div className="relative w-full aspect-video overflow-hidden rounded-2xl" style={{ background: 'var(--ink)' }}>
         <Image
           src="/tourism/parroquia-asuncion.jpg"
           alt="Parroquia de la Asuncion en Lagos de Moreno"

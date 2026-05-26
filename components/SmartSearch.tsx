@@ -122,9 +122,9 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
   }, [])
 
   const inputClasses = {
-    header: 'w-full pl-10 pr-4 py-2 bg-gray-100 border border-transparent rounded-full text-sm focus:outline-none focus:bg-white focus:border-primary/30 focus:ring-2 focus:ring-primary/10 transition-all',
+    header: 'w-full pl-10 pr-4 py-2 bg-gray-100 border border-transparent rounded-full text-sm focus:outline-none focus:bg-white focus:border-[#FF6B35]/30 focus:ring-2 focus:ring-[#FF6B35]/10 transition-all',
     hero: 'w-full pl-12 pr-4 py-4 text-base bg-pueblo-crema border-2 border-pueblo-canteraLight rounded-2xl text-pueblo-noche placeholder-pueblo-terracotta/40 focus:outline-none focus:bg-white focus:border-pueblo-barroco focus:ring-2 focus:ring-pueblo-barroco/20 shadow-lg shadow-pueblo-noche/10 transition-all',
-    mobile: 'w-full pl-10 pr-4 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all',
+    mobile: 'w-full pl-10 pr-4 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#FF6B35]/20 transition-all',
   }
 
   const dropdownClasses = {
@@ -157,7 +157,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
           />
           {loading && (
             <div className={`absolute ${variant === 'hero' ? 'right-4' : 'right-3'} top-1/2 -translate-y-1/2`}>
-              <div className={`w-4 h-4 border-2 rounded-full animate-spin ${variant === 'hero' ? 'border-pueblo-canteraLight border-t-pueblo-barroco' : 'border-primary/30 border-t-primary'}`}></div>
+              <div className={`w-4 h-4 border-2 rounded-full animate-spin ${variant === 'hero' ? 'border-pueblo-canteraLight border-t-pueblo-barroco' : 'border-[#FF6B35]/30 border-t-[#FF6B35]'}`}></div>
             </div>
           )}
         </div>
@@ -184,7 +184,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
                   navigateTo(`/negocios/${biz.slug}`)
                 }}
                 className={`flex items-center gap-3 px-4 py-3 transition-colors border-b border-gray-100 last:border-0 ${
-                  index === selectedIndex ? 'bg-primary/8 border-l-2 border-l-primary' : 'hover:bg-gray-50'
+                  index === selectedIndex ? 'bg-[rgba(255,107,53,0.08)] border-l-2 border-l-[#FF6B35]' : 'hover:bg-gray-50'
                 }`}
               >
                 {/* Logo */}
@@ -198,7 +198,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-bold text-base">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[rgba(255,107,53,0.2)] to-[rgba(255,107,53,0.1)] text-[#FF6B35] font-bold text-base">
                       {biz.name[0].toUpperCase()}
                     </div>
                   )}
@@ -214,7 +214,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
                   </div>
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {biz.category && (
-                      <span className="text-xs font-medium text-primary/80 bg-primary/8 px-1.5 py-0.5 rounded-md flex-shrink-0">
+                      <span className="text-xs font-medium px-1.5 py-0.5 rounded-md flex-shrink-0" style={{ color: 'rgba(255,107,53,0.8)', background: 'rgba(255,107,53,0.08)' }}>
                         {biz.category.icon} {biz.category.name}
                       </span>
                     )}
@@ -237,7 +237,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
           {/* Ver todos los resultados */}
           <button
             onClick={() => navigateTo(`/buscar?q=${encodeURIComponent(query.trim())}`)}
-            className="w-full px-4 py-3 text-sm font-semibold text-primary hover:bg-primary/5 border-t-2 border-gray-100 transition-colors text-center flex items-center justify-center gap-2"
+            className="w-full px-4 py-3 text-sm font-semibold text-[#FF6B35] hover:bg-[rgba(255,107,53,0.05)] border-t-2 border-gray-100 transition-colors text-center flex items-center justify-center gap-2"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

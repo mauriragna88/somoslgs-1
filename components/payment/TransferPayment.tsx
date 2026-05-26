@@ -177,7 +177,7 @@ export default function TransferPayment({ business, amount, bankDetails, onBack,
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-primary-dark text-white p-6">
+      <div className="text-white p-6" style={{ background: 'linear-gradient(135deg, var(--coral), #E2541F)' }}>
         <button
           onClick={onBack}
           className="text-white hover:text-gray-200 mb-4 flex items-center gap-2 text-sm"
@@ -192,7 +192,7 @@ export default function TransferPayment({ business, amount, bankDetails, onBack,
         {/* Paso 1: Datos bancarios */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+            <div className="w-8 h-8 text-white rounded-full flex items-center justify-center font-bold" style={{ background: 'var(--coral)' }}>
               1
             </div>
             <h3 className="text-lg font-bold text-gray-900">Realiza la transferencia</h3>
@@ -235,7 +235,7 @@ export default function TransferPayment({ business, amount, bankDetails, onBack,
             <div className="pt-4 border-t border-gray-200">
               <div className="flex items-center justify-between">
                 <p className="text-gray-600">Monto a transferir:</p>
-                <p className="text-3xl font-bold text-primary">
+                <p className="text-3xl font-bold" style={{ color: 'var(--coral)' }}>
                   ${amount.toLocaleString('es-MX')} <span className="text-lg">MXN</span>
                 </p>
               </div>
@@ -254,7 +254,7 @@ export default function TransferPayment({ business, amount, bankDetails, onBack,
           /* Mostrar opciones: subir ahora o después */
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+              <div className="w-8 h-8 text-white rounded-full flex items-center justify-center font-bold" style={{ background: 'var(--coral)' }}>
                 2
               </div>
               <h3 className="text-lg font-bold text-gray-900">¿Ya hiciste la transferencia?</h3>
@@ -308,7 +308,7 @@ export default function TransferPayment({ business, amount, bankDetails, onBack,
           <form onSubmit={handleSubmit}>
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+                <div className="w-8 h-8 text-white rounded-full flex items-center justify-center font-bold" style={{ background: 'var(--coral)' }}>
                   2
                 </div>
                 <h3 className="text-lg font-bold text-gray-900">Sube tu comprobante</h3>
@@ -411,7 +411,7 @@ export default function TransferPayment({ business, amount, bankDetails, onBack,
               <button
                 type="submit"
                 disabled={!proofFile || uploading}
-                className="flex-1 bg-primary hover:bg-primary-dark text-white py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 text-white py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed" style={{ background: 'var(--coral)' }}
               >
                 {uploading ? 'Enviando...' : 'Enviar Comprobante'}
               </button>

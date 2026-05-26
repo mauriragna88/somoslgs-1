@@ -169,7 +169,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
 
       {/* Profile Info Card */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-secondary mb-4">Informacion personal</h2>
+        <h2 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink)' }}>Informacion personal</h2>
 
         <form onSubmit={handleSaveProfile} className="space-y-4">
           {message && (
@@ -193,7 +193,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/20 focus:border-[#FF6B35] transition-all"
               required
               disabled={saving}
             />
@@ -224,7 +224,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/20 focus:border-[#FF6B35] transition-all"
               placeholder="4741234567"
               maxLength={10}
               disabled={saving}
@@ -234,7 +234,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
 
           {/* Role + Member Since (read-only) */}
           <div className="flex items-center gap-4 pt-2">
-            <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
+            <span className="px-3 py-1 text-sm font-medium rounded-full" style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}>
               {roleLabels[profile.role] || profile.role}
             </span>
             <span className="text-sm text-gray-500">
@@ -245,7 +245,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
           <button
             type="submit"
             disabled={saving}
-            className="w-full sm:w-auto px-6 py-2.5 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+            className="w-full sm:w-auto px-6 py-2.5 text-white font-semibold rounded-lg transition-colors disabled:opacity-50" style={{ background: 'var(--coral)' }}
           >
             {saving ? 'Guardando...' : completa && !profile.phone ? 'Guardar y continuar' : 'Guardar cambios'}
           </button>
@@ -254,7 +254,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
 
       {/* Change Password Card */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-secondary mb-4">Cambiar contrasena</h2>
+        <h2 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink)' }}>Cambiar contrasena</h2>
 
         <form onSubmit={handleChangePassword} className="space-y-4">
           {passwordMessage && (
@@ -277,7 +277,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
               type="password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/20 focus:border-[#FF6B35] transition-all"
               placeholder="••••••••"
               required
               disabled={passwordSaving}
@@ -293,7 +293,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/20 focus:border-[#FF6B35] transition-all"
               placeholder="••••••••"
               required
               disabled={passwordSaving}
@@ -312,7 +312,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/20 focus:border-[#FF6B35] transition-all"
               placeholder="••••••••"
               required
               disabled={passwordSaving}
@@ -322,7 +322,7 @@ export default function ProfileForm({ profile, completa, nextUrl }: ProfileFormP
           <button
             type="submit"
             disabled={passwordSaving}
-            className="w-full sm:w-auto px-6 py-2.5 bg-secondary hover:bg-gray-800 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+            className="w-full sm:w-auto px-6 py-2.5 bg-[#1F2937] hover:bg-gray-800 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
           >
             {passwordSaving ? 'Actualizando...' : 'Cambiar contrasena'}
           </button>

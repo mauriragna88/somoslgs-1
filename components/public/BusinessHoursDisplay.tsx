@@ -33,7 +33,7 @@ export default function BusinessHoursDisplay({ hours }: BusinessHoursDisplayProp
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
       <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--coral)' }}>
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         Horarios
@@ -47,14 +47,15 @@ export default function BusinessHoursDisplay({ hours }: BusinessHoursDisplayProp
             <div
               key={key}
               className={`flex items-center justify-between py-2 px-3 rounded-lg text-sm ${
-                isToday ? 'bg-primary/5 font-semibold' : ''
+                isToday ? 'font-semibold' : ''
               }`}
+              style={isToday ? { background: 'rgba(255,107,53,0.05)' } : undefined}
             >
-              <span className={isToday ? 'text-primary' : 'text-gray-700'}>
+              <span style={isToday ? { color: 'var(--coral)' } : { color: '#374151' }}>
                 {label}
-                {isToday && <span className="ml-2 text-xs text-primary/70">(Hoy)</span>}
+                {isToday && <span className="ml-2 text-xs" style={{ color: 'rgba(255,107,53,0.7)' }}>(Hoy)</span>}
               </span>
-              <span className={day.closed ? 'text-red-500' : isToday ? 'text-primary' : 'text-gray-600'}>
+              <span className={day.closed ? 'text-red-500' : ''} style={!day.closed && isToday ? { color: 'var(--coral)' } : !day.closed ? { color: '#4B5563' } : undefined}>
                 {day.closed
                   ? 'Cerrado'
                   : `${formatTime(day.open)} - ${formatTime(day.close)}`}
