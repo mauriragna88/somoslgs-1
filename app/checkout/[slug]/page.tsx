@@ -58,7 +58,7 @@ export default async function CheckoutPage({ params }: PageProps) {
         <div className="container mx-auto px-4">
           <h1 className="text-2xl font-bold text-gray-900">Completar Pedido</h1>
           <p className="text-gray-600">
-            Pedido de <span className="font-medium text-primary">{business.name}</span>
+            Pedido de <span className="font-medium" style={{ color: 'var(--coral)' }}>{business.name}</span>
           </p>
         </div>
       </div>

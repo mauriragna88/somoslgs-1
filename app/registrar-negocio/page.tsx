@@ -80,15 +80,15 @@ export default async function RegistrarNegocioPage() {
   // If logged in, show the form directly
   if (user) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4">
+      <div className="min-h-screen py-12 px-4" style={{ background: 'var(--ivory)' }}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--ink)' }}>
               Registra tu Negocio en
-              <span className="text-primary"> Lagos de Moreno</span>
+              <span style={{ color: 'var(--coral)' }}> Lagos de Moreno</span>
             </h1>
-            <p className="text-xl text-gray-600">
-              Alcanza mas clientes con tu presencia digital — <strong className="text-primary">es GRATIS</strong>
+            <p className="text-xl" style={{ color: 'var(--muted)' }}>
+              Alcanza mas clientes con tu presencia digital — <strong style={{ color: 'var(--coral)' }}>es GRATIS</strong>
             </p>
           </div>
           <RegisterBusinessForm categories={categories || []} isAdmin={isAdmin} />
@@ -101,7 +101,7 @@ export default async function RegistrarNegocioPage() {
   return (
     <main className="min-h-screen">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-secondary via-secondary to-primary/90 overflow-hidden">
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, var(--ink) 0%, var(--coral) 100%)' }}>
         <div className="absolute inset-0 bg-[url('/lagos-hero.jpg')] bg-cover bg-center opacity-15"></div>
         <div className="relative container mx-auto px-4 py-20 md:py-28 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
@@ -113,13 +113,14 @@ export default async function RegistrarNegocioPage() {
           </h1>
           <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10">
             Miles de personas buscan negocios como el tuyo en Lagos de Moreno.
-            Registrate <strong className="text-accent">GRATIS</strong> y empieza a recibir clientes hoy.
+            Registrate <strong style={{ color: 'var(--gold)' }}>GRATIS</strong> y empieza a recibir clientes hoy.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link
               href="/registro?ref=registrar-negocio"
-              className="bg-accent hover:bg-accent-dark text-secondary px-10 py-4 rounded-full font-bold text-lg shadow-xl transition-all hover:scale-105 hover:shadow-accent/30"
+              className="px-10 py-4 rounded-full font-bold text-lg shadow-xl transition-all hover:scale-105"
+              style={{ background: 'var(--gold)', color: 'var(--ink)' }}
             >
               Registrar mi Negocio GRATIS
             </Link>
@@ -133,11 +134,11 @@ export default async function RegistrarNegocioPage() {
 
           <div className="flex flex-wrap justify-center gap-4 md:gap-8">
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
-              <p className="text-2xl md:text-3xl font-bold text-accent">25+</p>
+              <p className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--gold)' }}>25+</p>
               <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Negocios</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
-              <p className="text-2xl md:text-3xl font-bold text-primary-light">100%</p>
+              <p className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--coral)' }}>100%</p>
               <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Gratis</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
@@ -152,23 +153,23 @@ export default async function RegistrarNegocioPage() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">Beneficios</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">
+            <span className="inline-block px-4 py-1.5 text-sm font-semibold rounded-full mb-4" style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}>Beneficios</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: 'var(--ink)' }}>
               Todo lo que necesitas para crecer
             </h2>
-            <p className="text-gray-500 max-w-lg mx-auto">
+            <p className="max-w-lg mx-auto" style={{ color: 'var(--muted)' }}>
               Herramientas profesionales para que tu negocio destaque en Lagos de Moreno
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {benefits.map((b) => (
-              <div key={b.title} className="p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
-                <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-4">
+              <div key={b.title} className="p-6 bg-white rounded-2xl hover:-translate-y-1 transition-all" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'linear-gradient(135deg, rgba(255,107,53,0.1), rgba(245,185,66,0.1))' }}>
                   <span className="text-3xl">{b.icon}</span>
                 </div>
-                <h3 className="font-bold text-secondary mb-2">{b.title}</h3>
-                <p className="text-sm text-gray-500">{b.desc}</p>
+                <h3 className="font-bold mb-2" style={{ color: 'var(--ink)' }}>{b.title}</h3>
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>{b.desc}</p>
               </div>
             ))}
           </div>
@@ -176,14 +177,14 @@ export default async function RegistrarNegocioPage() {
       </section>
 
       {/* Como funciona */}
-      <section className="py-20 bg-surface">
+      <section className="py-20" style={{ background: 'var(--cream)' }}>
         <div className="container mx-auto px-4">
           <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-semibold rounded-full mb-4">Proceso</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">
+            <span className="inline-block px-4 py-1.5 text-sm font-semibold rounded-full mb-4" style={{ background: 'rgba(245,185,66,0.12)', color: 'var(--gold)' }}>Proceso</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: 'var(--ink)' }}>
               3 pasos simples
             </h2>
-            <p className="text-gray-500 max-w-lg mx-auto">
+            <p className="max-w-lg mx-auto" style={{ color: 'var(--muted)' }}>
               En menos de 5 minutos tu negocio esta listo para recibir clientes
             </p>
           </div>
@@ -191,11 +192,11 @@ export default async function RegistrarNegocioPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {steps.map((s) => (
               <div key={s.num} className="text-center relative">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-dark text-white rounded-full flex items-center justify-center mx-auto mb-5 text-2xl font-bold shadow-lg shadow-primary/20">
+                <div className="w-16 h-16 text-white rounded-full flex items-center justify-center mx-auto mb-5 text-2xl font-bold shadow-lg" style={{ background: 'linear-gradient(135deg, var(--coral), #E2541F)' }}>
                   {s.num}
                 </div>
-                <h3 className="font-bold text-secondary text-lg mb-2">{s.title}</h3>
-                <p className="text-sm text-gray-500">{s.desc}</p>
+                <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--ink)' }}>{s.title}</h3>
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>{s.desc}</p>
               </div>
             ))}
           </div>
@@ -203,11 +204,11 @@ export default async function RegistrarNegocioPage() {
       </section>
 
       {/* Opciones opcionales — discreta, sin precios */}
-      <section className="py-10 bg-white border-t border-gray-100">
+      <section className="py-10 bg-white" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
         <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-gray-400">
+          <p className="text-sm" style={{ color: 'var(--muted)' }}>
             ¿Quieres más visibilidad? Hay funciones opcionales para crecer a tu ritmo.{' '}
-            <Link href="/planes" className="text-primary hover:text-primary-dark font-medium underline underline-offset-2">
+            <Link href="/planes" className="font-medium underline underline-offset-2" style={{ color: 'var(--coral)' }}>
               Ver opciones →
             </Link>
           </p>
@@ -215,25 +216,25 @@ export default async function RegistrarNegocioPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 bg-surface">
+      <section className="py-20" style={{ background: 'var(--cream)' }}>
         <div className="container mx-auto px-4">
           <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 bg-secondary/5 text-secondary text-sm font-semibold rounded-full mb-4">FAQ</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">
+            <span className="inline-block px-4 py-1.5 text-sm font-semibold rounded-full mb-4" style={{ background: 'rgba(31,41,55,0.05)', color: 'var(--ink)' }}>FAQ</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: 'var(--ink)' }}>
               Preguntas frecuentes
             </h2>
           </div>
 
           <div className="max-w-2xl mx-auto space-y-3">
             {faqs.map((faq) => (
-              <details key={faq.q} className="group bg-white rounded-xl border border-gray-100 overflow-hidden">
-                <summary className="flex items-center justify-between px-6 py-4 cursor-pointer font-semibold text-secondary hover:text-primary transition-colors list-none [&::-webkit-details-marker]:hidden">
+              <details key={faq.q} className="group bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                <summary className="flex items-center justify-between px-6 py-4 cursor-pointer font-semibold transition-colors list-none [&::-webkit-details-marker]:hidden" style={{ color: 'var(--ink)' }}>
                   {faq.q}
-                  <svg className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'var(--muted)' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div className="px-6 pb-4 text-sm text-gray-600 leading-relaxed">
+                <div className="px-6 pb-4 text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
                   {faq.a}
                 </div>
               </details>
@@ -243,7 +244,7 @@ export default async function RegistrarNegocioPage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-20 bg-gradient-to-br from-secondary via-secondary to-primary/80">
+      <section className="py-20" style={{ background: 'linear-gradient(135deg, var(--ink) 0%, var(--coral) 100%)' }}>
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
             Tu negocio merece ser encontrado
@@ -255,7 +256,8 @@ export default async function RegistrarNegocioPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/registro?ref=registrar-negocio"
-              className="bg-accent hover:bg-accent-dark text-secondary px-10 py-4 rounded-full font-bold text-lg shadow-xl transition-all hover:scale-105 hover:shadow-accent/30"
+              className="px-10 py-4 rounded-full font-bold text-lg shadow-xl transition-all hover:scale-105"
+              style={{ background: 'var(--gold)', color: 'var(--ink)' }}
             >
               Registrar mi Negocio GRATIS
             </Link>

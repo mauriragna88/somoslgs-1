@@ -192,7 +192,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
                   {conditionLabel}
                 </span>
                 {typedListing.is_featured && (
-                  <span className="px-3 py-1 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold" style={{ background: 'var(--gold)', color: 'var(--ink)' }}>
                     &#11088; Destacado
                   </span>
                 )}
@@ -237,7 +237,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
               <div className="bg-white rounded-2xl p-4 mb-6 space-y-2" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.06)' }}>
                 {typedListing.location && (
                   <div className="flex items-center text-sm" style={{ color: 'var(--muted)' }}>
-                    <span className="mr-2 text-accent">&#128205;</span>
+                    <span className="mr-2" style={{ color: 'var(--coral)' }}>&#128205;</span>
                     {typedListing.location}
                   </div>
                 )}

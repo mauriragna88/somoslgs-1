@@ -182,7 +182,7 @@ export default async function NegociosEnColoniaPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-surface">
+    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
@@ -197,33 +197,33 @@ export default async function NegociosEnColoniaPage({ params }: PageProps) {
       />
 
       {/* Header */}
-      <div className="bg-gradient-to-br from-white to-surface border-b border-gray-100 py-8">
+      <div className="bg-white py-8" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
         <div className="container mx-auto px-4">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-            <Link href="/" className="hover:text-primary transition-colors">Inicio</Link>
+          <nav className="flex items-center gap-2 text-sm mb-4" style={{ color: 'var(--muted)' }}>
+            <Link href="/" className="transition-opacity hover:opacity-70">Inicio</Link>
             <span>/</span>
-            <Link href="/buscar" className="hover:text-primary transition-colors">Negocios por zona</Link>
+            <Link href="/buscar" className="transition-opacity hover:opacity-70">Negocios por zona</Link>
             <span>/</span>
-            <span className="text-secondary font-medium">{colonia}</span>
+            <span className="font-medium" style={{ color: 'var(--ink)' }}>{colonia}</span>
           </nav>
 
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, rgba(255,107,53,0.1), rgba(245,185,66,0.1))' }}>
               <span className="text-2xl">📍</span>
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-secondary">
+              <h1 className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--ink)' }}>
                 Negocios en {colonia}, Lagos de Moreno
               </h1>
-              <p className="text-gray-500">
+              <p style={{ color: 'var(--muted)' }}>
                 {businesses.length} negocio{businesses.length !== 1 ? 's' : ''} encontrado{businesses.length !== 1 ? 's' : ''}
               </p>
             </div>
           </div>
 
           {/* SEO intro */}
-          <p className="text-sm text-gray-500 max-w-3xl leading-relaxed border-t border-gray-100 pt-4">
+          <p className="text-sm max-w-3xl leading-relaxed pt-4" style={{ color: 'var(--muted)', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
             {intro}
           </p>
         </div>
@@ -239,18 +239,19 @@ export default async function NegociosEnColoniaPage({ params }: PageProps) {
           </div>
         ) : (
           <div className="text-center py-16">
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--cream)' }}>
               <span className="text-5xl">📍</span>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--ink)' }}>
               No hay negocios en {colonia}
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="mb-6" style={{ color: 'var(--muted)' }}>
               Aun no hay negocios registrados en esta zona
             </p>
             <Link
               href="/registrar-negocio"
-              className="inline-block px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+              className="inline-block px-6 py-3 text-white font-semibold rounded-lg transition-colors"
+              style={{ background: 'var(--coral)' }}
             >
               Registrar mi negocio
             </Link>
@@ -259,19 +260,19 @@ export default async function NegociosEnColoniaPage({ params }: PageProps) {
 
         {/* FAQ */}
         <div className="mt-12">
-          <h2 className="text-xl font-bold text-secondary mb-4">
+          <h2 className="text-xl font-bold mb-4" style={{ color: 'var(--ink)' }}>
             Preguntas frecuentes sobre negocios en {colonia}
           </h2>
           <div className="space-y-3">
             {faqs.map((faq) => (
-              <details key={faq.q} className="group bg-white rounded-xl border border-gray-100 overflow-hidden">
-                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-secondary hover:text-primary transition-colors list-none [&::-webkit-details-marker]:hidden text-sm">
+              <details key={faq.q} className="group bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold transition-colors list-none [&::-webkit-details-marker]:hidden text-sm" style={{ color: 'var(--ink)' }}>
                   {faq.q}
-                  <svg className="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'var(--muted)' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div className="px-5 pb-4 text-sm text-gray-600 leading-relaxed">
+                <div className="px-5 pb-4 text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
                   {faq.a}
                 </div>
               </details>
@@ -280,14 +281,15 @@ export default async function NegociosEnColoniaPage({ params }: PageProps) {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 bg-gradient-to-r from-secondary via-secondary-light to-primary rounded-2xl p-8 text-center text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div className="mt-12 rounded-2xl p-8 text-center text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, var(--coral), #E2541F)' }}>
+          <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" style={{ background: 'rgba(255,255,255,0.1)' }}></div>
           <div className="relative">
             <h2 className="text-2xl font-bold mb-2">¿Tienes un negocio en {colonia}?</h2>
             <p className="text-white/80 mb-6">Registrate gratis y aparece en esta pagina</p>
             <Link
               href="/registrar-negocio"
-              className="inline-block px-8 py-3 bg-accent text-secondary font-bold rounded-full hover:bg-accent-dark transition-colors shadow-lg"
+              className="inline-block px-8 py-3 font-bold rounded-full transition-colors shadow-lg"
+              style={{ background: 'var(--gold)', color: 'var(--ink)' }}
             >
               Registrar mi Negocio GRATIS
             </Link>

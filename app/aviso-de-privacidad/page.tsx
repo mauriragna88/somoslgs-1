@@ -52,7 +52,7 @@ export default function AvisoDePrivacidadPage() {
             <section>
               <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: 'var(--ink)' }}>3. Finalidades del Tratamiento</h2>
               <p>Sus datos personales seran utilizados para las siguientes finalidades:</p>
-              <h3 className="font-semibold text-secondary mt-4 mb-2">Finalidades primarias (necesarias):</h3>
+              <h3 className="font-semibold mt-4 mb-2" style={{ color: 'var(--ink)' }}>Finalidades primarias (necesarias):</h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Crear y administrar su cuenta de usuario</li>
                 <li>Registrar y publicar su negocio en el directorio</li>
@@ -61,7 +61,7 @@ export default function AvisoDePrivacidadPage() {
                 <li>Mostrar informacion de contacto de negocios a usuarios</li>
                 <li>Gestionar pedidos y transacciones entre usuarios y negocios</li>
               </ul>
-              <h3 className="font-semibold text-secondary mt-4 mb-2">Finalidades secundarias (opcionales):</h3>
+              <h3 className="font-semibold mt-4 mb-2" style={{ color: 'var(--ink)' }}>Finalidades secundarias (opcionales):</h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Enviar notificaciones por correo electronico sobre su cuenta o negocio</li>
                 <li>Enviar informacion sobre nuevas funciones de la plataforma</li>
