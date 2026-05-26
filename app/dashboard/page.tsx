@@ -103,8 +103,8 @@ export default async function BusinessDashboard() {
     <div>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-1 text-sm sm:text-base">Bienvenido a tu panel de control</p>
+        <h1 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'var(--display)', fontWeight: 700, color: 'var(--ink)' }}>Dashboard</h1>
+        <p className="mt-1 text-sm sm:text-base" style={{ color: 'var(--muted)' }}>Bienvenido a tu panel de control</p>
       </div>
 
       {businesses && businesses.length > 0 ? (
@@ -191,11 +191,11 @@ export default async function BusinessDashboard() {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
-            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+            <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-600 font-medium">Productos</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">{stats.totalProducts}</p>
+                  <p className="text-xs sm:text-sm font-medium" style={{ color: 'var(--muted)' }}>Productos</p>
+                  <p className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>{stats.totalProducts}</p>
                 </div>
                 <div className="w-10 h-10 sm:w-14 sm:h-14 bg-blue-500 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                   📦
@@ -203,11 +203,11 @@ export default async function BusinessDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+            <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-600 font-medium">Pedidos</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">{stats.totalOrders}</p>
+                  <p className="text-xs sm:text-sm font-medium" style={{ color: 'var(--muted)' }}>Pedidos</p>
+                  <p className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>{stats.totalOrders}</p>
                 </div>
                 <div className="w-10 h-10 sm:w-14 sm:h-14 bg-green-500 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                   🛒
@@ -215,11 +215,11 @@ export default async function BusinessDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+            <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-600 font-medium">Hoy</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">{stats.todayOrders}</p>
+                  <p className="text-xs sm:text-sm font-medium" style={{ color: 'var(--muted)' }}>Hoy</p>
+                  <p className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>{stats.todayOrders}</p>
                 </div>
                 <div className="w-10 h-10 sm:w-14 sm:h-14 bg-purple-500 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                   📅
@@ -227,11 +227,11 @@ export default async function BusinessDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+            <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-600 font-medium">Ingresos</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">${stats.monthRevenue}</p>
+                  <p className="text-xs sm:text-sm font-medium" style={{ color: 'var(--muted)' }}>Ingresos</p>
+                  <p className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>${stats.monthRevenue}</p>
                 </div>
                 <div className="w-10 h-10 sm:w-14 sm:h-14 bg-yellow-500 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                   💰
@@ -241,12 +241,13 @@ export default async function BusinessDashboard() {
           </div>
 
           {/* Mis Negocios */}
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-            <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-gray-900">Mis Negocios</h2>
+          <div className="bg-white rounded-2xl overflow-hidden mb-8" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <div className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+              <h2 className="text-xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Mis Negocios</h2>
               <Link
                 href="/registrar-negocio"
-                className="px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition-colors"
+                className="px-4 py-2 text-white text-sm font-semibold rounded-full transition-colors"
+                style={{ background: 'var(--coral)' }}
               >
                 + Agregar Negocio
               </Link>
@@ -255,7 +256,8 @@ export default async function BusinessDashboard() {
               {businesses.map((business) => (
                 <div
                   key={business.id}
-                  className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="p-4 rounded-xl transition-colors"
+                  style={{ border: '1px solid rgba(0,0,0,0.07)' }}
                 >
                   <div className="flex items-center space-x-3 sm:space-x-4">
                     {business.logo_url ? (
@@ -264,10 +266,11 @@ export default async function BusinessDashboard() {
                         alt={business.name}
                         width={64}
                         height={64}
-                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover flex-shrink-0"
+                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl object-cover flex-shrink-0"
                       />
                     ) : (
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{ background: 'linear-gradient(135deg,var(--coral),var(--gold))' }}>
                         <span className="text-white text-xl sm:text-2xl font-bold">
                           {business.name[0].toUpperCase()}
                         </span>
@@ -275,10 +278,10 @@ export default async function BusinessDashboard() {
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{business.name}</h3>
+                        <h3 className="text-base sm:text-lg font-semibold truncate" style={{ color: 'var(--ink)' }}>{business.name}</h3>
                         <OpenClosedBadge businessHours={business.business_hours} />
                       </div>
-                      <p className="text-sm text-gray-500">{business.category?.name || 'Sin categoría'}</p>
+                      <p className="text-sm" style={{ color: 'var(--muted)' }}>{business.category?.name || 'Sin categoría'}</p>
                       <div className="flex flex-wrap items-center gap-1.5 mt-1">
                         <span
                           className={`px-2 py-0.5 text-xs font-semibold rounded-full capitalize ${
@@ -310,14 +313,16 @@ export default async function BusinessDashboard() {
                   <div className="flex gap-2 mt-3">
                     <Link
                       href={`/dashboard/mi-negocio?id=${business.id}`}
-                      className="flex-1 px-3 py-2 text-sm bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-center"
+                      className="flex-1 px-3 py-2 text-sm text-white font-semibold rounded-xl transition-colors text-center"
+                      style={{ background: 'var(--coral)' }}
                     >
                       Ver Detalles
                     </Link>
                     <Link
                       href={`/negocios/${business.slug}`}
                       target="_blank"
-                      className="flex-1 px-3 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-colors text-center"
+                      className="flex-1 px-3 py-2 text-sm font-semibold rounded-xl transition-colors text-center"
+                      style={{ border: '1px solid rgba(0,0,0,0.12)', color: 'var(--ink-soft)' }}
                     >
                       Ver Público
                     </Link>
@@ -331,7 +336,8 @@ export default async function BusinessDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link
               href="/dashboard/productos"
-              className="bg-primary hover:bg-primary-dark text-white rounded-xl p-6 transition-colors flex items-center justify-between group"
+              className="text-white rounded-2xl p-6 transition-all flex items-center justify-between group"
+              style={{ background: 'linear-gradient(135deg,var(--coral),var(--coral-deep,#E2541F))' }}
             >
               <div>
                 <h3 className="text-lg font-semibold">Gestionar Productos</h3>
@@ -342,22 +348,24 @@ export default async function BusinessDashboard() {
 
             <Link
               href="/dashboard/pedidos"
-              className="bg-white border-2 border-gray-200 hover:border-primary rounded-xl p-6 transition-colors flex items-center justify-between group"
+              className="bg-white rounded-2xl p-6 transition-all flex items-center justify-between group"
+              style={{ boxShadow: 'var(--shadow-card)', border: '2px solid transparent' }}
             >
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Ver Pedidos</h3>
-                <p className="text-sm text-gray-600 mt-1">Gestiona tus ventas</p>
+                <h3 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>Ver Pedidos</h3>
+                <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>Gestiona tus ventas</p>
               </div>
               <span className="text-3xl group-hover:scale-110 transition-transform">🛒</span>
             </Link>
 
             <Link
               href="/dashboard/estadisticas"
-              className="bg-white border-2 border-gray-200 hover:border-primary rounded-xl p-6 transition-colors flex items-center justify-between group"
+              className="bg-white rounded-2xl p-6 transition-all flex items-center justify-between group"
+              style={{ boxShadow: 'var(--shadow-card)', border: '2px solid transparent' }}
             >
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Estadísticas</h3>
-                <p className="text-sm text-gray-600 mt-1">Analiza tus ventas</p>
+                <h3 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>Estadísticas</h3>
+                <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>Analiza tus ventas</p>
               </div>
               <span className="text-3xl group-hover:scale-110 transition-transform">📈</span>
             </Link>
@@ -375,12 +383,12 @@ export default async function BusinessDashboard() {
         </>
       ) : (
         /* No tiene negocios */
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-          <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="bg-white rounded-2xl p-12 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--cream)' }}>
             <span className="text-5xl">🏪</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">No tienes negocios registrados</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-2xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>No tienes negocios registrados</h2>
+          <p className="mb-6" style={{ color: 'var(--muted)' }}>
             Parece que aún no tienes un negocio asociado a tu cuenta. Contacta al administrador para que te asigne un negocio.
           </p>
           <a

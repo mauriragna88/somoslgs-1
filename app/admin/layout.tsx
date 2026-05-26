@@ -30,7 +30,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen" style={{ background: 'var(--ivory)' }}>
       {/* Sidebar */}
       <AdminSidebar userName={profile.full_name} />
 

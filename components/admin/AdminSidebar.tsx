@@ -16,25 +16,17 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleLogout = async () => {
-    if (!confirm('¿Seguro que quieres cerrar sesion?')) return
+    if (!confirm('¿Seguro que quieres cerrar sesión?')) return
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push('/')
     router.refresh()
   }
 
-  // Close sidebar on route change
-  useEffect(() => {
-    setIsOpen(false)
-  }, [pathname])
+  useEffect(() => { setIsOpen(false) }, [pathname])
 
-  // Prevent body scroll when sidebar is open on mobile
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    document.body.style.overflow = isOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
@@ -49,79 +41,65 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
     { href: '/admin/blog', label: 'Blog', icon: '✍️' },
   ]
 
+  const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+
   const sidebarContent = (
     <>
       {/* Header */}
-      <div className="p-5 border-b border-slate-700/50 flex items-center justify-between">
-        <Link href="/admin" className="flex items-center space-x-3">
-          <Image
-            src="/logo.png"
-            alt="SomosLagos"
-            width={36}
-            height={36}
-            className="w-9 h-9"
-          />
+      <div className="p-5 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+        <Link href="/admin" className="flex items-center gap-3">
+          <Image src="/logo.png" alt="SomosLagos" width={36} height={36} className="w-9 h-9" />
           <div>
-            <h1 className="text-base font-bold text-white">Admin Panel</h1>
-            <p className="text-xs text-slate-400">SomosLagos</p>
+            <h1 className="text-sm font-bold text-white" style={{ fontFamily: 'var(--display)' }}>Admin Panel</h1>
+            <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.45)' }}>SomosLagos</p>
           </div>
         </Link>
-        {/* Close button - mobile only */}
-        <button
-          aria-label="Cerrar menu"
-          onClick={() => setIsOpen(false)}
-          className="lg:hidden p-2 text-slate-400 hover:text-white"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button aria-label="Cerrar menu" onClick={() => setIsOpen(false)} className="lg:hidden p-1.5 rounded-lg" style={{ color: 'rgba(255,255,255,0.5)' }}>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+      <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
         {navItems.map((item) => {
-          const isActive = pathname === item.href
+          const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
           return (
             <Link
               key={item.href}
               href={item.href}
               prefetch={false}
-              className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl transition-all ${
-                isActive
-                  ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/20'
-                  : 'text-slate-300 hover:bg-white/5 hover:text-white'
-              }`}
+              className="flex items-center gap-3 py-2.5 rounded-xl transition-all text-sm font-medium"
+              style={isActive
+                ? { background: 'rgba(255,107,53,0.14)', color: 'var(--coral)', borderLeft: '3px solid var(--coral)', paddingLeft: 13, paddingRight: 16 }
+                : { color: 'rgba(255,255,255,0.65)', paddingLeft: 16, paddingRight: 16 }
+              }
             >
-              <span className="text-lg">{item.icon}</span>
-              <span className="font-medium text-sm">{item.label}</span>
+              <span className="text-base">{item.icon}</span>
+              <span>{item.label}</span>
             </Link>
           )
         })}
       </nav>
 
       {/* Footer */}
-      <div className="p-3 border-t border-slate-700/50">
-        <div className="flex items-center space-x-3 px-3 py-3">
-          <div className="w-9 h-9 bg-gradient-to-br from-accent to-accent-dark text-secondary rounded-full flex items-center justify-center font-bold text-xs">
-            {userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+      <div className="p-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="flex items-center gap-3 px-3 py-3 mb-1">
+          <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg,var(--coral),var(--gold))' }}>
+            {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">{userName}</p>
-            <p className="text-xs text-slate-400">Administrador</p>
+            <p className="text-sm font-semibold text-white truncate">{userName}</p>
+            <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.45)' }}>Administrador</p>
           </div>
         </div>
-        <Link
-          href="/"
-          className="block w-full px-4 py-2 text-sm text-center text-slate-300 hover:bg-white/5 hover:text-white rounded-lg transition-colors"
-        >
+        <Link href="/" className="block w-full px-4 py-2 text-sm text-center rounded-xl transition-colors" style={{ color: 'rgba(255,255,255,0.55)' }}>
           ← Volver al sitio
         </Link>
-        <button
-          onClick={handleLogout}
-          className="block w-full px-4 py-2 mt-1 text-sm text-center text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-lg transition-colors"
-        >
-          Cerrar Sesion
+        <button onClick={handleLogout} className="block w-full px-4 py-2 mt-0.5 text-sm text-center rounded-xl transition-colors" style={{ color: '#f87171' }}>
+          Cerrar Sesión
         </button>
       </div>
     </>
@@ -129,33 +107,24 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
 
   return (
     <>
-      {/* Mobile hamburger button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-40 p-2 bg-white rounded-lg shadow-md border border-gray-200"
+        className="lg:hidden fixed top-4 left-4 z-40 p-2 rounded-xl shadow-lg"
         aria-label="Abrir menú"
+        style={{ background: 'var(--ink)', border: '1px solid rgba(255,255,255,0.12)' }}
       >
-        <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
 
-      {/* Mobile overlay */}
       {isOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-40"
-          onClick={() => setIsOpen(false)}
-        />
+        <div className="lg:hidden fixed inset-0 bg-black/60 z-40" onClick={() => setIsOpen(false)} />
       )}
 
-      {/* Sidebar - desktop: always visible, mobile: slide-in */}
       <div
-        className={`
-          fixed lg:static inset-y-0 left-0 z-50
-          w-64 bg-secondary border-r border-slate-700/50 flex flex-col
-          transform transition-transform duration-200 ease-in-out
-          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        `}
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 flex flex-col transform transition-transform duration-200 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+        style={{ background: 'var(--ink)', borderRight: '1px solid rgba(255,255,255,0.06)' }}
       >
         {sidebarContent}
       </div>

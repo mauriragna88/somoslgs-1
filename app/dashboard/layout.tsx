@@ -37,7 +37,7 @@ export default async function DashboardLayout({
     .eq('owner_id', user.id) as { data: { id: string; name: string; logo_url: string | null; subscription_tier: string; is_active: boolean; whatsapp: string | null; business_type: 'productos' | 'servicios' | 'ambos' }[] | null }
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen" style={{ background: 'var(--ivory)' }}>
       {/* Sidebar */}
       <BusinessSidebar
         userName={profile.full_name}

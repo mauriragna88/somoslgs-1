@@ -88,21 +88,21 @@ export default async function AdminDashboard() {
   }
 
   return (
-    <div>
+    <div style={{ background: 'var(--ivory)' }}>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'var(--display)', fontWeight: 700, color: 'var(--ink)' }}>Dashboard</h1>
         <p className="text-gray-600 mt-1 text-sm sm:text-base">Bienvenido al panel de administración</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
         {stats.map((stat) => (
-          <div key={stat.label} className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+          <div key={stat.label} className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)', borderRadius: 16 }}>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs sm:text-sm text-gray-600 font-medium">{stat.label}</p>
-                <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">{stat.value}</p>
+                <p className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>{stat.value}</p>
               </div>
               <div className={`w-10 h-10 sm:w-14 sm:h-14 ${stat.color} rounded-lg flex items-center justify-center text-xl sm:text-2xl`}>
                 {stat.icon}
@@ -187,10 +187,10 @@ export default async function AdminDashboard() {
       )}
 
       {/* Recent Businesses */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+      <div className="bg-white overflow-hidden mb-8" style={{ boxShadow: 'var(--shadow-card)', borderRadius: 16 }}>
         <div className="px-4 sm:px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-          <h2 className="text-lg sm:text-xl font-bold text-gray-900">Negocios Recientes</h2>
-          <Link href="/admin/negocios" className="text-primary hover:underline text-sm">
+          <h2 className="text-lg sm:text-xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Negocios Recientes</h2>
+          <Link href="/admin/negocios" className="hover:underline text-sm" style={{ color: 'var(--coral)' }}>
             Ver todos →
           </Link>
         </div>
@@ -224,18 +224,18 @@ export default async function AdminDashboard() {
         {/* Desktop: table */}
         <div className="hidden sm:block overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead style={{ background: 'var(--cream)' }}>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--muted)' }}>
                   Nombre
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--muted)' }}>
                   Plan
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--muted)' }}>
                   Estado
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--muted)' }}>
                   Fecha de Registro
                 </th>
               </tr>
@@ -284,7 +284,8 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link
           href="/admin/negocios/nuevo"
-          className="bg-primary hover:bg-primary-dark text-white rounded-xl p-6 transition-colors flex items-center justify-between group"
+          className="text-white rounded-2xl p-6 transition-all flex items-center justify-between group"
+          style={{ background: 'linear-gradient(135deg,var(--coral),var(--coral-deep,#E2541F))' }}
         >
           <div>
             <h3 className="text-lg font-semibold">Agregar Negocio</h3>
@@ -295,22 +296,24 @@ export default async function AdminDashboard() {
 
         <Link
           href="/admin/negocios"
-          className="bg-white border-2 border-gray-200 hover:border-primary rounded-xl p-6 transition-colors flex items-center justify-between group"
+          className="bg-white rounded-2xl p-6 transition-all flex items-center justify-between group"
+          style={{ boxShadow: 'var(--shadow-card)', border: '2px solid transparent' }}
         >
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">Ver Negocios</h3>
-            <p className="text-sm text-gray-600 mt-1">Gestionar todos los negocios</p>
+            <h3 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>Ver Negocios</h3>
+            <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>Gestionar todos los negocios</p>
           </div>
           <span className="text-3xl group-hover:scale-110 transition-transform">🏪</span>
         </Link>
 
         <Link
           href="/admin/usuarios"
-          className="bg-white border-2 border-gray-200 hover:border-primary rounded-xl p-6 transition-colors flex items-center justify-between group"
+          className="bg-white rounded-2xl p-6 transition-all flex items-center justify-between group"
+          style={{ boxShadow: 'var(--shadow-card)', border: '2px solid transparent' }}
         >
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">Usuarios</h3>
-            <p className="text-sm text-gray-600 mt-1">Gestionar usuarios del sistema</p>
+            <h3 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>Usuarios</h3>
+            <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>Gestionar usuarios del sistema</p>
           </div>
           <span className="text-3xl group-hover:scale-110 transition-transform">👥</span>
         </Link>
