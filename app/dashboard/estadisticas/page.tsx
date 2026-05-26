@@ -80,7 +80,7 @@ export default async function EstadisticasPage() {
   if (!hasPremiumStats) {
     return (
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Estadísticas</h1>
+        <h1 className="text-2xl font-bold mb-6" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Estadísticas</h1>
 
         <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-8 text-white text-center">
           <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -346,83 +346,83 @@ export default async function EstadisticasPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-gray-900">Estadísticas</h1>
+            <h1 className="text-2xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Estadísticas</h1>
             <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm font-bold rounded-full">
               ⭐ Avanzado
             </span>
           </div>
-          <p className="text-gray-600">{currentBusiness.name}</p>
+          <p style={{ color: 'var(--muted)' }}>{currentBusiness.name}</p>
         </div>
       </div>
 
       {/* Views KPI Cards */}
       <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
-        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+        <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-xs sm:text-sm">Visitas Totales</span>
+            <span className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>Visitas Totales</span>
             <span className="text-xl sm:text-2xl">👁</span>
           </div>
-          <p className="text-xl sm:text-3xl font-bold text-gray-900">{totalViews.toLocaleString()}</p>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">desde el inicio</p>
+          <p className="text-xl sm:text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{totalViews.toLocaleString()}</p>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--muted)' }}>desde el inicio</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+        <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-xs sm:text-sm">Visitas Este Mes</span>
+            <span className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>Visitas Este Mes</span>
             <span className="text-xl sm:text-2xl">📅</span>
           </div>
-          <p className="text-xl sm:text-3xl font-bold text-gray-900">{viewsThisMonth.length.toLocaleString()}</p>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">{uniqueThisMonth} visitantes unicos</p>
+          <p className="text-xl sm:text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{viewsThisMonth.length.toLocaleString()}</p>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--muted)' }}>{uniqueThisMonth} visitantes unicos</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+        <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-xs sm:text-sm">Ultimos 30 Dias</span>
+            <span className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>Ultimos 30 Dias</span>
             <span className="text-xl sm:text-2xl">📊</span>
           </div>
-          <p className="text-xl sm:text-3xl font-bold text-gray-900">{viewsLast30.length.toLocaleString()}</p>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">{new Set(viewsLast30.map((v: any) => v.ip_hash)).size} unicos</p>
+          <p className="text-xl sm:text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{viewsLast30.length.toLocaleString()}</p>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--muted)' }}>{new Set(viewsLast30.map((v: any) => v.ip_hash)).size} unicos</p>
         </div>
       </div>
 
       {/* Sales KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8">
-        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+        <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-xs sm:text-sm">Ingresos</span>
+            <span className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>Ingresos</span>
             <span className="text-xl sm:text-2xl">💰</span>
           </div>
-          <p className="text-xl sm:text-3xl font-bold text-gray-900">{formatCurrency(totalRevenue)}</p>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">{completedOrders.length} completados</p>
+          <p className="text-xl sm:text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{formatCurrency(totalRevenue)}</p>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--muted)' }}>{completedOrders.length} completados</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+        <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-xs sm:text-sm">Semana</span>
+            <span className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>Semana</span>
             <span className="text-xl sm:text-2xl">📈</span>
           </div>
-          <p className="text-xl sm:text-3xl font-bold text-gray-900">{formatCurrency(thisWeekRevenue)}</p>
+          <p className="text-xl sm:text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{formatCurrency(thisWeekRevenue)}</p>
           <p className={`text-xs sm:text-sm mt-1 ${Number(revenueGrowth) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {Number(revenueGrowth) >= 0 ? '↑' : '↓'} {Math.abs(Number(revenueGrowth))}%
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+        <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-xs sm:text-sm">Promedio</span>
+            <span className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>Promedio</span>
             <span className="text-xl sm:text-2xl">🎫</span>
           </div>
-          <p className="text-xl sm:text-3xl font-bold text-gray-900">{formatCurrency(avgTicket)}</p>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">por pedido</p>
+          <p className="text-xl sm:text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{formatCurrency(avgTicket)}</p>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--muted)' }}>por pedido</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+        <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-500 text-xs sm:text-sm">Productos</span>
+            <span className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>Productos</span>
             <span className="text-xl sm:text-2xl">📦</span>
           </div>
-          <p className="text-xl sm:text-3xl font-bold text-gray-900">{products.length}</p>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">{products.filter(p => p.is_available).length} disponibles</p>
+          <p className="text-xl sm:text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{products.length}</p>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--muted)' }}>{products.filter(p => p.is_available).length} disponibles</p>
         </div>
       </div>
 
@@ -439,12 +439,12 @@ export default async function EstadisticasPage() {
       />
 
       {/* Top Products */}
-      <div className="mt-8 bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-gray-200">
-          <h3 className="font-bold text-gray-900">🏆 Productos Más Vendidos</h3>
+      <div className="mt-8 bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
+        <div className="p-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+          <h3 className="font-bold" style={{ color: 'var(--ink)' }}>🏆 Productos Más Vendidos</h3>
         </div>
         {topProducts.length > 0 ? (
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y" style={{ borderColor: 'rgba(0,0,0,0.05)' }}>
             {topProducts.map((product, index) => (
               <div key={product.name} className="flex items-center gap-3 px-4 py-3">
                 <span className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 ${
@@ -455,15 +455,15 @@ export default async function EstadisticasPage() {
                   {index + 1}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-900 truncate">{product.name}</p>
-                  <p className="text-xs text-gray-500">{product.quantity} unidades</p>
+                  <p className="font-medium truncate" style={{ color: 'var(--ink)' }}>{product.name}</p>
+                  <p className="text-xs" style={{ color: 'var(--muted)' }}>{product.quantity} unidades</p>
                 </div>
                 <span className="font-bold text-green-600 text-sm flex-shrink-0">{formatCurrency(product.revenue)}</span>
               </div>
             ))}
           </div>
         ) : (
-          <div className="p-8 text-center text-gray-500">
+          <div className="p-8 text-center" style={{ color: 'var(--muted)' }}>
             <p>No hay datos de ventas aún</p>
           </div>
         )}

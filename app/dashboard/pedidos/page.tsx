@@ -97,18 +97,19 @@ export default async function OrdersPage({
   if (!canReceiveOrders) {
     return (
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Pedidos</h1>
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+        <h1 className="text-2xl font-bold mb-6" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Pedidos</h1>
+        <div className="rounded-2xl p-6 text-center" style={{ background: 'var(--cream)', border: '1px solid rgba(245,185,66,0.3)' }}>
           <span className="text-4xl mb-4 block">📦</span>
-          <h2 className="text-xl font-bold text-yellow-800 mb-2">
+          <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--ink)' }}>
             Función no disponible en tu plan
           </h2>
-          <p className="text-yellow-700 mb-4">
+          <p className="mb-4" style={{ color: 'var(--muted)' }}>
             Para recibir pedidos en línea necesitas el plan <strong>Pro</strong> ($120 MXN/mes) o superior.
           </p>
           <a
             href="/dashboard/suscripcion"
-            className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+            className="inline-flex items-center px-6 py-3 text-white font-semibold rounded-xl transition-colors"
+            style={{ background: 'var(--coral)' }}
           >
             Actualizar Plan
           </a>
@@ -166,8 +167,8 @@ export default async function OrdersPage({
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Pedidos</h1>
-        <span className="text-sm text-gray-500">
+        <h1 className="text-2xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Pedidos</h1>
+        <span className="text-sm" style={{ color: 'var(--muted)' }}>
           {currentBusiness.name}
         </span>
       </div>
@@ -180,49 +181,49 @@ export default async function OrdersPage({
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">⏳</span>
             </div>
             <div>
-              <p className="text-xs text-gray-600">Pendientes</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Pendientes</p>
               <p className="text-xl font-bold text-yellow-600">{pendingOrders}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">📱</span>
             </div>
             <div>
-              <p className="text-xs text-gray-600">Por Verificar</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Por Verificar</p>
               <p className="text-xl font-bold text-blue-600">{pendingPaymentVerification}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">📋</span>
             </div>
             <div>
-              <p className="text-xs text-gray-600">Pedidos Hoy</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Pedidos Hoy</p>
               <p className="text-xl font-bold text-purple-600">{todayOrders}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
               <span className="text-xl">💰</span>
             </div>
             <div>
-              <p className="text-xs text-gray-600">Ingresos</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>Ingresos</p>
               <p className="text-xl font-bold text-green-600">{formatCurrency(totalRevenue)}</p>
             </div>
           </div>
@@ -233,38 +234,41 @@ export default async function OrdersPage({
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         <a
           href="/dashboard/pedidos"
-          className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+          className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
             activeFilter === 'all'
-              ? 'bg-primary text-white'
+              ? 'text-white'
               : 'bg-white text-gray-700 hover:bg-gray-100'
           }`}
+          style={activeFilter === 'all' ? { background: 'var(--coral)' } : { boxShadow: 'var(--shadow-card)' }}
         >
           Todos ({paidOrders.length})
         </a>
         <a
           href="/dashboard/pedidos?filter=pending"
-          className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+          className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
             activeFilter === 'pending'
               ? 'bg-yellow-500 text-white'
               : 'bg-white text-gray-700 hover:bg-gray-100'
           }`}
+          style={activeFilter !== 'pending' ? { boxShadow: 'var(--shadow-card)' } : {}}
         >
           Pendientes ({pendingOrders})
         </a>
         <a
           href="/dashboard/pedidos?filter=pending_verification"
-          className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+          className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
             activeFilter === 'pending_verification'
               ? 'bg-blue-500 text-white'
               : 'bg-white text-gray-700 hover:bg-gray-100'
           }`}
+          style={activeFilter !== 'pending_verification' ? { boxShadow: 'var(--shadow-card)' } : {}}
         >
           📱 Por Verificar Pago ({pendingPaymentVerification})
         </a>
         {unpaidCardOrders > 0 && (
           <a
             href="/dashboard/pedidos?filter=unpaid_card"
-            className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
               activeFilter === 'unpaid_card'
                 ? 'bg-red-500 text-white'
                 : 'bg-white text-red-600 hover:bg-red-50 border border-red-200'
@@ -277,10 +281,10 @@ export default async function OrdersPage({
 
       {/* Orders List */}
       {ordersList.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+        <div className="bg-white rounded-2xl p-12 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
           <span className="text-6xl mb-4 block">📦</span>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">No hay pedidos aún</h2>
-          <p className="text-gray-600">
+          <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--ink)' }}>No hay pedidos aún</h2>
+          <p style={{ color: 'var(--muted)' }}>
             Los pedidos que recibas aparecerán aquí
           </p>
         </div>
@@ -293,14 +297,15 @@ export default async function OrdersPage({
             return (
               <div
                 key={order.id}
-                className="bg-white rounded-xl shadow-sm overflow-hidden"
+                className="bg-white rounded-2xl overflow-hidden"
+                style={{ boxShadow: 'var(--shadow-card)' }}
               >
                 {/* Order Header */}
-                <div className="p-4 border-b border-gray-100">
+                <div className="p-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="font-bold text-gray-900">#{order.order_number}</p>
-                      <p className="text-xs sm:text-sm text-gray-500">
+                      <p className="font-bold" style={{ color: 'var(--ink)' }}>#{order.order_number}</p>
+                      <p className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>
                         {new Date(order.created_at).toLocaleString('es-MX', {
                           dateStyle: 'short',
                           timeStyle: 'short'
@@ -308,8 +313,8 @@ export default async function OrdersPage({
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg sm:text-xl font-bold text-primary">{formatCurrency(order.total)}</p>
-                      <p className="text-xs sm:text-sm text-gray-500">
+                      <p className="text-lg sm:text-xl font-bold" style={{ color: 'var(--coral)' }}>{formatCurrency(order.total)}</p>
+                      <p className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>
                         {order.delivery_type === 'delivery' ? '🚚 Entrega' : '🏪 Recoger'}
                       </p>
                     </div>
@@ -366,9 +371,9 @@ export default async function OrdersPage({
                 <div className="p-4 grid md:grid-cols-3 gap-4">
                   {/* Customer Info */}
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Cliente</h4>
+                    <h4 className="font-semibold mb-2" style={{ color: 'var(--ink)' }}>Cliente</h4>
                     {customer ? (
-                      <div className="text-sm text-gray-600 space-y-1">
+                      <div className="text-sm space-y-1" style={{ color: 'var(--muted)' }}>
                         <p>{customer.name}</p>
                         <p>📞 {customer.phone}</p>
                         {customer.email && <p>✉️ {customer.email}</p>}
@@ -377,14 +382,14 @@ export default async function OrdersPage({
                         )}
                       </div>
                     ) : (
-                      <p className="text-sm text-gray-500">Sin información</p>
+                      <p className="text-sm" style={{ color: 'var(--muted)' }}>Sin información</p>
                     )}
                   </div>
 
                   {/* Items */}
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Productos</h4>
-                    <div className="text-sm text-gray-600 space-y-1">
+                    <h4 className="font-semibold mb-2" style={{ color: 'var(--ink)' }}>Productos</h4>
+                    <div className="text-sm space-y-1" style={{ color: 'var(--muted)' }}>
                       {items.map((item: any) => (
                         <p key={item.id}>
                           {item.quantity}x {item.product_name} - {formatCurrency(item.subtotal)}
@@ -400,7 +405,7 @@ export default async function OrdersPage({
 
                   {/* Actions */}
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Acciones</h4>
+                    <h4 className="font-semibold mb-2" style={{ color: 'var(--ink)' }}>Acciones</h4>
                     <UpdateOrderStatus
                       orderId={order.id}
                       currentStatus={order.status}
@@ -474,8 +479,8 @@ export default async function OrdersPage({
                 )}
 
                 {/* Totals */}
-                <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
-                  <div className="flex flex-wrap justify-end gap-x-4 gap-y-1 text-xs sm:text-sm">
+                <div className="px-4 py-3" style={{ background: 'var(--cream)', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                  <div className="flex flex-wrap justify-end gap-x-4 gap-y-1 text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>
                     <span>Subtotal: {formatCurrency(order.subtotal)}</span>
                     <span>Envío: {formatCurrency(order.delivery_fee)}</span>
                     <span>Servicio: {formatCurrency(order.service_fee)}</span>

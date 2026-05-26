@@ -159,13 +159,14 @@ export default async function MiNegocioPage({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Mi Negocio</h1>
-          <p className="text-sm text-gray-600">Gestiona la información de {business.name}</p>
+          <h1 className="text-xl sm:text-2xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Mi Negocio</h1>
+          <p className="text-sm" style={{ color: 'var(--muted)' }}>Gestiona la información de {business.name}</p>
         </div>
         <Link
           href={`/negocios/${business.slug}`}
           target="_blank"
-          className="px-4 py-2 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg transition-colors text-sm text-center"
+          className="px-4 py-2 text-white font-medium rounded-xl transition-colors text-sm text-center"
+          style={{ background: 'var(--coral)' }}
         >
           Ver Perfil Público →
         </Link>
@@ -175,7 +176,7 @@ export default async function MiNegocioPage({
         {/* Left Column - Business Info & Stats */}
         <div className="lg:col-span-2 space-y-6">
           {/* Business Card */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
             <div className="flex items-start gap-4">
               {business.logo_url ? (
                 <Image
@@ -186,7 +187,8 @@ export default async function MiNegocioPage({
                   className="w-24 h-24 rounded-xl object-cover"
                 />
               ) : (
-                <div className="w-24 h-24 bg-primary rounded-xl flex items-center justify-center">
+                <div className="w-24 h-24 rounded-xl flex items-center justify-center"
+                  style={{ background: 'linear-gradient(135deg,var(--coral),var(--gold))' }}>
                   <span className="text-4xl text-white font-bold">
                     {business.name[0].toUpperCase()}
                   </span>
@@ -194,10 +196,10 @@ export default async function MiNegocioPage({
               )}
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-bold text-gray-900">{business.name}</h2>
+                  <h2 className="text-xl font-bold" style={{ color: 'var(--ink)' }}>{business.name}</h2>
                   <OpenClosedBadge businessHours={business.business_hours} />
                 </div>
-                <p className="text-gray-600 text-sm">{business.category?.name || 'Sin categoría'}</p>
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>{business.category?.name || 'Sin categoría'}</p>
                 <div className="flex flex-wrap gap-2 mt-2">
                   <span className={`px-3 py-1 text-xs font-semibold rounded-full capitalize ${
                     business.subscription_tier === 'avanzado' ? 'bg-purple-100 text-purple-800' :
@@ -223,37 +225,37 @@ export default async function MiNegocioPage({
           {/* Stats - only show product/order stats for pro+ */}
           {canProducts ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <p className="text-sm text-gray-500">Productos</p>
-                <p className="text-2xl font-bold text-gray-900">{productsCount || 0}</p>
+              <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>Productos</p>
+                <p className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>{productsCount || 0}</p>
               </div>
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <p className="text-sm text-gray-500">Pedidos Totales</p>
-                <p className="text-2xl font-bold text-gray-900">{orders.length}</p>
+              <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>Pedidos Totales</p>
+                <p className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>{orders.length}</p>
               </div>
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <p className="text-sm text-gray-500">Pendientes</p>
+              <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>Pendientes</p>
                 <p className="text-2xl font-bold text-yellow-600">{pendingOrders.length}</p>
               </div>
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <p className="text-sm text-gray-500">Ingresos Mes</p>
+              <div className="bg-white rounded-2xl p-4" style={{ boxShadow: 'var(--shadow-card)' }}>
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>Ingresos Mes</p>
                 <p className="text-2xl font-bold text-green-600">{formatCurrency(monthlyRevenue)}</p>
               </div>
             </div>
           ) : (
-            <div className="relative bg-white rounded-xl shadow-sm p-6">
+            <div className="relative bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 opacity-40">
-                <div><p className="text-sm text-gray-500">Productos</p><p className="text-2xl font-bold text-gray-900">--</p></div>
-                <div><p className="text-sm text-gray-500">Pedidos</p><p className="text-2xl font-bold text-gray-900">--</p></div>
-                <div><p className="text-sm text-gray-500">Pendientes</p><p className="text-2xl font-bold text-gray-900">--</p></div>
-                <div><p className="text-sm text-gray-500">Ingresos</p><p className="text-2xl font-bold text-gray-900">--</p></div>
+                <div><p className="text-sm" style={{ color: 'var(--muted)' }}>Productos</p><p className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>--</p></div>
+                <div><p className="text-sm" style={{ color: 'var(--muted)' }}>Pedidos</p><p className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>--</p></div>
+                <div><p className="text-sm" style={{ color: 'var(--muted)' }}>Pendientes</p><p className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>--</p></div>
+                <div><p className="text-sm" style={{ color: 'var(--muted)' }}>Ingresos</p><p className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>--</p></div>
               </div>
-              <div className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-[1px] rounded-xl">
+              <div className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-[1px] rounded-2xl">
                 <div className="text-center px-4">
                   <span className="text-3xl block mb-2">🔒</span>
-                  <p className="text-sm font-semibold text-gray-700">Productos, pedidos e ingresos</p>
-                  <p className="text-xs text-gray-500 mt-1">Disponible desde el Plan <strong>Pro</strong> por solo <span className="text-primary font-bold">$4 MXN/día</span></p>
-                  <Link href="/dashboard/suscripcion" className="inline-block mt-2 px-4 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs font-semibold rounded-lg transition-colors">
+                  <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>Productos, pedidos e ingresos</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>Disponible desde el Plan <strong>Pro</strong> por solo <span style={{ color: 'var(--coral)', fontWeight: 700 }}>$4 MXN/día</span></p>
+                  <Link href="/dashboard/suscripcion" className="inline-block mt-2 px-4 py-1.5 text-white text-xs font-semibold rounded-xl transition-colors" style={{ background: 'var(--coral)' }}>
                     Ver planes
                   </Link>
                 </div>
@@ -263,25 +265,25 @@ export default async function MiNegocioPage({
 
           {/* Recent Orders - pro+ only */}
           {canProducts ? (
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="font-bold text-gray-900">Últimos Pedidos</h3>
-                <Link href="/dashboard/pedidos" className="text-primary text-sm hover:underline">
+            <div className="bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
+              <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <h3 className="font-bold" style={{ color: 'var(--ink)' }}>Últimos Pedidos</h3>
+                <Link href="/dashboard/pedidos" className="text-sm hover:underline" style={{ color: 'var(--coral)' }}>
                   Ver todos →
                 </Link>
               </div>
               {recentOrders && recentOrders.length > 0 ? (
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y" style={{ borderColor: 'rgba(0,0,0,0.05)' }}>
                   {recentOrders.map((order) => (
                     <div key={order.id} className="px-4 py-3 flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-gray-900">#{order.order_number}</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="font-medium" style={{ color: 'var(--ink)' }}>#{order.order_number}</p>
+                        <p className="text-xs" style={{ color: 'var(--muted)' }}>
                           {new Date(order.created_at).toLocaleDateString('es-MX')}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-primary">{formatCurrency(order.total)}</p>
+                        <p className="font-bold" style={{ color: 'var(--coral)' }}>{formatCurrency(order.total)}</p>
                         <span className={`text-xs px-2 py-0.5 rounded-full ${
                           order.status === 'completed' ? 'bg-green-100 text-green-800' :
                           order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
@@ -295,7 +297,7 @@ export default async function MiNegocioPage({
                   ))}
                 </div>
               ) : (
-                <div className="p-6 text-center text-gray-500">
+                <div className="p-6 text-center" style={{ color: 'var(--muted)' }}>
                   No hay pedidos aún
                 </div>
               )}
@@ -303,8 +305,8 @@ export default async function MiNegocioPage({
           ) : null}
 
           {/* Edit Form */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-bold text-gray-900 mb-4">Editar Información</h3>
+          <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <h3 className="font-bold mb-4" style={{ color: 'var(--ink)' }}>Editar Información</h3>
             <EditBusinessForm
               business={{
                 ...business,
@@ -330,24 +332,25 @@ export default async function MiNegocioPage({
         {/* Right Column - Plan & Quick Actions */}
         <div className="space-y-6">
           {/* Plan Info */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-bold text-gray-900 mb-4 capitalize">Tu Plan: {business.subscription_tier}</h3>
+          <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <h3 className="font-bold mb-4 capitalize" style={{ color: 'var(--ink)' }}>Tu Plan: {business.subscription_tier}</h3>
             <ul className="space-y-2">
               {planFeatures[business.subscription_tier]?.map((feature, i) => (
-                <li key={i} className="flex items-center text-sm text-gray-600">
+                <li key={i} className="flex items-center text-sm" style={{ color: 'var(--muted)' }}>
                   <span className="text-green-500 mr-2">✓</span>
                   {feature}
                 </li>
               ))}
             </ul>
             {upgrade && (
-              <div className="mt-4 pt-4 border-t border-gray-100">
-                <p className="text-xs text-gray-500 mb-2">Siguiente nivel:</p>
-                <p className="text-sm font-semibold text-gray-800">Plan {upgrade.name} — {upgrade.price}</p>
-                <p className="text-xs text-accent-dark font-semibold mb-3">Solo {upgrade.daily} — menos que un cafe</p>
+              <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                <p className="text-xs mb-2" style={{ color: 'var(--muted)' }}>Siguiente nivel:</p>
+                <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>Plan {upgrade.name} — {upgrade.price}</p>
+                <p className="text-xs font-semibold mb-3" style={{ color: 'var(--gold)' }}>Solo {upgrade.daily} — menos que un cafe</p>
                 <Link
                   href="/dashboard/suscripcion"
-                  className="block w-full py-2 bg-primary hover:bg-primary-dark text-white text-center font-medium rounded-lg transition-colors"
+                  className="block w-full py-2 text-white text-center font-medium rounded-xl transition-colors"
+                  style={{ background: 'var(--coral)' }}
                 >
                   Mejorar a {upgrade.name}
                 </Link>
@@ -356,20 +359,21 @@ export default async function MiNegocioPage({
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-bold text-gray-900 mb-4">Acciones Rápidas</h3>
+          <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <h3 className="font-bold mb-4" style={{ color: 'var(--ink)' }}>Acciones Rápidas</h3>
             <div className="space-y-2">
               {canProducts && (
                 <>
                   <Link
                     href="/dashboard/productos/nuevo"
-                    className="block w-full py-2 px-4 bg-blue-50 hover:bg-blue-100 text-blue-700 text-center font-medium rounded-lg transition-colors"
+                    className="block w-full py-2 px-4 text-center font-medium rounded-xl transition-colors"
+                    style={{ background: 'rgba(255,107,53,0.08)', color: 'var(--coral)' }}
                   >
                     + Agregar Producto
                   </Link>
                   <Link
                     href="/dashboard/pedidos"
-                    className="block w-full py-2 px-4 bg-green-50 hover:bg-green-100 text-green-700 text-center font-medium rounded-lg transition-colors"
+                    className="block w-full py-2 px-4 text-center font-medium rounded-xl transition-colors bg-green-50 text-green-700"
                   >
                     Ver Pedidos
                   </Link>
@@ -378,13 +382,15 @@ export default async function MiNegocioPage({
               <Link
                 href={`/negocios/${business.slug}`}
                 target="_blank"
-                className="block w-full py-2 px-4 bg-gray-50 hover:bg-gray-100 text-gray-700 text-center font-medium rounded-lg transition-colors"
+                className="block w-full py-2 px-4 text-center font-medium rounded-xl transition-colors"
+                style={{ background: 'var(--cream)', color: 'var(--ink-soft)' }}
               >
                 Ver Perfil Público
               </Link>
               <Link
                 href="/dashboard/suscripcion"
-                className="block w-full py-2 px-4 bg-teal-50 hover:bg-teal-100 text-teal-700 text-center font-medium rounded-lg transition-colors"
+                className="block w-full py-2 px-4 text-center font-medium rounded-xl transition-colors"
+                style={{ background: 'rgba(245,185,66,0.12)', color: 'var(--gold-deep,#E09A1B)' }}
               >
                 Mi Suscripcion
               </Link>
@@ -392,24 +398,24 @@ export default async function MiNegocioPage({
           </div>
 
           {/* Contact Info */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-bold text-gray-900 mb-4">Información de Contacto</h3>
-            <div className="space-y-3 text-sm">
+          <div className="bg-white rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <h3 className="font-bold mb-4" style={{ color: 'var(--ink)' }}>Información de Contacto</h3>
+            <div className="space-y-3 text-sm" style={{ color: 'var(--ink-soft)' }}>
               <div className="flex items-center gap-2">
-                <span className="text-gray-400">📞</span>
+                <span style={{ color: 'var(--muted)' }}>📞</span>
                 <span>{business.phone || 'Sin teléfono'}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-gray-400">💬</span>
+                <span style={{ color: 'var(--muted)' }}>💬</span>
                 <span>{business.whatsapp || 'Sin WhatsApp'}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-gray-400">📍</span>
+                <span style={{ color: 'var(--muted)' }}>📍</span>
                 <span>{business.address || 'Sin dirección'}</span>
               </div>
               {business.email && (
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-400">✉️</span>
+                  <span style={{ color: 'var(--muted)' }}>✉️</span>
                   <span>{business.email}</span>
                 </div>
               )}
