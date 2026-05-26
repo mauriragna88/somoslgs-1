@@ -105,7 +105,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen pueblo-shell flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--ivory)' }}>
       <div className="max-w-md w-full">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
@@ -255,7 +255,7 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen pueblo-shell flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--ivory)' }}>
         <div className="animate-pulse" style={{ color: 'var(--muted)' }}>Cargando...</div>
       </div>
     }>
