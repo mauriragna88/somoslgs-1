@@ -101,6 +101,8 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
           className="absolute inset-0 w-full h-full object-cover"
           muted
           playsInline
+          autoPlay
+          loop
           preload="auto"
           style={{ filter: 'brightness(0.75)' }}
         />

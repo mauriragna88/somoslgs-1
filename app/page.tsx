@@ -236,12 +236,12 @@ export default async function HomePage() {
       </div>
 
       {/* Banner: Home Top */}
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-6" style={{ background: 'var(--ivory)' }}>
         <BannerDisplay placement="home_top" />
       </div>
 
       {/* PWA install prompt */}
-      <div className="container mx-auto px-4 pb-2">
+      <div className="container mx-auto px-4 pb-2" style={{ background: 'var(--ivory)' }}>
         <PWAInstallInline variant="hero" />
       </div>
 
