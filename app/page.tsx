@@ -675,7 +675,7 @@ export default async function HomePage() {
             {/* Slot 1 — tall, spans 2 rows */}
             <div className="relative overflow-hidden rounded-2xl row-span-2 min-h-[280px]">
               <Image
-                src="/tourism/parroquia.jpeg"
+                src="/tourism/parroquia-asuncion.jpg"
                 alt="Parroquia de la Asunción, Lagos de Moreno"
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
@@ -703,8 +703,8 @@ export default async function HomePage() {
             {/* Slot 3 */}
             <div className="relative overflow-hidden rounded-2xl min-h-[130px]">
               <Image
-                src="/tourism/puente.jpeg"
-                alt="Jardín Principal de Lagos de Moreno"
+                src="/tourism/puente-rio.jpg"
+                alt="Puente de Lagos de Moreno"
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
                 className="object-cover"
@@ -717,7 +717,7 @@ export default async function HomePage() {
             {/* Slot 4 */}
             <div className="relative overflow-hidden rounded-2xl min-h-[130px]">
               <Image
-                src="/tourism/teatro.jpg"
+                src="/tourism/teatro-rosas-moreno.jpg"
                 alt="Teatro Rosas Moreno, Lagos de Moreno"
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
@@ -731,7 +731,7 @@ export default async function HomePage() {
             {/* Slot 5 */}
             <div className="relative overflow-hidden rounded-2xl min-h-[130px]">
               <Image
-                src="/tourism/calvario1.jpg"
+                src="/tourism/templo-calvario.jpg"
                 alt="El Calvario, Lagos de Moreno"
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
