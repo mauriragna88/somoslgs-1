@@ -73,8 +73,8 @@ export default function EventForm({ event, onSaved, onCancel }: EventFormProps) 
     const supabase = createClient()
     try {
       if (isEditing) {
-        const { data, error } = await supabase
-          .from('events')
+        const { data, error } = await (supabase
+          .from('events') as any)
           .update({ ...form, updated_at: new Date().toISOString() })
           .eq('id', event.id)
           .select()
@@ -83,8 +83,8 @@ export default function EventForm({ event, onSaved, onCancel }: EventFormProps) 
         toast.success('Evento actualizado')
         onSaved(data as SiteEvent)
       } else {
-        const { data, error } = await supabase
-          .from('events')
+        const { data, error } = await (supabase
+          .from('events') as any)
           .insert(form)
           .select()
           .single()

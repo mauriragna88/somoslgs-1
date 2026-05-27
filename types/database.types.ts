@@ -370,6 +370,60 @@ export interface Database {
           display_order?: number
         }
       }
+      events: {
+        Row: {
+          id: string
+          name: string
+          month_code: string
+          dates: string
+          description: string
+          category: string
+          category_color: string
+          image_src: string
+          image_alt: string
+          is_upcoming: boolean
+          col_span: string
+          row_span: string
+          display_order: number
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          month_code: string
+          dates: string
+          description: string
+          category: string
+          category_color?: string
+          image_src: string
+          image_alt: string
+          is_upcoming?: boolean
+          col_span?: string
+          row_span?: string
+          display_order?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          name?: string
+          month_code?: string
+          dates?: string
+          description?: string
+          category?: string
+          category_color?: string
+          image_src?: string
+          image_alt?: string
+          is_upcoming?: boolean
+          col_span?: string
+          row_span?: string
+          display_order?: number
+          is_active?: boolean
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never

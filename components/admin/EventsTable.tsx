@@ -18,8 +18,8 @@ export default function EventsTable({ initialEvents }: EventsTableProps) {
     const supabase = createClient()
     const newValue = !event.is_active
     setEvents(prev => prev.map(e => e.id === event.id ? { ...e, is_active: newValue } : e))
-    const { error } = await supabase
-      .from('events')
+    const { error } = await (supabase
+      .from('events') as any)
       .update({ is_active: newValue })
       .eq('id', event.id)
     if (error) {
