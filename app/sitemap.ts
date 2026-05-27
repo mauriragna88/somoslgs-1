@@ -173,5 +173,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  return [...staticRoutes, ...businessRoutes, ...categoryRoutes, ...blogRoutes, ...marketplaceRoutes, ...neighborhoodRoutes]
+  // Keyword landing pages: /{category-slug}-en-lagos-de-moreno
+  const keywordRoutes: MetadataRoute.Sitemap = (categories || []).map(
+    (cat: any) => ({
+      url: `${BASE_URL}/${cat.slug}-en-lagos-de-moreno`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    })
+  )
+
+  return [...staticRoutes, ...keywordRoutes, ...businessRoutes, ...categoryRoutes, ...blogRoutes, ...marketplaceRoutes, ...neighborhoodRoutes]
 }
