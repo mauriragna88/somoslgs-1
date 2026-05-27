@@ -56,6 +56,7 @@ export default async function BusinessDashboard() {
     totalOrders: 0,
     todayOrders: 0,
     monthRevenue: 0,
+    monthViews: 0,
   }
 
   if (selectedBusiness) {
@@ -67,6 +68,7 @@ export default async function BusinessDashboard() {
       { count: ordersCount },
       { count: todayCount },
       { data: monthOrders },
+      { count: viewsCount },
     ] = await Promise.all([
       supabase
         .from('products')
@@ -87,6 +89,11 @@ export default async function BusinessDashboard() {
         .eq('business_id', selectedBusiness.id)
         .eq('payment_status', 'verified')
         .gte('created_at', firstDayOfMonth),
+      supabase
+        .from('business_views')
+        .select('*', { count: 'exact', head: true })
+        .eq('business_id', selectedBusiness.id)
+        .gte('created_at', firstDayOfMonth),
     ])
 
     const monthRevenue = (monthOrders || []).reduce(
@@ -99,6 +106,7 @@ export default async function BusinessDashboard() {
       totalOrders: ordersCount || 0,
       todayOrders: todayCount || 0,
       monthRevenue,
+      monthViews: viewsCount || 0,
     }
   }
 
@@ -205,7 +213,7 @@ export default async function BusinessDashboard() {
           )}
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 mb-8">
             <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center justify-between">
                 <div>
@@ -252,6 +260,20 @@ export default async function BusinessDashboard() {
                 </div>
                 <div className="w-10 h-10 sm:w-14 sm:h-14 bg-yellow-500 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                   💰
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-2xl p-4 sm:p-6" style={{ background: 'linear-gradient(135deg,var(--coral),#e85520)', boxShadow: '0 4px 14px rgba(255,107,53,0.3)' }}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs sm:text-sm font-medium text-white/80">Visitas este mes</p>
+                  <p className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2 text-white" style={{ fontFamily: 'var(--display)' }}>
+                    {stats.monthViews.toLocaleString('es-MX')}
+                  </p>
+                </div>
+                <div className="w-10 h-10 sm:w-14 sm:h-14 bg-white/20 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
+                  👁️
                 </div>
               </div>
             </div>
