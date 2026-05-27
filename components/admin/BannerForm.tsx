@@ -134,19 +134,19 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
             onClick={() => setDisplayMode('image_only')}
             className={`relative p-3 rounded-xl border-2 transition-all text-left ${
               displayMode === 'image_only'
-                ? 'border-primary bg-primary/5 ring-1 ring-primary/20'
+                ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)] ring-1 ring-[rgba(255,107,53,0.2)]'
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
             {displayMode === 'image_only' && (
-              <div className="absolute top-2 right-2 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+              <div className="absolute top-2 right-2 w-5 h-5 bg-[#FF6B35] rounded-full flex items-center justify-center">
                 <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
             )}
             <div className="w-full h-8 bg-gray-200 rounded mb-2"></div>
-            <p className="text-xs font-semibold text-secondary">Solo Imagen</p>
+            <p className="text-xs font-semibold text-[#1F2937]">Solo Imagen</p>
             <p className="text-[10px] text-gray-400">Imagen completa como anuncio</p>
           </button>
           <button
@@ -154,12 +154,12 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
             onClick={() => setDisplayMode('image_text')}
             className={`relative p-3 rounded-xl border-2 transition-all text-left ${
               displayMode === 'image_text'
-                ? 'border-primary bg-primary/5 ring-1 ring-primary/20'
+                ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)] ring-1 ring-[rgba(255,107,53,0.2)]'
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
             {displayMode === 'image_text' && (
-              <div className="absolute top-2 right-2 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+              <div className="absolute top-2 right-2 w-5 h-5 bg-[#FF6B35] rounded-full flex items-center justify-center">
                 <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
@@ -172,7 +172,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
                 <div className="h-2 bg-gray-100 rounded w-3/4"></div>
               </div>
             </div>
-            <p className="text-xs font-semibold text-secondary">Imagen + Texto</p>
+            <p className="text-xs font-semibold text-[#1F2937]">Imagen + Texto</p>
             <p className="text-[10px] text-gray-400">Foto con titulo y descripcion</p>
           </button>
         </div>
@@ -207,7 +207,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
           onChange={e => setTitle(e.target.value.slice(0, 60))}
           maxLength={60}
           placeholder={displayMode === 'image_only' ? 'Ej: Banner Devogatec Marzo' : 'Ej: Devogatec - Desarrollo Web'}
-          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
+          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] text-sm"
           required
         />
         <p className="text-xs text-gray-400 mt-1 text-right">{title.length}/60</p>
@@ -223,7 +223,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
             maxLength={120}
             placeholder="Ej: Creamos tu pagina web, app o tienda en linea. Cotiza gratis."
             rows={2}
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm resize-none"
+            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] text-sm resize-none"
           />
           <p className="text-xs text-gray-400 mt-1 text-right">{description.length}/120</p>
         </div>
@@ -248,7 +248,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
           accept="image/*"
           onChange={handleUpload}
           disabled={uploading}
-          className="w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+          className="w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[rgba(255,107,53,0.1)] file:text-[#FF6B35] hover:file:bg-[rgba(255,107,53,0.2)]"
         />
         {uploading && <p className="text-xs text-gray-400 mt-1">Subiendo imagen...</p>}
       </div>
@@ -261,7 +261,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
           value={linkUrl}
           onChange={e => setLinkUrl(e.target.value)}
           placeholder="https://ejemplo.com"
-          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
+          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] text-sm"
         />
       </div>
 
@@ -271,7 +271,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
         <select
           value={placement}
           onChange={e => setPlacement(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
+          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] text-sm"
         >
           {BANNER_PLACEMENTS.map(p => (
             <option key={p} value={p}>{BANNER_PLACEMENT_LABELS[p]}</option>
@@ -287,7 +287,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
             type="date"
             value={startDate}
             onChange={e => setStartDate(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
+            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] text-sm"
           />
         </div>
         <div>
@@ -296,7 +296,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
             type="date"
             value={endDate}
             onChange={e => setEndDate(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
+            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] text-sm"
           />
         </div>
       </div>
@@ -307,7 +307,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
           type="checkbox"
           checked={isActive}
           onChange={e => setIsActive(e.target.checked)}
-          className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+          className="w-4 h-4 text-[#FF6B35] rounded border-gray-300 focus:ring-[#FF6B35]"
         />
         <span className="text-sm text-gray-700">Banner activo</span>
       </label>
@@ -317,7 +317,7 @@ export default function BannerForm({ banner, onSaved, onCancel }: BannerFormProp
         <button
           type="submit"
           disabled={saving || uploading}
-          className="flex-1 px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors font-medium text-sm disabled:opacity-50"
+          className="flex-1 px-4 py-2.5 bg-[#FF6B35] text-white rounded-lg hover:bg-[#E2541F] transition-colors font-medium text-sm disabled:opacity-50"
         >
           {saving ? 'Guardando...' : banner ? 'Guardar Cambios' : 'Crear Banner'}
         </button>

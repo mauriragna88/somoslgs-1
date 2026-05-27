@@ -178,7 +178,7 @@ export default function OrderNotifications({ businessId, businessWhatsApp }: Ord
               <div className="space-y-3">
                 <button
                   onClick={() => handleViewOrder(currentNotification)}
-                  className="w-full py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-colors text-lg"
+                  className="w-full py-4 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-bold rounded-xl transition-colors text-lg"
                 >
                   ✅ Ver y Aceptar Pedido
                 </button>

@@ -244,7 +244,7 @@ export default function AdminMarketplacePage() {
                     {listing.status}
                   </span>
                   {listing.is_featured && listing.featured_until && new Date(listing.featured_until) > new Date() && (
-                    <span className="px-2 py-0.5 bg-gradient-to-r from-accent to-accent-dark text-secondary rounded-full text-xs font-bold">
+                    <span className="px-2 py-0.5 bg-gradient-to-r from-accent to-accent-dark text-[#1F2937] rounded-full text-xs font-bold">
                       &#11088;
                     </span>
                   )}

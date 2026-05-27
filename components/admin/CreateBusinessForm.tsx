@@ -168,12 +168,12 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
             <div key={s} className="flex items-center">
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                  step >= s ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500'
+                  step >= s ? 'bg-[#FF6B35] text-white' : 'bg-gray-200 text-gray-500'
                 }`}
               >
                 {s}
               </div>
-              {s < totalSteps && <div className={`w-16 h-1 ${step > s ? 'bg-primary' : 'bg-gray-200'}`} />}
+              {s < totalSteps && <div className={`w-16 h-1 ${step > s ? 'bg-[#FF6B35]' : 'bg-gray-200'}`} />}
             </div>
           ))}
         </div>
@@ -204,7 +204,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 name="ownerName"
                 value={formData.ownerName}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 required
               />
             </div>
@@ -218,7 +218,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 name="ownerEmail"
                 value={formData.ownerEmail}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 required
               />
             </div>
@@ -233,7 +233,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 value={formData.ownerPhone}
                 onChange={handleChange}
                 maxLength={10}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 placeholder="4741234567"
               />
             </div>
@@ -247,7 +247,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 name="ownerPassword"
                 value={formData.ownerPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 required
                 minLength={8}
               />
@@ -261,7 +261,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="px-6 py-2 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+              className="px-6 py-2 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-semibold rounded-lg transition-colors"
             >
               Siguiente →
             </button>
@@ -289,7 +289,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 name="businessName"
                 value={formData.businessName}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 required
               />
             </div>
@@ -302,7 +302,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 name="categoryId"
                 value={formData.categoryId}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
               >
                 <option value="">Selecciona una categoría</option>
                 {mainCategories.map((cat) => (
@@ -322,7 +322,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 value={formData.description}
                 onChange={handleChange}
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 placeholder="Breve descripción del negocio..."
               />
             </div>
@@ -336,7 +336,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 name="address"
                 value={formData.address}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 required
               />
             </div>
@@ -350,7 +350,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 name="neighborhood"
                 value={formData.neighborhood}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
               />
             </div>
 
@@ -364,7 +364,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 value={formData.phone}
                 onChange={handleChange}
                 maxLength={10}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 required
                 placeholder="4741234567"
               />
@@ -380,7 +380,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 value={formData.whatsapp}
                 onChange={handleChange}
                 maxLength={10}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 required
                 placeholder="4741234567"
               />
@@ -395,7 +395,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
               />
             </div>
           </div>
@@ -417,7 +417,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                   onClick={() => setFormData({ ...formData, businessType: option.value })}
                   className={`p-4 border-2 rounded-xl text-center transition-all ${
                     formData.businessType === option.value
-                      ? 'border-primary bg-primary/5 text-primary'
+                      ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)] text-[#FF6B35]'
                       : 'border-gray-200 hover:border-gray-300 text-gray-700'
                   }`}
                 >
@@ -445,7 +445,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
               <button
                 type="button"
                 onClick={() => setStep(skipOwner ? 2 : 3)}
-                className="px-6 py-2 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors"
+                className="px-6 py-2 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-semibold rounded-lg transition-colors"
               >
                 Siguiente →
               </button>
@@ -495,7 +495,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 key={plan.value}
                 className={`relative flex flex-col p-6 border-2 rounded-xl cursor-pointer transition-all ${
                   formData.subscriptionTier === plan.value
-                    ? 'border-primary bg-primary/5'
+                    ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)]'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
@@ -510,10 +510,10 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-lg font-bold text-gray-900">{plan.label}</h3>
                   {formData.subscriptionTier === plan.value && (
-                    <span className="text-primary">✓</span>
+                    <span className="text-[#FF6B35]">✓</span>
                   )}
                 </div>
-                <p className={`text-sm font-medium mb-3 ${formData.isFree ? 'text-green-600 line-through' : 'text-primary'}`}>
+                <p className={`text-sm font-medium mb-3 ${formData.isFree ? 'text-green-600 line-through' : 'text-[#FF6B35]'}`}>
                   {formData.isFree ? `${plan.price} → Gratis` : plan.price}
                 </p>
                 <ul className="space-y-1">
@@ -542,7 +542,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
                     onClick={() => setFormData({ ...formData, subscriptionDays: days })}
                     className={`px-4 py-2 rounded-lg text-sm font-semibold border-2 transition-all ${
                       formData.subscriptionDays === days
-                        ? 'border-primary bg-primary text-white'
+                        ? 'border-[#FF6B35] bg-[#FF6B35] text-white'
                         : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
                     }`}
                   >
@@ -577,7 +577,7 @@ export default function CreateBusinessForm({ categories }: CreateBusinessFormPro
             <button
               type="submit"
               disabled={loading}
-              className="px-8 py-2 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+              className="px-8 py-2 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
             >
               {loading ? 'Creando...' : 'Crear Negocio'}
             </button>

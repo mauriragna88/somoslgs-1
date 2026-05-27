@@ -113,7 +113,7 @@ export default function BusinessDetailActions({ business }: BusinessDetailAction
               disabled={loading || business.subscription_tier === tier}
               className={`px-2 py-1 text-xs font-medium rounded transition-colors disabled:opacity-50 ${
                 business.subscription_tier === tier
-                  ? 'bg-primary text-white'
+                  ? 'bg-[#FF6B35] text-white'
                   : 'text-gray-700 hover:bg-white'
               }`}
             >
@@ -125,7 +125,7 @@ export default function BusinessDetailActions({ business }: BusinessDetailAction
         {/* Full Manager Button */}
         <button
           onClick={() => setShowSubscriptionModal(true)}
-          className="px-4 py-2 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg transition-colors"
+          className="px-4 py-2 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-medium rounded-lg transition-colors"
         >
           🎁 Gestionar
         </button>

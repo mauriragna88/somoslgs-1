@@ -69,10 +69,10 @@ export default function BlogPostsTable({ initialPosts }: BlogPostsTableProps) {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-secondary">Blog</h1>
+        <h1 className="text-2xl font-bold text-[#1F2937]">Blog</h1>
         <button
           onClick={() => { setEditingPost(null); setShowForm(true) }}
-          className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors font-medium text-sm"
+          className="px-4 py-2 bg-[#FF6B35] text-white rounded-lg hover:bg-[#E2541F] transition-colors font-medium text-sm"
         >
           + Nuevo Post
         </button>
@@ -83,7 +83,7 @@ export default function BlogPostsTable({ initialPosts }: BlogPostsTableProps) {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-secondary">
+              <h2 className="text-lg font-bold text-[#1F2937]">
                 {editingPost ? 'Editar Post' : 'Nuevo Post'}
               </h2>
               <button
@@ -117,7 +117,7 @@ export default function BlogPostsTable({ initialPosts }: BlogPostsTableProps) {
             {posts.map((post) => (
               <div key={post.id} className="bg-white rounded-xl border border-gray-100 p-4">
                 <div className="mb-3">
-                  <h3 className="font-semibold text-secondary text-sm truncate">{post.title}</h3>
+                  <h3 className="font-semibold text-[#1F2937] text-sm truncate">{post.title}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs text-gray-400">
                       {CATEGORY_LABELS[post.category] || post.category}
@@ -142,7 +142,7 @@ export default function BlogPostsTable({ initialPosts }: BlogPostsTableProps) {
                   </button>
                   <button
                     onClick={() => { setEditingPost(post); setShowForm(true) }}
-                    className="flex-1 text-xs px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 text-primary"
+                    className="flex-1 text-xs px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 text-[#FF6B35]"
                   >
                     Editar
                   </button>
@@ -174,7 +174,7 @@ export default function BlogPostsTable({ initialPosts }: BlogPostsTableProps) {
                 {posts.map((post) => (
                   <tr key={post.id} className="hover:bg-gray-50/50">
                     <td className="px-4 py-3">
-                      <p className="font-medium text-sm text-secondary truncate max-w-[300px]">{post.title}</p>
+                      <p className="font-medium text-sm text-[#1F2937] truncate max-w-[300px]">{post.title}</p>
                       {post.excerpt && (
                         <p className="text-xs text-gray-400 truncate max-w-[300px]">{post.excerpt}</p>
                       )}
@@ -204,7 +204,7 @@ export default function BlogPostsTable({ initialPosts }: BlogPostsTableProps) {
                       <div className="flex justify-end gap-1">
                         <button
                           onClick={() => { setEditingPost(post); setShowForm(true) }}
-                          className="p-1.5 text-gray-400 hover:text-primary rounded-lg hover:bg-primary/5"
+                          className="p-1.5 text-gray-400 hover:text-[#FF6B35] rounded-lg hover:bg-[rgba(255,107,53,0.05)]"
                           title="Editar"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -172,7 +172,7 @@ export default function SubscriptionManager({ business, onClose }: SubscriptionM
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
               <p className="text-xs text-gray-500 uppercase">Plan Actual</p>
-              <p className="font-bold text-primary capitalize">{business.subscription_tier}</p>
+              <p className="font-bold text-[#FF6B35] capitalize">{business.subscription_tier}</p>
             </div>
             <div>
               <p className="text-xs text-gray-500 uppercase">Estado</p>
@@ -200,25 +200,25 @@ export default function SubscriptionManager({ business, onClose }: SubscriptionM
         <div className="flex border-b border-gray-200">
           <button
             onClick={() => setActiveTab('days')}
-            className={`flex-1 py-3 text-sm font-medium ${activeTab === 'days' ? 'border-b-2 border-primary text-primary' : 'text-gray-500'}`}
+            className={`flex-1 py-3 text-sm font-medium ${activeTab === 'days' ? 'border-b-2 border-[#FF6B35] text-[#FF6B35]' : 'text-gray-500'}`}
           >
             Días
           </button>
           <button
             onClick={() => setActiveTab('tier')}
-            className={`flex-1 py-3 text-sm font-medium ${activeTab === 'tier' ? 'border-b-2 border-primary text-primary' : 'text-gray-500'}`}
+            className={`flex-1 py-3 text-sm font-medium ${activeTab === 'tier' ? 'border-b-2 border-[#FF6B35] text-[#FF6B35]' : 'text-gray-500'}`}
           >
             Plan
           </button>
           <button
             onClick={() => setActiveTab('status')}
-            className={`flex-1 py-3 text-sm font-medium ${activeTab === 'status' ? 'border-b-2 border-primary text-primary' : 'text-gray-500'}`}
+            className={`flex-1 py-3 text-sm font-medium ${activeTab === 'status' ? 'border-b-2 border-[#FF6B35] text-[#FF6B35]' : 'text-gray-500'}`}
           >
             Estado
           </button>
           <button
             onClick={() => setActiveTab('history')}
-            className={`flex-1 py-3 text-sm font-medium ${activeTab === 'history' ? 'border-b-2 border-primary text-primary' : 'text-gray-500'}`}
+            className={`flex-1 py-3 text-sm font-medium ${activeTab === 'history' ? 'border-b-2 border-[#FF6B35] text-[#FF6B35]' : 'text-gray-500'}`}
           >
             Historial
           </button>
@@ -238,7 +238,7 @@ export default function SubscriptionManager({ business, onClose }: SubscriptionM
                     onClick={() => setSelectedDays(option.value)}
                     className={`py-2 px-3 rounded-lg border text-sm font-medium transition-colors ${
                       selectedDays === option.value
-                        ? 'border-primary bg-primary/10 text-primary'
+                        ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.1)] text-[#FF6B35]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -252,7 +252,7 @@ export default function SubscriptionManager({ business, onClose }: SubscriptionM
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
                   placeholder="Motivo del cambio..."
                 />
               </div>
@@ -278,7 +278,7 @@ export default function SubscriptionManager({ business, onClose }: SubscriptionM
                     onClick={() => setSelectedTier(tier.value)}
                     className={`w-full p-3 rounded-lg border text-left transition-colors ${
                       selectedTier === tier.value
-                        ? 'border-primary bg-primary/10'
+                        ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.1)]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -298,7 +298,7 @@ export default function SubscriptionManager({ business, onClose }: SubscriptionM
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
                   placeholder="Motivo del cambio..."
                 />
               </div>
@@ -358,7 +358,7 @@ export default function SubscriptionManager({ business, onClose }: SubscriptionM
                     type="date"
                     value={customExpiration}
                     onChange={(e) => setCustomExpiration(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
                   />
                   <button
                     onClick={() => handleAction('set_expiration', { expiration_date: customExpiration })}
@@ -376,7 +376,7 @@ export default function SubscriptionManager({ business, onClose }: SubscriptionM
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
                   placeholder="Motivo del cambio..."
                 />
               </div>

@@ -157,7 +157,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
               <button
                 type="button"
                 onClick={onAssignOwner}
-                className="px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-medium rounded-lg transition-colors"
+                className="px-4 py-2 bg-[#FF6B35] hover:bg-[#E2541F] text-white text-sm font-medium rounded-lg transition-colors"
               >
                 Asignar Dueño
               </button>
@@ -175,7 +175,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
               type="checkbox"
               checked={formData.is_active}
               onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-              className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+              className="w-5 h-5 rounded border-gray-300 text-[#FF6B35] focus:ring-[#FF6B35]"
             />
             <div>
               <span className="font-medium text-gray-900">Negocio Activo</span>
@@ -238,7 +238,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
             type="text"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             required
           />
         </div>
@@ -250,7 +250,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
           <select
             value={formData.category_id}
             onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
           >
             <option value="">Sin categoría</option>
             {categories.map((cat) => (
@@ -270,7 +270,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
         />
       </div>
 
@@ -283,7 +283,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
             type="tel"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             required
             maxLength={10}
           />
@@ -297,7 +297,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
             type="tel"
             value={formData.whatsapp}
             onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             maxLength={10}
           />
         </div>
@@ -312,7 +312,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
             type="email"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
           />
         </div>
 
@@ -324,7 +324,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
             type="text"
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             required
           />
         </div>
@@ -339,7 +339,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
             type="text"
             value={formData.neighborhood}
             onChange={(e) => setFormData({ ...formData, neighborhood: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
           />
         </div>
       </div>
@@ -380,7 +380,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
               value={formData.website}
               onChange={(e) => setFormData({ ...formData, website: e.target.value })}
               placeholder="https://www.tunegocio.com"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
 
@@ -398,7 +398,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
               value={formData.facebook_url}
               onChange={(e) => setFormData({ ...formData, facebook_url: e.target.value })}
               placeholder="https://www.facebook.com/tunegocio"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
 
@@ -416,7 +416,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
               value={formData.instagram_url}
               onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
               placeholder="https://www.instagram.com/tunegocio"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
 
@@ -434,7 +434,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
               value={formData.tiktok_url}
               onChange={(e) => setFormData({ ...formData, tiktok_url: e.target.value })}
               placeholder="https://www.tiktok.com/@tunegocio"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
         </div>
@@ -444,7 +444,7 @@ export default function AdminEditBusinessForm({ business, categories, photos = [
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-2 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg transition-colors disabled:opacity-50"
+          className="px-6 py-2 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-medium rounded-lg transition-colors disabled:opacity-50"
         >
           {loading ? 'Guardando...' : 'Guardar Cambios'}
         </button>

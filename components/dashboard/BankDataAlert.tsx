@@ -109,7 +109,7 @@ export default function BankDataAlert({ businessId, hasBankData }: BankDataAlert
                   value={formData.bank_name}
                   onChange={(e) => setFormData({ ...formData, bank_name: e.target.value })}
                   placeholder="Ej: BBVA, Santander, Banorte"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
               </div>
 
@@ -123,7 +123,7 @@ export default function BankDataAlert({ businessId, hasBankData }: BankDataAlert
                   value={formData.bank_account_holder}
                   onChange={(e) => setFormData({ ...formData, bank_account_holder: e.target.value })}
                   placeholder="Nombre como aparece en el banco"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
               </div>
             </div>
@@ -138,7 +138,7 @@ export default function BankDataAlert({ businessId, hasBankData }: BankDataAlert
                   value={formData.bank_account_number}
                   onChange={(e) => setFormData({ ...formData, bank_account_number: e.target.value })}
                   placeholder="Numero de cuenta o tarjeta"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
               </div>
 
@@ -153,7 +153,7 @@ export default function BankDataAlert({ businessId, hasBankData }: BankDataAlert
                   onChange={(e) => setFormData({ ...formData, bank_clabe: e.target.value.replace(/\D/g, '').slice(0, 18) })}
                   placeholder="18 digitos"
                   maxLength={18}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary font-mono"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] font-mono"
                 />
                 {formData.bank_clabe && formData.bank_clabe.length !== 18 && (
                   <p className="text-xs text-red-500 mt-1">
@@ -167,7 +167,7 @@ export default function BankDataAlert({ businessId, hasBankData }: BankDataAlert
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg transition-colors disabled:opacity-50"
+                className="px-6 py-2 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-medium rounded-lg transition-colors disabled:opacity-50"
               >
                 {loading ? 'Guardando...' : 'Guardar Datos Bancarios'}
               </button>

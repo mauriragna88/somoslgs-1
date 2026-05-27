@@ -145,13 +145,13 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
             placeholder="Buscar por nombre, dueño o email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+            className="flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
           />
           <div className="flex gap-2 flex-wrap">
             <select
               value={filterPlan}
               onChange={(e) => setFilterPlan(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
             >
               <option value="">Plan</option>
               <option value="gratis">Gratis</option>
@@ -161,7 +161,7 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
             >
               <option value="">Estado</option>
               <option value="active">Activo</option>
@@ -171,7 +171,7 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
             <select
               value={filterPayment}
               onChange={(e) => setFilterPayment(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
             >
               <option value="">Pago</option>
               <option value="paying">De pago</option>
@@ -180,7 +180,7 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
             >
               <option value="">Ordenar</option>
               <option value="views_desc">Mas vistas</option>
@@ -297,7 +297,7 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
                   <div className="flex items-center gap-1">
                     <Link
                       href={`/admin/negocios/${business.id}`}
-                      className="p-2 text-primary hover:bg-primary/10 rounded-lg"
+                      className="p-2 text-[#FF6B35] hover:bg-[rgba(255,107,53,0.1)] rounded-lg"
                       title="Ver"
                     >
                       👁️
@@ -482,7 +482,7 @@ export default function BusinessesTable({ businesses }: BusinessesTableProps) {
                         )}
                         <Link
                           href={`/admin/negocios/${business.id}`}
-                          className="p-1.5 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                          className="p-1.5 text-[#FF6B35] hover:bg-[rgba(255,107,53,0.1)] rounded-lg transition-colors"
                           title="Ver"
                         >
                           👁️

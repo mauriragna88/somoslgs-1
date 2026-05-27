@@ -75,7 +75,7 @@ export default function BusinessQR({ businessName, businessSlug }: BusinessQRPro
         <p className="text-xs text-gray-400 mt-2 text-center break-all">{url}</p>
         <button
           onClick={handleDownload}
-          className="mt-4 px-6 py-2.5 bg-primary hover:bg-primary-dark text-white font-semibold rounded-xl transition-colors text-sm"
+          className="mt-4 px-6 py-2.5 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-semibold rounded-xl transition-colors text-sm"
         >
           Descargar QR
         </button>

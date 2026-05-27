@@ -158,7 +158,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
           <button
             onClick={() => setActiveTab('link')}
             className={`flex-1 py-3 text-sm font-medium transition-colors ${
-              activeTab === 'link' ? 'border-b-2 border-primary text-primary' : 'text-gray-500 hover:text-gray-700'
+              activeTab === 'link' ? 'border-b-2 border-[#FF6B35] text-[#FF6B35]' : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             Usuarios Disponibles {!loadingUsers && `(${availableUsers.length})`}
@@ -166,7 +166,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
           <button
             onClick={() => setActiveTab('create')}
             className={`flex-1 py-3 text-sm font-medium transition-colors ${
-              activeTab === 'create' ? 'border-b-2 border-primary text-primary' : 'text-gray-500 hover:text-gray-700'
+              activeTab === 'create' ? 'border-b-2 border-[#FF6B35] text-[#FF6B35]' : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             Crear Nuevo Dueño
@@ -179,7 +179,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
             <div className="space-y-3">
               {loadingUsers ? (
                 <div className="text-center py-8 text-gray-500">
-                  <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2" />
+                  <div className="animate-spin w-6 h-6 border-2 border-[#FF6B35] border-t-transparent rounded-full mx-auto mb-2" />
                   Cargando usuarios...
                 </div>
               ) : availableUsers.length === 0 ? (
@@ -187,7 +187,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
                   <p className="text-gray-500 mb-3">No hay usuarios registrados sin negocio</p>
                   <button
                     onClick={() => setActiveTab('create')}
-                    className="text-primary hover:underline font-medium text-sm"
+                    className="text-[#FF6B35] hover:underline font-medium text-sm"
                   >
                     Crear un nuevo dueño
                   </button>
@@ -199,7 +199,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
                     type="text"
                     value={filterText}
                     onChange={(e) => setFilterText(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
                     placeholder="Filtrar por nombre, email o teléfono..."
                   />
 
@@ -213,7 +213,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
                           key={user.id}
                           onClick={() => setSelectedUserId(user.id)}
                           className={`w-full p-3 text-left hover:bg-gray-50 transition-colors ${
-                            selectedUserId === user.id ? 'bg-primary/10 border-l-4 border-primary' : ''
+                            selectedUserId === user.id ? 'bg-[rgba(255,107,53,0.1)] border-l-4 border-[#FF6B35]' : ''
                           }`}
                         >
                           <p className="font-medium text-gray-900 text-sm">{user.full_name || 'Sin nombre'}</p>
@@ -227,7 +227,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
                   <button
                     onClick={handleLinkExisting}
                     disabled={loading || !selectedUserId}
-                    className="w-full py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors disabled:opacity-50"
+                    className="w-full py-3 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-bold rounded-lg transition-colors disabled:opacity-50"
                   >
                     {loading ? 'Vinculando...' : 'Vincular Usuario Seleccionado'}
                   </button>
@@ -244,7 +244,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
                   type="text"
                   value={newOwner.name}
                   onChange={(e) => setNewOwner({ ...newOwner, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
               </div>
               <div>
@@ -253,7 +253,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
                   type="email"
                   value={newOwner.email}
                   onChange={(e) => setNewOwner({ ...newOwner, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
               </div>
               <div>
@@ -263,7 +263,7 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
                   value={newOwner.phone}
                   onChange={(e) => setNewOwner({ ...newOwner, phone: e.target.value })}
                   maxLength={10}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                   placeholder="4741234567"
                 />
               </div>
@@ -274,14 +274,14 @@ export default function AssignOwnerModal({ businessId, businessName, onClose }: 
                   value={newOwner.password}
                   onChange={(e) => setNewOwner({ ...newOwner, password: e.target.value })}
                   minLength={8}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                 />
                 <p className="text-xs text-gray-500 mt-1">Mínimo 8 caracteres</p>
               </div>
               <button
                 onClick={handleCreateAndLink}
                 disabled={loading}
-                className="w-full py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors disabled:opacity-50"
+                className="w-full py-3 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-bold rounded-lg transition-colors disabled:opacity-50"
               >
                 {loading ? 'Creando...' : 'Crear y Asignar Dueño'}
               </button>

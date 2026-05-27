@@ -132,7 +132,7 @@ export default function ProductForm({ businessId, categories, businessType = 'pr
               onClick={() => setFormData({ ...formData, type: 'producto' })}
               className={`p-3 border-2 rounded-xl text-center transition-all ${
                 formData.type === 'producto'
-                  ? 'border-primary bg-primary/5 text-primary'
+                  ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)] text-[#FF6B35]'
                   : 'border-gray-200 hover:border-gray-300 text-gray-700'
               }`}
             >
@@ -144,7 +144,7 @@ export default function ProductForm({ businessId, categories, businessType = 'pr
               onClick={() => setFormData({ ...formData, type: 'servicio' })}
               className={`p-3 border-2 rounded-xl text-center transition-all ${
                 formData.type === 'servicio'
-                  ? 'border-primary bg-primary/5 text-primary'
+                  ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)] text-[#FF6B35]'
                   : 'border-gray-200 hover:border-gray-300 text-gray-700'
               }`}
             >

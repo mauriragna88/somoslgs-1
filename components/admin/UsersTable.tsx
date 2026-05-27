@@ -88,12 +88,12 @@ export default function UsersTable({ users }: UsersTableProps) {
             placeholder="Buscar por nombre o email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+            className="flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
           />
           <select
             value={filterRole}
             onChange={(e) => setFilterRole(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] text-sm"
           >
             <option value="">Todos los roles</option>
             <option value="admin">Administrador</option>
@@ -120,7 +120,7 @@ export default function UsersTable({ users }: UsersTableProps) {
                       className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                     />
                   ) : (
-                    <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#FF6B35] text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
                       {user.full_name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)}
                     </div>
                   )}
@@ -179,7 +179,7 @@ export default function UsersTable({ users }: UsersTableProps) {
                         {user.avatar_url ? (
                           <Image src={user.avatar_url} alt={user.full_name} width={40} height={40} className="w-10 h-10 rounded-full object-cover" />
                         ) : (
-                          <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-semibold">
+                          <div className="w-10 h-10 bg-[#FF6B35] text-white rounded-full flex items-center justify-center font-semibold">
                             {user.full_name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)}
                           </div>
                         )}

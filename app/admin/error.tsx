@@ -17,7 +17,7 @@ export default function AdminError({
   return (
     <div className="flex items-center justify-center py-20 px-4">
       <div className="text-center max-w-md">
-        <div className="text-6xl font-bold text-primary mb-4">Error</div>
+        <div className="text-6xl font-bold text-[#FF6B35] mb-4">Error</div>
         <h1 className="text-2xl font-bold text-gray-900 mb-3">
           Error en el panel de administracion
         </h1>
@@ -28,7 +28,7 @@ export default function AdminError({
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={reset}
-            className="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors"
+            className="px-8 py-3 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-bold rounded-lg transition-colors"
           >
             Intentar de nuevo
           </button>

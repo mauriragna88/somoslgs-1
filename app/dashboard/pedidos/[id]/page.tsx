@@ -246,7 +246,7 @@ export default async function OrderDetailPage({
               {order.order_items.map((item) => (
                 <div key={item.id} className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center font-bold">
+                    <span className="w-8 h-8 bg-[rgba(255,107,53,0.1)] text-[#FF6B35] rounded-full flex items-center justify-center font-bold">
                       {item.quantity}
                     </span>
                     <div>
@@ -332,7 +332,7 @@ export default async function OrderDetailPage({
                     href={order.payment_receipt_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary hover:underline text-sm"
+                    className="text-[#FF6B35] hover:underline text-sm"
                   >
                     📄 Ver comprobante de pago
                   </a>

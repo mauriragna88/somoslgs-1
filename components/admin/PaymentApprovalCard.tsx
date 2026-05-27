@@ -87,7 +87,7 @@ export default function PaymentApprovalCard({ transaction }: PaymentApprovalCard
               <p className="text-sm text-gray-500">{transaction.profiles?.email}</p>
             </div>
             <div className="text-right">
-              <p className="text-3xl font-bold text-primary">
+              <p className="text-3xl font-bold text-[#FF6B35]">
                 ${transaction.amount.toLocaleString('es-MX')}
               </p>
               <p className="text-sm text-gray-600">MXN</p>

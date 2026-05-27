@@ -68,10 +68,10 @@ export default function BannersTable({ initialBanners }: BannersTableProps) {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-secondary">Publicidad</h1>
+        <h1 className="text-2xl font-bold text-[#1F2937]">Publicidad</h1>
         <button
           onClick={() => { setEditingBanner(null); setShowForm(true) }}
-          className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors font-medium text-sm"
+          className="px-4 py-2 bg-[#FF6B35] text-white rounded-lg hover:bg-[#E2541F] transition-colors font-medium text-sm"
         >
           + Nuevo Banner
         </button>
@@ -82,7 +82,7 @@ export default function BannersTable({ initialBanners }: BannersTableProps) {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-secondary">
+              <h2 className="text-lg font-bold text-[#1F2937]">
                 {editingBanner ? 'Editar Banner' : 'Nuevo Banner'}
               </h2>
               <button
@@ -126,7 +126,7 @@ export default function BannersTable({ initialBanners }: BannersTableProps) {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-secondary text-sm truncate">{banner.title}</h3>
+                    <h3 className="font-semibold text-[#1F2937] text-sm truncate">{banner.title}</h3>
                     <div className="flex items-center gap-1.5">
                       <p className="text-xs text-gray-400">
                         {BANNER_PLACEMENT_LABELS[banner.placement as BannerPlacement] || banner.placement}
@@ -156,7 +156,7 @@ export default function BannersTable({ initialBanners }: BannersTableProps) {
                   </button>
                   <button
                     onClick={() => { setEditingBanner(banner); setShowForm(true) }}
-                    className="flex-1 text-xs px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 text-primary"
+                    className="flex-1 text-xs px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 text-[#FF6B35]"
                   >
                     Editar
                   </button>
@@ -202,7 +202,7 @@ export default function BannersTable({ initialBanners }: BannersTableProps) {
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <p className="font-medium text-sm text-secondary truncate max-w-[180px]">{banner.title}</p>
+                            <p className="font-medium text-sm text-[#1F2937] truncate max-w-[180px]">{banner.title}</p>
                             <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 flex-shrink-0">
                               {banner.display_mode === 'image_only' ? 'Imagen' : 'Img+Texto'}
                             </span>
@@ -239,7 +239,7 @@ export default function BannersTable({ initialBanners }: BannersTableProps) {
                       <div className="flex justify-end gap-1">
                         <button
                           onClick={() => { setEditingBanner(banner); setShowForm(true) }}
-                          className="p-1.5 text-gray-400 hover:text-primary rounded-lg hover:bg-primary/5"
+                          className="p-1.5 text-gray-400 hover:text-[#FF6B35] rounded-lg hover:bg-[rgba(255,107,53,0.05)]"
                           title="Editar"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

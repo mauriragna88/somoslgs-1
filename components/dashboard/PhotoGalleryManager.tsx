@@ -245,7 +245,7 @@ export default function PhotoGalleryManager({
               className="w-full h-full object-cover opacity-60"
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-3 border-[#FF6B35] border-t-transparent rounded-full animate-spin" />
             </div>
           </div>
         ))}
@@ -256,7 +256,7 @@ export default function PhotoGalleryManager({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={uploading.length > 0}
-            className="aspect-square rounded-lg border-2 border-dashed border-gray-300 hover:border-primary hover:bg-primary/5 transition-colors flex flex-col items-center justify-center text-gray-400 hover:text-primary disabled:opacity-50"
+            className="aspect-square rounded-lg border-2 border-dashed border-gray-300 hover:border-[#FF6B35] hover:bg-[rgba(255,107,53,0.05)] transition-colors flex flex-col items-center justify-center text-gray-400 hover:text-[#FF6B35] disabled:opacity-50"
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

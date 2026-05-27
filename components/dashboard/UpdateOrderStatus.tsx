@@ -151,7 +151,7 @@ export default function UpdateOrderStatus({
               className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 ${
                 status === 'cancelled'
                   ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                  : 'bg-primary/10 text-primary hover:bg-primary/20'
+                  : 'bg-[rgba(255,107,53,0.1)] text-[#FF6B35] hover:bg-[rgba(255,107,53,0.2)]'
               }`}
             >
               {updating ? '...' : `${config?.icon || ''} ${config?.label || status}`}
@@ -174,7 +174,7 @@ export default function UpdateOrderStatus({
               value={cancelReason}
               onChange={(e) => setCancelReason(e.target.value)}
               placeholder="Motivo de cancelacion..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary mb-4"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] mb-4"
               rows={3}
             />
             <div className="flex gap-3">

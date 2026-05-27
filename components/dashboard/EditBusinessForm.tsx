@@ -164,8 +164,8 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
       <div className="text-center px-4">
         <span className="text-3xl block mb-2">🔒</span>
         <p className="text-sm font-semibold text-gray-700">{feature}</p>
-        <p className="text-xs text-gray-500 mt-1">Disponible desde el Plan <strong>{plan}</strong> por solo <span className="text-primary font-bold">{dailyPrice}</span></p>
-        <Link href="/dashboard/suscripcion" className="inline-block mt-2 px-4 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs font-semibold rounded-lg transition-colors">
+        <p className="text-xs text-gray-500 mt-1">Disponible desde el Plan <strong>{plan}</strong> por solo <span className="text-[#FF6B35] font-bold">{dailyPrice}</span></p>
+        <Link href="/dashboard/suscripcion" className="inline-block mt-2 px-4 py-1.5 bg-[#FF6B35] hover:bg-[#E2541F] text-white text-xs font-semibold rounded-lg transition-colors">
           Ver planes
         </Link>
       </div>
@@ -241,7 +241,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             type="text"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             required
           />
         </div>
@@ -253,7 +253,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
           <select
             value={formData.category_id}
             onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
           >
             <option value="">Sin categoría</option>
             {categories.map((cat) => (
@@ -273,7 +273,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
         />
       </div>
 
@@ -294,7 +294,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
               onClick={() => setFormData({ ...formData, business_type: option.value })}
               className={`p-3 border-2 rounded-xl text-center transition-all ${
                 formData.business_type === option.value
-                  ? 'border-primary bg-primary/5 text-primary'
+                  ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)] text-[#FF6B35]'
                   : 'border-gray-200 hover:border-gray-300 text-gray-700'
               }`}
             >
@@ -314,7 +314,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             type="tel"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             required
           />
         </div>
@@ -327,7 +327,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             type="tel"
             value={formData.whatsapp}
             onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             required
           />
         </div>
@@ -342,7 +342,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             type="email"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
           />
         </div>
 
@@ -354,7 +354,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             type="text"
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             required
           />
         </div>
@@ -401,7 +401,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
               value={formData.website}
               onChange={(e) => setFormData({ ...formData, website: e.target.value })}
               placeholder="https://www.tunegocio.com"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
 
@@ -419,7 +419,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
               value={formData.facebook_url}
               onChange={(e) => setFormData({ ...formData, facebook_url: e.target.value })}
               placeholder="https://www.facebook.com/tunegocio"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
 
@@ -437,7 +437,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
               value={formData.instagram_url}
               onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
               placeholder="https://www.instagram.com/tunegocio"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
 
@@ -455,7 +455,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
               value={formData.tiktok_url}
               onChange={(e) => setFormData({ ...formData, tiktok_url: e.target.value })}
               placeholder="https://www.tiktok.com/@tunegocio"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
         </div>
@@ -483,7 +483,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
               value={formData.bank_name}
               onChange={(e) => setFormData({ ...formData, bank_name: e.target.value })}
               placeholder="Ej: BBVA, Santander, Banorte"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
 
@@ -496,7 +496,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
               value={formData.bank_account_holder}
               onChange={(e) => setFormData({ ...formData, bank_account_holder: e.target.value })}
               placeholder="Nombre como aparece en el banco"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
         </div>
@@ -511,7 +511,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
               value={formData.bank_account_number}
               onChange={(e) => setFormData({ ...formData, bank_account_number: e.target.value })}
               placeholder="Número de cuenta o tarjeta"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
           </div>
 
@@ -525,7 +525,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
               onChange={(e) => setFormData({ ...formData, bank_clabe: e.target.value.replace(/\D/g, '').slice(0, 18) })}
               placeholder="18 dígitos"
               maxLength={18}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
             />
             {formData.bank_clabe && formData.bank_clabe.length !== 18 && (
               <p className="text-xs text-red-500 mt-1">La CLABE debe tener 18 dígitos</p>
@@ -558,7 +558,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
                   setActiveGateways(activeGateways.filter(g => g !== 'conekta'))
                 }
               }}
-              className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+              className="w-4 h-4 text-[#FF6B35] rounded border-gray-300 focus:ring-[#FF6B35]"
             />
             <span className="text-sm font-medium text-gray-700">Conekta</span>
           </label>
@@ -573,7 +573,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
                   setActiveGateways(activeGateways.filter(g => g !== 'mercadopago'))
                 }
               }}
-              className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+              className="w-4 h-4 text-[#FF6B35] rounded border-gray-300 focus:ring-[#FF6B35]"
             />
             <span className="text-sm font-medium text-gray-700">Mercado Pago</span>
           </label>
@@ -597,16 +597,16 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             }}
             className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
               formData.payment_mode === 'platform'
-                ? 'border-primary bg-primary/5'
+                ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)]'
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
             <div className="flex items-start gap-3">
               <div className={`w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 flex items-center justify-center ${
-                formData.payment_mode === 'platform' ? 'border-primary' : 'border-gray-300'
+                formData.payment_mode === 'platform' ? 'border-[#FF6B35]' : 'border-gray-300'
               }`}>
                 {formData.payment_mode === 'platform' && (
-                  <div className="w-3 h-3 rounded-full bg-primary" />
+                  <div className="w-3 h-3 rounded-full bg-[#FF6B35]" />
                 )}
               </div>
               <div>
@@ -633,16 +633,16 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
             }}
             className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
               formData.payment_mode === 'direct'
-                ? 'border-primary bg-primary/5'
+                ? 'border-[#FF6B35] bg-[rgba(255,107,53,0.05)]'
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
             <div className="flex items-start gap-3">
               <div className={`w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 flex items-center justify-center ${
-                formData.payment_mode === 'direct' ? 'border-primary' : 'border-gray-300'
+                formData.payment_mode === 'direct' ? 'border-[#FF6B35]' : 'border-gray-300'
               }`}>
                 {formData.payment_mode === 'direct' && (
-                  <div className="w-3 h-3 rounded-full bg-primary" />
+                  <div className="w-3 h-3 rounded-full bg-[#FF6B35]" />
                 )}
               </div>
               <div>
@@ -775,7 +775,7 @@ export default function EditBusinessForm({ business, categories, initialPhotos, 
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-2 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg transition-colors disabled:opacity-50"
+          className="px-6 py-2 bg-[#FF6B35] hover:bg-[#E2541F] text-white font-medium rounded-lg transition-colors disabled:opacity-50"
         >
           {loading ? 'Guardando...' : 'Guardar Cambios'}
         </button>

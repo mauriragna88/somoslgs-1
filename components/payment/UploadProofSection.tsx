@@ -260,7 +260,7 @@ export default function UploadProofSection({ transaction, business, bankDetails 
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
               placeholder="Ej: Transferencia realizada desde cuenta BBVA..."
               rows={3}
             />

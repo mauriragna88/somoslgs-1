@@ -147,7 +147,7 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
           maxLength={200}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[rgba(255,107,53,0.2)] focus:border-[#FF6B35]"
           placeholder="Los 5 mejores tacos en Lagos de Moreno"
         />
         <p className="text-xs text-gray-400 mt-1">{title.length}/200</p>
@@ -158,13 +158,13 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
         <label className="block text-sm font-medium text-gray-700 mb-1">Slug (URL) *</label>
         <div className="flex items-center gap-1 text-xs text-gray-400 mb-1">
           <span>/blog/</span>
-          <span className="text-primary">{slug || '...'}</span>
+          <span className="text-[#FF6B35]">{slug || '...'}</span>
         </div>
         <input
           type="text"
           value={slug}
           onChange={(e) => setSlug(slugify(e.target.value))}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[rgba(255,107,53,0.2)] focus:border-[#FF6B35]"
         />
       </div>
 
@@ -176,7 +176,7 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
           onChange={(e) => setExcerpt(e.target.value)}
           maxLength={300}
           rows={2}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[rgba(255,107,53,0.2)] focus:border-[#FF6B35] resize-none"
           placeholder="Resumen corto del articulo..."
         />
         <p className="text-xs text-gray-400 mt-1">{excerpt.length}/300</p>
@@ -199,9 +199,9 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
           accept="image/*"
           onChange={handleUpload}
           disabled={uploading}
-          className="text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-medium file:text-sm hover:file:bg-primary/20"
+          className="text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-[rgba(255,107,53,0.1)] file:text-[#FF6B35] file:font-medium file:text-sm hover:file:bg-[rgba(255,107,53,0.2)]"
         />
-        {uploading && <p className="text-xs text-primary mt-1">Subiendo imagen...</p>}
+        {uploading && <p className="text-xs text-[#FF6B35] mt-1">Subiendo imagen...</p>}
       </div>
 
       {/* Categoria */}
@@ -210,7 +210,7 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[rgba(255,107,53,0.2)] focus:border-[#FF6B35]"
         >
           {BLOG_CATEGORIES.map((c) => (
             <option key={c.value} value={c.value}>{c.label}</option>
@@ -225,7 +225,7 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
           <button
             type="button"
             onClick={() => setShowPreview(!showPreview)}
-            className="text-xs text-primary hover:text-primary-dark font-medium"
+            className="text-xs text-[#FF6B35] hover:text-[#E2541F] font-medium"
           >
             {showPreview ? 'Editar' : 'Vista previa'}
           </button>
@@ -239,7 +239,7 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={12}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary resize-y"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-[rgba(255,107,53,0.2)] focus:border-[#FF6B35] resize-y"
             placeholder="Escribe tu articulo en Markdown..."
           />
         )}
@@ -256,7 +256,7 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
               value="draft"
               checked={status === 'draft'}
               onChange={() => setStatus('draft')}
-              className="text-primary focus:ring-primary"
+              className="text-[#FF6B35] focus:ring-[#FF6B35]"
             />
             Borrador
           </label>
@@ -267,7 +267,7 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
               value="published"
               checked={status === 'published'}
               onChange={() => setStatus('published')}
-              className="text-primary focus:ring-primary"
+              className="text-[#FF6B35] focus:ring-[#FF6B35]"
             />
             Publicado
           </label>
@@ -279,7 +279,7 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
         <button
           type="submit"
           disabled={saving || uploading}
-          className="flex-1 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium text-sm transition-colors disabled:opacity-50"
+          className="flex-1 py-2.5 bg-[#FF6B35] hover:bg-[#E2541F] text-white rounded-lg font-medium text-sm transition-colors disabled:opacity-50"
         >
           {saving ? 'Guardando...' : post ? 'Actualizar' : 'Crear Post'}
         </button>
