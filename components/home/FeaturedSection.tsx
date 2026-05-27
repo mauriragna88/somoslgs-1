@@ -47,23 +47,43 @@ function PremiumCard({ business, tab }: { business: Business; tab: TabId }) {
   const heroImage = business.business_photos?.[0]?.image_url || business.cover_url
 
   return (
-    <div
+    <Link
+      href={`/negocios/${business.slug}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="rounded-2xl overflow-hidden bg-white flex flex-col"
+      className="block rounded-2xl overflow-hidden bg-white relative"
       style={{
-        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
-        transition: 'transform 0.32s ease, box-shadow 0.32s ease',
+        transform: hovered
+          ? 'perspective(900px) rotateX(-9deg) scale(1.05) translateY(-8px)'
+          : 'perspective(900px) rotateX(0deg) scale(1) translateY(0)',
+        transition: 'transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease',
         boxShadow: hovered
-          ? '0 0 0 2px rgba(245,185,66,0.55), 0 12px 32px rgba(31,41,55,0.14), 0 32px 56px rgba(31,41,55,0.07)'
-          : '0 1px 4px rgba(31,41,55,0.06), 0 6px 20px rgba(31,41,55,0.07)',
+          ? '0 0 0 2px rgba(245,185,66,0.6), 0 24px 52px rgba(31,41,55,0.24), 0 48px 88px rgba(255,107,53,0.1)'
+          : '0 1px 4px rgba(31,41,55,0.06), 0 6px 20px rgba(31,41,55,0.08)',
+        cursor: 'pointer',
+        textDecoration: 'none',
       }}
     >
-      {/* Accent line */}
-      <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, var(--coral) 0%, var(--gold) 100%)' }} />
+      {/* Shine sweep — cruza al hover como tarjeta holográfica */}
+      <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-2xl" aria-hidden="true">
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            height: '100%',
+            width: '45%',
+            background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.28), transparent)',
+            transform: `skewX(-18deg) translateX(${hovered ? '370%' : '-100%'})`,
+            transition: hovered ? 'transform 0.65s ease' : 'transform 0s',
+          }}
+        />
+      </div>
+
+      {/* Accent line coral → gold */}
+      <div style={{ height: 3, background: 'linear-gradient(90deg, var(--coral), var(--gold))' }} />
 
       {/* Hero image */}
-      <div className="relative overflow-hidden" style={{ height: 200 }}>
+      <div className="relative overflow-hidden" style={{ height: 204 }}>
         {heroImage ? (
           <Image
             src={heroImage}
@@ -72,46 +92,47 @@ function PremiumCard({ business, tab }: { business: Business; tab: TabId }) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
             style={{
-              transform: hovered ? 'scale(1.05)' : 'scale(1)',
-              transition: 'transform 0.5s ease-out',
+              transform: hovered ? 'scale(1.08)' : 'scale(1)',
+              transition: 'transform 0.55s ease',
             }}
           />
         ) : (
-          <div className="h-full w-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(255,107,53,0.12), rgba(245,185,66,0.08))' }}>
+          <div className="h-full w-full flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, rgba(255,107,53,0.12), rgba(245,185,66,0.08))' }}>
             <span className="text-5xl opacity-20">🏪</span>
           </div>
         )}
 
-        <div className="absolute top-2.5 left-2.5">
+        <div className="absolute top-2.5 left-2.5 z-10">
           <OpenClosedBadge businessHours={business.business_hours} />
         </div>
         {tab === 'nuevos' && business.created_at && (
-          <div className="absolute top-2.5 right-2.5">
+          <div className="absolute top-2.5 right-2.5 z-10">
             <span className="px-2.5 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--coral)' }}>
               ✨ {daysAgo(business.created_at)}
             </span>
           </div>
         )}
         {tab !== 'nuevos' && business.category && (
-          <div className="absolute top-2.5 right-2.5">
-            <span className="px-2.5 py-1 rounded-full text-xs font-semibold text-white" style={{ background: 'rgba(0,0,0,0.48)', backdropFilter: 'blur(4px)' }}>
+          <div className="absolute top-2.5 right-2.5 z-10">
+            <span className="px-2.5 py-1 rounded-full text-xs font-semibold text-white"
+              style={{ background: 'rgba(0,0,0,0.48)', backdropFilter: 'blur(4px)' }}>
               {business.category.icon} {business.category.name}
             </span>
           </div>
         )}
 
-        {/* Overlay on hover */}
+        {/* Dirección aparece en la base de la imagen al hover */}
         <div
-          className="absolute inset-0 flex flex-col justify-end px-3.5 pb-3.5"
+          className="absolute inset-x-0 bottom-0 px-3.5 pb-3 pt-8 z-10"
           style={{
-            background: 'linear-gradient(to top, rgba(20,24,33,0.88) 0%, rgba(20,24,33,0.28) 52%, transparent 100%)',
+            background: 'linear-gradient(to top, rgba(18,22,32,0.85) 0%, transparent 100%)',
             opacity: hovered ? 1 : 0,
-            transition: 'opacity 0.3s ease',
-            pointerEvents: hovered ? 'auto' : 'none',
+            transition: 'opacity 0.35s ease',
           }}
         >
           {business.address && (
-            <p className="text-white/80 text-[11px] mb-2 flex items-center gap-1 line-clamp-1">
+            <p className="text-[11px] flex items-center gap-1 line-clamp-1" style={{ color: 'rgba(255,255,255,0.82)' }}>
               <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -119,43 +140,26 @@ function PremiumCard({ business, tab }: { business: Business; tab: TabId }) {
               {business.address}
             </p>
           )}
-          <Link
-            href={`/negocios/${business.slug}`}
-            className="block text-center py-1.5 rounded-lg text-sm font-bold text-white"
-            style={{ background: 'var(--coral)' }}
-          >
-            Ver perfil →
-          </Link>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-4 flex flex-col flex-1">
+      {/* Content — sin botón, el click es toda la tarjeta */}
+      <div className="p-4">
         <h3 className="font-black text-base leading-snug mb-1 truncate" style={{ color: 'var(--ink)' }}>
           {business.name}
         </h3>
-
         {business.total_reviews > 0 && (
           <div className="mb-2">
             <StarRating value={business.rating} count={business.total_reviews} size="sm" />
           </div>
         )}
-
         {business.description && (
-          <p className="text-xs line-clamp-2 mb-3 flex-1" style={{ color: 'var(--muted)' }}>
+          <p className="text-xs line-clamp-2" style={{ color: 'var(--muted)' }}>
             {business.description}
           </p>
         )}
-
-        <Link
-          href={`/negocios/${business.slug}`}
-          className="block text-center py-2 rounded-xl text-xs font-bold text-white mt-auto"
-          style={{ background: 'var(--coral)' }}
-        >
-          Ver perfil
-        </Link>
       </div>
-    </div>
+    </Link>
   )
 }
 
