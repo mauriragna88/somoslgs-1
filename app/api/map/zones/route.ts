@@ -23,8 +23,9 @@ export async function GET() {
     if (error) throw error
 
     const counts: Record<string, number> = {}
+    const rows = (data ?? []) as { neighborhood: string | null }[]
 
-    for (const biz of data ?? []) {
+    for (const biz of rows) {
       const n = (biz.neighborhood ?? '').toLowerCase().trim()
       if (!n) continue
 
