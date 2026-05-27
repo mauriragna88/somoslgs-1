@@ -49,12 +49,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       type: 'website',
       url: `https://www.somoslagos.com.mx/negocios/${business.slug}`,
-      ...((business.cover_url || business.logo_url) && {
-        images: [business.cover_url
-          ? { url: business.cover_url, width: 1200, height: 400, alt: business.name }
-          : { url: business.logo_url!, width: 400, height: 400, alt: business.name }
-        ],
-      }),
     },
   }
 }
