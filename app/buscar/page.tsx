@@ -4,11 +4,13 @@ import { Metadata } from 'next'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { stemSpanish } from '@/lib/utils'
 import { TIER_ORDER } from '@/lib/constants'
+import type { BusinessHours } from '@/lib/constants'
 import BusinessCard from '@/components/shared/BusinessCard'
 import SkeletonCard from '@/components/shared/SkeletonCard'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import ListingCard from '@/components/marketplace/ListingCard'
 import SmartSearch from '@/components/SmartSearch'
+import SearchViewToggle from '@/components/search/SearchViewToggle'
 import type { MarketplaceListing } from '@/types/database.types'
 
 export const revalidate = 1800
@@ -75,9 +77,11 @@ interface Business {
   is_active: boolean
   subscription_tier: string
   is_featured: boolean
-  business_hours: any
+  business_hours: BusinessHours | null
   rating: number
   total_reviews: number
+  latitude: number | null
+  longitude: number | null
   category: { id: string; name: string; icon: string } | null
 }
 
@@ -152,6 +156,8 @@ export default async function BuscarPage({
       business_hours,
       rating,
       total_reviews,
+      latitude,
+      longitude,
       category:categories(id, name, icon)
     `)
     .eq('is_active', true)
@@ -496,40 +502,8 @@ export default async function BuscarPage({
               ) : (
                 <>
                   {/* Business Results */}
-                  <div className="mb-5 flex items-center gap-2">
-                    <p style={{ color: 'var(--muted)', fontFamily: 'var(--body)' }}>
-                      <span style={{ color: 'var(--ink)', fontWeight: 600 }}>{businesses?.length || 0}</span>
-                      {' '}negocio{businesses?.length !== 1 ? 's' : ''} encontrado{businesses?.length !== 1 ? 's' : ''}
-                      {query && <span> para <strong style={{ color: 'var(--ink)' }}>&ldquo;{query}&rdquo;</strong></span>}
-                    </p>
-                  </div>
-
                   {businesses && businesses.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                      {businesses.map((business, index) => (
-                        <React.Fragment key={business.id}>
-                          {/* Sponsored card every 8 results */}
-                          {index > 0 && index % 8 === 0 && (
-                            <div
-                              className="rounded-2xl overflow-hidden relative"
-                              style={{
-                                background: 'var(--ivory)',
-                                border: '1px solid rgba(31,41,55,0.08)',
-                              }}
-                            >
-                              <div
-                                className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded text-xs font-medium"
-                                style={{ background: 'rgba(31,41,55,0.07)', color: 'var(--muted)' }}
-                              >
-                                Patrocinado
-                              </div>
-                              <BannerDisplay placement="search_inline" />
-                            </div>
-                          )}
-                          <BusinessCard business={business} />
-                        </React.Fragment>
-                      ))}
-                    </div>
+                    <SearchViewToggle businesses={businesses} query={query} />
                   ) : (
                     <div
                       className="text-center py-16 rounded-3xl"
