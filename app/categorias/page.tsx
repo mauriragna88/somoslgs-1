@@ -66,22 +66,56 @@ export default async function CategoriasPage() {
     .sort((a, b) => b.businessCount - a.businessCount)
 
   return (
-    <main className="min-h-screen bg-[var(--ivory)]">
+    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
 
       {/* ── Hero / Header ── */}
-      <section className="pueblo-shell border-b border-[var(--hairline-soft)] pb-10 pt-10">
-        <div className="container mx-auto px-4">
-          <span className="pueblo-eyebrow text-[11px] font-bold tracking-widest px-3 py-1 rounded-full inline-block mb-4">
-            Explorar
-          </span>
-          <h1 className="pueblo-accent-line font-[family-name:var(--font-display)] text-3xl md:text-4xl font-bold text-[var(--ink)] mb-3">
+      <section
+        className="relative overflow-hidden pt-14 pb-16"
+        style={{ background: 'var(--ivory)' }}
+      >
+        {/* Mesh background */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: [
+              'radial-gradient(ellipse at 15% 40%, rgba(255,107,53,0.08) 0%, transparent 48%)',
+              'radial-gradient(ellipse at 80% 20%, rgba(245,185,66,0.07) 0%, transparent 42%)',
+              'radial-gradient(ellipse at 55% 90%, rgba(255,107,53,0.05) 0%, transparent 40%)',
+            ].join(', '),
+          }}
+        />
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Eyebrow badge */}
+          <span
+            className="inline-block text-[11px] font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-5"
+            style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
+          >
             Categorías
+          </span>
+
+          <h1
+            className="text-4xl md:text-5xl font-black mb-4 leading-tight"
+            style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
+          >
+            Encuentra negocios
+            <br />
+            <span style={{ color: 'var(--coral)' }}>por categoría</span>
           </h1>
-          <p className="text-[var(--muted)] text-base max-w-lg">
+
+          <p className="text-base max-w-lg" style={{ color: 'var(--muted)' }}>
             Explora todos los negocios de Lagos de Moreno organizados por categoría.
+            {categoriesWithCount.length > 0 && (
+              <> &nbsp;<strong style={{ color: 'var(--ink-soft)' }}>{categoriesWithCount.length} categorías disponibles.</strong></>
+            )}
           </p>
         </div>
       </section>
+
+      {/* ── Divider ── */}
+      <div className="container mx-auto px-4">
+        <div className="pueblo-divider" />
+      </div>
 
       {/* ── Banner: Categories Top ── */}
       <div className="container mx-auto px-4 pt-6">
@@ -98,24 +132,35 @@ export default async function CategoriasPage() {
                 <Link
                   key={category.id}
                   href={`/categorias/${category.slug}`}
-                  className="group pueblo-card rounded-2xl p-5 flex flex-col items-center text-center hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)] transition-all duration-200"
+                  className="group relative rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-200 hover:scale-[1.04]"
+                  style={{
+                    background: 'rgba(255,253,248,0.78)',
+                    backdropFilter: 'blur(14px)',
+                    WebkitBackdropFilter: 'blur(14px)',
+                    border: '1px solid rgba(31,41,55,0.07)',
+                    boxShadow: '0 2px 20px rgba(31,41,55,0.07)',
+                    borderLeft: `3px solid ${accentColor}`,
+                  }}
                 >
-                  {/* Icon circle */}
+                  {/* Icon circle with glow-on-hover via box-shadow on the wrapper */}
                   <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-transform duration-200 group-hover:scale-110"
-                    style={{ background: `color-mix(in srgb, ${accentColor} 18%, var(--ivory))` }}
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-200"
+                    style={{
+                      background: `color-mix(in srgb, ${accentColor} 14%, var(--ivory))`,
+                    }}
                   >
                     <span className="text-3xl leading-none">{category.icon || '📁'}</span>
                   </div>
 
                   {/* Name */}
                   <h3
-                    className="font-bold text-[var(--ink)] text-sm leading-snug mb-1 transition-colors duration-200 group-hover:text-[var(--coral)]"
+                    className="font-bold text-sm leading-snug mb-2 transition-colors duration-200"
+                    style={{ color: 'var(--ink)' }}
                   >
                     {category.name}
                   </h3>
 
-                  {/* Count pill */}
+                  {/* Count badge */}
                   <span
                     className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full"
                     style={{
@@ -132,14 +177,19 @@ export default async function CategoriasPage() {
         ) : (
           /* ── Empty state ── */
           <div className="flex flex-col items-center text-center py-20">
-            <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6"
-              style={{ background: 'color-mix(in srgb, var(--coral) 10%, var(--ivory))' }}>
+            <div
+              className="w-24 h-24 rounded-full flex items-center justify-center mb-6"
+              style={{ background: 'color-mix(in srgb, var(--coral) 10%, var(--ivory))' }}
+            >
               <span className="text-5xl">📁</span>
             </div>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold text-[var(--ink)] mb-2">
+            <h2
+              className="text-2xl font-bold mb-2"
+              style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
+            >
               No hay categorías
             </h2>
-            <p className="text-[var(--muted)]">Las categorías se agregarán pronto.</p>
+            <p style={{ color: 'var(--muted)' }}>Las categorías se agregarán pronto.</p>
           </div>
         )}
       </div>
@@ -151,19 +201,30 @@ export default async function CategoriasPage() {
 
       {/* ── CTA Banner ── */}
       <div className="container mx-auto px-4 py-10">
-        <div className="relative overflow-hidden rounded-3xl px-8 py-10 text-center"
-          style={{ background: 'linear-gradient(135deg, var(--ink) 0%, var(--terracotta, #C86B4A) 60%, var(--coral) 100%)' }}>
+        <div
+          className="relative overflow-hidden rounded-3xl px-8 py-10 text-center"
+          style={{
+            background: 'linear-gradient(135deg, var(--ink) 0%, var(--terracotta, #C86B4A) 60%, var(--coral) 100%)',
+          }}
+        >
           {/* Decorative blobs */}
-          <div className="pointer-events-none absolute -top-10 -right-10 w-48 h-48 rounded-full opacity-20"
-            style={{ background: 'var(--gold)', filter: 'blur(48px)' }} />
-          <div className="pointer-events-none absolute -bottom-8 -left-8 w-40 h-40 rounded-full opacity-15"
-            style={{ background: 'var(--coral)', filter: 'blur(40px)' }} />
+          <div
+            className="pointer-events-none absolute -top-10 -right-10 w-48 h-48 rounded-full opacity-20"
+            style={{ background: 'var(--gold)', filter: 'blur(48px)' }}
+          />
+          <div
+            className="pointer-events-none absolute -bottom-8 -left-8 w-40 h-40 rounded-full opacity-15"
+            style={{ background: 'var(--coral)', filter: 'blur(40px)' }}
+          />
 
           <div className="relative z-10">
-            <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold text-white mb-2">
+            <h2
+              className="text-2xl font-bold text-white mb-2"
+              style={{ fontFamily: 'var(--display)' }}
+            >
               ¿No encuentras lo que buscas?
             </h2>
-            <p className="text-white/75 mb-7 max-w-sm mx-auto">
+            <p className="mb-7 max-w-sm mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
               Usa nuestra búsqueda avanzada para encontrar exactamente lo que necesitas.
             </p>
             <Link
@@ -180,4 +241,3 @@ export default async function CategoriasPage() {
     </main>
   )
 }
-

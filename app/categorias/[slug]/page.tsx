@@ -242,11 +242,29 @@ export default async function CategoriaPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* Header */}
-      <div className="py-8" style={{ background: 'var(--cream)', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
-        <div className="container mx-auto px-4">
+      {/* ── Hero Section ── */}
+      <section
+        className="relative overflow-hidden pt-12 pb-14"
+        style={{ background: 'var(--ivory)' }}
+      >
+        {/* Mesh background */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: [
+              'radial-gradient(ellipse at 10% 50%, rgba(255,107,53,0.08) 0%, transparent 50%)',
+              'radial-gradient(ellipse at 85% 15%, rgba(245,185,66,0.07) 0%, transparent 44%)',
+              'radial-gradient(ellipse at 60% 95%, rgba(255,107,53,0.05) 0%, transparent 38%)',
+            ].join(', '),
+          }}
+        />
+
+        <div className="container mx-auto px-4 relative z-10">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm mb-4" style={{ color: 'var(--muted)' }}>
+          <nav
+            className="flex items-center gap-2 text-sm mb-6"
+            style={{ color: 'var(--muted)' }}
+          >
             <Link href="/" className="hover:opacity-70 transition-opacity">Inicio</Link>
             <span>/</span>
             <Link href="/categorias" className="hover:opacity-70 transition-opacity">Categorias</Link>
@@ -254,73 +272,135 @@ export default async function CategoriaPage({ params }: PageProps) {
             <span className="font-medium" style={{ color: 'var(--ink)' }}>{category.name}</span>
           </nav>
 
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--sand)' }}>
-              <span className="text-2xl">{category.icon || '📁'}</span>
+          {/* Eyebrow */}
+          <span
+            className="inline-block text-[11px] font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-5"
+            style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
+          >
+            Lagos de Moreno · {category.name}
+          </span>
+
+          {/* Icon + Title row */}
+          <div className="flex items-center gap-5 mb-4">
+            <div
+              className="w-20 h-20 rounded-2xl flex items-center justify-center flex-shrink-0"
+              style={{
+                background: 'rgba(255,253,248,0.78)',
+                backdropFilter: 'blur(14px)',
+                WebkitBackdropFilter: 'blur(14px)',
+                border: '1px solid rgba(31,41,55,0.08)',
+                boxShadow: '0 2px 20px rgba(31,41,55,0.07)',
+              }}
+            >
+              <span className="text-4xl leading-none">{category.icon || '📁'}</span>
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
-                {category.name} en Lagos de Moreno
+              <h1
+                className="text-3xl md:text-4xl font-black leading-tight mb-1"
+                style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
+              >
+                {category.name}
+                <br />
+                <span style={{ color: 'var(--coral)' }}>en Lagos de Moreno</span>
               </h1>
-              <p style={{ color: 'var(--muted)' }}>
+              <p style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>
                 {businesses.length} negocio{businesses.length !== 1 ? 's' : ''} encontrado{businesses.length !== 1 ? 's' : ''}
               </p>
             </div>
           </div>
 
-          {/* SEO intro paragraph */}
-          <div className="h-px my-4" style={{ background: 'rgba(0,0,0,0.08)' }}></div>
-          <p className="text-sm max-w-3xl leading-relaxed" style={{ color: 'var(--muted)' }}>
+          {/* SEO intro */}
+          <div className="pueblo-divider my-5" />
+          <p
+            className="text-sm max-w-3xl leading-relaxed"
+            style={{ color: 'var(--muted)' }}
+          >
             {intro}
           </p>
         </div>
-      </div>
+      </section>
 
-      {/* Banner: Categories Top */}
-      <div className="container mx-auto px-4 pt-6">
+      {/* ── Banner: Categories Top ── */}
+      <div className="container mx-auto px-4 pt-2 pb-4">
         <BannerDisplay placement="categories_top" />
       </div>
 
-      {/* Results */}
+      {/* ── Business Results ── */}
       <div className="container mx-auto px-4 py-8">
         {businesses.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {businesses.map((business) => (
               <BusinessCard key={business.id} business={business} showCategory={false} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--cream)' }}>
+          /* ── Empty / No results state ── */
+          <div
+            className="flex flex-col items-center text-center py-20 rounded-3xl"
+            style={{
+              background: 'rgba(255,253,248,0.78)',
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
+              border: '1px solid rgba(31,41,55,0.07)',
+              boxShadow: '0 2px 20px rgba(31,41,55,0.07)',
+            }}
+          >
+            <div
+              className="w-24 h-24 rounded-full flex items-center justify-center mb-6"
+              style={{ background: 'rgba(255,107,53,0.1)' }}
+            >
               <span className="text-5xl">{category.icon || '📁'}</span>
             </div>
-            <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--ink)' }}>
+            <h2
+              className="text-2xl font-bold mb-2"
+              style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
+            >
               No hay negocios en {category.name}
             </h2>
-            <p className="mb-6" style={{ color: 'var(--muted)' }}>
-              Aun no hay negocios registrados en esta categoria
+            <p className="mb-8 max-w-xs" style={{ color: 'var(--muted)' }}>
+              Aún no hay negocios registrados en esta categoría. ¡Sé el primero!
             </p>
             <Link
               href="/registrar-negocio"
-              className="inline-block px-6 py-3 text-white font-semibold rounded-xl transition-all"
-              style={{ background: 'var(--coral)' }}
+              className="inline-block px-8 py-3 text-white font-semibold rounded-full transition-all"
+              style={{ background: 'linear-gradient(135deg, var(--coral) 0%, var(--coral-deep) 100%)' }}
             >
-              Registrar mi negocio
+              Registrar mi negocio gratis
             </Link>
           </div>
         )}
 
-        {/* Other Categories */}
+        {/* ── Other Categories ── */}
         {allCategories && allCategories.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-xl font-bold mb-4" style={{ color: 'var(--ink)' }}>Otras categorias</h2>
+          <div className="mt-14">
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="inline-block text-[11px] font-bold tracking-widest uppercase px-3 py-1 rounded-full"
+                style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
+              >
+                Explorar
+              </span>
+              <h2
+                className="text-lg font-bold"
+                style={{ color: 'var(--ink)' }}
+              >
+                Otras categorías
+              </h2>
+            </div>
             <div className="flex flex-wrap gap-3">
               {allCategories.map((cat) => (
                 <Link
                   key={cat.id}
                   href={`/categorias/${cat.slug}`}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full transition-all text-sm"
-                  style={{ boxShadow: 'var(--shadow-card)', color: 'var(--ink)' }}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-full transition-all text-sm"
+                  style={{
+                    background: 'rgba(255,253,248,0.78)',
+                    backdropFilter: 'blur(14px)',
+                    WebkitBackdropFilter: 'blur(14px)',
+                    border: '1px solid rgba(31,41,55,0.07)',
+                    boxShadow: '0 2px 12px rgba(31,41,55,0.06)',
+                    color: 'var(--ink)',
+                  }}
                 >
                   <span>{cat.icon || '📁'}</span>
                   <span className="font-medium">{cat.name}</span>
@@ -330,21 +410,54 @@ export default async function CategoriaPage({ params }: PageProps) {
           </div>
         )}
 
-        {/* FAQ — SEO: People Also Ask */}
-        <div className="mt-12">
-          <h2 className="text-xl font-bold mb-4" style={{ color: 'var(--ink)' }}>
-            Preguntas frecuentes sobre {category.name.toLowerCase()} en Lagos de Moreno
-          </h2>
+        {/* ── FAQ — SEO: People Also Ask ── */}
+        <div className="mt-14">
+          <div className="flex items-center gap-3 mb-5">
+            <span
+              className="inline-block text-[11px] font-bold tracking-widest uppercase px-3 py-1 rounded-full"
+              style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
+            >
+              FAQ
+            </span>
+            <h2
+              className="text-lg font-bold"
+              style={{ color: 'var(--ink)' }}
+            >
+              Preguntas frecuentes sobre {category.name.toLowerCase()} en Lagos de Moreno
+            </h2>
+          </div>
           <div className="space-y-3">
             {faqs.map((faq) => (
-              <details key={faq.q} className="group bg-white rounded-xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
-                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold transition-colors list-none [&::-webkit-details-marker]:hidden text-sm" style={{ color: 'var(--ink)' }}>
+              <details
+                key={faq.q}
+                className="group rounded-2xl overflow-hidden"
+                style={{
+                  background: 'rgba(255,253,248,0.78)',
+                  backdropFilter: 'blur(14px)',
+                  WebkitBackdropFilter: 'blur(14px)',
+                  border: '1px solid rgba(31,41,55,0.07)',
+                  boxShadow: '0 2px 20px rgba(31,41,55,0.07)',
+                }}
+              >
+                <summary
+                  className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold transition-colors list-none [&::-webkit-details-marker]:hidden text-sm"
+                  style={{ color: 'var(--ink)' }}
+                >
                   {faq.q}
-                  <svg className="w-4 h-4 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" style={{ color: 'var(--muted)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg
+                    className="w-4 h-4 group-open:rotate-180 transition-transform flex-shrink-0 ml-4"
+                    style={{ color: 'var(--muted)' }}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div className="px-5 pb-4 text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
+                <div
+                  className="px-5 pb-4 text-sm leading-relaxed"
+                  style={{ color: 'var(--muted)' }}
+                >
                   {faq.a}
                 </div>
               </details>
@@ -352,13 +465,28 @@ export default async function CategoriaPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="mt-12 rounded-2xl p-8 text-center text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg,var(--coral),#E2541F)' }}>
-          <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" style={{ background: 'rgba(255,255,255,0.1)' }}></div>
-          <div className="relative">
-            <h2 className="text-2xl font-bold mb-2">¿Tienes un negocio de {category.name.toLowerCase()}?</h2>
+        {/* ── CTA ── */}
+        <div
+          className="mt-12 rounded-3xl p-8 text-center text-white relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, var(--ink) 0%, var(--terracotta, #C86B4A) 60%, var(--coral) 100%)' }}
+        >
+          <div
+            className="pointer-events-none absolute top-0 right-0 w-40 h-40 rounded-full -translate-y-1/2 translate-x-1/2"
+            style={{ background: 'rgba(255,255,255,0.1)', filter: 'blur(40px)' }}
+          />
+          <div
+            className="pointer-events-none absolute bottom-0 left-0 w-36 h-36 rounded-full translate-y-1/2 -translate-x-1/2"
+            style={{ background: 'rgba(245,185,66,0.15)', filter: 'blur(36px)' }}
+          />
+          <div className="relative z-10">
+            <h2
+              className="text-2xl font-bold mb-2"
+              style={{ fontFamily: 'var(--display)' }}
+            >
+              ¿Tienes un negocio de {category.name.toLowerCase()}?
+            </h2>
             <p className="mb-6" style={{ color: 'rgba(255,255,255,0.85)' }}>
-              Registrate gratis y aparece en esta pagina
+              Regístrate gratis y aparece en esta página
             </p>
             <Link
               href="/registrar-negocio"
@@ -373,4 +501,3 @@ export default async function CategoriaPage({ params }: PageProps) {
     </main>
   )
 }
-
