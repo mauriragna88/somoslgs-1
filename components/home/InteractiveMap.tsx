@@ -2,13 +2,13 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
-const ZONES = [
-  { id: 'centro', label: 'Centro Histórico', color: 'var(--coral)', cx: 300, cy: 200, businesses: 142, slug: 'centro' },
-  { id: 'jardines', label: 'Jardines', color: 'var(--gold)', cx: 180, cy: 150, businesses: 87, slug: 'jardines' },
-  { id: 'satelite', label: 'Satélite', color: 'var(--turquoise)', cx: 420, cy: 140, businesses: 64, slug: 'satelite' },
-  { id: 'hidalgo', label: 'Hidalgo', color: 'var(--green)', cx: 240, cy: 280, businesses: 53, slug: 'hidalgo' },
-  { id: 'obrera', label: 'Obrera', color: 'var(--buga)', cx: 380, cy: 300, businesses: 41, slug: 'obrera' },
-  { id: 'morelos', label: 'Morelos', color: 'var(--blue)', cx: 120, cy: 260, businesses: 38, slug: 'morelos' },
+const BASE_ZONES = [
+  { id: 'centro', label: 'Centro Histórico', color: 'var(--coral)', cx: 300, cy: 200, businesses: 0, slug: 'centro' },
+  { id: 'jardines', label: 'Jardines', color: 'var(--gold)', cx: 180, cy: 150, businesses: 0, slug: 'jardines' },
+  { id: 'satelite', label: 'Satélite', color: 'var(--turquoise)', cx: 420, cy: 140, businesses: 0, slug: 'satelite' },
+  { id: 'hidalgo', label: 'Hidalgo', color: 'var(--green)', cx: 240, cy: 280, businesses: 0, slug: 'hidalgo' },
+  { id: 'obrera', label: 'Obrera', color: 'var(--buga)', cx: 380, cy: 300, businesses: 0, slug: 'obrera' },
+  { id: 'morelos', label: 'Morelos', color: 'var(--blue)', cx: 120, cy: 260, businesses: 0, slug: 'morelos' },
 ]
 
 const TICKER_EVENTS = [
@@ -20,35 +20,51 @@ const TICKER_EVENTS = [
   'Pedido confirmado en Centro',
 ]
 
-const STATS = [
-  { value: '380+', label: 'Negocios activos' },
-  { value: '6', label: 'Zonas cubiertas' },
-  { value: '24/7', label: 'Disponibilidad' },
-  { value: '100%', label: 'Gratis para buscar' },
-]
-
 export default function InteractiveMap() {
   const [activeZone, setActiveZone] = useState<string | null>(null)
   const [tickerIdx, setTickerIdx] = useState(0)
   const [dotPos, setDotPos] = useState({ x: 300, y: 200 })
+  const [zones, setZones] = useState(BASE_ZONES)
+  const [totalActive, setTotalActive] = useState(0)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const dotRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  useEffect(() => {
+    fetch('/api/map/zones')
+      .then(r => r.json())
+      .then((counts: Record<string, number>) => {
+        const updated = BASE_ZONES.map(z => ({
+          ...z,
+          businesses: counts[z.id] ?? 0,
+        }))
+        setZones(updated)
+        setTotalActive(Object.values(counts).reduce((a, b) => a + b, 0))
+      })
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setTickerIdx(i => (i + 1) % TICKER_EVENTS.length)
     }, 2800)
     dotRef.current = setInterval(() => {
-      const zone = ZONES[Math.floor(Math.random() * ZONES.length)]
+      const zone = zones[Math.floor(Math.random() * zones.length)]
       setDotPos({ x: zone.cx + (Math.random() - 0.5) * 40, y: zone.cy + (Math.random() - 0.5) * 40 })
     }, 1800)
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
       if (dotRef.current) clearInterval(dotRef.current)
     }
-  }, [])
+  }, [zones])
 
-  const active = ZONES.find(z => z.id === activeZone)
+  const active = zones.find(z => z.id === activeZone)
+
+  const STATS = [
+    { value: totalActive > 0 ? `${totalActive}+` : '380+', label: 'Negocios activos' },
+    { value: '6', label: 'Zonas cubiertas' },
+    { value: '24/7', label: 'Disponibilidad' },
+    { value: '100%', label: 'Gratis para buscar' },
+  ]
 
   return (
     <section className="py-24" style={{ background: 'var(--cream)' }}>
@@ -76,7 +92,7 @@ export default function InteractiveMap() {
           {/* Left: zone chips + stats + ticker */}
           <div>
             <div className="flex flex-wrap gap-2 mb-8">
-              {ZONES.map(z => (
+              {zones.map(z => (
                 <button
                   key={z.id}
                   onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}
@@ -144,11 +160,11 @@ export default function InteractiveMap() {
               ))}
 
               {/* Animated connection routes */}
-              {ZONES.slice(0, -1).map((z, i) => (
+              {zones.slice(0, -1).map((z, i) => (
                 <line
                   key={i}
                   x1={z.cx} y1={z.cy}
-                  x2={ZONES[i + 1].cx} y2={ZONES[i + 1].cy}
+                  x2={zones[i + 1].cx} y2={zones[i + 1].cy}
                   stroke="rgba(255,107,53,0.15)"
                   strokeWidth="1.5"
                   strokeDasharray="6 4"
@@ -161,7 +177,7 @@ export default function InteractiveMap() {
               </circle>
 
               {/* Zone pins */}
-              {ZONES.map(z => (
+              {zones.map(z => (
                 <g
                   key={z.id}
                   onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}

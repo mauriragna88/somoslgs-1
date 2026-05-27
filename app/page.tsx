@@ -11,6 +11,7 @@ import type { BlogPost } from '@/types/database.types'
 import type { BusinessHours } from '@/lib/constants'
 import HeroVideoScroll from '@/components/home/HeroVideoScroll'
 import InteractiveMap from '@/components/home/InteractiveMap'
+import TourismMosaic from '@/components/home/TourismMosaic'
 
 export const revalidate = 3600
 
@@ -652,78 +653,7 @@ export default async function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {/* Slot 1 — tall, spans 2 rows */}
-            <div className="relative overflow-hidden rounded-2xl row-span-2 min-h-[280px]">
-              <Image
-                src="/tourism/parroquia-asuncion.jpg"
-                alt="Parroquia de la Asunción, Lagos de Moreno"
-                fill
-                sizes="(max-width: 768px) 50vw, 33vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <span className="absolute bottom-3 left-3 text-white text-xs font-semibold bg-black/40 px-2 py-1 rounded">
-                Parroquia de la Asunción
-              </span>
-            </div>
-            {/* Slot 2 */}
-            <div className="relative overflow-hidden rounded-2xl min-h-[130px]">
-              <Image
-                src="/tourism/callelagos1.jpg"
-                alt="Los Callejones de Lagos de Moreno"
-                fill
-                sizes="(max-width: 768px) 50vw, 33vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <span className="absolute bottom-2 left-2 text-white text-xs font-semibold bg-black/40 px-2 py-1 rounded">
-                Los Callejones
-              </span>
-            </div>
-            {/* Slot 3 */}
-            <div className="relative overflow-hidden rounded-2xl min-h-[130px]">
-              <Image
-                src="/tourism/puente-rio.jpg"
-                alt="Puente de Lagos de Moreno"
-                fill
-                sizes="(max-width: 768px) 50vw, 33vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <span className="absolute bottom-2 left-2 text-white text-xs font-semibold bg-black/40 px-2 py-1 rounded">
-                Puente
-              </span>
-            </div>
-            {/* Slot 4 */}
-            <div className="relative overflow-hidden rounded-2xl min-h-[130px]">
-              <Image
-                src="/tourism/teatro-rosas-moreno.jpg"
-                alt="Teatro Rosas Moreno, Lagos de Moreno"
-                fill
-                sizes="(max-width: 768px) 50vw, 33vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <span className="absolute bottom-2 left-2 text-white text-xs font-semibold bg-black/40 px-2 py-1 rounded">
-                Teatro Rosas Moreno
-              </span>
-            </div>
-            {/* Slot 5 */}
-            <div className="relative overflow-hidden rounded-2xl min-h-[130px]">
-              <Image
-                src="/tourism/templo-calvario.jpg"
-                alt="El Calvario, Lagos de Moreno"
-                fill
-                sizes="(max-width: 768px) 50vw, 33vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <span className="absolute bottom-2 left-2 text-white text-xs font-semibold bg-black/40 px-2 py-1 rounded">
-                El Calvario
-              </span>
-            </div>
-          </div>
+          <TourismMosaic />
         </div>
       </section>
 
