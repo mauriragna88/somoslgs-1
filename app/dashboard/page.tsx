@@ -59,10 +59,14 @@ export default async function BusinessDashboard() {
   }
 
   if (selectedBusiness) {
+    const now = new Date()
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
+
     const [
       { count: productsCount },
       { count: ordersCount },
       { count: todayCount },
+      { data: monthOrders },
     ] = await Promise.all([
       supabase
         .from('products')
@@ -77,13 +81,24 @@ export default async function BusinessDashboard() {
         .select('*', { count: 'exact', head: true })
         .eq('business_id', selectedBusiness.id)
         .gte('created_at', new Date().toISOString().split('T')[0]),
+      supabase
+        .from('orders')
+        .select('total')
+        .eq('business_id', selectedBusiness.id)
+        .eq('payment_status', 'verified')
+        .gte('created_at', firstDayOfMonth),
     ])
+
+    const monthRevenue = (monthOrders || []).reduce(
+      (sum: number, o: { total: number }) => sum + (o.total || 0),
+      0,
+    )
 
     stats = {
       totalProducts: productsCount || 0,
       totalOrders: ordersCount || 0,
       todayOrders: todayCount || 0,
-      monthRevenue: 0,
+      monthRevenue,
     }
   }
 
@@ -230,8 +245,10 @@ export default async function BusinessDashboard() {
             <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm font-medium" style={{ color: 'var(--muted)' }}>Ingresos</p>
-                  <p className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>${stats.monthRevenue}</p>
+                  <p className="text-xs sm:text-sm font-medium" style={{ color: 'var(--muted)' }}>Ingresos este mes</p>
+                  <p className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
+                    ${stats.monthRevenue.toLocaleString('es-MX')}
+                  </p>
                 </div>
                 <div className="w-10 h-10 sm:w-14 sm:h-14 bg-yellow-500 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                   💰

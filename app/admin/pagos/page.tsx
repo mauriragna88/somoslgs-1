@@ -45,6 +45,20 @@ export default async function AdminPagosPage() {
   const approvedTransactions = transactions?.filter(t => t.status === 'approved') || []
   const rejectedTransactions = transactions?.filter(t => t.status === 'rejected') || []
 
+  // Revenue calculations
+  const now = new Date()
+  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+  const totalRevenue = approvedTransactions.reduce((sum, t) => sum + (t.amount || 0), 0)
+  const monthRevenue = approvedTransactions
+    .filter(t => new Date(t.created_at) >= firstDayOfMonth)
+    .reduce((sum, t) => sum + (t.amount || 0), 0)
+  const revenueByTier = approvedTransactions.reduce<Record<string, number>>((acc, t) => {
+    const tier = t.subscription_tier || 'desconocido'
+    acc[tier] = (acc[tier] || 0) + (t.amount || 0)
+    return acc
+  }, {})
+  const tierLabels: Record<string, string> = { emprendedor: 'Emprendedor', pro: 'Pro', avanzado: 'Avanzado' }
+
   return (
     <div>
       <div className="mb-6">
@@ -54,7 +68,28 @@ export default async function AdminPagosPage() {
         </p>
       </div>
 
-      {/* Stats */}
+      {/* Revenue Summary */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+        <div className="rounded-2xl p-4 sm:p-5" style={{ background: 'linear-gradient(135deg,var(--coral),#e85520)', boxShadow: '0 4px 14px rgba(255,107,53,0.3)' }}>
+          <p className="text-xs font-medium text-white/80 mb-1">Ingresos totales</p>
+          <p className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--display)' }}>${totalRevenue.toLocaleString('es-MX')}</p>
+          <p className="text-xs text-white/70 mt-0.5">MXN acumulado</p>
+        </div>
+        <div className="rounded-2xl p-4 sm:p-5" style={{ background: 'linear-gradient(135deg,var(--gold),#d4a017)', boxShadow: '0 4px 14px rgba(245,185,66,0.3)' }}>
+          <p className="text-xs font-medium text-white/80 mb-1">Este mes</p>
+          <p className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--display)' }}>${monthRevenue.toLocaleString('es-MX')}</p>
+          <p className="text-xs text-white/70 mt-0.5">{now.toLocaleString('es-MX', { month: 'long', year: 'numeric' })}</p>
+        </div>
+        {Object.entries(revenueByTier).slice(0, 2).map(([tier, amount]) => (
+          <div key={tier} className="rounded-2xl p-4 sm:p-5 bg-white" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(31,41,55,0.07)' }}>
+            <p className="text-xs font-medium mb-1" style={{ color: 'var(--muted)' }}>{tierLabels[tier] || tier}</p>
+            <p className="text-2xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>${(amount as number).toLocaleString('es-MX')}</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>{approvedTransactions.filter(t => t.subscription_tier === tier).length} pagos</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Status Stats */}
       <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-8">
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 sm:p-6">
           <div className="flex items-center justify-between">
