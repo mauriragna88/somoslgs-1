@@ -99,7 +99,7 @@ export default function ReportButton({ listingId }: ReportButtonProps) {
                 onChange={(e) => setDetails(e.target.value)}
                 maxLength={500}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none mb-4"
+                className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,53,0.3)] focus:border-[#FF6B35] resize-none mb-4"
               />
 
               {error && (

@@ -51,14 +51,14 @@ export default function BusinessHoursEditor({ value, onChange }: BusinessHoursEd
                     type="time"
                     value={day.open || '09:00'}
                     onChange={(e) => updateDay(key, { open: e.target.value })}
-                    className="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                   />
                   <span className="text-gray-400 text-sm">a</span>
                   <input
                     type="time"
                     value={day.close || '18:00'}
                     onChange={(e) => updateDay(key, { close: e.target.value })}
-                    className="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
                   />
                 </div>
               )}

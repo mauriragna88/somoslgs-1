@@ -70,7 +70,7 @@ export default function ListingGallery({ images, title }: ListingGalleryProps) {
               onClick={() => setActiveIndex(idx)}
               className={`w-16 h-16 relative rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all ${
                 idx === activeIndex
-                  ? 'border-primary ring-1 ring-primary/30'
+                  ? 'border-[#FF6B35] ring-1 ring-[rgba(255,107,53,0.3)]'
                   : 'border-transparent opacity-70 hover:opacity-100'
               }`}
             >
