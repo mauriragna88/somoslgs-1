@@ -4,6 +4,7 @@ import { getUser } from '@/lib/supabase/server'
 import { checkRateLimit, getClientIP } from '@/lib/security'
 import { ORDER_ENABLED_TIERS } from '@/lib/constants'
 import { notifyBusinessNewOrder } from '@/lib/whatsapp'
+import { sendNewOrderEmail } from '@/lib/email'
 import { z } from 'zod'
 
 const orderItemSchema = z.object({
@@ -192,7 +193,19 @@ export async function POST(request: Request) {
 
     const orderLink = `${baseUrl}/dashboard/pedidos/${order.id}`
 
-    // Send automated WhatsApp notification to business owner (fire-and-forget)
+    // Send email + WhatsApp notification to business owner (fire-and-forget)
+    sendNewOrderEmail({
+      businessId: validatedData.business_id,
+      businessName: business.name,
+      orderNumber,
+      orderId: order.id,
+      customerName: validatedData.customer_name,
+      customerPhone: validatedData.customer_phone,
+      total,
+      deliveryType: validatedData.delivery_type,
+      items: validatedData.items,
+    })
+
     notifyBusinessNewOrder({
       id: order.id,
       order_number: orderNumber,

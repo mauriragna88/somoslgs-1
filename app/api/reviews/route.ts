@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getUser, createServiceClient } from '@/lib/supabase/server'
 import { checkRateLimit, getClientIP } from '@/lib/security'
+import { sendNewReviewEmail } from '@/lib/email'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -85,6 +86,14 @@ export async function POST(request: Request) {
         .update({ rating: avg, total_reviews: total })
         .eq('id', data.business_id)
     }
+
+    // Notify business owner by email (fire-and-forget)
+    sendNewReviewEmail({
+      businessId: data.business_id,
+      userId: user.id,
+      rating: data.rating,
+      comment: data.comment || null,
+    })
 
     return NextResponse.json({ success: true, review }, { status: 201 })
   } catch (error) {
