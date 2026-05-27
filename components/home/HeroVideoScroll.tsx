@@ -246,30 +246,36 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
             </p>
 
             {/* Search */}
-            <div style={{ width: 'min(880px, 100%)', marginBottom: 14 }}>
+            <div style={{ width: 'min(880px, 100%)', marginBottom: 20 }}>
               <SearchForm />
             </div>
 
-            {/* Category chips */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', maxWidth: 720 }}>
-              {categories.slice(0, 8).map(cat => (
-                <Link
-                  key={cat.id}
-                  href={`/categorias/${cat.slug}`}
+            {/* Trust signals — no clickeable, solo social proof */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center',
+            }}>
+              {[
+                { dot: '#22C55E', label: 'Negocios abiertos ahora' },
+                { dot: 'var(--gold)', label: '4.8 ★ promedio' },
+                { dot: 'var(--coral)', label: 'Pueblo Mágico · Jalisco' },
+              ].map((item, i) => (
+                <span
+                  key={i}
                   style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 8,
-                    padding: '8px 14px',
-                    background: 'rgba(255,255,255,0.86)',
-                    color: 'var(--ink-soft)', borderRadius: 999,
-                    fontSize: 13, fontWeight: 500,
-                    border: '1px solid rgba(255,255,255,0.7)',
-                    textDecoration: 'none',
-                    transition: 'background 0.2s, transform 0.2s',
+                    display: 'inline-flex', alignItems: 'center', gap: 7,
+                    fontSize: 13, color: 'rgba(255,253,248,0.78)',
+                    fontWeight: 500, letterSpacing: '0.01em',
+                    textShadow: '0 1px 8px rgba(31,41,55,0.5)',
+                    pointerEvents: 'none', userSelect: 'none',
                   }}
                 >
-                  <span>{cat.icon}</span>
-                  {cat.name}
-                </Link>
+                  <span style={{
+                    width: 7, height: 7, borderRadius: '50%',
+                    background: item.dot, flexShrink: 0,
+                    boxShadow: `0 0 6px ${item.dot}`,
+                  }} />
+                  {item.label}
+                </span>
               ))}
             </div>
           </div>
