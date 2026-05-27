@@ -709,15 +709,6 @@ export default async function HomePage() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20el%20chatbot%20para%20mi%20negocio%20en%20SomosLagos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white transition-all hover:opacity-90"
-                style={{ background: '#25D366' }}
-              >
-                Quiero el chatbot →
-              </a>
             </ScrollReveal>
 
             {/* Right: phone mock */}
