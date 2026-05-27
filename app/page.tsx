@@ -10,6 +10,7 @@ import { TIER_ORDER } from '@/lib/constants'
 import type { BlogPost } from '@/types/database.types'
 import type { BusinessHours } from '@/lib/constants'
 import HeroVideoScroll from '@/components/home/HeroVideoScroll'
+import MarqueeTicker from '@/components/home/MarqueeTicker'
 import InteractiveMap from '@/components/home/InteractiveMap'
 import TourismMosaic from '@/components/home/TourismMosaic'
 import FeaturedSection from '@/components/home/FeaturedSection'
@@ -207,6 +208,53 @@ export default async function HomePage() {
 
   const catCount = totalCategories || categories.length
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '¿Cómo registro mi negocio en SomosLagos?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Entra a somoslagos.com.mx, haz clic en "Registrar negocio" y completa el formulario gratuito. Tu negocio aparecerá en el directorio en minutos.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Es gratis registrar mi negocio en SomosLagos?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí, el plan Gratis es para siempre. Incluye perfil con fotos, WhatsApp directo, horarios y aparición en el mapa. Existen planes de pago para negocios que quieren mayor visibilidad.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué es Lagos de Moreno Pueblo Mágico?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Lagos de Moreno es un Pueblo Mágico de Jalisco, México, famoso por su arquitectura barroca, gastronomía, artesanías y tradiciones. SomosLagos es la plataforma digital oficial de su comunidad de negocios.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Puedo pedir a un negocio local por WhatsApp desde SomosLagos?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí. Desde el perfil de cada negocio puedes contactarlos directamente por WhatsApp. Los negocios con Plan Pro además tienen catálogo de productos y pedidos en línea.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿SomosLagos tiene app móvil?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'SomosLagos funciona como una Progressive Web App (PWA). Puedes instalarla en tu celular desde el navegador, sin necesidad de descargarla en la tienda de apps.',
+        },
+      },
+    ],
+  }
+
   return (
     <main className="min-h-screen overflow-x-clip">
       <script
@@ -216,6 +264,10 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       {/* ═══════════════════════════════════════════════════════════
@@ -227,12 +279,30 @@ export default async function HomePage() {
         catCount={catCount}
       />
 
+      {/* ═══════════════════════════════════════════════════════════
+          1b. MARQUEE TICKER
+      ═══════════════════════════════════════════════════════════ */}
+      <MarqueeTicker />
+
 
       {/* ═══════════════════════════════════════════════════════════
           2. CATEGORIES — What are you looking for?
       ═══════════════════════════════════════════════════════════ */}
+      {/* Divider coral→gold */}
+      <div className="pueblo-divider" />
+
       {categories.length > 0 && (
-        <section className="py-20" style={{ background: '#FFFDF8' }}>
+        <section
+          className="py-20"
+          style={{
+            background: `
+              radial-gradient(ellipse at 8% 40%, rgba(255,107,53,0.08) 0%, transparent 48%),
+              radial-gradient(ellipse at 92% 15%, rgba(245,185,66,0.10) 0%, transparent 42%),
+              radial-gradient(ellipse at 55% 95%, rgba(34,184,207,0.05) 0%, transparent 38%),
+              #FFFDF8
+            `,
+          }}
+        >
           <div className="container mx-auto px-4">
             <ScrollReveal direction="up">
               <div className="text-center mb-12">
@@ -261,14 +331,22 @@ export default async function HomePage() {
                   <ScrollReveal key={cat.id} direction="up" delay={i * 40}>
                     <Link
                       href={`/categorias/${cat.slug}`}
-                      className="flex flex-col items-center gap-3 p-5 rounded-2xl border-l-4 transition-all hover:scale-105 hover:shadow-md group"
+                      className="flex flex-col items-center gap-3 p-5 rounded-2xl transition-all duration-300 hover:scale-[1.05] group"
                       style={{
-                        background: 'white',
-                        borderLeftColor: color,
-                        boxShadow: '0 1px 4px rgba(31,41,55,0.06)',
+                        background: 'rgba(255,253,248,0.78)',
+                        backdropFilter: 'blur(14px)',
+                        WebkitBackdropFilter: 'blur(14px)',
+                        border: `1px solid rgba(255,253,248,0.6)`,
+                        borderLeft: `4px solid ${color}`,
+                        boxShadow: `0 2px 20px rgba(31,41,55,0.07), inset 0 1px 0 rgba(255,255,255,0.7)`,
                       }}
                     >
-                      <span className="text-3xl">{cat.icon || '📦'}</span>
+                      <span
+                        className="text-3xl transition-transform duration-300 group-hover:scale-110"
+                        style={{ filter: `drop-shadow(0 0 8px ${color}55)` }}
+                      >
+                        {cat.icon || '📦'}
+                      </span>
                       <span
                         className="text-sm font-semibold text-center leading-tight"
                         style={{ color: 'var(--ink)' }}
@@ -296,6 +374,43 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* ═══════════════════════════════════════════════════════════
+          2b. STATS STRIP
+      ═══════════════════════════════════════════════════════════ */}
+      <section
+        className="py-12"
+        style={{
+          background: `
+            radial-gradient(ellipse at 20% 50%, rgba(255,107,53,0.18) 0%, transparent 55%),
+            radial-gradient(ellipse at 80% 50%, rgba(245,185,66,0.15) 0%, transparent 50%),
+            var(--ink)
+          `,
+        }}
+      >
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            {[
+              { target: businessDisplayCount, suffix: '+', label: 'Negocios registrados', color: 'var(--coral)' },
+              { target: catCount, suffix: '+', label: 'Categorías', color: 'var(--gold)' },
+              { target: 1, suffix: '', label: 'Pueblo Mágico', color: 'var(--turquoise)' },
+              { target: 100, suffix: '%', label: 'Lagos de Moreno', color: 'rgba(255,253,248,0.9)' },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p
+                  className="text-5xl md:text-6xl font-black mb-1 tabular-nums"
+                  style={{ color: stat.color, fontFamily: 'var(--display)', lineHeight: 1 }}
+                >
+                  <AnimatedCounter target={stat.target} suffix={stat.suffix} />
+                </p>
+                <p className="text-sm mt-2" style={{ color: 'rgba(255,253,248,0.45)' }}>
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ═══════════════════════════════════════════════════════════
           3. FEATURED BUSINESSES
@@ -524,7 +639,16 @@ export default async function HomePage() {
       {/* ═══════════════════════════════════════════════════════════
           7. COMMERCE / WHATSAPP
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-20" style={{ background: '#F8F1E7' }}>
+      <section
+        className="py-20"
+        style={{
+          background: `
+            radial-gradient(ellipse at 5% 30%, rgba(37,211,102,0.07) 0%, transparent 45%),
+            radial-gradient(ellipse at 95% 70%, rgba(255,107,53,0.06) 0%, transparent 40%),
+            #F8F1E7
+          `,
+        }}
+      >
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
             {/* Left */}
