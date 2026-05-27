@@ -3,19 +3,12 @@
 export default function WhatsAppFloat() {
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2.5 pointer-events-none">
-      {/* Speech bubble */}
-      <div className="pointer-events-auto bg-white rounded-2xl shadow-xl px-4 py-3 border border-gray-100 max-w-[210px] relative">
-        <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45"></div>
-        <p className="text-xs text-gray-400 leading-tight mb-0.5">Asistente con IA 🤖</p>
-        <p className="text-sm font-semibold leading-tight" style={{ color: 'var(--ink)' }}>¿No encuentras lo que buscas? ¡Pregúntame!</p>
-      </div>
-
       {/* WhatsApp button */}
       <a
         href="https://wa.me/528142172127?text=Hola%2C%20estoy%20buscando%20un%20negocio%20o%20servicio%20en%20Lagos..."
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="¿No encuentras lo que buscas? Pregúntale a nuestro Asistente con IA en WhatsApp"
+        aria-label="Contáctanos por WhatsApp"
         className="pointer-events-auto relative w-16 h-16 flex items-center justify-center rounded-full bg-[#25D366] shadow-2xl shadow-green-500/40 hover:bg-[#1fbe5a] hover:scale-110 hover:shadow-green-500/60 transition-all duration-300"
       >
         {/* Pulse ring */}
