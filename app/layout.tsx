@@ -4,10 +4,8 @@ import { Toaster } from 'sonner'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import PublicShell from '@/components/PublicShell'
 import PWARegister from '@/components/PWARegister'
-import WhatsAppFloat from '@/components/WhatsAppFloat'
 
 const inter = Inter({ subsets: ['latin'] })
 const bricolageGrotesque = Bricolage_Grotesque({ subsets: ['latin'], display: 'swap', variable: '--font-display' })
@@ -71,11 +69,10 @@ export default function RootLayout({
         )}
       </head>
       <body className={`${bricolageGrotesque.variable} ${dmSans.variable} ${instrumentSerif.variable} ${inter.className}`}>
-        <Header />
-        {children}
-        <Footer />
+        <PublicShell>
+          {children}
+        </PublicShell>
         <Toaster richColors position="top-right" />
-        <WhatsAppFloat />
         <PWARegister />
         <Analytics />
         <SpeedInsights />
