@@ -2,66 +2,69 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
-const BASE_ZONES = [
-  { id: 'centro', label: 'Centro Histórico', color: 'var(--coral)', cx: 300, cy: 200, businesses: 0, slug: 'centro' },
-  { id: 'jardines', label: 'Jardines', color: 'var(--gold)', cx: 180, cy: 150, businesses: 0, slug: 'jardines' },
-  { id: 'satelite', label: 'Satélite', color: 'var(--turquoise)', cx: 420, cy: 140, businesses: 0, slug: 'satelite' },
-  { id: 'hidalgo', label: 'Hidalgo', color: 'var(--green)', cx: 240, cy: 280, businesses: 0, slug: 'hidalgo' },
-  { id: 'obrera', label: 'Obrera', color: 'var(--buga)', cx: 380, cy: 300, businesses: 0, slug: 'obrera' },
-  { id: 'morelos', label: 'Morelos', color: 'var(--blue)', cx: 120, cy: 260, businesses: 0, slug: 'morelos' },
-]
+interface Zone {
+  id: string
+  label: string
+  businesses: number
+  slug: string
+  color: string
+  cx: number
+  cy: number
+}
 
 const TICKER_EVENTS = [
-  'Nuevo negocio en Centro Histórico',
-  'Reseña 5⭐ en Taquería El Güero',
-  'Pedido en Farmacia San Juan',
-  'Nuevo en Jardines: Pastelería Luna',
-  'Reseña 5⭐ en Hotel Colonial',
-  'Pedido confirmado en Centro',
+  'Negocio registrado en Lagos de Moreno',
+  'Nueva reseña 5⭐ en el directorio',
+  'Pedido confirmado en Lagos',
+  'Nuevo negocio en el directorio',
+  'Reseña positiva en negocio local',
+  'Cliente encontró lo que buscaba',
 ]
 
 export default function InteractiveMap() {
   const [activeZone, setActiveZone] = useState<string | null>(null)
   const [tickerIdx, setTickerIdx] = useState(0)
   const [dotPos, setDotPos] = useState({ x: 300, y: 200 })
-  const [zones, setZones] = useState(BASE_ZONES)
+  const [zones, setZones] = useState<Zone[]>([])
   const [totalActive, setTotalActive] = useState(0)
+  const [loading, setLoading] = useState(true)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const dotRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
     fetch('/api/map/zones')
       .then(r => r.json())
-      .then((counts: Record<string, number>) => {
-        const updated = BASE_ZONES.map(z => ({
-          ...z,
-          businesses: counts[z.id] ?? 0,
-        }))
-        setZones(updated)
-        setTotalActive(Object.values(counts).reduce((a, b) => a + b, 0))
+      .then((data: Zone[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setZones(data)
+          setTotalActive(data.reduce((acc, z) => acc + z.businesses, 0))
+        }
       })
       .catch(() => {})
+      .finally(() => setLoading(false))
   }, [])
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setTickerIdx(i => (i + 1) % TICKER_EVENTS.length)
     }, 2800)
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
+  }, [])
+
+  useEffect(() => {
+    if (zones.length === 0) return
     dotRef.current = setInterval(() => {
       const zone = zones[Math.floor(Math.random() * zones.length)]
       setDotPos({ x: zone.cx + (Math.random() - 0.5) * 40, y: zone.cy + (Math.random() - 0.5) * 40 })
     }, 1800)
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-      if (dotRef.current) clearInterval(dotRef.current)
-    }
+    return () => { if (dotRef.current) clearInterval(dotRef.current) }
   }, [zones])
 
   const active = zones.find(z => z.id === activeZone)
 
   const STATS = [
-    { value: totalActive > 0 ? `${totalActive}+` : '380+', label: 'Negocios activos' },
-    { value: '6', label: 'Zonas cubiertas' },
+    { value: totalActive > 0 ? `${totalActive}+` : '—', label: 'Negocios registrados' },
+    { value: zones.length > 0 ? `${zones.length}` : '—', label: 'Colonias con negocios' },
     { value: '24/7', label: 'Disponibilidad' },
     { value: '100%', label: 'Gratis para buscar' },
   ]
@@ -84,31 +87,39 @@ export default function InteractiveMap() {
             Tu ciudad, en un solo mapa
           </h2>
           <p className="text-lg max-w-xl mx-auto" style={{ color: 'var(--ink-soft)' }}>
-            Explora negocios por zona y encuentra lo que necesitas cerca de ti.
+            Explora negocios por colonia y encuentra lo que necesitas cerca de ti.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-10 items-start">
           {/* Left: zone chips + stats + ticker */}
           <div>
-            <div className="flex flex-wrap gap-2 mb-8">
-              {zones.map(z => (
-                <button
-                  key={z.id}
-                  onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}
-                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveZone(activeZone === z.id ? null : z.id) } }}
-                  tabIndex={0}
-                  className="px-4 py-2 rounded-full text-sm font-semibold transition-all"
-                  style={{
-                    background: activeZone === z.id ? z.color : 'rgba(31,41,55,0.06)',
-                    color: activeZone === z.id ? 'white' : 'var(--ink-soft)',
-                    border: `2px solid ${activeZone === z.id ? z.color : 'transparent'}`,
-                  }}
-                >
-                  {z.label}
-                </button>
-              ))}
-            </div>
+            {loading ? (
+              <div className="flex flex-wrap gap-2 mb-8">
+                {[1,2,3,4,5,6].map(i => (
+                  <div key={i} className="h-9 w-28 rounded-full animate-pulse" style={{ background: 'rgba(31,41,55,0.08)' }} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-2 mb-8">
+                {zones.map(z => (
+                  <button
+                    key={z.id}
+                    onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveZone(activeZone === z.id ? null : z.id) } }}
+                    tabIndex={0}
+                    className="px-4 py-2 rounded-full text-sm font-semibold transition-all"
+                    style={{
+                      background: activeZone === z.id ? z.color : 'rgba(31,41,55,0.06)',
+                      color: activeZone === z.id ? 'white' : 'var(--ink-soft)',
+                      border: `2px solid ${activeZone === z.id ? z.color : 'transparent'}`,
+                    }}
+                  >
+                    {z.label}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Detail panel */}
             {active ? (
@@ -151,7 +162,6 @@ export default function InteractiveMap() {
           {/* Right: SVG map */}
           <div className="rounded-3xl overflow-hidden" style={{ background: '#e8f4f0', boxShadow: 'var(--shadow-card)' }}>
             <svg viewBox="0 0 540 380" className="w-full" style={{ display: 'block' }}>
-              {/* Background city grid lines */}
               {[100, 200, 300, 400].map(x => (
                 <line key={`v${x}`} x1={x} y1={0} x2={x} y2={380} stroke="rgba(31,41,55,0.06)" strokeWidth="1" />
               ))}
@@ -159,7 +169,6 @@ export default function InteractiveMap() {
                 <line key={`h${y}`} x1={0} y1={y} x2={540} y2={y} stroke="rgba(31,41,55,0.06)" strokeWidth="1" />
               ))}
 
-              {/* Animated connection routes */}
               {zones.slice(0, -1).map((z, i) => (
                 <line
                   key={i}
@@ -171,12 +180,10 @@ export default function InteractiveMap() {
                 />
               ))}
 
-              {/* Moving live dot */}
               <circle cx={dotPos.x} cy={dotPos.y} r="5" fill="var(--green)" opacity="0.9">
                 <animate attributeName="r" values="4;6;4" dur="1.5s" repeatCount="indefinite" />
               </circle>
 
-              {/* Zone pins */}
               {zones.map(z => (
                 <g
                   key={z.id}
@@ -184,10 +191,9 @@ export default function InteractiveMap() {
                   onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveZone(activeZone === z.id ? null : z.id) } }}
                   tabIndex={0}
                   role="button"
-                  aria-label={`Zona ${z.label}: ${z.businesses} negocios`}
+                  aria-label={`${z.label}: ${z.businesses} negocios`}
                   style={{ cursor: 'pointer', outline: 'none' }}
                 >
-                  {/* Pulse ring */}
                   {activeZone === z.id && (
                     <circle cx={z.cx} cy={z.cy} r="24" fill={z.color} opacity="0.15">
                       <animate attributeName="r" values="16;28;16" dur="2s" repeatCount="indefinite" />
@@ -196,7 +202,6 @@ export default function InteractiveMap() {
                   )}
                   <circle cx={z.cx} cy={z.cy} r="14" fill={z.color} opacity="0.9" />
                   <circle cx={z.cx} cy={z.cy} r="6" fill="white" />
-                  {/* Label */}
                   <text
                     x={z.cx}
                     y={z.cy + 26}

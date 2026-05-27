@@ -1,14 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
-const ZONE_KEYWORDS: Record<string, string[]> = {
-  centro: ['centro', 'histórico', 'historico', 'centro histórico'],
-  jardines: ['jardines', 'jardín', 'jardin'],
-  satelite: ['satélite', 'satelite'],
-  hidalgo: ['hidalgo'],
-  obrera: ['obrera'],
-  morelos: ['morelos'],
-}
+const ZONE_COLORS = [
+  'var(--coral)',
+  'var(--gold)',
+  '#22B8CF',
+  '#22C55E',
+  '#D946EF',
+  '#2F80ED',
+]
 
 export async function GET() {
   try {
@@ -22,28 +22,43 @@ export async function GET() {
 
     if (error) throw error
 
-    const counts: Record<string, number> = {}
     const rows = (data ?? []) as { neighborhood: string | null }[]
 
+    // Count businesses per real neighborhood name
+    const counts: Record<string, number> = {}
     for (const biz of rows) {
-      const n = (biz.neighborhood ?? '').toLowerCase().trim()
+      const n = (biz.neighborhood ?? '').trim()
       if (!n) continue
-
-      let matched = false
-      for (const [zoneId, keywords] of Object.entries(ZONE_KEYWORDS)) {
-        if (keywords.some(k => n.includes(k))) {
-          counts[zoneId] = (counts[zoneId] ?? 0) + 1
-          matched = true
-          break
-        }
-      }
-      if (!matched) {
-        counts['centro'] = (counts['centro'] ?? 0) + 1
-      }
+      counts[n] = (counts[n] ?? 0) + 1
     }
 
-    return NextResponse.json(counts)
+    // Return top 6 by count with SVG positions and colors
+    const SVG_POSITIONS = [
+      { cx: 300, cy: 200 },
+      { cx: 180, cy: 150 },
+      { cx: 420, cy: 140 },
+      { cx: 240, cy: 280 },
+      { cx: 380, cy: 300 },
+      { cx: 120, cy: 260 },
+    ]
+
+    const zones = Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([label, businesses], i) => ({
+        id: label.toLowerCase().replace(/\s+/g, '-').replace(/[áéíóú]/g, (c) =>
+          ({ á: 'a', é: 'e', í: 'i', ó: 'o', ú: 'u' }[c] ?? c)
+        ),
+        label,
+        businesses,
+        slug: encodeURIComponent(label),
+        color: ZONE_COLORS[i],
+        cx: SVG_POSITIONS[i].cx,
+        cy: SVG_POSITIONS[i].cy,
+      }))
+
+    return NextResponse.json(zones)
   } catch {
-    return NextResponse.json({})
+    return NextResponse.json([])
   }
 }
