@@ -39,6 +39,7 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
     { href: '/admin/publicidad', label: 'Publicidad', icon: '📢' },
     { href: '/admin/marketplace', label: 'Marketplace', icon: '🛒' },
     { href: '/admin/blog', label: 'Blog', icon: '✍️' },
+    { href: '/admin/eventos', label: 'Eventos', icon: '📅' },
   ]
 
   const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)

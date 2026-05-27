@@ -487,3 +487,22 @@ export interface BusinessPhoto {
   display_order: number
   created_at: string
 }
+
+export interface SiteEvent {
+  id: string
+  name: string
+  month_code: string
+  dates: string
+  description: string
+  category: string
+  category_color: string
+  image_src: string
+  image_alt: string
+  is_upcoming: boolean
+  col_span: string
+  row_span: string
+  display_order: number
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
