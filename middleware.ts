@@ -5,7 +5,47 @@ const ALLOWED_ORIGINS = [
   'https://www.somoslagos.com.mx',
   'https://somoslagos.com.mx',
   'http://localhost:3000',
-]
+  'http://localhost:3001',
+  process.env.NEXT_PUBLIC_APP_URL,
+].filter((origin): origin is string => Boolean(origin))
+
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false
+  if (ALLOWED_ORIGINS.includes(origin)) return true
+
+  try {
+    const parsed = new URL(origin)
+    const isLocalHttp = parsed.protocol === 'http:' && (
+      parsed.hostname === 'localhost' ||
+      parsed.hostname === '127.0.0.1'
+    )
+
+    return isLocalHttp
+  } catch {
+    return false
+  }
+}
+
+// Lazy initialization: Supabase client is only created when needed (for authenticated routes).
+// This avoids creating a client on every static/public request, reducing cold start overhead.
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+// Helper to create Supabase client on demand with the correct cookie store for this request
+const createSupabaseForRequest = (request: NextRequest, response: NextResponse) =>
+  createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll()
+      },
+      setAll(cookiesToSet: { name: string; value: string; options?: CookieOptions }[]) {
+        cookiesToSet.forEach(({ name, value, options }) => {
+          request.cookies.set(name, value)
+          response.cookies.set(name, value, options)
+        })
+      },
+    },
+  })
 
 export async function middleware(request: NextRequest) {
   // CORS + CSRF validation for API routes
@@ -26,7 +66,7 @@ export async function middleware(request: NextRequest) {
 
     if (!isWebhook) {
       // Block requests with unknown origin
-      if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+      if (origin && !isAllowedOrigin(origin)) {
         return NextResponse.json({ error: 'No permitido' }, { status: 403 })
       }
 
@@ -35,7 +75,11 @@ export async function middleware(request: NextRequest) {
       if (isMutation && !origin) {
         // Allow if referer matches our domain (same-origin form submissions)
         const referer = request.headers.get('referer')
-        const isValidReferer = referer && ALLOWED_ORIGINS.some(o => referer.startsWith(o))
+        const isValidReferer = referer && (
+          ALLOWED_ORIGINS.some(o => referer.startsWith(o)) ||
+          referer.startsWith('http://localhost:') ||
+          referer.startsWith('http://127.0.0.1:')
+        )
         if (!isValidReferer) {
           return NextResponse.json({ error: 'Solicitud no autorizada' }, { status: 403 })
         }
@@ -60,60 +104,11 @@ export async function middleware(request: NextRequest) {
   })
 
   // Set CORS headers on API responses
-  if (path.startsWith('/api/') && origin && ALLOWED_ORIGINS.includes(origin)) {
+  if (path.startsWith('/api/') && origin && isAllowedOrigin(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin)
   }
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-        },
-        remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-        },
-      },
-    }
-  )
-
-  // Refrescar sesión si existe
-  const { data: { user } } = await supabase.auth.getUser()
-
-  // Rutas protegidas que requieren autenticación
+  // Rutas protegidas que requieren autenticacion
   const protectedRoutes = ['/dashboard', '/admin', '/profile', '/mis-pedidos']
   const isProtectedRoute = protectedRoutes.some(route => path.startsWith(route))
 
@@ -125,6 +120,17 @@ export async function middleware(request: NextRequest) {
   const businessRoutes = ['/dashboard']
   const isBusinessRoute = businessRoutes.some(route => path.startsWith(route))
 
+  // Determine if we need to authenticate (only for routes that use user info)
+  const needsAuth = isProtectedRoute || isAdminRoute || isBusinessRoute || path === '/login' || path === '/registro'
+
+  // Lazy: only create Supabase client and fetch user when actually needed
+  let user: { id: string } | null = null
+  if (needsAuth) {
+    const supabase = createSupabaseForRequest(request, response)
+    const { data: { user: authUser } } = await supabase.auth.getUser()
+    user = authUser
+  }
+
   // Si es ruta protegida y no hay usuario, redirigir a login
   if (isProtectedRoute && !user) {
     return NextResponse.redirect(new URL('/login', request.url))
@@ -132,6 +138,7 @@ export async function middleware(request: NextRequest) {
 
   // Si es ruta de admin, verificar que sea admin
   if (isAdminRoute && user) {
+    const supabase = createSupabaseForRequest(request, response)
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
@@ -145,6 +152,7 @@ export async function middleware(request: NextRequest) {
 
   // Si es ruta de business owner, verificar que sea business owner o admin
   if (isBusinessRoute && user) {
+    const supabase = createSupabaseForRequest(request, response)
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
@@ -156,7 +164,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Si está en login/register y ya está autenticado, redirigir según role
+  // Si esta en login/register y ya esta autenticado, redirigir segun role
   // EXCEPT if they have ref=registrar-negocio parameter
   if ((path === '/login' || path === '/registro') && user) {
     const ref = request.nextUrl.searchParams.get('ref')
@@ -166,6 +174,7 @@ export async function middleware(request: NextRequest) {
       return response
     }
 
+    const supabase = createSupabaseForRequest(request, response)
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')

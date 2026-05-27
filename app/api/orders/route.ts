@@ -45,7 +45,7 @@ export async function POST(request: Request) {
   try {
     // Rate limit: 5 orders per 10 minutes per IP (prevents spam from guests)
     const ip = getClientIP(request)
-    const { allowed, remaining } = checkRateLimit(`order:${ip}`, 5, 600000)
+    const { allowed, remaining } = await checkRateLimit(`order:${ip}`, 5, 600)
     if (!allowed) {
       return NextResponse.json(
         { error: 'Demasiados pedidos. Intenta de nuevo en unos minutos.' },

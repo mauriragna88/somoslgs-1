@@ -477,3 +477,13 @@ export interface BlogPost {
   created_at: string
   updated_at: string
 }
+
+// Business photo type
+export interface BusinessPhoto {
+  id: string
+  business_id: string
+  image_url: string
+  storage_path: string
+  display_order: number
+  created_at: string
+}

@@ -14,8 +14,9 @@ function getSupabaseAdmin() {
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -28,7 +29,7 @@ export async function POST(
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .select('*, order_customers(name, phone)')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (orderError || !order) {
@@ -65,7 +66,7 @@ export async function POST(
     const { error: updateError } = await supabase
       .from('orders')
       .update({ payment_status: 'verified' })
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (updateError) {
       return NextResponse.json({ error: 'Error al verificar el pago' }, { status: 500 })
@@ -76,7 +77,7 @@ export async function POST(
       userId: user.id,
       action: 'payment.verified',
       resource: 'order',
-      resourceId: params.id,
+      resourceId: id,
       details: { order_number: order.order_number, total: order.total },
     })
 
@@ -84,7 +85,7 @@ export async function POST(
     const customer = (order.order_customers as any)?.[0]
     if (customer?.phone) {
       notifyCustomerPaymentVerified({
-        id: params.id,
+        id: id,
         order_number: order.order_number,
         total: order.total,
         business_id: order.business_id,
@@ -99,3 +100,4 @@ export async function POST(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

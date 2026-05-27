@@ -39,7 +39,7 @@ export default async function MisPedidosPage() {
     redirect('/login?ref=mis-pedidos')
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: orders } = await supabase
     .from('orders')
@@ -301,3 +301,4 @@ function OrderCard({ order }: { order: Order }) {
     </div>
   )
 }
+

@@ -4,8 +4,9 @@ import { getUser, createServiceClient } from '@/lib/supabase/server'
 // POST: Express interest in a listing
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Inicia sesión para mostrar tu interés' }, { status: 401 })
@@ -17,7 +18,7 @@ export async function POST(
   const { data: listing } = await supabase
     .from('marketplace_listings')
     .select('id, seller_id, status')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!listing || listing.status !== 'active') {
@@ -45,7 +46,7 @@ export async function POST(
     .from('marketplace_leads')
     .upsert(
       {
-        listing_id: params.id,
+        listing_id: id,
         buyer_id: user.id,
         message,
       },
@@ -62,8 +63,9 @@ export async function POST(
 // GET: Get leads for a listing (owner only)
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -75,7 +77,7 @@ export async function GET(
   const { data: listing } = await supabase
     .from('marketplace_listings')
     .select('id, seller_id, is_featured, featured_until')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!listing) {
@@ -95,7 +97,7 @@ export async function GET(
   const { data: leads } = await supabase
     .from('marketplace_leads')
     .select('id, message, created_at, buyer:profiles!marketplace_leads_buyer_id_fkey(full_name, phone)')
-    .eq('listing_id', params.id)
+    .eq('listing_id', id)
     .order('created_at', { ascending: false })
 
   // Censor buyer info if not featured
@@ -118,3 +120,4 @@ export async function GET(
 
   return NextResponse.json({ data: processedLeads, is_featured: !!isFeatured })
 }
+

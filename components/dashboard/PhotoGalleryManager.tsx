@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { optimizeImage, IMAGE_PRESETS } from '@/lib/image-utils'
-import type { BusinessPhoto } from '@/lib/supabase/database.types'
+import type { BusinessPhoto } from '@/types/database.types'
 
 interface PhotoGalleryManagerProps {
   businessId: string

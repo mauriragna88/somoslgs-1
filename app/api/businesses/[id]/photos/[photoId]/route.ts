@@ -12,8 +12,9 @@ function getSupabaseAdmin() {
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; photoId: string } }
+  { params }: { params: Promise<{ id: string; photoId: string }> }
 ) {
+  const { id, photoId } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -26,7 +27,7 @@ export async function DELETE(
     const { data: business, error: fetchError } = await supabase
       .from('businesses')
       .select('owner_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (fetchError || !business) {
@@ -42,8 +43,8 @@ export async function DELETE(
     const { data: photo, error: photoError } = await supabase
       .from('business_photos')
       .select('storage_path')
-      .eq('id', params.photoId)
-      .eq('business_id', params.id)
+      .eq('id', photoId)
+      .eq('business_id', id)
       .single()
 
     if (photoError || !photo) {
@@ -59,7 +60,7 @@ export async function DELETE(
     const { error: deleteError } = await supabase
       .from('business_photos')
       .delete()
-      .eq('id', params.photoId)
+      .eq('id', photoId)
 
     if (deleteError) {
       return NextResponse.json({ error: 'Error al eliminar la foto' }, { status: 500 })
@@ -70,3 +71,4 @@ export async function DELETE(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

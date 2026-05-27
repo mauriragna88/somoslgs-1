@@ -27,11 +27,12 @@ const linkExistingSchema = z.object({
 })
 
 interface RouteParams {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 // GET: List users without businesses (available to be assigned as owners)
 export async function GET(request: Request, { params }: RouteParams) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -75,6 +76,7 @@ export async function GET(request: Request, { params }: RouteParams) {
 }
 
 export async function POST(request: Request, { params }: RouteParams) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -92,7 +94,7 @@ export async function POST(request: Request, { params }: RouteParams) {
     const { data: business, error: bizError } = await supabase
       .from('businesses')
       .select('id, name, owner_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (bizError || !business) {
@@ -176,7 +178,7 @@ export async function POST(request: Request, { params }: RouteParams) {
     const { error: updateError } = await supabase
       .from('businesses')
       .update({ owner_id: ownerId })
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (updateError) {
       return NextResponse.json({ error: 'Error al asignar dueño' }, { status: 500 })
@@ -188,7 +190,7 @@ export async function POST(request: Request, { params }: RouteParams) {
         user_id: user.id,
         action: 'assign_owner',
         resource_type: 'business',
-        resource_id: params.id,
+        resource_id: id,
         details: {
           business_name: business.name,
           previous_owner: business.owner_id,
@@ -205,7 +207,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       const { data: bizData } = await supabase
         .from('businesses')
         .select('subscription_tier')
-        .eq('id', params.id)
+        .eq('id', id)
         .single()
 
       await sendBusinessLinkedEmail({
@@ -233,3 +235,4 @@ export async function POST(request: Request, { params }: RouteParams) {
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

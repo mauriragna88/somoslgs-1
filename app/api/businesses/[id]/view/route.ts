@@ -5,10 +5,11 @@ import { createHash } from 'crypto'
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const businessId = params.id
+    const businessId = id
 
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -20,7 +21,7 @@ export async function POST(
 
     // Rate limit: 1 view per IP per business per 30 min
     const rateKey = `biz-view:${ip}:${businessId}`
-    const rateCheck = checkRateLimit(rateKey, 1, 30 * 60 * 1000)
+    const rateCheck = await checkRateLimit(rateKey, 1, 1800)
     if (!rateCheck.allowed) {
       return NextResponse.json({ success: true }) // Silent, don't count duplicate
     }
@@ -65,3 +66,4 @@ export async function POST(
     return NextResponse.json({ success: true }) // Silent fail, never break UX
   }
 }
+

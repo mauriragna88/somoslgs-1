@@ -10,7 +10,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Verificar que el usuario esté autenticado
   const { data: { user } } = await supabase.auth.getUser()
@@ -62,3 +62,4 @@ export default async function DashboardLayout({
     </div>
   )
 }
+

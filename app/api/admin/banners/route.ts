@@ -20,7 +20,7 @@ const bannerSchema = z.object({
 
 export async function GET() {
   try {
-    const supabaseServer = createClient()
+    const supabaseServer = await createClient()
 
     // Verify admin
     const { data: { user } } = await supabaseServer.auth.getUser()
@@ -54,7 +54,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const supabaseServer = createClient()
+    const supabaseServer = await createClient()
 
     // Verify admin
     const { data: { user } } = await supabaseServer.auth.getUser()
@@ -100,3 +100,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

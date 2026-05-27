@@ -35,10 +35,11 @@ const updateSchema = z.object({
 })
 
 interface RouteParams {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function GET(request: Request, { params }: RouteParams) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -58,7 +59,7 @@ export async function GET(request: Request, { params }: RouteParams) {
         category:categories(id, name),
         owner:profiles!businesses_owner_id_fkey(id, full_name, email, phone)
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (error || !business) {
@@ -72,6 +73,7 @@ export async function GET(request: Request, { params }: RouteParams) {
 }
 
 export async function PUT(request: Request, { params }: RouteParams) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -113,7 +115,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
     const { data: updated, error: updateError } = await supabase
       .from('businesses')
       .update(updateData)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -127,7 +129,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
         user_id: user.id,
         action: 'edit_business',
         resource_type: 'business',
-        resource_id: params.id,
+        resource_id: id,
         details: { updated_fields: Object.keys(updateData) },
       })
     } catch {
@@ -149,6 +151,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
 }
 
 export async function DELETE(request: Request, { params }: RouteParams) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -165,7 +168,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     const { data: business, error: fetchError } = await supabase
       .from('businesses')
       .select('id, name, owner_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (fetchError || !business) {
@@ -174,26 +177,26 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 
     // Cascade delete related records
     // Get order IDs first for sub-table cleanup
-    const { data: orderIds } = await supabase.from('orders').select('id').eq('business_id', params.id)
+    const { data: orderIds } = await supabase.from('orders').select('id').eq('business_id', id)
     const ids = orderIds?.map((o: any) => o.id) || []
     if (ids.length > 0) {
       await supabase.from('order_items').delete().in('order_id', ids)
       await supabase.from('order_customers').delete().in('order_id', ids)
     }
-    await supabase.from('orders').delete().eq('business_id', params.id)
-    await supabase.from('products').delete().eq('business_id', params.id)
-    await supabase.from('transactions').delete().eq('business_id', params.id)
-    await supabase.from('business_photos').delete().eq('business_id', params.id)
-    await supabase.from('reviews').delete().eq('business_id', params.id)
-    await supabase.from('delivery_men').delete().eq('business_id', params.id)
-    await supabase.from('subscriptions').delete().eq('business_id', params.id)
-    await supabase.from('notifications').delete().eq('business_id', params.id)
+    await supabase.from('orders').delete().eq('business_id', id)
+    await supabase.from('products').delete().eq('business_id', id)
+    await supabase.from('transactions').delete().eq('business_id', id)
+    await supabase.from('business_photos').delete().eq('business_id', id)
+    await supabase.from('reviews').delete().eq('business_id', id)
+    await supabase.from('delivery_men').delete().eq('business_id', id)
+    await supabase.from('subscriptions').delete().eq('business_id', id)
+    await supabase.from('notifications').delete().eq('business_id', id)
 
     // Delete the business
     const { error: deleteError } = await supabase
       .from('businesses')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (deleteError) {
       return NextResponse.json({ error: 'Error al eliminar negocio' }, { status: 500 })
@@ -222,7 +225,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
         user_id: user.id,
         action: 'delete_business',
         resource_type: 'business',
-        resource_id: params.id,
+        resource_id: id,
         details: { business_name: business.name },
       })
     } catch {
@@ -240,3 +243,4 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

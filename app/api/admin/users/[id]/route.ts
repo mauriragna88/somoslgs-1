@@ -11,10 +11,11 @@ function getSupabaseAdmin() {
 }
 
 interface RouteParams {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function DELETE(request: Request, { params }: RouteParams) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -31,7 +32,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('id, full_name, role')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (profileError || !profile) {
@@ -44,7 +45,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     }
 
     // Don't allow deleting yourself
-    if (params.id === user.id) {
+    if (id === user.id) {
       return NextResponse.json({ error: 'No puedes eliminarte a ti mismo' }, { status: 400 })
     }
 
@@ -52,7 +53,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     const { data: businesses, error: bizError } = await supabase
       .from('businesses')
       .select('id, name')
-      .eq('owner_id', params.id)
+      .eq('owner_id', id)
 
     if (bizError) {
       return NextResponse.json({ error: 'Error al verificar negocios' }, { status: 500 })
@@ -69,14 +70,14 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     const { error: deleteProfileError } = await supabase
       .from('profiles')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (deleteProfileError) {
       return NextResponse.json({ error: 'Error al eliminar perfil' }, { status: 500 })
     }
 
     // Delete from Supabase Auth
-    const { error: deleteAuthError } = await supabase.auth.admin.deleteUser(params.id)
+    const { error: deleteAuthError } = await supabase.auth.admin.deleteUser(id)
 
     if (deleteAuthError) {
       return NextResponse.json({ error: 'Error al eliminar usuario' }, { status: 500 })
@@ -88,7 +89,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
         user_id: user.id,
         action: 'delete_user',
         resource_type: 'user',
-        resource_id: params.id,
+        resource_id: id,
         details: { user_name: profile.full_name, user_role: profile.role },
       })
     } catch {
@@ -100,3 +101,4 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

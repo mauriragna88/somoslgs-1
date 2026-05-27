@@ -5,7 +5,7 @@ import { isMercadoPagoConfigured } from '@/lib/mercadopago'
 import CheckoutForm from '@/components/checkout/CheckoutForm'
 
 interface PageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 interface CheckoutBusiness {
@@ -25,12 +25,13 @@ interface CheckoutBusiness {
 }
 
 export default async function CheckoutPage({ params }: PageProps) {
-  const supabase = createClient()
+  const { slug } = await params
+  const supabase = await createClient()
 
   const { data: business } = await supabase
     .from('businesses')
     .select('id, name, slug, whatsapp, address, bank_name, bank_account_holder, bank_account_number, bank_clabe, payment_mode, conekta_private_key, mercadopago_access_token, active_payment_gateways')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .eq('is_active', true)
     .single() as { data: CheckoutBusiness | null }
 
@@ -85,3 +86,4 @@ export default async function CheckoutPage({ params }: PageProps) {
     </main>
   )
 }
+

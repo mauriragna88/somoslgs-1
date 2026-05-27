@@ -25,7 +25,7 @@ export default async function NuevoProductoPage() {
     redirect('/login')
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get user's businesses
   const { data: allBusinesses } = await supabase
@@ -82,3 +82,4 @@ export default async function NuevoProductoPage() {
     </div>
   )
 }
+

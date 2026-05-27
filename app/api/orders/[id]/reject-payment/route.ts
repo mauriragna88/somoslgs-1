@@ -19,8 +19,9 @@ function getSupabaseAdmin() {
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -36,7 +37,7 @@ export async function POST(
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .select('*, order_customers(name, phone)')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (orderError || !order) {
@@ -73,7 +74,7 @@ export async function POST(
           ? `${order.notes}\n\n--- PAGO RECHAZADO ---\nMotivo: ${reason}`
           : `--- PAGO RECHAZADO ---\nMotivo: ${reason}`,
       })
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (updateError) {
       return NextResponse.json({ error: 'Error al rechazar el pago' }, { status: 500 })
@@ -84,7 +85,7 @@ export async function POST(
       userId: user.id,
       action: 'payment.rejected',
       resource: 'order',
-      resourceId: params.id,
+      resourceId: id,
       details: { reason, order_number: order.order_number },
     })
 
@@ -93,7 +94,7 @@ export async function POST(
     if (customer?.phone) {
       notifyCustomerPaymentRejected(
         {
-          id: params.id,
+          id: id,
           order_number: order.order_number,
           total: order.total,
           business_id: order.business_id,
@@ -116,3 +117,4 @@ export async function POST(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

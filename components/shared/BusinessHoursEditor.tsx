@@ -1,46 +1,59 @@
 'use client'
 
-import type { BusinessHours, DayHours } from '@/lib/constants'
+import { BUSINESS_HOURS_DAYS, normalizeBusinessHours } from '@/lib/constants'
+import type { BusinessHours, BusinessHoursDay, DayHours } from '@/lib/constants'
 
 interface BusinessHoursEditorProps {
   value: BusinessHours
   onChange: (hours: BusinessHours) => void
 }
 
-const DAYS: Array<{ key: keyof BusinessHours; label: string }> = [
-  { key: 'weekdays', label: 'Lunes a Viernes' },
-  { key: 'saturday', label: 'Sábado' },
+const DAYS: Array<{ key: BusinessHoursDay; label: string }> = [
+  { key: 'monday', label: 'Lunes' },
+  { key: 'tuesday', label: 'Martes' },
+  { key: 'wednesday', label: 'Miercoles' },
+  { key: 'thursday', label: 'Jueves' },
+  { key: 'friday', label: 'Viernes' },
+  { key: 'saturday', label: 'Sabado' },
   { key: 'sunday', label: 'Domingo' },
 ]
 
 export default function BusinessHoursEditor({ value, onChange }: BusinessHoursEditorProps) {
-  const updateDay = (dayKey: keyof BusinessHours, updates: Partial<DayHours>) => {
+  const normalizedValue = normalizeBusinessHours(value)
+
+  const updateDay = (dayKey: BusinessHoursDay, updates: Partial<DayHours>) => {
     onChange({
-      ...value,
-      [dayKey]: { ...value[dayKey], ...updates },
+      ...normalizedValue,
+      [dayKey]: { ...normalizedValue[dayKey], ...updates },
     })
   }
 
   return (
     <div className="space-y-3">
       <label className="block text-sm font-medium text-gray-700">
-        Horarios de Atención
+        Horarios de Atencion
       </label>
-      <div className="bg-gray-50 rounded-xl p-4 space-y-4">
-        {DAYS.map(({ key, label }) => {
-          const day = value[key]
+      <p className="text-sm text-gray-500">
+        Configura cada dia por separado para que puedas marcar descansos entre semana y horarios distintos por jornada.
+      </p>
+      <div className="space-y-4 rounded-xl bg-gray-50 p-4">
+        {DAYS.filter(({ key }) => BUSINESS_HOURS_DAYS.includes(key)).map(({ key, label }) => {
+          const day = normalizedValue[key]
           return (
-            <div key={key} className="flex flex-col sm:flex-row sm:items-center gap-3">
-              <span className="text-sm font-medium text-gray-700 w-36 flex-shrink-0">
+            <div key={key} className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <span className="w-36 flex-shrink-0 text-sm font-medium text-gray-700">
                 {label}
               </span>
 
-              <label className="flex items-center gap-2 cursor-pointer flex-shrink-0">
+              <label className="flex flex-shrink-0 cursor-pointer items-center gap-2">
                 <input
                   type="checkbox"
                   checked={day.closed}
-                  onChange={(e) => updateDay(key, { closed: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-300 text-red-500 focus:ring-red-500"
+                  onChange={(e) => updateDay(key, {
+                    closed: e.target.checked,
+                    ...(e.target.checked ? { open: null, close: null } : {}),
+                  })}
+                  className="h-4 w-4 rounded border-gray-300 text-red-500 focus:ring-red-500"
                 />
                 <span className="text-sm text-gray-600">Cerrado</span>
               </label>
@@ -51,14 +64,14 @@ export default function BusinessHoursEditor({ value, onChange }: BusinessHoursEd
                     type="time"
                     value={day.open || '09:00'}
                     onChange={(e) => updateDay(key, { open: e.target.value })}
-                    className="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
+                    className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   />
-                  <span className="text-gray-400 text-sm">a</span>
+                  <span className="text-sm text-gray-400">a</span>
                   <input
                     type="time"
                     value={day.close || '18:00'}
                     onChange={(e) => updateDay(key, { close: e.target.value })}
-                    className="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]"
+                    className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
               )}

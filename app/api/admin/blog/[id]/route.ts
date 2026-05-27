@@ -3,10 +3,11 @@ import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const supabaseServer = createClient()
+    const supabaseServer = await createClient()
 
     const { data: { user } } = await supabaseServer.auth.getUser()
     if (!user) {
@@ -37,7 +38,7 @@ export async function PUT(
       const { data: existing } = await supabase
         .from('blog_posts')
         .select('published_at')
-        .eq('id', params.id)
+        .eq('id', id)
         .single()
 
       if (!existing?.published_at) {
@@ -48,7 +49,7 @@ export async function PUT(
     const { data: post, error } = await supabase
       .from('blog_posts')
       .update(updateData)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -62,10 +63,11 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const supabaseServer = createClient()
+    const supabaseServer = await createClient()
 
     const { data: { user } } = await supabaseServer.auth.getUser()
     if (!user) {
@@ -86,7 +88,7 @@ export async function DELETE(
     const { error } = await supabase
       .from('blog_posts')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) throw error
 
@@ -95,3 +97,5 @@ export async function DELETE(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+
+

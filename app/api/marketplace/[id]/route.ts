@@ -19,14 +19,15 @@ const updateSchema = z.object({
 // GET: Get listing detail + increment views
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const supabase = createServiceClient()
 
   const { data, error } = await supabase
     .from('marketplace_listings')
     .select('*, category:marketplace_categories(*), seller:profiles!marketplace_listings_seller_id_fkey(full_name, created_at)')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (error || !data) {
@@ -37,7 +38,7 @@ export async function GET(
   supabase
     .from('marketplace_listings')
     .update({ views: (data.views || 0) + 1 })
-    .eq('id', params.id)
+    .eq('id', id)
     .then(() => {})
 
   return NextResponse.json({ data })
@@ -46,8 +47,9 @@ export async function GET(
 // PUT: Update listing (owner only)
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -59,7 +61,7 @@ export async function PUT(
   const { data: existing } = await supabase
     .from('marketplace_listings')
     .select('seller_id')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!existing || existing.seller_id !== user.id) {
@@ -75,7 +77,7 @@ export async function PUT(
       const { data: current } = await supabase
         .from('marketplace_listings')
         .select('title, description')
-        .eq('id', params.id)
+        .eq('id', id)
         .single()
 
       const title = validated.title || current?.title || ''
@@ -104,7 +106,7 @@ export async function PUT(
     const { data, error } = await supabase
       .from('marketplace_listings')
       .update(updateData)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -124,8 +126,9 @@ export async function PUT(
 // DELETE: Soft delete (owner only)
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -136,7 +139,7 @@ export async function DELETE(
   const { data: existing } = await supabase
     .from('marketplace_listings')
     .select('seller_id')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!existing || existing.seller_id !== user.id) {
@@ -146,7 +149,7 @@ export async function DELETE(
   const { error } = await supabase
     .from('marketplace_listings')
     .update({ status: 'removed', updated_at: new Date().toISOString() })
-    .eq('id', params.id)
+    .eq('id', id)
 
   if (error) {
     return NextResponse.json({ error: 'Error al eliminar' }, { status: 500 })
@@ -154,3 +157,4 @@ export async function DELETE(
 
   return NextResponse.json({ success: true })
 }
+

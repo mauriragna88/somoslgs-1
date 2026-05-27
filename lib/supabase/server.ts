@@ -7,8 +7,8 @@ import type { Database } from '@/types/database.types'
 const noCacheFetch = (url: RequestInfo | URL, options?: RequestInit) =>
   fetch(url, { ...options, cache: 'no-store' })
 
-export function createClient() {
-  const cookieStore = cookies()
+export async function createClient() {
+  const cookieStore = await cookies()
 
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -44,14 +44,14 @@ export function createClient() {
 
 // Verificar si el usuario está autenticado (server-side)
 export async function getUser() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   return user
 }
 
 // Obtener perfil completo del usuario con role
 export async function getUserProfile() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) return null
@@ -87,7 +87,7 @@ export async function isBusinessOwner() {
 
 // Verificar si el usuario tiene acceso a un negocio específico
 export async function hasBusinessAccess(businessId: string): Promise<boolean> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) return false
@@ -121,3 +121,4 @@ export function createServiceClient() {
     }
   )
 }
+

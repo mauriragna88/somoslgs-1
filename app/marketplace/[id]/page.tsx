@@ -13,15 +13,16 @@ import type { MarketplaceListing } from '@/types/database.types'
 export const revalidate = 300
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params
   const supabase = createServiceClient()
   const { data } = await supabase
     .from('marketplace_listings')
     .select('title, description, images, price, price_type')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!data) return { title: 'Artículo no encontrado' }
@@ -37,12 +38,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${data.title} - ${priceText} | Marketplace SomosLagos`,
       description: data.description?.slice(0, 160) || data.title,
       images: data.images?.[0] ? [{ url: data.images[0], width: 800, height: 800 }] : undefined,
-      url: `https://www.somoslagos.com.mx/marketplace/${params.id}`,
+      url: `https://www.somoslagos.com.mx/marketplace/${id}`,
     },
   }
 }
 
 export default async function ListingDetailPage({ params }: PageProps) {
+  const { id } = await params
   const supabase = createServiceClient()
 
   // Try with FK join first, fallback without it
@@ -50,7 +52,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
   const { data, error } = await supabase
     .from('marketplace_listings')
     .select('*, category:marketplace_categories(*), seller:profiles!marketplace_listings_seller_id_fkey(full_name, created_at)')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (error) {
@@ -58,7 +60,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
     const { data: fallback } = await supabase
       .from('marketplace_listings')
       .select('*, category:marketplace_categories(*)')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (!fallback || fallback.status === 'removed') {
@@ -76,7 +78,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
   supabase
     .from('marketplace_listings')
     .update({ views: (listing.views || 0) + 1 })
-    .eq('id', params.id)
+    .eq('id', id)
     .then(() => {})
 
   // Get seller listing count
@@ -112,12 +114,12 @@ export default async function ListingDetailPage({ params }: PageProps) {
     supabase
       .from('marketplace_leads')
       .select('id', { count: 'exact', head: true })
-      .eq('listing_id', params.id),
+      .eq('listing_id', id),
     user
       ? supabase
           .from('marketplace_leads')
           .select('id')
-          .eq('listing_id', params.id)
+          .eq('listing_id', id)
           .eq('buyer_id', user.id)
           .maybeSingle()
       : Promise.resolve({ data: null }),

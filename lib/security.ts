@@ -129,50 +129,53 @@ export function sanitizeSlug(slug: string): string {
 }
 
 // ============================================
-// RATE LIMITING (Simple in-memory)
+// RATE LIMITING (Upstash Redis)
 // ============================================
-
-interface RateLimitEntry {
-  count: number
-  resetTime: number
-}
-
-const rateLimitStore = new Map<string, RateLimitEntry>()
-
 /**
- * Verifica si una acción está dentro del rate limit
- * @param identifier - IP o user ID
- * @param maxRequests - Máximo de requests permitidos
- * @param windowMs - Ventana de tiempo en milisegundos
+ * Production rate limiter using Upstash Redis.
+ * Environment variables required:
+ *   UPSTASH_REDIS_URL  - Your Upstash Redis REST URL
+ *   UPSTASH_REDIS_TOKEN - Your Upstash Redis REST token
+ * Add these in Vercel project settings or .env.local
  */
-export function checkRateLimit(
+
+import { Redis } from '@upstash/redis'
+
+// Create Redis client
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_URL || '',
+  token: process.env.UPSTASH_REDIS_TOKEN || '',
+})
+
+export async function checkRateLimit(
   identifier: string,
-  maxRequests: number = 10,
-  windowMs: number = 60000 // 1 minuto
-): { allowed: boolean; remaining: number; resetTime: number } {
-  const now = Date.now()
-  const entry = rateLimitStore.get(identifier)
+  maxRequests: number = 100,
+  windowSeconds: number = 60
+): Promise<{ allowed: boolean; remaining: number; resetTime: number }> {
+  const key = `rate_limit:${identifier}`
 
-  // Si no hay entrada o ya expiró
-  if (!entry || now > entry.resetTime) {
-    const resetTime = now + windowMs
-    rateLimitStore.set(identifier, { count: 1, resetTime })
-    return { allowed: true, remaining: maxRequests - 1, resetTime }
-  }
+  try {
+    const multi = redis.multi()
+    multi.incr(key)
+    multi.expire(key, windowSeconds)
+    const results = await multi.exec()
 
-  // Si ya llegó al límite
-  if (entry.count >= maxRequests) {
-    return { allowed: false, remaining: 0, resetTime: entry.resetTime }
-  }
+    const count = results[0] as number
+    const ttl = await redis.ttl(key)
 
-  // Incrementar contador
-  entry.count++
-  rateLimitStore.set(identifier, entry)
-
-  return {
-    allowed: true,
-    remaining: maxRequests - entry.count,
-    resetTime: entry.resetTime,
+    return {
+      allowed: count <= maxRequests,
+      remaining: Math.max(0, maxRequests - count),
+      resetTime: Date.now() + (ttl > 0 ? ttl * 1000 : windowSeconds * 1000),
+    }
+  } catch (error) {
+    // If Redis fails, allow the request (fail open) but log it
+    console.error('Rate limit Redis error:', error)
+    return {
+      allowed: true,
+      remaining: maxRequests,
+      resetTime: Date.now() + windowSeconds * 1000,
+    }
   }
 }
 
@@ -195,49 +198,38 @@ export function getClientIP(request: Request): string {
 /**
  * Rate limit específico para login (más restrictivo)
  */
-export function checkLoginRateLimit(identifier: string) {
-  return checkRateLimit(identifier, 5, 300000) // 5 intentos cada 5 minutos
+export async function checkLoginRateLimit(identifier: string) {
+  return checkRateLimit(identifier, 5, 300) // 5 intentos cada 5 minutos
 }
 
 /**
  * Rate limit para registro
  */
-export function checkRegisterRateLimit(identifier: string) {
-  return checkRateLimit(identifier, 3, 3600000) // 3 registros por hora
+export async function checkRegisterRateLimit(identifier: string) {
+  return checkRateLimit(identifier, 3, 3600) // 3 registros por hora
 }
 
 /**
  * Rate limit para crear artículos en marketplace
  */
-export function checkMarketplaceRateLimit(identifier: string) {
-  return checkRateLimit(identifier, 10, 3600000) // 10 artículos por hora
+export async function checkMarketplaceRateLimit(identifier: string) {
+  return checkRateLimit(identifier, 10, 3600) // 10 artículos por hora
 }
 
 /**
  * Rate limit para uploads
  */
-export function checkUploadRateLimit(identifier: string) {
-  return checkRateLimit(identifier, 30, 3600000) // 30 uploads por hora
+export async function checkUploadRateLimit(identifier: string) {
+  return checkRateLimit(identifier, 30, 3600) // 30 uploads por hora
 }
 
 /**
  * Rate limit para reportes
  */
-export function checkReportRateLimit(identifier: string) {
-  return checkRateLimit(identifier, 10, 3600000) // 10 reportes por hora
+export async function checkReportRateLimit(identifier: string) {
+  return checkRateLimit(identifier, 10, 3600) // 10 reportes por hora
 }
 
-// Limpiar entradas expiradas cada 10 minutos
-if (typeof window === 'undefined') { // Solo en servidor
-  setInterval(() => {
-    const now = Date.now()
-    rateLimitStore.forEach((value, key) => {
-      if (now > value.resetTime) {
-        rateLimitStore.delete(key)
-      }
-    })
-  }, 600000) // 10 minutos
-}
 
 // ============================================
 // VALIDACIÓN DE ARCHIVOS (IMÁGENES)

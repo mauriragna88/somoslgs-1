@@ -34,7 +34,7 @@ function getCategoryColor(slug: string, name: string): string {
 }
 
 export default async function CategoriasPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get all categories with business count in 2 queries (instead of N+1)
   const [{ data: categories }, { data: businessCounts }] = await Promise.all([
@@ -180,3 +180,4 @@ export default async function CategoriasPage() {
     </main>
   )
 }
+

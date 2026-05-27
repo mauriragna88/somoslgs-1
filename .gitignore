@@ -65,3 +65,6 @@ next-env.d.ts
 
 # local Playwright MCP artifacts
 .playwright-mcp/
+
+dev-start.err.log
+dev-start.out.log

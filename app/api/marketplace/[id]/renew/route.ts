@@ -5,8 +5,9 @@ import { MARKETPLACE_LISTING_DAYS } from '@/lib/constants'
 // POST: Renew listing for another 30 days
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -17,7 +18,7 @@ export async function POST(
   const { data: listing } = await supabase
     .from('marketplace_listings')
     .select('seller_id, expires_at, status')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!listing || listing.seller_id !== user.id) {
@@ -50,7 +51,7 @@ export async function POST(
       status: 'active',
       updated_at: new Date().toISOString(),
     })
-    .eq('id', params.id)
+    .eq('id', id)
     .select()
     .single()
 
@@ -60,3 +61,4 @@ export async function POST(
 
   return NextResponse.json({ data })
 }
+

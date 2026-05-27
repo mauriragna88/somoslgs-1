@@ -26,8 +26,9 @@ function getSupabaseAdmin() {
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -43,7 +44,7 @@ export async function PUT(
     const { data: product, error: productError } = await supabase
       .from('products')
       .select('*, businesses!inner(owner_id)')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (productError || !product) {
@@ -68,7 +69,7 @@ export async function PUT(
     const { data: updatedProduct, error: updateError } = await supabase
       .from('products')
       .update(updateData)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -87,8 +88,9 @@ export async function PUT(
 
 export async function DELETE(
   _request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -101,7 +103,7 @@ export async function DELETE(
     const { data: product, error: productError } = await supabase
       .from('products')
       .select('*, businesses!inner(owner_id)')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (productError || !product) {
@@ -117,7 +119,7 @@ export async function DELETE(
     const { error: deleteError } = await supabase
       .from('products')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (deleteError) {
       return NextResponse.json({ error: 'Error al eliminar el producto' }, { status: 500 })
@@ -128,3 +130,4 @@ export async function DELETE(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

@@ -6,12 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getUser } from '@/lib/supabase/server'
 import { formatCurrency } from '@/lib/utils'
-import nextDynamic from 'next/dynamic'
-
-const StatsCharts = nextDynamic(() => import('@/components/dashboard/StatsCharts'), {
-  loading: () => <div className="h-96 bg-gray-50 rounded-xl animate-pulse" />,
-  ssr: false,
-})
+import StatsCharts from '@/components/dashboard/StatsCharts'
 
 interface StatsBusiness {
   id: string
@@ -48,10 +43,10 @@ export default async function EstadisticasPage() {
     redirect('/login')
   }
 
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const selectedBusinessId = cookieStore.get('selected_business_id')?.value
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get user's businesses
   const { data: businesses } = await supabase
@@ -471,3 +466,4 @@ export default async function EstadisticasPage() {
     </div>
   )
 }
+

@@ -6,10 +6,11 @@ import { createServiceClient } from '@/lib/supabase/server'
 import AdminEditBusinessForm from '@/components/admin/AdminEditBusinessForm'
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export default async function AdminEditBusinessPage({ params }: PageProps) {
+  const { id } = await params
   const supabase = createServiceClient()
 
   const { data: business, error } = await supabase
@@ -19,7 +20,7 @@ export default async function AdminEditBusinessPage({ params }: PageProps) {
       category:categories(id, name),
       owner:profiles!businesses_owner_id_fkey(id, full_name, email, phone)
     `)
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (error || !business) {
@@ -36,7 +37,7 @@ export default async function AdminEditBusinessPage({ params }: PageProps) {
   const { data: photos } = await supabase
     .from('business_photos')
     .select('*')
-    .eq('business_id', params.id)
+    .eq('business_id', id)
     .order('display_order', { ascending: true })
 
   // Normalize owner (Supabase may return array for relation)
@@ -47,19 +48,18 @@ export default async function AdminEditBusinessPage({ params }: PageProps) {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Link
-          href={`/admin/negocios/${params.id}`}
-          className="p-2 rounded-lg transition-colors flex-shrink-0"
-          style={{ color: 'var(--muted)' }}
+          href={`/admin/negocios/${id}`}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
         >
           ← Volver
         </Link>
         <div className="min-w-0">
-          <h1 className="text-xl md:text-2xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Editar Negocio</h1>
-          <p className="text-sm truncate" style={{ color: 'var(--muted)' }}>{business.name}</p>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900">Editar Negocio</h1>
+          <p className="text-gray-600 text-sm truncate">{business.name}</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl p-4 md:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+      <div className="bg-white rounded-xl shadow-sm p-4 md:p-6">
         <AdminEditBusinessForm
           business={{
             ...business,

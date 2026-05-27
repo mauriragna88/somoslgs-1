@@ -57,14 +57,15 @@ interface RecentOrder {
 export default async function MiNegocioPage({
   searchParams,
 }: {
-  searchParams: { id?: string }
+  searchParams: Promise<{ id?: string }>
 }) {
+  const { id } = await searchParams
   const user = await getUser()
   if (!user) {
     redirect('/login')
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get user's businesses
   const { data: businesses } = await supabase
@@ -81,7 +82,7 @@ export default async function MiNegocioPage({
 
   // Determine which business to show
   const cookieStore = await cookies()
-  const selectedBusinessId = searchParams.id || cookieStore.get('selected_business_id')?.value
+  const selectedBusinessId = id || cookieStore.get('selected_business_id')?.value
 
   const business = selectedBusinessId
     ? businesses.find(b => b.id === selectedBusinessId) || businesses[0]
@@ -435,3 +436,4 @@ export default async function MiNegocioPage({
     </div>
   )
 }
+

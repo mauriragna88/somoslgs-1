@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
     // Rate limiting: 3 business registrations per hour
     const ip = getClientIP(request)
-    const rateCheck = checkRateLimit(`biz-register:${ip}`, 3, 3600000)
+    const rateCheck = await checkRateLimit(`biz-register:${ip}`, 3, 3600)
     if (!rateCheck.allowed) {
       return NextResponse.json({ error: 'Demasiados intentos. Intenta más tarde.' }, { status: 429 })
     }

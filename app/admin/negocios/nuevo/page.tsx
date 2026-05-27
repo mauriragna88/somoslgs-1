@@ -4,7 +4,7 @@ import CreateBusinessForm from '@/components/admin/CreateBusinessForm'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function NewBusinessPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Obtener categorías para el formulario
   const { data: categories } = await supabase
@@ -25,3 +25,4 @@ export default async function NewBusinessPage() {
     </div>
   )
 }
+

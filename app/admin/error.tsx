@@ -1,19 +1,11 @@
 'use client'
 
-import Link from 'next/link'
-import { useEffect } from 'react'
-
 export default function AdminError({
-  error,
   reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void
 }) {
-  useEffect(() => {
-    console.error('Error en admin:', error)
-  }, [error])
-
   return (
     <div className="flex items-center justify-center py-20 px-4">
       <div className="text-center max-w-md">
@@ -32,12 +24,12 @@ export default function AdminError({
           >
             Intentar de nuevo
           </button>
-          <Link
-            href="/"
+          <button
+            onClick={() => window.location.href = '/'}
             className="px-8 py-3 bg-white hover:bg-gray-100 text-gray-700 font-bold rounded-lg border border-gray-200 transition-colors"
           >
             Ir al Inicio
-          </Link>
+          </button>
         </div>
       </div>
     </div>

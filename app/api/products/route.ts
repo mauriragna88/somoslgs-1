@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     // Rate limiting: 30 products per hour
     const ip = getClientIP(request)
-    const rateCheck = checkRateLimit(`product:${ip}`, 30, 3600000)
+    const rateCheck = await checkRateLimit(`product:${ip}`, 30, 3600)
     if (!rateCheck.allowed) {
       return NextResponse.json({ error: 'Demasiados productos creados. Intenta más tarde.' }, { status: 429 })
     }

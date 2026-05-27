@@ -10,7 +10,7 @@ import BusinessCard from '@/components/shared/BusinessCard'
 export const revalidate = 1800
 
 interface PageProps {
-  params: { colonia: string }
+  params: Promise<{ colonia: string }>
 }
 
 interface Business {
@@ -52,7 +52,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const colonia = decodeURIComponent(params.colonia)
+  const { colonia: rawColonia } = await params
+  const colonia = decodeURIComponent(rawColonia)
   const title = `Negocios en ${colonia}, Lagos de Moreno`
   const description = `Directorio de negocios en ${colonia}, Lagos de Moreno, Jalisco. Encuentra restaurantes, tiendas, servicios y más con horarios, ubicación y contacto directo.`
 
@@ -62,7 +63,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: `${title} | SomosLagos`,
       description,
-      url: `https://www.somoslagos.com.mx/negocios-en/${params.colonia}`,
+      url: `https://www.somoslagos.com.mx/negocios-en/${rawColonia}`,
     },
   }
 }
@@ -98,8 +99,9 @@ function getColoniaContent(colonia: string, count: number) {
 }
 
 export default async function NegociosEnColoniaPage({ params }: PageProps) {
-  const colonia = decodeURIComponent(params.colonia)
-  const supabase = createClient()
+  const { colonia: rawColonia } = await params
+  const colonia = decodeURIComponent(rawColonia)
+  const supabase = await createClient()
 
   const { data: rawBusinesses } = await supabase
     .from('businesses')
@@ -167,7 +169,7 @@ export default async function NegociosEnColoniaPage({ params }: PageProps) {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://www.somoslagos.com.mx' },
       { '@type': 'ListItem', position: 2, name: 'Negocios por zona', item: 'https://www.somoslagos.com.mx/buscar' },
-      { '@type': 'ListItem', position: 3, name: colonia, item: `https://www.somoslagos.com.mx/negocios-en/${params.colonia}` },
+      { '@type': 'ListItem', position: 3, name: colonia, item: `https://www.somoslagos.com.mx/negocios-en/${rawColonia}` },
     ],
   }
 
@@ -299,3 +301,4 @@ export default async function NegociosEnColoniaPage({ params }: PageProps) {
     </main>
   )
 }
+

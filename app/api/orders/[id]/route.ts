@@ -21,8 +21,9 @@ function getSupabaseAdmin() {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -39,7 +40,7 @@ export async function GET(
         order_customers(*),
         businesses(name, whatsapp, owner_id)
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (error || !order) {
@@ -74,8 +75,9 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -91,7 +93,7 @@ export async function PUT(
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .select('*, order_customers(name, phone, delivery_address)')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (orderError || !order) {
@@ -162,7 +164,7 @@ export async function PUT(
     const { data: updatedOrder, error: updateError } = await supabase
       .from('orders')
       .update(updateData)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -177,7 +179,7 @@ export async function PUT(
     if (validatedData.status) {
       notifyCustomerOrderUpdate(
         {
-          id: params.id,
+          id: id,
           order_number: order.order_number,
           total: order.total,
           business_id: order.business_id,
@@ -197,7 +199,7 @@ export async function PUT(
         userId: user.id,
         action: 'order.status_changed',
         resource: 'order',
-        resourceId: params.id,
+        resourceId: id,
         details: { from: order.status, to: validatedData.status, order_number: order.order_number },
       })
     }
@@ -220,3 +222,4 @@ export async function PUT(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

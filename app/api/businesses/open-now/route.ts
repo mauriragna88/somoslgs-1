@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { isBusinessOpen } from '@/lib/constants'
+import type { BusinessHours } from '@/lib/constants'
 
 interface BusinessRow {
   id: string
@@ -11,28 +13,11 @@ interface BusinessRow {
   address: string | null
   subscription_tier: string
   is_featured: boolean
-  business_hours: unknown
+  business_hours: BusinessHours | null
   rating: number
   total_reviews: number
   category: { name: string; icon: string } | null
   business_photos: { image_url: string }[]
-}
-
-function isOpenNow(businessHours: unknown): boolean {
-  if (!businessHours || typeof businessHours !== 'object') return false
-  const bh = businessHours as Record<string, { open: string | null; close: string | null; closed?: boolean }>
-
-  const mexicoTime = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }))
-  const day = mexicoTime.getDay()
-  const currentMin = mexicoTime.getHours() * 60 + mexicoTime.getMinutes()
-
-  const key = day === 0 ? 'sunday' : day === 6 ? 'saturday' : 'weekdays'
-  const slot = bh[key]
-  if (!slot || slot.closed || !slot.open || !slot.close) return false
-
-  const [oh, om] = slot.open.split(':').map(Number)
-  const [ch, cm] = slot.close.split(':').map(Number)
-  return currentMin >= oh * 60 + om && currentMin < ch * 60 + cm
 }
 
 export async function GET() {
@@ -54,7 +39,7 @@ export async function GET() {
       .limit(80)
 
     const openNow = ((data ?? []) as BusinessRow[])
-      .filter(biz => isOpenNow(biz.business_hours))
+      .filter(biz => isBusinessOpen(biz.business_hours) === true)
       .slice(0, 6)
 
     return NextResponse.json(openNow)

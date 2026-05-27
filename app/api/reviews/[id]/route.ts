@@ -8,8 +8,9 @@ const responseSchema = z.object({
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const user = await getUser()
     if (!user) {
@@ -25,7 +26,7 @@ export async function PATCH(
     const { data: review, error: reviewError } = await supabase
       .from('reviews')
       .select('id, business_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (reviewError || !review) {
@@ -50,7 +51,7 @@ export async function PATCH(
         response: data.response,
         responded_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -66,3 +67,4 @@ export async function PATCH(
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 })
   }
 }
+

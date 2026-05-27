@@ -27,8 +27,10 @@ export const metadata: Metadata = {
   },
 }
 
+const HERO_PHOTO_CREDIT = 'Foto: cortesía de la comunidad de Lagos'
+
 export default async function QueHacerPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Obtener todas las categorías para mapear slugs → IDs
   const { data: allCategories } = await supabase
@@ -172,7 +174,7 @@ export default async function QueHacerPage() {
       <section className="relative overflow-hidden" style={{ minHeight: '520px' }}>
         {/* Background photo */}
         <Image
-          src="/tourism/templo-calvario.jpg"
+          src="/tourism/calvario2.jpg"
           alt="Templo del Calvario, Lagos de Moreno"
           fill
           className="object-cover"
@@ -250,6 +252,9 @@ export default async function QueHacerPage() {
               </div>
             </div>
           </div>
+          <p className="mt-8 text-xs text-white/70 md:text-right">
+            {HERO_PHOTO_CREDIT}
+          </p>
         </div>
 
         {/* Wave divider into warm ivory */}
@@ -394,3 +399,4 @@ export default async function QueHacerPage() {
     </main>
   )
 }
+

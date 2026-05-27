@@ -26,19 +26,20 @@ interface FormCategory {
   icon: string
 }
 
-export default async function EditarProductoPage({ params }: { params: { id: string } }) {
+export default async function EditarProductoPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const user = await getUser()
   if (!user) {
     redirect('/login')
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get product and verify ownership
   const { data: product, error } = await supabase
     .from('products')
     .select('*, businesses!inner(owner_id, subscription_tier, business_type)')
-    .eq('id', params.id)
+    .eq('id', id)
     .single() as unknown as { data: ProductWithBusiness | null; error: any }
 
   if (error || !product) {
@@ -99,3 +100,4 @@ export default async function EditarProductoPage({ params }: { params: { id: str
     </div>
   )
 }
+
