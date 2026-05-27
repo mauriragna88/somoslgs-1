@@ -1,6 +1,23 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
+interface BusinessRow {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  logo_url: string | null
+  cover_url: string | null
+  address: string | null
+  subscription_tier: string
+  is_featured: boolean
+  business_hours: unknown
+  rating: number
+  total_reviews: number
+  category: { name: string; icon: string } | null
+  business_photos: { image_url: string }[]
+}
+
 function isOpenNow(businessHours: unknown): boolean {
   if (!businessHours || typeof businessHours !== 'object') return false
   const bh = businessHours as Record<string, { open: string | null; close: string | null; closed?: boolean }>
@@ -36,7 +53,7 @@ export async function GET() {
       .order('subscription_tier', { ascending: false })
       .limit(80)
 
-    const openNow = (data ?? [])
+    const openNow = ((data ?? []) as BusinessRow[])
       .filter(biz => isOpenNow(biz.business_hours))
       .slice(0, 6)
 

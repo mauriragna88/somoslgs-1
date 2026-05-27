@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import StarRating from '@/components/reviews/StarRating'
@@ -39,6 +39,140 @@ function daysAgo(dateStr: string): string {
   if (diff < 7) return `Hace ${diff} días`
   if (diff < 30) return `Hace ${Math.floor(diff / 7)} sem.`
   return `Hace ${Math.floor(diff / 30)} mes.`
+}
+
+function PremiumCard({ business, tab }: { business: Business; tab: TabId }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
+  const [hovered, setHovered] = useState(false)
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const dx = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2)
+    const dy = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2)
+    setTilt({ x: -dy * 7, y: dx * 7 })
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    setTilt({ x: 0, y: 0 })
+    setHovered(false)
+  }, [])
+
+  const heroImage = business.business_photos?.[0]?.image_url || business.cover_url
+
+  return (
+    <div style={{ perspective: '1000px' }}>
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={handleMouseLeave}
+        className="rounded-2xl overflow-hidden bg-white relative"
+        style={{
+          transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.02 : 1})`,
+          transition: hovered ? 'transform 0.08s linear' : 'transform 0.5s ease-out',
+          boxShadow: hovered
+            ? '0 0 0 2px rgba(245,185,66,0.65), 0 24px 60px rgba(255,107,53,0.18), 0 8px 24px rgba(31,41,55,0.1)'
+            : '0 2px 12px rgba(31,41,55,0.08)',
+        }}
+      >
+        {/* Hero image */}
+        <div className="relative h-52 overflow-hidden">
+          {heroImage ? (
+            <Image
+              src={heroImage}
+              alt={business.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover"
+              style={{
+                transform: hovered ? 'scale(1.06)' : 'scale(1)',
+                transition: 'transform 0.5s ease-out',
+              }}
+            />
+          ) : (
+            <div className="h-full w-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(255,107,53,0.12), rgba(245,185,66,0.08))' }}>
+              <span className="text-5xl opacity-20">🏪</span>
+            </div>
+          )}
+
+          <div className="absolute top-3 left-3">
+            <OpenClosedBadge businessHours={business.business_hours} />
+          </div>
+          {tab === 'nuevos' && business.created_at && (
+            <div className="absolute top-3 right-3">
+              <span className="px-3 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--coral)' }}>
+                ✨ {daysAgo(business.created_at)}
+              </span>
+            </div>
+          )}
+          {tab !== 'nuevos' && business.category && (
+            <div className="absolute top-3 right-3">
+              <span className="px-3 py-1 rounded-full text-xs font-semibold text-white" style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
+                {business.category.icon} {business.category.name}
+              </span>
+            </div>
+          )}
+
+          {/* Slide-up overlay on hover */}
+          <div
+            className="absolute inset-0 flex flex-col justify-end px-4 pb-4"
+            style={{
+              background: 'linear-gradient(to top, rgba(31,41,55,0.9) 0%, rgba(31,41,55,0.35) 55%, transparent 100%)',
+              opacity: hovered ? 1 : 0,
+              transform: hovered ? 'translateY(0)' : 'translateY(8px)',
+              transition: 'opacity 0.28s ease, transform 0.28s ease',
+              pointerEvents: hovered ? 'auto' : 'none',
+            }}
+          >
+            {business.address && (
+              <p className="text-white text-xs mb-2.5 flex items-center gap-1.5 line-clamp-1 opacity-90">
+                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {business.address}
+              </p>
+            )}
+            <Link
+              href={`/negocios/${business.slug}`}
+              className="block text-center py-2 rounded-xl text-sm font-bold text-white"
+              style={{ background: 'var(--coral)' }}
+            >
+              Ver perfil →
+            </Link>
+          </div>
+        </div>
+
+        <div className="p-5">
+          <h3 className="font-bold text-lg mb-1 truncate" style={{ color: 'var(--ink)' }}>
+            {business.name}
+          </h3>
+
+          {business.total_reviews > 0 && (
+            <div className="mb-3">
+              <StarRating value={business.rating} count={business.total_reviews} size="sm" />
+            </div>
+          )}
+
+          {business.description && (
+            <p className="text-sm line-clamp-2 mb-4" style={{ color: 'var(--ink-soft)' }}>
+              {business.description}
+            </p>
+          )}
+
+          <Link
+            href={`/negocios/${business.slug}`}
+            className="block text-center py-2.5 rounded-xl text-sm font-semibold border-2 transition-all hover:opacity-80"
+            style={{ borderColor: 'var(--coral)', color: 'var(--coral)' }}
+          >
+            Ver perfil
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function BusinessGrid({ businesses, tab, loading }: {
@@ -84,83 +218,9 @@ function BusinessGrid({ businesses, tab, loading }: {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {businesses.map((business) => {
-        const heroImage = business.business_photos?.[0]?.image_url || business.cover_url
-        return (
-          <div
-            key={business.id}
-            className="rounded-2xl overflow-hidden bg-white"
-            style={{ boxShadow: '0 2px 12px rgba(31,41,55,0.08)' }}
-          >
-            {/* Hero image */}
-            <div className="relative h-52">
-              {heroImage ? (
-                <Image
-                  src={heroImage}
-                  alt={business.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="h-full w-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(255,107,53,0.12), rgba(245,185,66,0.08))' }}>
-                  <span className="text-5xl opacity-20">🏪</span>
-                </div>
-              )}
-              <div className="absolute top-3 left-3">
-                <OpenClosedBadge businessHours={business.business_hours} />
-              </div>
-              {/* NEW badge */}
-              {tab === 'nuevos' && business.created_at && (
-                <div className="absolute top-3 right-3">
-                  <span
-                    className="px-3 py-1 rounded-full text-xs font-bold text-white"
-                    style={{ background: 'var(--coral)' }}
-                  >
-                    ✨ {daysAgo(business.created_at)}
-                  </span>
-                </div>
-              )}
-              {tab !== 'nuevos' && business.category && (
-                <div className="absolute top-3 right-3">
-                  <span
-                    className="px-3 py-1 rounded-full text-xs font-semibold text-white"
-                    style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
-                  >
-                    {business.category.icon} {business.category.name}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <div className="p-5">
-              <h3 className="font-bold text-lg mb-1 truncate" style={{ color: 'var(--ink)' }}>
-                {business.name}
-              </h3>
-
-              {business.total_reviews > 0 && (
-                <div className="mb-3">
-                  <StarRating value={business.rating} count={business.total_reviews} size="sm" />
-                </div>
-              )}
-
-              {business.description && (
-                <p className="text-sm line-clamp-2 mb-4" style={{ color: 'var(--ink-soft)' }}>
-                  {business.description}
-                </p>
-              )}
-
-              <Link
-                href={`/negocios/${business.slug}`}
-                className="block text-center py-2.5 rounded-xl text-sm font-semibold border-2 transition-all hover:opacity-80"
-                style={{ borderColor: 'var(--coral)', color: 'var(--coral)' }}
-              >
-                Ver perfil
-              </Link>
-            </div>
-          </div>
-        )
-      })}
+      {businesses.map((business) => (
+        <PremiumCard key={business.id} business={business} tab={tab} />
+      ))}
     </div>
   )
 }
