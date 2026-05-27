@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import StarRating from '@/components/reviews/StarRating'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
+import type { BusinessHours } from '@/lib/constants'
 
 interface Business {
   id: string
@@ -16,7 +17,7 @@ interface Business {
   address: string | null
   subscription_tier: string
   is_featured: boolean
-  business_hours: unknown
+  business_hours: BusinessHours | null
   rating: number
   total_reviews: number
   created_at?: string
