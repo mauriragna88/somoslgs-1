@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
-import { ORDER_ENABLED_TIERS, WHATSAPP_ENABLED_TIERS, MAP_ENABLED_TIERS, SOCIAL_LINKS_TIERS, FEATURED_TIERS, COVER_ENABLED_TIERS } from '@/lib/constants'
+import { ORDER_ENABLED_TIERS, WHATSAPP_ENABLED_TIERS, MAP_ENABLED_TIERS, SOCIAL_LINKS_TIERS, FEATURED_TIERS, COVER_ENABLED_TIERS, normalizeBusinessHours } from '@/lib/constants'
 import type { BusinessHours } from '@/lib/constants'
 import ProductList from '@/components/public/ProductList'
 import PhotoCarousel from '@/components/public/PhotoCarousel'
@@ -155,6 +155,23 @@ export default async function BusinessPage({ params }: PageProps) {
   const initialReviews = reviewsData || []
 
   // JSON-LD structured data
+  const DAY_NAMES: Record<keyof BusinessHours, string> = {
+    monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday',
+    thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday',
+  }
+
+  function toOpeningHoursSpec(hours: BusinessHours) {
+    const normalized = normalizeBusinessHours(hours)
+    return (Object.entries(normalized) as [keyof BusinessHours, { open: string | null; close: string | null; closed: boolean }][])
+      .filter(([, day]) => !day.closed && day.open && day.close)
+      .map(([key, day]) => ({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: `https://schema.org/${DAY_NAMES[key]}`,
+        opens: day.open,
+        closes: day.close,
+      }))
+  }
+
   const businessJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -172,6 +189,16 @@ export default async function BusinessPage({ params }: PageProps) {
         addressRegion: 'Jalisco',
         addressCountry: 'MX',
       },
+    }),
+    ...(business.latitude && business.longitude && {
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: business.latitude,
+        longitude: business.longitude,
+      },
+    }),
+    ...(business.business_hours && {
+      openingHoursSpecification: toOpeningHoursSpec(business.business_hours),
     }),
     ...(business.total_reviews > 0 && {
       aggregateRating: {
