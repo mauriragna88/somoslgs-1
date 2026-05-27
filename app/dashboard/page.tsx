@@ -26,7 +26,7 @@ interface DashboardBusiness {
 }
 
 export default async function BusinessDashboard() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
 

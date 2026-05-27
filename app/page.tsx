@@ -85,7 +85,7 @@ function getCatColor(slug: string): string {
 }
 
 export default async function HomePage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Get category IDs that have at least one active business
   const { data: businessCats } = await supabase
