@@ -12,7 +12,8 @@ import type { BusinessHours } from '@/lib/constants'
 import HeroVideoScroll from '@/components/home/HeroVideoScroll'
 import MarqueeTicker from '@/components/home/MarqueeTicker'
 import InteractiveMap from '@/components/home/InteractiveMap'
-import TourismMosaic from '@/components/home/TourismMosaic'
+import DescubreLagos from '@/components/home/DescubreLagos'
+import EventsSection from '@/components/home/EventsSection'
 import FeaturedSection from '@/components/home/FeaturedSection'
 
 export const revalidate = 3600
@@ -602,39 +603,14 @@ export default async function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          6. DISCOVER LAGOS — Tourism mosaic
+          6. DESCUBRE LAGOS — Bento editorial
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-20" style={{ background: '#FFFDF8' }}>
-        <div className="container mx-auto px-4">
-          <ScrollReveal direction="up">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10 gap-4">
-              <div>
-                <span
-                  className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-3"
-                  style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
-                >
-                  Pueblo Mágico
-                </span>
-                <h2
-                  className="text-3xl md:text-4xl font-black"
-                  style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
-                >
-                  Descubre Lagos de Moreno
-                </h2>
-              </div>
-              <Link
-                href="/turismo"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm border transition-all hover:opacity-80"
-                style={{ borderColor: 'var(--coral)', color: 'var(--coral)' }}
-              >
-                Ver ruta turística →
-              </Link>
-            </div>
-          </ScrollReveal>
+      <DescubreLagos />
 
-          <TourismMosaic />
-        </div>
-      </section>
+      {/* ═══════════════════════════════════════════════════════════
+          6b. EVENTOS Y FECHAS ESPECIALES
+      ═══════════════════════════════════════════════════════════ */}
+      <EventsSection />
 
       {/* ═══════════════════════════════════════════════════════════
           7. COMMERCE / WHATSAPP
