@@ -27,7 +27,6 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
   const [videoReady, setVideoReady] = useState(false)
   const [loadPct, setLoadPct] = useState(0)
 
-  // mutable state for the rAF loop — never causes re-renders
   const state = useRef({ currentTime: 0, targetTime: 0, seeking: false, pendingSeek: null as number | null, duration: 1, ready: false })
 
   useEffect(() => {
@@ -36,12 +35,12 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
     if (!video || !section) return
     const s = state.current
 
-    // 1. Buffer the video via direct src — avoids blob: CSP restrictions
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
+
     async function preload() {
       video.src = '/assets/lagos-city-build.mp4'
       video.preload = 'auto'
 
-      // Track download progress via buffered ranges
       const onProgress = () => {
         if (video.buffered.length > 0 && video.duration) {
           setLoadPct(video.buffered.end(video.buffered.length - 1) / video.duration)
@@ -60,13 +59,23 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
       s.ready = true
       setVideoReady(true)
       setLoadPct(1)
-      // iOS needs play()+pause() to unlock currentTime seeks
-      const p = video.play()
-      if (p) p.then(() => video.pause()).catch(() => {})
+
+      if (isMobile) {
+        // Mobile: autoplay normal — el armado se ve solo sin lag de seek
+        video.loop = true
+        video.play().catch(() => {})
+      } else {
+        // Desktop: unlock seeking for scroll sync
+        const p = video.play()
+        if (p) p.then(() => video.pause()).catch(() => {})
+      }
     }
     preload()
 
-    // 2. Scroll → target time
+    // Mobile: no scroll sync — salir aquí
+    if (isMobile) return
+
+    // Desktop: scroll → target time
     function updateTarget() {
       const rect = section.getBoundingClientRect()
       const totalScroll = section.offsetHeight - window.innerHeight
@@ -78,7 +87,7 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
     window.addEventListener('resize', updateTarget)
     updateTarget()
 
-    // 3. rAF: lerp currentTime toward target
+    // rAF lerp
     let rafId: number
     function tick() {
       rafId = requestAnimationFrame(tick)
@@ -113,19 +122,19 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
   const activeStep = Math.min(STEPS.length - 1, Math.floor(progress * STEPS.length))
 
   return (
-    /* Outer section: 480vh gives scroll space. NO overflow:hidden here — sticky won't work with it. */
+    /* Mobile: 100vh (hero normal). Desktop: 480vh (scroll tunnel) */
     <section
       ref={sectionRef}
-      style={{ position: 'relative', height: '480vh', background: 'var(--ivory)' }}
+      className="h-screen md:h-[480vh]"
+      style={{ position: 'relative', background: 'var(--ivory)' }}
     >
-      {/* Sticky viewport — pinned at top, always 100vh tall */}
       <div
         style={{
           position: 'sticky', top: 0, height: '100vh', overflow: 'hidden',
           background: 'linear-gradient(180deg,#FFF6E5 0%,#FFE9C7 60%,#FFD7A8 100%)',
         }}
       >
-        {/* Video — controlled ONLY by scroll, never autoplay */}
+        {/* Video */}
         <video
           ref={videoRef}
           muted
@@ -139,7 +148,7 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
           }}
         />
 
-        {/* Cinematic tint — dark at bottom, warm at top */}
+        {/* Cinematic tint */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 2,
           background: `
@@ -148,7 +157,7 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
           `,
         }} />
 
-        {/* Loading overlay — hides once video is ready */}
+        {/* Loading overlay */}
         <div
           style={{
             position: 'absolute', inset: 0, zIndex: 5,
@@ -210,12 +219,12 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
               Hecho para Lagos de Moreno, Jalisco
             </span>
 
-            {/* Headline */}
+            {/* Headline — más compacto en mobile */}
             <h1 style={{
               fontFamily: 'var(--display)', fontWeight: 700,
-              fontSize: 'clamp(48px, 7vw, 104px)',
+              fontSize: 'clamp(38px, 7vw, 104px)',
               lineHeight: 0.96, letterSpacing: '-0.035em',
-              color: 'white', margin: '0 0 22px',
+              color: 'white', margin: '0 0 16px',
               textShadow: '0 4px 32px rgba(31,41,55,0.35)',
               maxWidth: '14ch',
             }}>
@@ -227,17 +236,17 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
             </h1>
 
             <p style={{
-              fontSize: 'clamp(16px, 1.4vw, 19px)',
+              fontSize: 'clamp(14px, 1.4vw, 19px)',
               color: 'rgba(255,253,248,0.92)',
               maxWidth: '62ch',
               textShadow: '0 2px 16px rgba(31,41,55,0.4)',
-              marginBottom: 36,
+              marginBottom: 28,
             }}>
-              {businessCount}+ negocios locales · {catCount} categorías · Pueblo Mágico
+              {businessCount}+ negocios · {catCount} categorías · Pueblo Mágico
             </p>
 
             {/* Search */}
-            <div style={{ width: 'min(880px, 100%)', marginBottom: 18 }}>
+            <div style={{ width: 'min(880px, 100%)', marginBottom: 14 }}>
               <SearchForm />
             </div>
 
@@ -266,14 +275,15 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
           </div>
         </div>
 
-        {/* Floating business cards — appear at specific scroll progress */}
+        {/* Floating cards — desktop only (en mobile tapan el contenido) */}
         {FLOATS.map((f, i) => (
           <div
             key={i}
+            className="hidden md:inline-flex"
             style={{
               position: 'absolute', zIndex: 4,
               ...f.pos,
-              display: 'inline-flex', alignItems: 'center', gap: 10,
+              alignItems: 'center', gap: 10,
               padding: '7px 14px 7px 7px',
               background: 'rgba(255,253,248,0.92)',
               backdropFilter: 'blur(14px) saturate(160%)',
@@ -305,7 +315,7 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
           </div>
         ))}
 
-        {/* Progress steps — right side, desktop only */}
+        {/* Progress steps — desktop only */}
         <div
           className="hidden md:flex"
           style={{
@@ -332,15 +342,50 @@ export default function HeroVideoScroll({ categories, businessCount, catCount }:
           ))}
         </div>
 
-        {/* Scroll hint */}
-        <div style={{
-          position: 'absolute', bottom: 14, left: '50%', transform: 'translateX(-50%)',
-          zIndex: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-          color: 'rgba(255,253,248,0.86)', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase',
-          pointerEvents: 'none',
-        }}>
+        {/* Scroll hint — desktop only */}
+        <div
+          className="hidden md:flex"
+          style={{
+            position: 'absolute', bottom: 14, left: '50%', transform: 'translateX(-50%)',
+            zIndex: 4, flexDirection: 'column', alignItems: 'center', gap: 6,
+            color: 'rgba(255,253,248,0.86)', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase',
+            pointerEvents: 'none',
+          }}
+        >
           <span>Scroll para descubrir</span>
           <span className="hero-scroll-line" />
+        </div>
+
+        {/* Mobile CTA — reemplaza el scroll hint */}
+        <div
+          className="flex md:hidden"
+          style={{
+            position: 'absolute', bottom: 28, left: '50%', transform: 'translateX(-50%)',
+            zIndex: 4, flexDirection: 'column', alignItems: 'center', gap: 10,
+            pointerEvents: 'auto',
+          }}
+        >
+          <Link
+            href="/descubre"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '13px 28px',
+              background: 'var(--coral)',
+              color: 'white', borderRadius: 999,
+              fontSize: 15, fontWeight: 700,
+              textDecoration: 'none',
+              boxShadow: '0 8px 24px rgba(255,107,53,0.4)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Explorar negocios
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+          <span style={{ fontSize: 11, color: 'rgba(255,253,248,0.6)', letterSpacing: '0.12em' }}>
+            {businessCount}+ negocios en Lagos
+          </span>
         </div>
       </div>
     </section>
