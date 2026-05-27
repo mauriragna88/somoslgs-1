@@ -9,6 +9,7 @@ import BankDataAlert from '@/components/dashboard/BankDataAlert'
 import UpgradeBanner from '@/components/dashboard/UpgradeBanner'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import BusinessQR from '@/components/dashboard/BusinessQR'
+import OnboardingChecklist from '@/components/dashboard/OnboardingChecklist'
 
 interface DashboardBusiness {
   id: string
@@ -23,6 +24,7 @@ interface DashboardBusiness {
   category: { name: string } | null
   bank_clabe: string | null
   business_hours: any
+  whatsapp: string | null
 }
 
 export default async function BusinessDashboard() {
@@ -57,6 +59,7 @@ export default async function BusinessDashboard() {
     todayOrders: 0,
     monthRevenue: 0,
     monthViews: 0,
+    totalPhotos: 0,
   }
 
   if (selectedBusiness) {
@@ -69,6 +72,7 @@ export default async function BusinessDashboard() {
       { count: todayCount },
       { data: monthOrders },
       { count: viewsCount },
+      { count: photosCount },
     ] = await Promise.all([
       supabase
         .from('products')
@@ -94,6 +98,10 @@ export default async function BusinessDashboard() {
         .select('*', { count: 'exact', head: true })
         .eq('business_id', selectedBusiness.id)
         .gte('created_at', firstDayOfMonth),
+      supabase
+        .from('business_photos')
+        .select('*', { count: 'exact', head: true })
+        .eq('business_id', selectedBusiness.id),
     ])
 
     const monthRevenue = (monthOrders || []).reduce(
@@ -107,6 +115,7 @@ export default async function BusinessDashboard() {
       todayOrders: todayCount || 0,
       monthRevenue,
       monthViews: viewsCount || 0,
+      totalPhotos: photosCount || 0,
     }
   }
 
@@ -209,6 +218,18 @@ export default async function BusinessDashboard() {
             <UpgradeBanner
               currentPlan={selectedBusiness.subscription_tier}
               businessName={selectedBusiness.name}
+            />
+          )}
+
+          {/* Onboarding Checklist */}
+          {selectedBusiness && (
+            <OnboardingChecklist
+              logo={!!selectedBusiness.logo_url}
+              description={!!(selectedBusiness.description && selectedBusiness.description.trim().length > 10)}
+              hours={!!(selectedBusiness.business_hours && Object.keys(selectedBusiness.business_hours).length > 0)}
+              whatsapp={!!selectedBusiness.whatsapp}
+              hasProducts={stats.totalProducts > 0}
+              hasPhotos={stats.totalPhotos > 0}
             />
           )}
 
