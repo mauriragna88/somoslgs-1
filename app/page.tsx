@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import SearchForm from '@/components/home/SearchForm'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import StarRating from '@/components/reviews/StarRating'
@@ -16,6 +16,7 @@ import DescubreLagos from '@/components/home/DescubreLagos'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import EventsSection from '@/components/home/EventsSection'
 import FeaturedSection from '@/components/home/FeaturedSection'
+import MarketplaceStrip from '@/components/home/MarketplaceStrip'
 
 export const revalidate = 3600
 
@@ -162,6 +163,17 @@ export default async function HomePage() {
     .eq('is_active', true)
     .order('created_at', { ascending: false })
     .limit(16) as { data: BusinessCard[] | null }
+
+  // Fetch latest marketplace listings for homepage strip
+  const marketplaceSupabase = createServiceClient()
+  const { data: latestListings } = await marketplaceSupabase
+    .from('marketplace_listings')
+    .select('*')
+    .eq('status', 'active')
+    .gte('expires_at', new Date().toISOString())
+    .order('is_featured', { ascending: false })
+    .order('created_at', { ascending: false })
+    .limit(4)
 
   // Business count rounded down to nearest 5 minus 5
   const totalBusinessCount = (businessCats || []).length
@@ -617,6 +629,11 @@ export default async function HomePage() {
           6c. BANNER — home_middle (solo si hay banner activo)
       ═══════════════════════════════════════════════════════════ */}
       <BannerDisplay placement="home_middle" />
+
+      {/* ═══════════════════════════════════════════════════════════
+          6d. MARKETPLACE STRIP — últimas 4 publicaciones
+      ═══════════════════════════════════════════════════════════ */}
+      <MarketplaceStrip listings={latestListings || []} />
 
       {/* ═══════════════════════════════════════════════════════════
           7. WHATSAPP COMMERCE — strip opcional
