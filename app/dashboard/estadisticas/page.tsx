@@ -12,6 +12,16 @@ interface StatsBusiness {
   id: string
   name: string
   subscription_tier: string
+  rating: number | null
+  total_reviews: number | null
+}
+
+interface ReviewForStats {
+  id: string
+  rating: number
+  comment: string | null
+  created_at: string
+  profile: { full_name: string } | null
 }
 
 interface OrderForStats {
@@ -51,7 +61,7 @@ export default async function EstadisticasPage() {
   // Get user's businesses
   const { data: businesses } = await supabase
     .from('businesses')
-    .select('id, name, subscription_tier')
+    .select('id, name, subscription_tier, rating, total_reviews')
     .eq('owner_id', user.id)
     .eq('is_active', true) as { data: StatsBusiness[] | null }
 
@@ -130,7 +140,7 @@ export default async function EstadisticasPage() {
   thirtyDaysAgo.setDate(now.getDate() - 30)
   const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
-  const [viewsResult, viewsThisMonthResult, totalViewsResult] = await Promise.all([
+  const [viewsResult, viewsThisMonthResult, totalViewsResult, recentReviewsResult] = await Promise.all([
     supabase
       .from('business_views')
       .select('created_at, ip_hash, referrer, user_agent')
@@ -147,12 +157,19 @@ export default async function EstadisticasPage() {
       .select('total_views')
       .eq('id', currentBusinessId)
       .single(),
+    supabase
+      .from('reviews')
+      .select('id, rating, comment, created_at, profile:profiles(full_name)')
+      .eq('business_id', currentBusinessId)
+      .order('created_at', { ascending: false })
+      .limit(5),
   ])
 
   const viewsLast30 = viewsResult.data || []
   const viewsThisMonth = viewsThisMonthResult.data || []
   const totalViews = (totalViewsResult.data as any)?.total_views || 0
   const uniqueThisMonth = new Set(viewsThisMonth.map((v: any) => v.ip_hash)).size
+  const recentReviews = (recentReviewsResult.data || []) as ReviewForStats[]
 
   // Views by day (last 30 days)
   const last30DaysForViews = Array.from({ length: 30 }, (_, i) => {
@@ -351,7 +368,7 @@ export default async function EstadisticasPage() {
       </div>
 
       {/* Views KPI Cards */}
-      <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
         <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>Visitas Totales</span>
@@ -377,6 +394,19 @@ export default async function EstadisticasPage() {
           </div>
           <p className="text-xl sm:text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>{viewsLast30.length.toLocaleString()}</p>
           <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--muted)' }}>{new Set(viewsLast30.map((v: any) => v.ip_hash)).size} unicos</p>
+        </div>
+
+        <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs sm:text-sm" style={{ color: 'var(--muted)' }}>Calificación</span>
+            <span className="text-xl sm:text-2xl">⭐</span>
+          </div>
+          <p className="text-xl sm:text-3xl font-bold" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>
+            {currentBusiness.rating ? currentBusiness.rating.toFixed(1) : '—'}
+          </p>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--muted)' }}>
+            {currentBusiness.total_reviews ?? 0} reseñas
+          </p>
         </div>
       </div>
 
@@ -460,6 +490,43 @@ export default async function EstadisticasPage() {
         ) : (
           <div className="p-8 text-center" style={{ color: 'var(--muted)' }}>
             <p>No hay datos de ventas aún</p>
+          </div>
+        )}
+      </div>
+
+      {/* Recent Reviews */}
+      <div className="mt-8 bg-white rounded-2xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
+        <div className="p-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+          <h3 className="font-bold" style={{ color: 'var(--ink)' }}>💬 Reseñas Recientes</h3>
+        </div>
+        {recentReviews.length > 0 ? (
+          <div className="divide-y" style={{ borderColor: 'rgba(0,0,0,0.05)' }}>
+            {recentReviews.map((review) => (
+              <div key={review.id} className="px-4 py-4">
+                <div className="flex items-start justify-between gap-3 mb-1">
+                  <div>
+                    <p className="text-sm font-medium" style={{ color: 'var(--ink)' }}>
+                      {(review.profile as any)?.full_name ?? 'Cliente'}
+                    </p>
+                    <div className="flex gap-0.5 mt-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <span key={i} className={i < review.rating ? 'text-yellow-400' : 'text-gray-200'} style={{ fontSize: '14px' }}>★</span>
+                      ))}
+                    </div>
+                  </div>
+                  <span className="text-xs flex-shrink-0" style={{ color: 'var(--muted)' }}>
+                    {new Date(review.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}
+                  </span>
+                </div>
+                {review.comment && (
+                  <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>{review.comment}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="p-8 text-center" style={{ color: 'var(--muted)' }}>
+            <p>No hay reseñas aún</p>
           </div>
         )}
       </div>
