@@ -490,10 +490,8 @@ export default async function HomePage() {
             ].map((step, i) => (
               <ScrollReveal key={step.num} direction="up" delay={i * 100}>
                 <div
-                  className="p-6 rounded-2xl transition-all duration-300 hover:-translate-y-2 group"
+                  className="p-6 rounded-2xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group"
                   style={{ background: 'white', boxShadow: '0 2px 12px rgba(31,41,55,0.06)' }}
-                  onMouseEnter={e => (e.currentTarget.style.boxShadow = `0 16px 40px rgba(31,41,55,0.12), 0 0 0 2px ${step.color}22`)}
-                  onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 2px 12px rgba(31,41,55,0.06)')}
                 >
                   <div
                     className="w-10 h-10 rounded-full flex items-center justify-center font-black text-xl text-white mb-4 transition-transform duration-300 group-hover:scale-110"
