@@ -3,11 +3,9 @@ import { Inter, Bricolage_Grotesque, DM_Sans, Instrument_Serif } from 'next/font
 import { Toaster } from 'sonner'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { GoogleAnalytics } from '@next/third-parties/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import CartProvider from '@/components/cart/CartProvider'
 import PWARegister from '@/components/PWARegister'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 
@@ -73,19 +71,14 @@ export default function RootLayout({
         )}
       </head>
       <body className={`${bricolageGrotesque.variable} ${dmSans.variable} ${instrumentSerif.variable} ${inter.className}`}>
-        <CartProvider>
-          <Header />
-          {children}
-          <Footer />
-          <Toaster richColors position="top-right" />
-          <WhatsAppFloat />
-        </CartProvider>
+        <Header />
+        {children}
+        <Footer />
+        <Toaster richColors position="top-right" />
+        <WhatsAppFloat />
         <PWARegister />
         <Analytics />
         <SpeedInsights />
-        {process.env.NEXT_PUBLIC_GA4_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_ID} />
-        )}
       </body>
     </html>
   )
