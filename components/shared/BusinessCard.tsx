@@ -53,7 +53,7 @@ function getTierVariant(tier: string, variant?: string): 'avanzado' | 'pro' | 'c
 }
 
 function hasCompleteBusinessHours(hours: BusinessHours | null): hours is BusinessHours {
-  return Boolean(hours?.weekdays && hours.saturday && hours.sunday)
+  return Boolean(hours?.monday && hours.saturday && hours.sunday)
 }
 
 function StarRow({ rating, count }: { rating: number; count: number }) {
