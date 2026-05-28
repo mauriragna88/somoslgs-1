@@ -16,6 +16,10 @@ CREATE INDEX IF NOT EXISTS idx_user_favorites_business ON user_favorites(busines
 -- RLS: cada usuario solo ve y gestiona sus propios favoritos
 ALTER TABLE user_favorites ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "users can read own favorites" ON user_favorites;
+DROP POLICY IF EXISTS "users can insert own favorites" ON user_favorites;
+DROP POLICY IF EXISTS "users can delete own favorites" ON user_favorites;
+
 CREATE POLICY "users can read own favorites"
   ON user_favorites FOR SELECT
   USING (auth.uid() = user_id);
