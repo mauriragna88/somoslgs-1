@@ -104,10 +104,6 @@ export default async function OrderDetailPage({
   }
 
   // Verify order belongs to one of user's businesses
-  const orderBusiness = businesses.find(b =>
-    supabase.from('orders').select('business_id').eq('id', order.id)
-  )
-
   const { data: orderBusinessCheck } = await supabase
     .from('orders')
     .select('business_id')
@@ -318,11 +314,11 @@ export default async function OrderDetailPage({
               <div className="flex items-center justify-between">
                 <span className="text-gray-600">Estado:</span>
                 <span className={`px-2 py-1 rounded-full text-sm font-medium ${
-                  order.payment_status === 'paid' ? 'bg-green-100 text-green-800' :
+                  order.payment_status === 'verified' ? 'bg-green-100 text-green-800' :
                   order.payment_status === 'pending_verification' ? 'bg-yellow-100 text-yellow-800' :
                   'bg-gray-100 text-gray-800'
                 }`}>
-                  {order.payment_status === 'paid' ? '✅ Pagado' :
+                  {order.payment_status === 'verified' ? '✅ Pagado' :
                    order.payment_status === 'pending_verification' ? '⏳ Por verificar' :
                    '⏳ Pendiente'}
                 </span>
