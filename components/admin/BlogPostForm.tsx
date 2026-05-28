@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { toast } from 'sonner'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { createClient } from '@/lib/supabase/client'
 import type { BlogPost } from '@/types/database.types'
 
@@ -30,6 +32,17 @@ function slugify(text: string): string {
     .slice(0, 220)
 }
 
+const TOOLBAR_ACTIONS = [
+  { label: 'H2', prefix: '## ', suffix: '', title: 'Título de sección' },
+  { label: 'H3', prefix: '### ', suffix: '', title: 'Subtítulo' },
+  { label: 'B', prefix: '**', suffix: '**', title: 'Negrita', className: 'font-bold' },
+  { label: 'I', prefix: '_', suffix: '_', title: 'Cursiva', className: 'italic' },
+  { label: '🔗', prefix: '[texto](', suffix: 'https://)', title: 'Enlace' },
+  { label: '• Lista', prefix: '\n- ', suffix: '', title: 'Lista con viñetas' },
+  { label: '1. Lista', prefix: '\n1. ', suffix: '', title: 'Lista numerada' },
+  { label: '❝', prefix: '\n> ', suffix: '', title: 'Cita' },
+]
+
 export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormProps) {
   const [title, setTitle] = useState(post?.title || '')
   const [slug, setSlug] = useState(post?.slug || '')
@@ -42,6 +55,23 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
   const [saving, setSaving] = useState(false)
   const [previewUrl, setPreviewUrl] = useState('')
   const [showPreview, setShowPreview] = useState(false)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const applyFormat = (prefix: string, suffix: string) => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const start = ta.selectionStart
+    const end = ta.selectionEnd
+    const selected = content.slice(start, end)
+    const replacement = prefix + (selected || 'texto') + suffix
+    const next = content.slice(0, start) + replacement + content.slice(end)
+    setContent(next)
+    setTimeout(() => {
+      ta.focus()
+      const cursor = start + prefix.length + (selected || 'texto').length
+      ta.setSelectionRange(cursor, cursor)
+    }, 0)
+  }
 
   const handleTitleChange = (value: string) => {
     setTitle(value)
@@ -230,16 +260,34 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
             {showPreview ? 'Editar' : 'Vista previa'}
           </button>
         </div>
+
+        {!showPreview && (
+          <div className="flex flex-wrap gap-1 mb-1 p-1.5 border border-gray-200 rounded-t-lg bg-gray-50">
+            {TOOLBAR_ACTIONS.map((action) => (
+              <button
+                key={action.label}
+                type="button"
+                title={action.title}
+                onClick={() => applyFormat(action.prefix, action.suffix)}
+                className={`px-2.5 py-1 text-xs border border-gray-200 rounded bg-white hover:bg-[rgba(255,107,53,0.06)] hover:border-[rgba(255,107,53,0.3)] text-gray-700 transition-colors ${action.className || ''}`}
+              >
+                {action.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         {showPreview ? (
-          <div className="w-full min-h-[200px] px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50 prose prose-sm max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: simpleMarkdown(content) }} />
+          <div className="w-full min-h-[300px] px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 prose prose-sm max-w-none overflow-auto">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
           </div>
         ) : (
           <textarea
+            ref={textareaRef}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            rows={12}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-[rgba(255,107,53,0.2)] focus:border-[#FF6B35] resize-y"
+            rows={14}
+            className="w-full px-3 py-2 border border-gray-300 rounded-b-lg text-sm font-mono focus:ring-2 focus:ring-[rgba(255,107,53,0.2)] focus:border-[#FF6B35] resize-y"
             placeholder="Escribe tu articulo en Markdown..."
           />
         )}
@@ -295,16 +343,3 @@ export default function BlogPostForm({ post, onSaved, onCancel }: BlogPostFormPr
   )
 }
 
-// Simple markdown to HTML for preview (basic)
-function simpleMarkdown(md: string): string {
-  return md
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/\n/g, '<br />')
-}
