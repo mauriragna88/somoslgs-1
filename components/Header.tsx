@@ -257,6 +257,16 @@ export default function Header() {
                       </Link>
 
                       <Link
+                        href="/favoritos"
+                        className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
+                        style={{ color: 'var(--ink)' }}
+                        onClick={() => setShowMenu(false)}
+                      >
+                        <span className="mr-3">🤍</span>
+                        Mis Favoritos
+                      </Link>
+
+                      <Link
                         href="/profile"
                         className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
                         style={{ color: 'var(--ink)' }}
@@ -490,14 +500,32 @@ export default function Header() {
                   <span className="text-lg">💎</span> Planes
                 </Link>
                 {user && (
-                  <Link
-                    href="/profile"
-                    className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
-                    style={{ color: 'var(--ink)' }}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span className="text-lg">⚙️</span> Configuracion
-                  </Link>
+                  <>
+                    <Link
+                      href="/favoritos"
+                      className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                      style={{ color: 'var(--ink)' }}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <span className="text-lg">🤍</span> Mis Favoritos
+                    </Link>
+                    <Link
+                      href="/mis-pedidos"
+                      className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                      style={{ color: 'var(--ink)' }}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <span className="text-lg">📦</span> Mis Pedidos
+                    </Link>
+                    <Link
+                      href="/profile"
+                      className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
+                      style={{ color: 'var(--ink)' }}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <span className="text-lg">⚙️</span> Configuracion
+                    </Link>
+                  </>
                 )}
                 {!loading && !user && (
                   <Link

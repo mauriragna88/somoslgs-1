@@ -59,8 +59,8 @@ export default async function BlogPage() {
         {blogPosts.length === 0 ? (
           <div className="text-center py-20">
             <span className="text-5xl block mb-4">✍️</span>
-            <p className="text-gray-500 text-lg mb-2">Proximamente</p>
-            <p className="text-gray-400">Estamos preparando articulos increibles para ti</p>
+            <p className="text-gray-500 text-lg mb-2">Aún no hay artículos publicados</p>
+            <p className="text-gray-400">Pronto tendremos guías, tips y noticias sobre Lagos de Moreno</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
