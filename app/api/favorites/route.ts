@@ -6,7 +6,7 @@ export async function GET() {
   if (!user) return NextResponse.json([], { status: 401 })
 
   const supabase = await createClient()
-  const { data } = await supabase
+  const { data } = await (supabase as any)
     .from('user_favorites')
     .select('business_id')
     .eq('user_id', user.id)
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
   const { business_id } = await request.json()
   if (!business_id) return NextResponse.json({ error: 'business_id requerido' }, { status: 400 })
 
-  const supabase = await createClient()
+  const supabase = await createClient() as any
 
   const { data: existing } = await supabase
     .from('user_favorites')
