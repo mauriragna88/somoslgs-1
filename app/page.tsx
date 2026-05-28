@@ -1034,7 +1034,83 @@ export default async function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          12. FINAL CTA
+          12. BLOG — últimas entradas
+      ═══════════════════════════════════════════════════════════ */}
+      {latestPosts.length > 0 && (
+        <section className="py-16" style={{ background: 'var(--ivory)' }}>
+          <div className="container mx-auto px-4">
+            <ScrollReveal direction="up">
+              <div className="flex items-end justify-between mb-10">
+                <div>
+                  <span className="text-sm font-semibold uppercase tracking-widest" style={{ color: 'var(--coral)' }}>Blog</span>
+                  <h2 className="text-3xl md:text-4xl font-black mt-1" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
+                    Lo último de Lagos
+                  </h2>
+                </div>
+                <Link
+                  href="/blog"
+                  className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold transition-colors"
+                  style={{ color: 'var(--coral)' }}
+                >
+                  Ver todo
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {latestPosts.map((post) => (
+                  <Link
+                    key={post.id}
+                    href={`/blog/${post.slug}`}
+                    className="group bg-white rounded-2xl overflow-hidden transition-all hover:-translate-y-1"
+                    style={{ boxShadow: 'var(--shadow-card)' }}
+                  >
+                    <div className="h-44 bg-gray-100 overflow-hidden">
+                      {post.featured_image_url ? (
+                        <img
+                          src={post.featured_image_url}
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-4xl" style={{ background: 'linear-gradient(135deg, var(--coral), var(--gold))' }}>
+                          📝
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-5">
+                      <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--coral)' }}>
+                        {post.category?.replace(/-/g, ' ')}
+                      </span>
+                      <h3 className="font-bold mt-1 mb-2 line-clamp-2 group-hover:text-[var(--coral)] transition-colors" style={{ color: 'var(--ink)' }}>
+                        {post.title}
+                      </h3>
+                      {post.excerpt && (
+                        <p className="text-sm line-clamp-2" style={{ color: 'var(--muted)' }}>{post.excerpt}</p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="text-center mt-8 sm:hidden">
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center gap-1 text-sm font-semibold"
+                  style={{ color: 'var(--coral)' }}
+                >
+                  Ver todos los artículos →
+                </Link>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════
+          13. FINAL CTA
       ═══════════════════════════════════════════════════════════ */}
       <section className="py-16 bg-pueblo-noche">
         <div className="container mx-auto px-4">
