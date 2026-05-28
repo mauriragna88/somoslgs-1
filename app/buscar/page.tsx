@@ -22,7 +22,10 @@ interface BuscarSearchParams {
   orden?: string
   tipo?: string
   abierto?: string
+  pagina?: string
 }
+
+const PAGE_SIZE = 24
 
 export async function generateMetadata({ searchParams }: { searchParams: Promise<BuscarSearchParams> }): Promise<Metadata> {
   const resolvedSearchParams = await searchParams
@@ -99,6 +102,22 @@ export default async function BuscarPage({
   const orden = resolvedSearchParams.orden || ''
   const tipo = resolvedSearchParams.tipo || 'negocios'
   const abierto = resolvedSearchParams.abierto === '1'
+  const currentPage = Math.max(1, parseInt(resolvedSearchParams.pagina || '1', 10))
+  const pageStart = (currentPage - 1) * PAGE_SIZE
+  const pageEnd = pageStart + PAGE_SIZE - 1
+
+  const buildPageUrl = (page: number) => {
+    const params = new URLSearchParams()
+    if (query) params.set('q', query)
+    if (categoriaId) params.set('categoria', categoriaId)
+    if (colonia) params.set('colonia', colonia)
+    if (orden) params.set('orden', orden)
+    if (tipo !== 'negocios') params.set('tipo', tipo)
+    if (abierto) params.set('abierto', '1')
+    if (page > 1) params.set('pagina', String(page))
+    const str = params.toString()
+    return `/buscar${str ? `?${str}` : ''}`
+  }
 
   const supabase = await createClient()
   const serviceSupabase = createServiceClient()
@@ -163,7 +182,7 @@ export default async function BuscarPage({
       latitude,
       longitude,
       category:categories(id, name, icon)
-    `)
+    `, { count: 'exact' })
     .eq('is_active', true)
 
   // Apply sort order
@@ -204,7 +223,8 @@ export default async function BuscarPage({
     businessQuery = businessQuery.eq('neighborhood', colonia)
   }
 
-  const { data: rawBusinesses, error } = await businessQuery.limit(50) as { data: Business[] | null; error: any }
+  const { data: rawBusinesses, count: totalBusinessCount, error } = await businessQuery.range(pageStart, pageEnd) as { data: Business[] | null; count: number | null; error: any }
+  const totalPages = Math.ceil((totalBusinessCount || 0) / PAGE_SIZE)
 
   // Sort by tier order client-side (Supabase sorts TEXT alphabetically which gives wrong order)
   const sortedBusinesses = orden !== 'rating' && rawBusinesses
@@ -533,7 +553,39 @@ export default async function BuscarPage({
                 <>
                   {/* Business Results */}
                   {businesses && businesses.length > 0 ? (
-                    <SearchViewToggle businesses={businesses} query={query} />
+                    <>
+                      <SearchViewToggle businesses={businesses} query={query} />
+
+                      {/* Pagination */}
+                      {totalPages > 1 && (
+                        <div className="flex items-center justify-between mt-10 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+                          <p className="text-sm" style={{ color: 'var(--muted)' }}>
+                            Página <strong style={{ color: 'var(--ink)' }}>{currentPage}</strong> de <strong style={{ color: 'var(--ink)' }}>{totalPages}</strong>
+                            {' '}· <strong style={{ color: 'var(--ink)' }}>{totalBusinessCount}</strong> negocios
+                          </p>
+                          <div className="flex gap-2">
+                            {currentPage > 1 && (
+                              <Link
+                                href={buildPageUrl(currentPage - 1)}
+                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+                                style={{ background: 'white', color: 'var(--ink)', border: '1px solid rgba(0,0,0,0.1)', boxShadow: 'var(--shadow-card)' }}
+                              >
+                                ← Anterior
+                              </Link>
+                            )}
+                            {currentPage < totalPages && (
+                              <Link
+                                href={buildPageUrl(currentPage + 1)}
+                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+                                style={{ background: 'var(--coral)', color: '#fff', boxShadow: '0 4px 12px rgba(255,107,53,0.25)' }}
+                              >
+                                Siguiente →
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   ) : (
                     <div
                       className="text-center py-16 rounded-3xl"
