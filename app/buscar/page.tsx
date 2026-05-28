@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Metadata } from 'next'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { stemSpanish } from '@/lib/utils'
-import { TIER_ORDER } from '@/lib/constants'
+import { TIER_ORDER, isBusinessOpen } from '@/lib/constants'
 import type { BusinessHours } from '@/lib/constants'
 import BusinessCard from '@/components/shared/BusinessCard'
 import SkeletonCard from '@/components/shared/SkeletonCard'
@@ -21,6 +21,7 @@ interface BuscarSearchParams {
   colonia?: string
   orden?: string
   tipo?: string
+  abierto?: string
 }
 
 export async function generateMetadata({ searchParams }: { searchParams: Promise<BuscarSearchParams> }): Promise<Metadata> {
@@ -96,6 +97,7 @@ export default async function BuscarPage({
   const colonia = resolvedSearchParams.colonia || ''
   const orden = resolvedSearchParams.orden || ''
   const tipo = resolvedSearchParams.tipo || 'negocios'
+  const abierto = resolvedSearchParams.abierto === '1'
 
   const supabase = await createClient()
   const serviceSupabase = createServiceClient()
@@ -203,7 +205,7 @@ export default async function BuscarPage({
   const { data: rawBusinesses, error } = await businessQuery.limit(50) as { data: Business[] | null; error: any }
 
   // Sort by tier order client-side (Supabase sorts TEXT alphabetically which gives wrong order)
-  const businesses = orden !== 'rating' && rawBusinesses
+  const sortedBusinesses = orden !== 'rating' && rawBusinesses
     ? [...rawBusinesses].sort((a, b) => {
         // Featured first
         if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1
@@ -215,6 +217,11 @@ export default async function BuscarPage({
         return a.name.localeCompare(b.name)
       })
     : rawBusinesses
+
+  // Filter "abierto ahora" client-side — business_hours is JSON, can't filter in SQL
+  const businesses = abierto
+    ? (sortedBusinesses || []).filter(b => isBusinessOpen(b.business_hours) === true)
+    : sortedBusinesses
 
   // Marketplace listings (only fetch when tab is marketplace)
   let marketplaceListings: MarketplaceListing[] = []
@@ -413,6 +420,27 @@ export default async function BuscarPage({
                   <option value="rating">Ordenar: Mejor calificados</option>
                 </select>
               </div>
+              <label
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm cursor-pointer select-none transition-all"
+                style={{
+                  background: abierto ? 'rgba(34,197,94,0.1)' : 'var(--ivory)',
+                  border: abierto ? '1px solid rgba(34,197,94,0.4)' : '1px solid rgba(31,41,55,0.12)',
+                  color: abierto ? '#15803d' : 'var(--ink)',
+                  fontFamily: 'var(--body)',
+                }}
+              >
+                <input
+                  type="checkbox"
+                  name="abierto"
+                  value="1"
+                  defaultChecked={abierto}
+                  className="accent-green-500"
+                />
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                  Abierto ahora
+                </span>
+              </label>
             </div>
           </form>
         </div>

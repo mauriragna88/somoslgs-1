@@ -7,6 +7,7 @@ interface FavoritesState {
   favorites: string[] // business IDs
   isFavorite: (id: string) => boolean
   toggleFavorite: (id: string) => void
+  setFavorites: (ids: string[]) => void
 }
 
 export const useFavoritesStore = create<FavoritesState>()(
@@ -21,6 +22,7 @@ export const useFavoritesStore = create<FavoritesState>()(
             : [...state.favorites, id],
         }))
       },
+      setFavorites: (ids: string[]) => set({ favorites: ids }),
     }),
     {
       name: 'somoslagos-favorites',

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useFavoritesStore } from '@/lib/stores/favorites'
+import { createClient } from '@/lib/supabase/client'
 
 interface FavoriteButtonProps {
   businessId: string
@@ -9,10 +10,31 @@ interface FavoriteButtonProps {
 }
 
 export default function FavoriteButton({ businessId, size = 'sm' }: FavoriteButtonProps) {
-  const { isFavorite, toggleFavorite } = useFavoritesStore()
+  const { isFavorite, toggleFavorite, setFavorites } = useFavoritesStore()
   const [mounted, setMounted] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    setMounted(true)
+    const init = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      setUserId(user.id)
+      // Sync DB favorites into store (one-time on mount)
+      try {
+        const res = await fetch('/api/favorites')
+        if (res.ok) {
+          const ids: string[] = await res.json()
+          setFavorites(ids)
+        }
+      } catch {
+        // fallback to localStorage state
+      }
+    }
+    init()
+  }, [setFavorites])
 
   if (!mounted) return null
 
@@ -20,13 +42,34 @@ export default function FavoriteButton({ businessId, size = 'sm' }: FavoriteButt
   const iconSize = size === 'sm' ? 'w-5 h-5' : 'w-6 h-6'
   const btnSize = size === 'sm' ? 'w-8 h-8' : 'w-10 h-10'
 
+  const handleClick = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (loading) return
+
+    // Optimistic update
+    toggleFavorite(businessId)
+
+    if (!userId) return
+
+    setLoading(true)
+    try {
+      await fetch('/api/favorites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ business_id: businessId }),
+      })
+    } catch {
+      // Revert optimistic update on error
+      toggleFavorite(businessId)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <button
-      onClick={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        toggleFavorite(businessId)
-      }}
+      onClick={handleClick}
       aria-label={active ? 'Quitar de favoritos' : 'Agregar a favoritos'}
       className={`${btnSize} rounded-full flex items-center justify-center transition-all ${
         active
