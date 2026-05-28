@@ -117,11 +117,7 @@ export default async function NegociosEnColoniaPage({ params }: PageProps) {
     .order('name')
     .limit(60) as { data: Business[] | null }
 
-  if (!rawBusinesses) {
-    notFound()
-  }
-
-  const businesses = [...rawBusinesses].sort((a, b) => {
+  const businesses = [...(rawBusinesses ?? [])].sort((a, b) => {
     if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1
     const tierA = TIER_ORDER[a.subscription_tier] || 0
     const tierB = TIER_ORDER[b.subscription_tier] || 0

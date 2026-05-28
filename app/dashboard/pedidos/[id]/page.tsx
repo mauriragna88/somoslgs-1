@@ -1,6 +1,5 @@
 export const dynamic = 'force-dynamic'
 
-import { cookies } from 'next/headers'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
@@ -67,9 +66,6 @@ export default async function OrderDetailPage({
   if (!user) {
     redirect('/login')
   }
-
-  const cookieStore = await cookies()
-  const selectedBusinessId = cookieStore.get('selected_business_id')?.value
 
   const supabase = await createClient()
 
