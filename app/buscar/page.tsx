@@ -72,6 +72,7 @@ interface Business {
   slug: string
   description: string | null
   logo_url: string | null
+  cover_url: string | null
   phone: string
   address: string
   neighborhood: string | null
@@ -149,6 +150,7 @@ export default async function BuscarPage({
       slug,
       description,
       logo_url,
+      cover_url,
       phone,
       address,
       neighborhood,
