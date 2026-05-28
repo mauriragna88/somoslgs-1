@@ -18,9 +18,10 @@ interface Business {
 interface BusinessSidebarProps {
   userName: string
   businesses: Business[]
+  pendingOrdersCount?: number
 }
 
-export default function BusinessSidebar({ userName, businesses }: BusinessSidebarProps) {
+export default function BusinessSidebar({ userName, businesses, pendingOrdersCount = 0 }: BusinessSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
@@ -133,7 +134,12 @@ export default function BusinessSidebar({ userName, businesses }: BusinessSideba
               }
             >
               <span className="text-base">{item.icon}</span>
-              <span>{item.label}</span>
+              <span className="flex-1">{item.label}</span>
+              {item.key === 'pedidos' && pendingOrdersCount > 0 && (
+                <span className="min-w-[20px] h-5 px-1.5 rounded-full text-[11px] font-bold text-white flex items-center justify-center" style={{ background: '#ef4444' }}>
+                  {pendingOrdersCount > 99 ? '99+' : pendingOrdersCount}
+                </span>
+              )}
             </Link>
           )
         })}

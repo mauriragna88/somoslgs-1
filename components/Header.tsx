@@ -119,8 +119,8 @@ export default function Header() {
   const NAV_LINKS = [
     { label: 'Explorar', href: '/categorias' },
     { label: 'Descubre Lagos', href: '/descubre' },
+    { label: 'Marketplace', href: '/marketplace' },
     { label: 'Para negocios', href: '/registrar-negocio' },
-    { label: 'Qué Hacer', href: '/que-hacer-en-lagos-de-moreno' },
     { label: 'Planes', href: '/planes' },
   ]
 

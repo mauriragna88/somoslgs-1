@@ -58,6 +58,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
+    alternates: {
+      canonical: `https://www.somoslagos.com.mx/categorias/${category.slug}`,
+    },
     openGraph: {
       title: `${category.name} en Lagos de Moreno | SomosLagos`,
       description,

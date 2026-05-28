@@ -60,6 +60,7 @@ export default async function BusinessDashboard() {
     monthRevenue: 0,
     monthViews: 0,
     totalPhotos: 0,
+    savedCount: 0,
   }
 
   if (selectedBusiness) {
@@ -73,6 +74,7 @@ export default async function BusinessDashboard() {
       { data: monthOrders },
       { count: viewsCount },
       { count: photosCount },
+      { count: savedCount },
     ] = await Promise.all([
       supabase
         .from('products')
@@ -102,6 +104,10 @@ export default async function BusinessDashboard() {
         .from('business_photos')
         .select('*', { count: 'exact', head: true })
         .eq('business_id', selectedBusiness.id),
+      (supabase as any)
+        .from('user_favorites')
+        .select('*', { count: 'exact', head: true })
+        .eq('business_id', selectedBusiness.id),
     ])
 
     const monthRevenue = (monthOrders || []).reduce(
@@ -116,6 +122,7 @@ export default async function BusinessDashboard() {
       monthRevenue,
       monthViews: viewsCount || 0,
       totalPhotos: photosCount || 0,
+      savedCount: savedCount || 0,
     }
   }
 
@@ -234,7 +241,7 @@ export default async function BusinessDashboard() {
           )}
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-6 mb-8">
             <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
               <div className="flex items-center justify-between">
                 <div>
@@ -295,6 +302,20 @@ export default async function BusinessDashboard() {
                 </div>
                 <div className="w-10 h-10 sm:w-14 sm:h-14 bg-white/20 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                   👁️
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-4 sm:p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs sm:text-sm font-medium" style={{ color: 'var(--muted)' }}>Guardados</p>
+                  <p className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
+                    {stats.savedCount}
+                  </p>
+                </div>
+                <div className="w-10 h-10 sm:w-14 sm:h-14 bg-pink-500 rounded-lg flex items-center justify-center text-xl sm:text-2xl">
+                  🤍
                 </div>
               </div>
             </div>

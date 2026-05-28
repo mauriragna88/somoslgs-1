@@ -61,6 +61,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: post.title,
     description: post.excerpt || `Lee ${post.title} en el blog de SomosLagos`,
+    alternates: {
+      canonical: `https://www.somoslagos.com.mx/blog/${slug}`,
+    },
     openGraph: {
       title: `${post.title} | Blog SomosLagos`,
       description: post.excerpt || '',

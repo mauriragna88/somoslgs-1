@@ -23,9 +23,6 @@ export const metadata: Metadata = {
   verification: {
     google: '7oumsaVSEVPXWZ28wu1vd8Dgvr1H5aQ10aRl30KEp-Q',
   },
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
     type: 'website',
     locale: 'es_MX',
@@ -60,6 +57,26 @@ export default function RootLayout({
     <html lang="es">
       <head>
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'SomosLagos',
+              url: 'https://www.somoslagos.com.mx',
+              description: 'La plataforma digital de Lagos de Moreno',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: 'https://www.somoslagos.com.mx/buscar?q={search_term_string}',
+                },
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (
           <script
             async

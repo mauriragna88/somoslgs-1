@@ -34,6 +34,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${data.title} - ${priceText}`,
     description: data.description?.slice(0, 160) || data.title,
+    alternates: {
+      canonical: `https://www.somoslagos.com.mx/marketplace/${id}`,
+    },
     openGraph: {
       title: `${data.title} - ${priceText} | Marketplace SomosLagos`,
       description: data.description?.slice(0, 160) || data.title,

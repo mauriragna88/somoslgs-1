@@ -13,6 +13,9 @@ export const revalidate = 300
 export const metadata: Metadata = {
   title: 'Marketplace - Compra y Vende en Lagos de Moreno',
   description: 'Compra y vende artículos nuevos y usados en Lagos de Moreno, Jalisco. Electrónica, muebles, ropa, vehículos y más. Publica gratis.',
+  alternates: {
+    canonical: 'https://www.somoslagos.com.mx/marketplace',
+  },
   openGraph: {
     title: 'Marketplace - Compra y Vende | SomosLagos',
     description: 'Compra y vende artículos nuevos y usados en Lagos de Moreno.',
