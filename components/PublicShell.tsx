@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
+import ScrollToTop from '@/components/shared/ScrollToTop'
 
 const INTERNAL_PREFIXES = ['/admin', '/dashboard']
 
@@ -28,6 +29,7 @@ export default function PublicShell({ children }: { children: React.ReactNode })
       </div>
       <Footer />
       <WhatsAppFloat />
+      <ScrollToTop />
     </>
   )
 }

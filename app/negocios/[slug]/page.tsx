@@ -14,6 +14,8 @@ import FavoriteButton from '@/components/shared/FavoriteButton'
 import ViewTracker from '@/components/shared/ViewTracker'
 import ReviewsSection from '@/components/reviews/ReviewsSection'
 import MapDisplay from '@/components/maps/MapDisplay'
+import ShareButton from '@/components/shared/ShareButton'
+import BusinessCard from '@/components/shared/BusinessCard'
 import type { Review } from '@/types/reviews'
 
 export const revalidate = 1800
@@ -150,6 +152,20 @@ export default async function BusinessPage({ params }: PageProps) {
     .limit(10) as unknown as { data: Review[] | null }
 
   const initialReviews = reviewsData || []
+
+  // Similar businesses (same category, exclude current)
+  const similarBusinesses = business.category
+    ? await supabase
+        .from('businesses')
+        .select('id, name, slug, description, logo_url, cover_url, address, neighborhood, subscription_tier, is_featured, business_hours, rating, total_reviews, category:categories(id, name, icon)')
+        .eq('is_active', true)
+        .eq('category_id', business.category.id)
+        .neq('id', business.id)
+        .order('is_featured', { ascending: false })
+        .order('rating', { ascending: false })
+        .limit(3)
+        .then(({ data }) => data || [])
+    : []
 
   // JSON-LD structured data
   const DAY_NAMES: Record<keyof BusinessHours, string> = {
@@ -290,7 +306,7 @@ export default async function BusinessPage({ params }: PageProps) {
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex items-center gap-3 mb-2 flex-wrap">
                 <h1
                   className="font-[family-name:var(--font-display)] text-3xl font-bold"
                   style={{ color: 'var(--ink)' }}
@@ -299,6 +315,7 @@ export default async function BusinessPage({ params }: PageProps) {
                 </h1>
                 <OpenClosedBadge businessHours={business.business_hours} size="md" />
                 <FavoriteButton businessId={business.id} size="md" />
+                <ShareButton title={business.name} text={business.description || undefined} />
               </div>
               {business.description && (
                 <p className="text-[var(--muted)] mb-4">{business.description}</p>
@@ -597,6 +614,23 @@ export default async function BusinessPage({ params }: PageProps) {
         <div className="mt-8">
           <BannerDisplay placement="business_sidebar" forceHorizontal />
         </div>
+
+        {/* Similar Businesses */}
+        {similarBusinesses.length > 0 && (
+          <section className="mt-12 pt-10" style={{ borderTop: '1px solid var(--hairline)' }}>
+            <h2
+              className="font-[family-name:var(--font-display)] text-xl font-bold mb-6"
+              style={{ color: 'var(--ink)' }}
+            >
+              También en {business.category?.name}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {(similarBusinesses as any[]).map((b) => (
+                <BusinessCard key={b.id} business={b} showCategory={false} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Back Link */}
         <div className="mt-8 text-center">

@@ -28,6 +28,7 @@ interface Business {
   slug: string
   description: string | null
   logo_url: string | null
+  cover_url: string | null
   address: string | null
   neighborhood: string | null
   subscription_tier: string
@@ -129,7 +130,7 @@ export default async function CategoriaPage({ params }: PageProps) {
   const { data: rawBusinesses } = await supabase
     .from('businesses')
     .select(`
-      id, name, slug, description, logo_url, address, neighborhood,
+      id, name, slug, description, logo_url, cover_url, address, neighborhood,
       subscription_tier, is_featured, business_hours, rating, total_reviews,
       category:categories(id, name, icon)
     `)
