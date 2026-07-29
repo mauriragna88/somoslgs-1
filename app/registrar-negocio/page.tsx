@@ -15,12 +15,12 @@ export const metadata: Metadata = {
 }
 
 const benefits = [
-  { icon: '📱', title: 'Presencia Digital', desc: 'Tu negocio visible las 24 horas, los 7 dias de la semana para miles de personas' },
-  { icon: '💬', title: 'WhatsApp Directo', desc: 'Tus clientes te contactan al instante con un solo toque' },
-  { icon: '📍', title: 'Mapa Interactivo', desc: 'Ubicacion exacta con indicaciones para que te encuentren facil' },
-  { icon: '📸', title: 'Fotos y Galeria', desc: 'Muestra tus productos, local e instalaciones con fotos atractivas' },
-  { icon: '🕐', title: 'Horarios Visibles', desc: 'Tus clientes saben cuando estas abierto antes de visitarte' },
-  { icon: '⭐', title: 'Opiniones de Clientes', desc: 'Recibe resenas que generan confianza y atraen mas clientes' },
+  { icon: '🔍', title: 'Te encuentran', desc: 'Tu negocio visible en el directorio, mapa y busquedas locales de Lagos de Moreno' },
+  { icon: '💬', title: 'Te contactan', desc: 'WhatsApp directo, llamadas, catalogo y promociones — todo en un solo perfil' },
+  { icon: '📊', title: 'Te administras', desc: 'Herramientas creadas por DEVOGATEC para crecer tu presencia digital' },
+  { icon: '📱', title: 'Presencia Digital', desc: 'Perfil profesional las 24 horas, sin necesidad de pagina web propia' },
+  { icon: '📍', title: 'Mapa Interactivo', desc: 'Ubicacion exacta para que tus clientes te encuentren facilmente' },
+  { icon: '⭐', title: 'Opiniones', desc: 'Genera confianza con resenas reales de tus clientes' },
 ]
 
 const steps = [
@@ -67,6 +67,14 @@ export default async function RegistrarNegocioPage() {
     .is('parent_id', null)
     .order('display_order')
 
+  // Get real business count for display
+  const { count: businessCount } = await supabase
+    .from('businesses')
+    .select('id', { count: 'exact', head: true })
+    .eq('is_active', true) as { count: number | null }
+
+  const businessDisplayCount = Math.max(5, Math.floor((businessCount || 0) / 5) * 5)
+
   let isAdmin = false
   if (user) {
     const { data: profile } = await supabase
@@ -105,15 +113,15 @@ export default async function RegistrarNegocioPage() {
         <div className="absolute inset-0 bg-[url('/lagos-hero.jpg')] bg-cover bg-center opacity-15"></div>
         <div className="relative container mx-auto px-4 py-20 md:py-28 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
-            Pon tu negocio en el{' '}
+            Te ayudamos a ser encontrado<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent">
-              mapa digital
-            </span>{' '}
-            de Lagos
+              y a convertir visitas en clientes
+            </span>
           </h1>
           <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10">
-            Miles de personas buscan negocios como el tuyo en Lagos de Moreno.
-            Registrate <strong style={{ color: 'var(--gold)' }}>GRATIS</strong> y empieza a recibir clientes hoy.
+            Te encuentran en el directorio. Te contactan por WhatsApp.
+            Te administras con herramientas de DEVOGATEC.
+            Registrate <strong style={{ color: 'var(--gold)' }}>GRATIS</strong>.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -134,7 +142,7 @@ export default async function RegistrarNegocioPage() {
 
           <div className="flex flex-wrap justify-center gap-4 md:gap-8">
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
-              <p className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--gold)' }}>25+</p>
+              <p className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--gold)' }}>{businessDisplayCount}+</p>
               <p className="text-xs text-white/80 uppercase tracking-wider mt-1">Negocios</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
@@ -247,11 +255,12 @@ export default async function RegistrarNegocioPage() {
       <section className="py-20" style={{ background: 'linear-gradient(135deg, var(--ink) 0%, var(--coral) 100%)' }}>
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-            Tu negocio merece ser encontrado
+            Te ayudamos a ser encontrado<br />
+            y a convertir visitas en clientes
           </h2>
           <p className="text-lg text-white/80 max-w-xl mx-auto mb-10">
-            Unete a los negocios de Lagos de Moreno que ya estan creciendo con SomosLagos.
-            El registro es gratis y toma menos de 5 minutos.
+            Tres niveles de crecimiento: te encuentran, te contactan, te administras.
+            Empezar es gratis y toma menos de 5 minutos.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

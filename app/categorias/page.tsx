@@ -62,7 +62,7 @@ export default async function CategoriasPage() {
       ...cat,
       businessCount: countMap.get(cat.id) || 0,
     }))
-    .filter((cat) => cat.businessCount > 0)
+    .filter((cat) => cat.businessCount >= 2)
     .sort((a, b) => b.businessCount - a.businessCount)
 
   return (
@@ -173,6 +173,43 @@ export default async function CategoriasPage() {
                 </Link>
               )
             })}
+            {/* Otros servicios — fallback */}
+            <Link
+              href="/buscar"
+              className="group relative rounded-2xl p-5 flex flex-col items-center text-center transition-all duration-200 hover:scale-[1.04]"
+              style={{
+                background: 'rgba(255,253,248,0.78)',
+                backdropFilter: 'blur(14px)',
+                WebkitBackdropFilter: 'blur(14px)',
+                border: '1px solid rgba(31,41,55,0.07)',
+                boxShadow: '0 2px 20px rgba(31,41,55,0.07)',
+                borderLeft: `3px solid var(--muted)`,
+              }}
+            >
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-200"
+                style={{
+                  background: `color-mix(in srgb, var(--muted) 14%, var(--ivory))`,
+                }}
+              >
+                <span className="text-3xl leading-none">📋</span>
+              </div>
+              <h3
+                className="font-bold text-sm leading-snug mb-2 transition-colors duration-200"
+                style={{ color: 'var(--ink)' }}
+              >
+                Otros servicios
+              </h3>
+              <span
+                className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full"
+                style={{
+                  background: `color-mix(in srgb, var(--muted) 12%, transparent)`,
+                  color: 'var(--muted)',
+                }}
+              >
+                Ver todos
+              </span>
+            </Link>
           </div>
         ) : (
           /* ── Empty state ── */

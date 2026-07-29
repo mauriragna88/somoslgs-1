@@ -117,11 +117,10 @@ export default function Header() {
   }
 
   const NAV_LINKS = [
-    { label: 'Explorar', href: '/categorias' },
-    { label: 'Descubre Lagos', href: '/descubre' },
-    { label: 'Marketplace', href: '/marketplace' },
-    { label: 'Para negocios', href: '/registrar-negocio' },
-    { label: 'Planes', href: '/planes' },
+    { label: 'Buscar negocios', href: '/buscar' },
+    { label: 'Que hacer', href: '/que-hacer-en-lagos-de-moreno' },
+    { label: 'Comer en Lagos', href: '/categorias/comida' },
+    { label: 'Registrar mi negocio', href: '/registrar-negocio' },
   ]
 
   return (

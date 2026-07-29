@@ -16,6 +16,7 @@ import ReviewsSection from '@/components/reviews/ReviewsSection'
 import MapDisplay from '@/components/maps/MapDisplay'
 import ShareButton from '@/components/shared/ShareButton'
 import BusinessCard from '@/components/shared/BusinessCard'
+import ClaimBusinessButton from '@/components/business/ClaimBusinessButton'
 import type { Review } from '@/types/reviews'
 
 export const revalidate = 1800
@@ -88,6 +89,7 @@ interface PublicBusiness {
   facebook_url: string | null
   instagram_url: string | null
   tiktok_url: string | null
+  is_claimed: boolean | null
 }
 
 export default async function BusinessPage({ params }: PageProps) {
@@ -456,6 +458,17 @@ export default async function BusinessPage({ params }: PageProps) {
           <div className="bg-white rounded-[var(--r-lg)] shadow-[var(--shadow-soft)] p-6 mb-6">
             <BusinessHoursDisplay hours={business.business_hours} />
           </div>
+        </div>
+      )}
+
+      {/* Reclaim business CTA */}
+      {!business.is_claimed && (
+        <div className="container mx-auto px-4 py-4">
+          <ClaimBusinessButton
+            businessId={business.id}
+            businessName={business.name}
+            isClaimed={Boolean(business.is_claimed)}
+          />
         </div>
       )}
 

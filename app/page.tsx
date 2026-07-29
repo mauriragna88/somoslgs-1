@@ -91,16 +91,25 @@ function getCatColor(slug: string): string {
 export default async function HomePage() {
   const supabase = await createClient()
 
-  // Get category IDs that have at least one active business
+  // Get category IDs from active businesses (for category filtering)
   const { data: businessCats } = await supabase
     .from('businesses')
     .select('category_id')
     .eq('is_active', true)
     .not('category_id', 'is', null)
 
-  const activeCatIds = Array.from(new Set((businessCats || []).map((b: { category_id: string }) => b.category_id)))
+  // Count active businesses per category (for >=2 filter)
+  const catCountMap = new Map<string, number>()
+  ;(businessCats || []).forEach((b: { category_id: string }) => {
+    catCountMap.set(b.category_id, (catCountMap.get(b.category_id) || 0) + 1)
+  })
 
-  // Fetch only categories that have active businesses
+  // Only show categories with at least 2 active businesses
+  const activeCatIds = Array.from(catCountMap.entries())
+    .filter(([, count]) => count >= 2)
+    .map(([id]) => id)
+
+  // Fetch only categories that have >= 2 active businesses
   let categories: HomeCategory[] = []
   if (activeCatIds.length > 0) {
     const { data } = await supabase
@@ -113,7 +122,18 @@ export default async function HomePage() {
     categories = data || []
   }
 
+  // Total category count = parent categories with >= 2 businesses
   const totalCategories = activeCatIds.length
+
+  // Get the REAL total business count (not just those with category_id)
+  const { count: totalBusinessCount } = await supabase
+    .from('businesses')
+    .select('id', { count: 'exact', head: true })
+    .eq('is_active', true) as { count: number | null }
+
+  // Business count rounded down to nearest 5 (minimum 5)
+  const realBusinessCount = totalBusinessCount || 0
+  const businessDisplayCount = Math.max(5, Math.floor(realBusinessCount / 5) * 5)
 
   // Fetch featured/premium businesses (avanzado) with photos
   const { data: featuredBusinesses } = await supabase
@@ -175,10 +195,6 @@ export default async function HomePage() {
     .order('created_at', { ascending: false })
     .limit(4)
 
-  // Business count rounded down to nearest 5 minus 5
-  const totalBusinessCount = (businessCats || []).length
-  const businessDisplayCount = Math.max(5, Math.floor(totalBusinessCount / 5) * 5 - 5)
-
   const discoverBusinesses = (newestBusinesses || []).sort((a: BusinessCard, b: BusinessCard) => {
     const tierA = TIER_ORDER[a.subscription_tier] || 0
     const tierB = TIER_ORDER[b.subscription_tier] || 0
@@ -220,7 +236,7 @@ export default async function HomePage() {
     },
   }
 
-  const catCount = totalCategories || categories.length
+  const catCount = Math.max(1, totalCategories || categories.length)
 
   const faqJsonLd = {
     '@context': 'https://schema.org',
@@ -538,17 +554,17 @@ export default async function HomePage() {
                   Para Negocios
                 </span>
                 <h2 className="text-4xl md:text-5xl font-black text-pueblo-crema mb-6 leading-[0.95] tracking-tight">
-                  Haz crecer<br />
-                  <span className="text-pueblo-barroco">tu negocio</span>
+                  Te encontramos.<br />
+                  Te contactan.<br />
+                  <span className="text-pueblo-barroco">Te administras.</span>
                 </h2>
                 <ul className="space-y-3 mb-8">
                   {[
-                    'Perfil completo con fotos y descripción',
-                    'Aparece en búsquedas y mapa',
-                    'Recibe WhatsApp directo',
-                    'Catálogo de productos con Plan Pro',
-                    'Tus productos en el Chatbot IA',
-                    'Estadísticas de visitas y clics',
+                    'Te encuentran: directorio, mapa y perfil',
+                    'Te contactan: WhatsApp, llamada y catalogo',
+                    'Te administras: herramientas de DEVOGATEC',
+                    'Estadisticas de visitas y clics',
+                    'Catálogo y pedidos con plan Vende en Linea',
                   ].map(benefit => (
                     <li key={benefit} className="flex items-start gap-3 text-sm text-pueblo-crema/80">
                       <span className="text-pueblo-barroco mt-0.5 text-base">✓</span>
@@ -710,7 +726,7 @@ export default async function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto items-start mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-start mb-8">
             {/* Gratis */}
             <ScrollReveal direction="up" delay={0}>
               <div className="rounded-2xl p-6 flex flex-col bg-white border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
@@ -718,7 +734,7 @@ export default async function HomePage() {
                 <p className="text-4xl font-extrabold mb-0.5" style={{ color: 'var(--ink)' }}>$0</p>
                 <p className="text-xs text-gray-400 mb-6">para siempre</p>
                 <ul className="space-y-2.5 text-sm text-gray-600 flex-1 mb-6">
-                  {['Buscador y mapa', 'WhatsApp directo', 'Horarios', 'Hasta 3 fotos'].map(f => (
+                  {['Buscador y mapa', 'WhatsApp directo', 'Horarios y opiniones', 'Hasta 3 fotos', 'Reclamar negocio'].map(f => (
                     <li key={f} className="flex items-start gap-2">
                       <span className="text-gray-400 text-xs mt-0.5">✓</span> {f}
                     </li>
@@ -734,33 +750,10 @@ export default async function HomePage() {
               </div>
             </ScrollReveal>
 
-            {/* Emprendedor */}
+            {/* Negocio Destacado — FEATURED */}
             <ScrollReveal direction="up" delay={100}>
-              <div className="rounded-2xl p-6 flex flex-col bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" style={{ border: '1px solid rgba(255,107,53,0.3)' }}>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--coral)' }}>Emprendedor</p>
-                <p className="text-4xl font-extrabold mb-0.5" style={{ color: 'var(--ink)' }}>$60</p>
-                <p className="text-xs text-gray-400 mb-6">MXN/mes · $2/día</p>
-                <ul className="space-y-2.5 text-sm text-gray-600 flex-1 mb-6">
-                  {['Todo Gratis +', 'Portada personalizada', 'Redes sociales', 'Hasta 8 fotos'].map(f => (
-                    <li key={f} className="flex items-start gap-2">
-                      <span className="text-xs mt-0.5" style={{ color: 'var(--coral)' }}>✓</span> {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/planes"
-                  className="block text-center py-2.5 rounded-xl font-semibold text-sm transition-all hover:opacity-90"
-                  style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
-                >
-                  Ver detalles
-                </Link>
-              </div>
-            </ScrollReveal>
-
-            {/* Pro — FEATURED */}
-            <ScrollReveal direction="up" delay={200}>
               <div
-                className="rounded-2xl p-6 flex flex-col relative lg:scale-105 shadow-2xl"
+                className="rounded-2xl p-6 flex flex-col relative sm:scale-105 shadow-2xl"
                 style={{ background: 'var(--ink)', color: 'var(--cream)' }}
               >
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
@@ -768,14 +761,14 @@ export default async function HomePage() {
                     className="text-pueblo-noche text-[10px] font-bold px-4 py-1 rounded-full shadow-lg tracking-wide uppercase"
                     style={{ background: 'linear-gradient(to right, var(--gold), #EAB308)' }}
                   >
-                    Más Popular
+                    Mas Popular
                   </span>
                 </div>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--gold)' }}>Pro</p>
-                <p className="text-4xl font-extrabold mb-0.5 text-pueblo-crema">$120</p>
-                <p className="text-xs text-pueblo-crema/40 mb-6">MXN/mes · $4/día</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--gold)' }}>Destacado</p>
+                <p className="text-4xl font-extrabold mb-0.5 text-pueblo-crema">$149</p>
+                <p className="text-xs text-pueblo-crema/40 mb-6">MXN/mes · $1,490/año</p>
                 <ul className="space-y-2.5 text-sm text-pueblo-crema/80 flex-1 mb-6">
-                  {['Catálogo de productos', 'Pedidos en línea', 'Productos en Chatbot IA 🤖', 'Hasta 15 fotos'].map(f => (
+                  {['Todo Gratis +', 'Portada personalizada', 'Posicion destacada', 'Badge verificado', 'Estadisticas', 'Hasta 10 fotos'].map(f => (
                     <li key={f} className="flex items-start gap-2">
                       <span className="text-xs mt-0.5" style={{ color: 'var(--gold)' }}>✓</span> {f}
                     </li>
@@ -791,14 +784,14 @@ export default async function HomePage() {
               </div>
             </ScrollReveal>
 
-            {/* Avanzado */}
-            <ScrollReveal direction="up" delay={300}>
+            {/* Vende en Linea */}
+            <ScrollReveal direction="up" delay={200}>
               <div className="rounded-2xl p-6 flex flex-col bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" style={{ border: '1px solid rgba(20,184,166,0.3)' }}>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-3 text-teal-500">Avanzado</p>
-                <p className="text-4xl font-extrabold mb-0.5" style={{ color: 'var(--ink)' }}>$180</p>
-                <p className="text-xs text-gray-400 mb-6">MXN/mes · $6/día</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest mb-3 text-teal-500">Vende en Linea</p>
+                <p className="text-4xl font-extrabold mb-0.5" style={{ color: 'var(--ink)' }}>desde $299</p>
+                <p className="text-xs text-gray-400 mb-6">MXN/mes</p>
                 <ul className="space-y-2.5 text-sm text-gray-600 flex-1 mb-6">
-                  {['Destacado en búsquedas', 'Badge verificado ✅', 'Estadísticas detalladas', 'Hasta 20 fotos'].map(f => (
+                  {['Todo Destacado +', 'Catalogo de productos', 'Pedidos en linea', 'Pago o transferencia', 'Soporte productos', 'Hasta 20 fotos'].map(f => (
                     <li key={f} className="flex items-start gap-2">
                       <span className="text-xs mt-0.5 text-teal-500">✓</span> {f}
                     </li>

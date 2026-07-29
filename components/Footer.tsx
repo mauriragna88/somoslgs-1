@@ -7,15 +7,16 @@ import { usePathname } from 'next/navigation'
 const FOOTER_LINKS = {
   explorar: [
     { label: 'Buscar negocios', href: '/buscar' },
-    { label: 'Categorías', href: '/categorias' },
-    { label: 'Marketplace', href: '/marketplace' },
+    { label: 'Que hacer', href: '/que-hacer-en-lagos-de-moreno' },
+    { label: 'Comer en Lagos', href: '/categorias/comida' },
+    { label: 'Categorias', href: '/categorias' },
     { label: 'Descubre Lagos', href: '/descubre' },
-    { label: 'Qué Hacer', href: '/que-hacer-en-lagos-de-moreno' },
   ],
   negocios: [
-    { label: 'Registrar negocio', href: '/registrar-negocio' },
+    { label: 'Registrar mi negocio', href: '/registrar-negocio' },
     { label: 'Ver planes', href: '/planes' },
-    { label: 'Iniciar sesión', href: '/login' },
+    { label: 'Iniciar sesion', href: '/login' },
+    { label: 'Marketplace', href: '/marketplace' },
   ],
   legal: [
     { label: 'Términos y condiciones', href: '/terminos' },
@@ -29,7 +30,6 @@ const ZONAS = [
   { label: 'La Loma', slug: encodeURIComponent('La Loma') },
   { label: 'Obregón', slug: encodeURIComponent('Obregón') },
   { label: 'Jardines del Parque', slug: encodeURIComponent('Jardines del Parque') },
-  { label: 'Zona Centro', slug: encodeURIComponent('Zona Centro') },
   { label: 'Valle del Campestre', slug: encodeURIComponent('Valle del Campestre') },
   { label: '8 de Julio', slug: encodeURIComponent('8 de Julio') },
 ]
