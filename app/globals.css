@@ -742,6 +742,16 @@ body {
   animation: hero-scrolldown 1.8s ease-in-out infinite;
 }
 
+/* ── PremiumCard: borde con gradiente que rota ── */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin-border {
+  to { --angle: 360deg; }
+}
+
 /* Prefers reduced motion — disable all custom animations */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
