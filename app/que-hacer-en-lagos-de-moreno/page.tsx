@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
-import ZoneCard from '@/components/tourism/ZoneCard'
 import ActivityCard from '@/components/tourism/ActivityCard'
+import DestinationTicketCard from '@/components/tourism/DestinationTicketCard'
 import LagosVideoPlayer from '@/components/tourism/video/LagosVideoPlayer'
 import { ACTIVITIES, ZONES, TOURISM_SEO } from '@/lib/tourism'
 
@@ -305,7 +305,7 @@ export default async function QueHacerPage() {
 
       <div className="pueblo-divider mx-auto max-w-4xl" />
 
-      {/* ── Zonas Emblemáticas ── */}
+      {/* ── Zonas Emblemáticas — cards ticket premium (referencia Dribbble) ── */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -320,9 +320,9 @@ export default async function QueHacerPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {ZONES.map((zone) => (
-              <ZoneCard key={zone.id} zone={zone} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {ZONES.map((zone, i) => (
+              <DestinationTicketCard key={zone.id} zone={zone} index={i} />
             ))}
           </div>
         </div>
@@ -331,7 +331,7 @@ export default async function QueHacerPage() {
       <div className="pueblo-divider mx-auto max-w-4xl" />
 
       {/* ── Actividades y Experiencias ── */}
-      <section className="py-16">
+      <section id="actividades" className="py-16 scroll-mt-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-xs font-semibold rounded-full mb-4">
