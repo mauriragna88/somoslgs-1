@@ -21,15 +21,9 @@ import BlogCard from '@/components/blog/BlogCard'
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
 import SectionReveal from '@/components/animations/SectionReveal'
 import ScrollWrapper from '@/components/animations/ScrollWrapper'
+import { resolveBlogImage } from '@/lib/blog-image-fallbacks'
 
 export const revalidate = 3600
-
-const LOCAL_BLOG_IMAGE = '/blog/lagos-pueblo-magico.jpg'
-
-function resolveBlogImageUrl(imageUrl: string | null | undefined) {
-  if (!imageUrl) return imageUrl
-  return imageUrl.includes('images.unsplash.com') ? LOCAL_BLOG_IMAGE : imageUrl
-}
 
 interface HomeCategory {
   id: string
@@ -143,9 +137,9 @@ export default async function HomePage() {
     .order('published_at', { ascending: false })
     .limit(3)
 
-  const latestPosts = ((blogPosts as BlogPost[]) || []).map((post) => ({
+  const latestPosts = ((blogPosts as BlogPost[]) || []).map((post, index) => ({
     ...post,
-    featured_image_url: resolveBlogImageUrl(post.featured_image_url),
+    featured_image_url: resolveBlogImage(post.featured_image_url, index),
   }))
 
   // Fetch top reviews for testimonials section
