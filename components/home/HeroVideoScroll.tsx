@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import SearchForm from '@/components/home/SearchForm'
 import Link from 'next/link'
 
@@ -10,389 +11,320 @@ interface HeroVideoScrollProps {
   catCount: number
 }
 
+const EASE = [0.16, 1, 0.3, 1] as const
+
+/* Cards flotantes — aparecen en bucle (time-driven, no scroll) */
 const FLOATS = [
-  { emoji: '🌮', name: 'Las Antojadas', meta: 'Tacos · Centro', grad: 'linear-gradient(135deg,var(--coral),var(--gold))', appear: 0.15, pos: { top: '28%', left: '24px' } },
-  { emoji: '🏨', name: 'Casa Cantera', meta: 'Hotel · 4.8 ★', grad: 'linear-gradient(135deg,#22B8CF,#2F80ED)', appear: 0.30, pos: { top: '42%', right: '24px' } },
-  { emoji: '🍦', name: 'Neverías Don Pancho', meta: 'Postres · 4.9 ★', grad: 'linear-gradient(135deg,#22C55E,#22B8CF)', appear: 0.50, pos: { bottom: '28%', left: '24px' } },
-  { emoji: '💇‍♀️', name: 'Estudio Bugambilia', meta: 'Belleza · Centro', grad: 'linear-gradient(135deg,#D946EF,var(--coral))', appear: 0.68, pos: { bottom: '14%', right: '24px' } },
-  { emoji: '☕', name: 'Café Cantera 1563', meta: 'Brunch · Galeana', grad: 'linear-gradient(135deg,var(--gold),#C86B4A)', appear: 0.82, pos: { top: '60%', left: '24px' } },
+  { emoji: '🌮', name: 'Las Antojadas', meta: 'Tacos · Centro', grad: 'linear-gradient(135deg,var(--coral),var(--gold))', pos: { top: '30%', left: '24px' } },
+  { emoji: '🏨', name: 'Casa Cantera', meta: 'Hotel · 4.8 ★', grad: 'linear-gradient(135deg,#22B8CF,#2F80ED)', pos: { top: '42%', right: '24px' } },
+  { emoji: '🍦', name: 'Neverías Don Pancho', meta: 'Postres · 4.9 ★', grad: 'linear-gradient(135deg,#22C55E,#22B8CF)', pos: { bottom: '26%', left: '24px' } },
+  { emoji: '💇‍♀️', name: 'Estudio Bugambilia', meta: 'Belleza · Centro', grad: 'linear-gradient(135deg,#D946EF,var(--coral))', pos: { bottom: '16%', right: '24px' } },
+  { emoji: '☕', name: 'Café Cantera 1563', meta: 'Brunch · Galeana', grad: 'linear-gradient(135deg,var(--gold),#C86B4A)', pos: { top: '62%', left: '24px' } },
 ]
 
-const STEPS = ['Plaza', 'Comercios', 'Servicios', 'Conectados']
+function FloatingCard({ f, visible, delay }: { f: typeof FLOATS[number]; visible: boolean; delay: number }) {
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ opacity: 0, y: 18, scale: 0.9 }}
+          animate={{ opacity: 1, y: [0, -10, 0], scale: 1 }}
+          exit={{ opacity: 0, y: 12, scale: 0.95 }}
+          transition={{
+            opacity: { duration: 0.5, ease: EASE },
+            y: { duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay },
+            scale: { duration: 0.5, ease: EASE },
+          }}
+          className="hidden md:inline-flex"
+          style={{
+            position: 'absolute', zIndex: 4,
+            ...f.pos,
+            alignItems: 'center', gap: 10,
+            padding: '7px 14px 7px 7px',
+            background: 'rgba(255,253,248,0.92)',
+            backdropFilter: 'blur(14px) saturate(160%)',
+            WebkitBackdropFilter: 'blur(14px) saturate(160%)',
+            borderRadius: 999,
+            border: '1px solid rgba(255,253,248,0.55)',
+            boxShadow: '0 4px 14px -4px rgba(31,41,55,0.18), 0 12px 30px -16px rgba(31,41,55,0.25)',
+            fontSize: 13, color: 'var(--ink)',
+            whiteSpace: 'nowrap', pointerEvents: 'none',
+          }}
+        >
+          <span style={{
+            width: 26, height: 26, borderRadius: 999,
+            display: 'grid', placeItems: 'center',
+            color: 'white', fontSize: 13,
+            background: f.grad, flexShrink: 0,
+            boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.4)',
+          }}>
+            {f.emoji}
+          </span>
+          <div>
+            <div style={{ fontFamily: 'var(--body)', fontWeight: 600, fontSize: 13, lineHeight: 1 }}>{f.name}</div>
+            <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>{f.meta}</div>
+          </div>
+          <span className="hero-pulse-dot" />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
 
 export default function HeroVideoScroll({ categories, businessCount, catCount }: HeroVideoScrollProps) {
-  const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [progress, setProgress] = useState(0)
   const [videoReady, setVideoReady] = useState(false)
   const [loadPct, setLoadPct] = useState(0)
+  const [visibleCards, setVisibleCards] = useState<boolean[]>(FLOATS.map(() => false))
 
-  const state = useRef({ currentTime: 0, targetTime: 0, seeking: false, pendingSeek: null as number | null, duration: 1, ready: false })
-
+  // Preload video y reproducirlo en loop (autoplay)
   useEffect(() => {
-    const video = videoRef.current!
-    const section = sectionRef.current!
-    if (!video || !section) return
-    const s = state.current
+    const video = videoRef.current
+    if (!video) return
 
-    const isMobile = window.matchMedia('(max-width: 767px)').matches
-
-    async function preload() {
-      video.src = '/assets/lagos-city-build.mp4'
-      video.preload = 'auto'
-
-      const onProgress = () => {
-        if (video.buffered.length > 0 && video.duration) {
-          setLoadPct(video.buffered.end(video.buffered.length - 1) / video.duration)
-        }
+    const onProgress = () => {
+      if (video.buffered.length > 0 && video.duration) {
+        setLoadPct(video.buffered.end(video.buffered.length - 1) / video.duration)
       }
-      video.addEventListener('progress', onProgress)
-
-      await new Promise<void>(resolve => {
-        if (video.readyState >= 4) { resolve(); return }
-        const onReady = () => { video.removeEventListener('canplaythrough', onReady); resolve() }
-        video.addEventListener('canplaythrough', onReady)
-      })
-
-      video.removeEventListener('progress', onProgress)
-      s.duration = video.duration || 1
-      s.ready = true
+    }
+    video.addEventListener('progress', onProgress)
+    const onReady = () => {
       setVideoReady(true)
       setLoadPct(1)
-
-      if (isMobile) {
-        // Mobile: autoplay normal — el armado se ve solo sin lag de seek
-        video.loop = true
-        video.play().catch(() => {})
-      } else {
-        // Desktop: unlock seeking for scroll sync
-        const p = video.play()
-        if (p) p.then(() => video.pause()).catch(() => {})
-      }
+      video.loop = true
+      video.play().catch(() => {})
     }
-    preload()
-
-    // Mobile: no scroll sync — salir aquí
-    if (isMobile) return
-
-    // Desktop: scroll → target time
-    function updateTarget() {
-      const rect = section.getBoundingClientRect()
-      const totalScroll = section.offsetHeight - window.innerHeight
-      const p = Math.max(0, Math.min(1, (-rect.top) / totalScroll))
-      setProgress(p)
-      s.targetTime = p * Math.max(0, s.duration - 0.08)
-    }
-    window.addEventListener('scroll', updateTarget, { passive: true })
-    window.addEventListener('resize', updateTarget)
-    updateTarget()
-
-    // rAF lerp
-    let rafId: number
-    function tick() {
-      rafId = requestAnimationFrame(tick)
-      if (!s.ready) return
-      const diff = s.targetTime - s.currentTime
-      if (Math.abs(diff) < 0.005) return
-      s.currentTime += diff * 0.22
-      if (!s.seeking) {
-        try { s.seeking = true; video.currentTime = s.currentTime } catch { s.seeking = false }
-      } else {
-        s.pendingSeek = s.currentTime
-      }
-    }
-    rafId = requestAnimationFrame(tick)
-
-    video.addEventListener('seeking', () => { s.seeking = true })
-    video.addEventListener('seeked', () => {
-      s.seeking = false
-      if (s.pendingSeek !== null) {
-        const t = s.pendingSeek; s.pendingSeek = null
-        try { s.seeking = true; video.currentTime = t } catch { s.seeking = false }
-      }
-    })
+    if (video.readyState >= 4) onReady()
+    else video.addEventListener('canplaythrough', onReady)
 
     return () => {
-      cancelAnimationFrame(rafId)
-      window.removeEventListener('scroll', updateTarget)
-      window.removeEventListener('resize', updateTarget)
+      video.removeEventListener('progress', onProgress)
+      video.removeEventListener('canplaythrough', onReady)
     }
   }, [])
 
-  const activeStep = Math.min(STEPS.length - 1, Math.floor(progress * STEPS.length))
+  // Cards flotantes en bucle: aparecen una a una, luego se ocultan y reinician
+  useEffect(() => {
+    let i = 0
+    // Mostrar la primera al cargar
+    const showNext = () => {
+      if (i >= FLOATS.length) {
+        // Ciclo completo → reiniciar
+        setVisibleCards(FLOATS.map(() => false))
+        setTimeout(() => { i = 0; showNext() }, 1600)
+        return
+      }
+      setVisibleCards(prev => prev.map((v, idx) => (idx === i ? true : v)))
+      i++
+      setTimeout(showNext, 2400)
+    }
+    const start = setTimeout(showNext, 900)
+    return () => clearTimeout(start)
+  }, [])
 
   return (
-    /* Mobile: 100vh (hero normal). Desktop: 480vh (scroll tunnel) */
     <section
-      ref={sectionRef}
-      className="h-screen md:h-[480vh]"
-      style={{ position: 'relative', background: 'var(--ivory)' }}
+      className="relative h-screen overflow-hidden"
+      style={{ background: 'linear-gradient(180deg,#FFF6E5 0%,#FFE9C7 60%,#FFD7A8 100%)' }}
     >
-      <div
+      {/* Video de fondo (loop) */}
+      <video
+        ref={videoRef}
+        muted
+        playsInline
+        preload="auto"
+        poster="/tourism/panoramica-lagos.jpg"
+        tabIndex={-1}
         style={{
-          position: 'sticky', top: 0, height: '100vh', overflow: 'hidden',
-          background: 'linear-gradient(180deg,#FFF6E5 0%,#FFE9C7 60%,#FFD7A8 100%)',
+          position: 'absolute', inset: 0, width: '100%', height: '100%',
+          objectFit: 'cover', filter: 'saturate(1.05) contrast(1.02)', zIndex: 1,
         }}
       >
-        {/* Video */}
-        <video
-          ref={videoRef}
-          muted
-          playsInline
-          preload="auto"
-          poster="/tourism/panoramica-lagos.jpg"
-          tabIndex={-1}
-          style={{
-            position: 'absolute', inset: 0, width: '100%', height: '100%',
-            objectFit: 'cover', filter: 'saturate(1.05) contrast(1.02)', zIndex: 1,
-          }}
-        />
+        <source src="/assets/lagos-city-build.mp4" type="video/mp4" />
+      </video>
 
-        {/* Cinematic tint */}
+      {/* Cinematic tint */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 2,
+        background: `
+          radial-gradient(ellipse 80% 60% at 50% 100%, rgba(31,41,55,0.55) 0%, rgba(31,41,55,0) 60%),
+          radial-gradient(ellipse 100% 60% at 50% 0%, rgba(255,244,220,0.35) 0%, rgba(255,244,220,0) 60%)
+        `,
+      }} />
+
+      {/* Loading overlay */}
+      <div
+        style={{
+          position: 'absolute', inset: 0, zIndex: 5,
+          display: 'grid', placeItems: 'center',
+          background: 'linear-gradient(180deg,#FFF6E5 0%,#FFE9C7 60%,#FFD7A8 100%)',
+          opacity: videoReady ? 0 : 1,
+          pointerEvents: videoReady ? 'none' : 'auto',
+          transition: 'opacity 0.6s ease',
+        }}
+      >
         <div style={{
-          position: 'absolute', inset: 0, zIndex: 2,
-          background: `
-            radial-gradient(ellipse 80% 60% at 50% 100%, rgba(31,41,55,0.55) 0%, rgba(31,41,55,0) 60%),
-            radial-gradient(ellipse 100% 60% at 50% 0%, rgba(255,244,220,0.35) 0%, rgba(255,244,220,0) 60%)
-          `,
-        }} />
-
-        {/* Loading overlay */}
-        <div
-          style={{
-            position: 'absolute', inset: 0, zIndex: 5,
-            display: 'grid', placeItems: 'center',
-            background: 'linear-gradient(180deg,#FFF6E5 0%,#FFE9C7 60%,#FFD7A8 100%)',
-            opacity: videoReady ? 0 : 1,
-            pointerEvents: videoReady ? 'none' : 'auto',
-            transition: 'opacity 0.6s ease',
-          }}
-        >
-          <div style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18,
-            padding: '28px 32px',
-            background: 'rgba(255,253,248,0.86)',
-            borderRadius: 20,
-            boxShadow: '0 10px 28px -8px rgba(31,41,55,0.2)',
-          }}>
-            <div className="hero-spinner" />
-            <span style={{ fontFamily: 'var(--display)', fontWeight: 600, fontSize: 15, color: 'var(--ink)' }}>
-              Cargando Lagos<span className="hero-dots"><span>.</span><span>.</span><span>.</span></span>
-            </span>
-            <div style={{ width: 220, height: 4, borderRadius: 999, background: 'rgba(31,41,55,0.08)', overflow: 'hidden' }}>
-              <div style={{
-                height: '100%',
-                background: 'linear-gradient(90deg, var(--coral), var(--gold))',
-                transformOrigin: 'left center',
-                transform: `scaleX(${loadPct})`,
-                transition: 'transform 0.25s ease',
-              }} />
-            </div>
-          </div>
-        </div>
-
-        {/* Main content */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 3,
-          display: 'flex', flexDirection: 'column',
-          padding: '110px 24px 56px',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18,
+          padding: '28px 32px',
+          background: 'rgba(255,253,248,0.86)',
+          borderRadius: 20,
+          boxShadow: '0 10px 28px -8px rgba(31,41,55,0.2)',
         }}>
-          <div style={{
-            flex: 1, display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center', textAlign: 'center',
-          }}>
-            {/* Eyebrow */}
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: 10,
-              padding: '8px 14px 8px 8px',
-              background: 'rgba(255,255,255,0.85)',
-              color: 'var(--ink)', borderRadius: 999,
-              fontSize: 13, fontWeight: 500,
-              boxShadow: '0 2px 0 rgba(31,41,55,0.06), 0 10px 24px -10px rgba(31,41,55,0.2)',
-              marginBottom: 22,
-            }}>
-              <span style={{
-                width: 26, height: 26, borderRadius: 999,
-                background: 'var(--coral)', color: 'white',
-                display: 'grid', placeItems: 'center', fontSize: 14, flexShrink: 0,
-              }}>✦</span>
-              Hecho para Lagos de Moreno, Jalisco
-            </span>
-
-            {/* Headline — más compacto en mobile */}
-            <h1 style={{
-              fontFamily: 'var(--display)', fontWeight: 700,
-              fontSize: 'clamp(38px, 7vw, 104px)',
-              lineHeight: 0.96, letterSpacing: '-0.035em',
-              color: 'white', margin: '0 0 16px',
-              textShadow: '0 4px 32px rgba(31,41,55,0.35)',
-              maxWidth: '14ch',
-            }}>
-              Todo Lagos{' '}
-              <em style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 400, color: '#FFE7C2', letterSpacing: '-0.01em' }}>
-                vive
-              </em>
-              <br />en un solo lugar
-            </h1>
-
-            <p style={{
-              fontSize: 'clamp(14px, 1.4vw, 19px)',
-              color: 'rgba(255,253,248,0.92)',
-              maxWidth: '62ch',
-              textShadow: '0 2px 16px rgba(31,41,55,0.4)',
-              marginBottom: 28,
-            }}>
-              {businessCount}+ negocios · {catCount} categorías · Pueblo Mágico
-            </p>
-
-            {/* Search */}
-            <div style={{ width: 'min(880px, 100%)', marginBottom: 20 }}>
-              <SearchForm />
-            </div>
-
-            {/* Trust signals — no clickeable, solo social proof */}
+          <div className="hero-spinner" />
+          <span style={{ fontFamily: 'var(--display)', fontWeight: 600, fontSize: 15, color: 'var(--ink)' }}>
+            Cargando Lagos<span className="hero-dots"><span>.</span><span>.</span><span>.</span></span>
+          </span>
+          <div style={{ width: 220, height: 4, borderRadius: 999, background: 'rgba(31,41,55,0.08)', overflow: 'hidden' }}>
             <div style={{
-              display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center',
-            }}>
-              {[
-                { dot: '#22C55E', label: 'Negocios abiertos ahora' },
-                { dot: 'var(--gold)', label: '4.8 ★ promedio' },
-                { dot: 'var(--coral)', label: 'Pueblo Mágico · Jalisco' },
-              ].map((item, i) => (
-                <span
-                  key={i}
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 7,
-                    fontSize: 13, color: 'rgba(255,253,248,0.78)',
-                    fontWeight: 500, letterSpacing: '0.01em',
-                    textShadow: '0 1px 8px rgba(31,41,55,0.5)',
-                    pointerEvents: 'none', userSelect: 'none',
-                  }}
-                >
-                  <span style={{
-                    width: 7, height: 7, borderRadius: '50%',
-                    background: item.dot, flexShrink: 0,
-                    boxShadow: `0 0 6px ${item.dot}`,
-                  }} />
-                  {item.label}
-                </span>
-              ))}
-            </div>
+              height: '100%',
+              background: 'linear-gradient(90deg, var(--coral), var(--gold))',
+              transformOrigin: 'left center',
+              transform: `scaleX(${loadPct})`,
+              transition: 'transform 0.25s ease',
+            }} />
           </div>
         </div>
+      </div>
 
-        {/* Floating cards — desktop only (en mobile tapan el contenido) */}
-        {FLOATS.map((f, i) => (
-          <div
-            key={i}
-            className="hidden md:inline-flex"
-            style={{
-              position: 'absolute', zIndex: 4,
-              ...f.pos,
-              alignItems: 'center', gap: 10,
-              padding: '7px 14px 7px 7px',
-              background: 'rgba(255,253,248,0.92)',
-              backdropFilter: 'blur(14px) saturate(160%)',
-              WebkitBackdropFilter: 'blur(14px) saturate(160%)',
-              borderRadius: 999,
-              border: '1px solid rgba(255,253,248,0.55)',
-              boxShadow: '0 4px 14px -4px rgba(31,41,55,0.18), 0 12px 30px -16px rgba(31,41,55,0.25)',
-              fontSize: 13, color: 'var(--ink)',
-              opacity: progress >= f.appear ? 1 : 0,
-              transform: progress >= f.appear ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.96)',
-              transition: 'opacity 0.6s cubic-bezier(.2,.7,.2,1), transform 0.6s cubic-bezier(.2,.7,.2,1)',
-              whiteSpace: 'nowrap', pointerEvents: 'none',
-            }}
-          >
+      {/* Main content */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 3,
+        display: 'flex', flexDirection: 'column',
+        padding: '110px 24px 56px',
+      }}>
+        <div style={{
+          flex: 1, display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+        }}>
+          {/* Eyebrow */}
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 10,
+            padding: '8px 14px 8px 8px',
+            background: 'rgba(255,255,255,0.85)',
+            color: 'var(--ink)', borderRadius: 999,
+            fontSize: 13, fontWeight: 500,
+            boxShadow: '0 2px 0 rgba(31,41,55,0.06), 0 10px 24px -10px rgba(31,41,55,0.2)',
+            marginBottom: 22,
+          }}>
             <span style={{
               width: 26, height: 26, borderRadius: 999,
-              display: 'grid', placeItems: 'center',
-              color: 'white', fontSize: 13,
-              background: f.grad, flexShrink: 0,
-              boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.4)',
-            }}>
-              {f.emoji}
-            </span>
-            <div>
-              <div style={{ fontFamily: 'var(--body)', fontWeight: 600, fontSize: 13, lineHeight: 1 }}>{f.name}</div>
-              <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>{f.meta}</div>
-            </div>
-            <span className="hero-pulse-dot" />
-          </div>
-        ))}
-
-        {/* Progress steps — desktop only */}
-        <div
-          className="hidden md:flex"
-          style={{
-            position: 'absolute', zIndex: 4,
-            right: 28, top: '50%', transform: 'translateY(-50%)',
-            flexDirection: 'column', gap: 14,
-            color: 'rgba(255,253,248,0.95)',
-            fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase',
-          }}
-        >
-          {STEPS.map((step, i) => (
-            <div key={step} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              opacity: i <= activeStep ? 1 : 0.35,
-              transition: 'opacity 0.4s',
-            }}>
-              <span style={{
-                width: 6, height: 6, borderRadius: 999, flexShrink: 0,
-                background: i <= activeStep ? 'var(--coral)' : 'rgba(255,253,248,0.4)',
-                transition: 'background 0.4s',
-              }} />
-              {step}
-            </div>
-          ))}
-        </div>
-
-        {/* Scroll hint — desktop only */}
-        <div
-          className="hidden md:flex"
-          style={{
-            position: 'absolute', bottom: 14, left: '50%', transform: 'translateX(-50%)',
-            zIndex: 4, flexDirection: 'column', alignItems: 'center', gap: 6,
-            color: 'rgba(255,253,248,0.86)', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase',
-            pointerEvents: 'none',
-          }}
-        >
-          <span>Scroll para descubrir</span>
-          <span className="hero-scroll-line" />
-        </div>
-
-        {/* Mobile CTA — reemplaza el scroll hint */}
-        <div
-          className="flex md:hidden"
-          style={{
-            position: 'absolute', bottom: 28, left: '50%', transform: 'translateX(-50%)',
-            zIndex: 4, flexDirection: 'column', alignItems: 'center', gap: 10,
-            pointerEvents: 'auto',
-          }}
-        >
-          <Link
-            href="/descubre"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '13px 28px',
-              background: 'var(--coral)',
-              color: 'white', borderRadius: 999,
-              fontSize: 15, fontWeight: 700,
-              textDecoration: 'none',
-              boxShadow: '0 8px 24px rgba(255,107,53,0.4)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            Explorar negocios
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-          <span style={{ fontSize: 11, color: 'rgba(255,253,248,0.6)', letterSpacing: '0.12em' }}>
-            {businessCount}+ negocios en Lagos
+              background: 'var(--coral)', color: 'white',
+              display: 'grid', placeItems: 'center', fontSize: 14, flexShrink: 0,
+            }}>✦</span>
+            Hecho para Lagos de Moreno, Jalisco
           </span>
+
+          {/* Headline */}
+          <h1 style={{
+            fontFamily: 'var(--display)', fontWeight: 700,
+            fontSize: 'clamp(38px, 7vw, 92px)',
+            lineHeight: 0.96, letterSpacing: '-0.035em',
+            color: 'white', margin: '0 0 16px',
+            textShadow: '0 4px 32px rgba(31,41,55,0.35)',
+            maxWidth: '14ch',
+          }}>
+            Todo Lagos{' '}
+            <em style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 400, color: '#FFE7C2', letterSpacing: '-0.01em' }}>
+              vive
+            </em>
+            <br />en un solo lugar
+          </h1>
+
+          <p style={{
+            fontSize: 'clamp(14px, 1.4vw, 19px)',
+            color: 'rgba(255,253,248,0.92)',
+            maxWidth: '62ch',
+            textShadow: '0 2px 16px rgba(31,41,55,0.4)',
+            marginBottom: 28,
+          }}>
+            {businessCount}+ negocios · {catCount} categorías · Pueblo Mágico
+          </p>
+
+          {/* Search */}
+          <div style={{ width: 'min(880px, 100%)', marginBottom: 20 }}>
+            <SearchForm />
+          </div>
+
+          {/* Trust signals */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center',
+          }}>
+            {[
+              { dot: '#22C55E', label: 'Negocios abiertos ahora' },
+              { dot: 'var(--gold)', label: '4.8 ★ promedio' },
+              { dot: 'var(--coral)', label: 'Pueblo Mágico · Jalisco' },
+            ].map((item, i) => (
+              <span
+                key={i}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 7,
+                  fontSize: 13, color: 'rgba(255,253,248,0.78)',
+                  fontWeight: 500, letterSpacing: '0.01em',
+                  textShadow: '0 1px 8px rgba(31,41,55,0.5)',
+                  pointerEvents: 'none', userSelect: 'none',
+                }}
+              >
+                <span style={{
+                  width: 7, height: 7, borderRadius: '50%',
+                  background: item.dot, flexShrink: 0,
+                  boxShadow: `0 0 6px ${item.dot}`,
+                }} />
+                {item.label}
+              </span>
+            ))}
+          </div>
         </div>
+      </div>
+
+      {/* Floating cards — bucle (desktop only) */}
+      {FLOATS.map((f, i) => (
+        <FloatingCard key={i} f={f} visible={visibleCards[i]} delay={i * 0.9} />
+      ))}
+
+      {/* Scroll hint */}
+      <div
+        className="hidden md:flex"
+        style={{
+          position: 'absolute', bottom: 14, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 4, flexDirection: 'column', alignItems: 'center', gap: 6,
+          color: 'rgba(255,253,248,0.86)', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase',
+          pointerEvents: 'none',
+        }}
+      >
+        <span>Descubre Lagos</span>
+        <span className="hero-scroll-line" />
+      </div>
+
+      {/* Mobile CTA */}
+      <div
+        className="flex md:hidden"
+        style={{
+          position: 'absolute', bottom: 28, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 4, flexDirection: 'column', alignItems: 'center', gap: 10,
+          pointerEvents: 'auto',
+        }}
+      >
+        <Link
+          href="/descubre"
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            padding: '13px 28px',
+            background: 'var(--coral)',
+            color: 'white', borderRadius: 999,
+            fontSize: 15, fontWeight: 700,
+            textDecoration: 'none',
+            boxShadow: '0 8px 24px rgba(255,107,53,0.4)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Explorar negocios
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
+        <span style={{ fontSize: 11, color: 'rgba(255,253,248,0.6)', letterSpacing: '0.12em' }}>
+          {businessCount}+ negocios en Lagos
+        </span>
       </div>
     </section>
   )
