@@ -142,12 +142,19 @@ function OpenNowBadge({ businessHours }: { businessHours: BusinessHours | null }
   if (!hasCompleteBusinessHours(businessHours)) return null
   return (
     <span
-      className="inline-flex items-center gap-1.5 text-[11px] font-bold text-green-600"
-      style={{ letterSpacing: '0.02em' }}
+      className="inline-flex items-center gap-1.5 text-[10px] font-bold text-green-700 px-2 py-1 rounded-full"
+      style={{
+        background: 'rgba(255,255,255,0.85)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        border: '1px solid rgba(255,255,255,0.5)',
+        boxShadow: '0 2px 8px rgba(31,41,55,0.15)',
+        letterSpacing: '0.02em',
+      }}
     >
-      <span className="relative flex h-2 w-2">
+      <span className="relative flex h-1.5 w-1.5">
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
       </span>
       Abierto ahora
     </span>
@@ -188,152 +195,200 @@ function QuickActions({ phone, address, name }: { phone?: string | null; address
   )
 }
 
-/* ── Variante principal con imagen: glass + tilt + acciones ── */
+/* ── Variante principal: card ticket premium (estilo Dribbble) ── */
 function MediaCard({ business, showCategory }: { business: BusinessCardProps['business']; showCategory: boolean }) {
   const router = useRouter()
   const heroImage = getDisplayImage(business)
   const [hovered, setHovered] = useState(false)
 
+  /* Código de 3 letras estilo aeropuerto desde el slug del negocio */
+  const bizCode = (business.slug || business.name)
+    .replace(/[^a-z0-9]/gi, '')
+    .slice(0, 3)
+    .toUpperCase() || 'LAG'
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24, scale: 0.96 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="h-full"
     >
-      <Tilt3D>
+      <Tilt3D className="h-full">
+        {/* Card exterior — doble marco sutil tipo ticket */}
         <div
-          className="relative overflow-hidden rounded-2xl cursor-pointer"
+          className="relative rounded-[24px] p-[6px] cursor-pointer h-full"
           style={{
-            background: 'rgba(255,255,255,0.72)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid rgba(31,41,55,0.08)',
+            background: '#FFFFFF',
+            border: '1px solid rgba(31,41,55,0.06)',
             boxShadow: hovered
-              ? '0 24px 60px -12px rgba(31,41,55,0.22), 0 4px 16px rgba(31,41,55,0.06)'
-              : '0 8px 30px -8px rgba(31,41,55,0.12), 0 2px 8px rgba(31,41,55,0.04)',
+              ? '0 24px 48px -12px rgba(31,41,55,0.18), 0 4px 12px rgba(31,41,55,0.06)'
+              : '0 12px 32px -8px rgba(31,41,55,0.10), 0 2px 8px rgba(31,41,55,0.04)',
             transition: 'box-shadow 400ms cubic-bezier(0.22,1,0.36,1)',
           }}
           onClick={() => router.push(`/negocios/${business.slug}`)}
         >
-          {/* Imagen */}
-          <div className="relative h-52 overflow-hidden" style={{ transform: 'translateZ(0)' }}>
-            {heroImage ? (
-              <Image
-                src={heroImage}
-                alt={business.name}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                className="object-cover transition-transform duration-500"
-                style={{ transform: hovered ? 'scale(1.05)' : 'scale(1)' }}
-              />
-            ) : business.logo_url ? (
-              <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--coral), var(--gold))' }}>
-                <div className="w-20 h-20 rounded-2xl overflow-hidden relative shadow-lg">
-                  <Image src={business.logo_url} alt={business.name} fill sizes="80px" className="object-cover" />
+          {/* Marco interior */}
+          <div className="relative rounded-[18px] p-[8px] h-full" style={{ border: '1px solid rgba(31,41,55,0.05)' }}>
+            {/* 1. Imagen casi cuadrada */}
+            <div className="relative overflow-hidden rounded-[13px]" style={{ aspectRatio: '1 / 1' }}>
+              {heroImage ? (
+                <motion.div className="absolute inset-0" animate={{ scale: hovered ? 1.04 : 1 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+                  <Image
+                    src={heroImage}
+                    alt={business.name}
+                    fill
+                    sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 22vw"
+                    className="object-cover"
+                  />
+                </motion.div>
+              ) : business.logo_url ? (
+                <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--coral), var(--gold))' }}>
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden relative shadow-lg">
+                    <Image src={business.logo_url} alt={business.name} fill sizes="80px" className="object-cover" />
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--coral), var(--gold))' }}>
-                <span className="text-4xl text-white font-bold opacity-80">{business.name[0]}</span>
-              </div>
-            )}
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--coral), var(--gold))' }}>
+                  <span className="text-4xl text-white font-bold opacity-80">{business.name[0]}</span>
+                </div>
+              )}
 
-            {/* Degradado inferior para acciones */}
-            <div
-              className="absolute inset-x-0 bottom-0 h-24 pointer-events-none transition-opacity duration-300"
-              style={{
-                background: 'linear-gradient(to top, rgba(15,23,42,0.55) 0%, rgba(15,23,42,0.15) 60%, transparent 100%)',
-                opacity: hovered ? 1 : 0,
-              }}
-            />
-
-            {/* Badge tier */}
-            <span
-              className="absolute top-3 right-14 z-10 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide"
-              style={{
-                background: business.subscription_tier === 'avanzado'
-                  ? 'linear-gradient(to right, var(--gold), var(--terracotta))'
-                  : 'rgba(20,184,166,0.9)',
-                color: '#111111',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-              }}
-            >
-              {business.subscription_tier === 'avanzado' ? '✦ Premium' : 'Pro'}
-            </span>
-
-            <div className="absolute top-3 right-3 z-10" onClick={e => e.stopPropagation()}>
+              {/* Overlay inferior sutil */}
               <div
-                className="w-9 h-9 rounded-full flex items-center justify-center"
+                className="absolute inset-x-0 bottom-0 pointer-events-none"
                 style={{
-                  background: 'rgba(255,255,255,0.25)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  border: '1px solid rgba(255,255,255,0.4)',
+                  height: '32%',
+                  background: 'linear-gradient(to top, rgba(15,15,15,0.30) 0%, transparent 100%)',
+                }}
+              />
+
+              {/* Badge tier */}
+              <span
+                className="absolute top-2.5 left-2.5 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wide"
+                style={{
+                  background: business.subscription_tier === 'avanzado'
+                    ? 'linear-gradient(to right, var(--gold), var(--terracotta))'
+                    : 'rgba(20,184,166,0.92)',
+                  color: '#111111',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                 }}
               >
-                <FavoriteButton businessId={business.id} />
+                {business.subscription_tier === 'avanzado' ? '✦ Premium' : 'Pro'}
+              </span>
+
+              {/* Favorito glassmorphism */}
+              <div className="absolute top-2.5 right-2.5 z-10" onClick={e => e.stopPropagation()}>
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center"
+                  style={{
+                    background: 'rgba(255,255,255,0.28)',
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255,255,255,0.45)',
+                    boxShadow: '0 2px 10px rgba(31,41,55,0.12)',
+                  }}
+                >
+                  <FavoriteButton businessId={business.id} />
+                </div>
               </div>
+
+              <RatingBadge rating={business.rating} count={business.total_reviews} />
+
+              {/* Abierto ahora — chip inferior izquierdo */}
+              {hasCompleteBusinessHours(business.business_hours) && (
+                <div className="absolute bottom-2.5 left-2.5 z-10" onClick={e => e.stopPropagation()}>
+                  <OpenNowBadge businessHours={business.business_hours} />
+                </div>
+              )}
+
+              {/* Quick actions slide-up */}
+              <motion.div
+                initial={false}
+                animate={{ y: hovered ? 0 : 12, opacity: hovered ? 1 : 0 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-x-0 bottom-0"
+              >
+                <QuickActions phone={business.phone} address={business.address} name={business.name} />
+              </motion.div>
             </div>
 
-            <RatingBadge rating={business.rating} count={business.total_reviews} />
-
-            {/* Quick actions slide-up */}
-            <motion.div
-              initial={false}
-              animate={{ y: hovered ? 0 : 12, opacity: hovered ? 1 : 0 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-x-0 bottom-0"
-            >
-              <QuickActions phone={business.phone} address={business.address} name={business.name} />
-            </motion.div>
-          </div>
-
-          {/* Cuerpo */}
-          <div className="p-4">
-            {showCategory && business.category && (
-              <div className="text-[11px] font-semibold mb-1" style={{ color: 'var(--coral)' }}>
-                {business.category.icon} {business.category.name}
-              </div>
-            )}
+            {/* 2. Título grande NEGRO */}
             <h3
-              className="font-extrabold text-lg leading-tight tracking-tight truncate"
-              style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}
+              className="mt-3 px-1 font-extrabold leading-tight truncate"
+              style={{
+                fontFamily: 'var(--display)',
+                fontSize: '1.15rem',
+                letterSpacing: '-0.015em',
+                color: '#111111',
+              }}
             >
               {business.name}
             </h3>
 
-            {business.description && (
-              <p className="text-[13px] line-clamp-2 mt-1" style={{ color: 'var(--muted)' }}>
-                {business.description}
-              </p>
-            )}
+            {/* 3. Subtítulo gris pequeño (categoría) */}
+            <p className="mt-0.5 px-1 text-[10px] font-semibold uppercase truncate" style={{ color: '#9CA3AF', letterSpacing: '0.12em' }}>
+              {showCategory && business.category ? `${business.category.icon} ${business.category.name}` : (business.neighborhood || 'Lagos de Moreno')}
+            </p>
 
-            {(business.neighborhood || business.address) && (
-              <div className="flex items-center gap-1.5 mt-2 text-xs" style={{ color: 'var(--ink-soft)' }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                  <circle cx="12" cy="10" r="3" />
+            {/* 4. Fila compacta: 🏷️ rating/reseñas · ✈️ CÓDIGO */}
+            <div className="flex items-center justify-between mt-2.5 px-1">
+              <span className="inline-flex items-center gap-1 min-w-0">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#111111" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                  <line x1="7" y1="7" x2="7.01" y2="7" />
                 </svg>
-                {business.neighborhood && <span className="truncate">{business.neighborhood}</span>}
-                {business.neighborhood && business.address && <span className="opacity-40">·</span>}
-                {business.address && <span className="truncate max-w-[140px]">{business.address}</span>}
-              </div>
-            )}
-
-            <div className="flex items-center justify-between mt-3">
-              <div className="flex items-center gap-1.5">
-                <StarRating value={business.rating} size="sm" />
-                <span className="text-xs font-semibold" style={{ color: 'var(--muted)' }}>
-                  {business.total_reviews > 0 ? `${business.total_reviews} reseñas` : 'Sin reseñas'}
+                <span className="text-sm font-extrabold truncate" style={{ color: '#111111' }}>
+                  {business.total_reviews > 0 ? `${business.rating.toFixed(1)} ★` : 'Nuevo'}
                 </span>
-              </div>
-              {hasCompleteBusinessHours(business.business_hours) && (
-                <OpenNowBadge businessHours={business.business_hours} />
-              )}
+              </span>
+              <span className="inline-flex items-center gap-1.5 flex-shrink-0 ml-2">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#6B7280" aria-hidden="true" style={{ flexShrink: 0 }}>
+                  <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+                </svg>
+                <span className="text-[11px] font-extrabold tracking-widest" style={{ color: '#6B7280' }}>
+                  {bizCode}
+                </span>
+              </span>
             </div>
+
+            {/* 5. Botón píldora ancho — blanco→negro con flecha */}
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${business.name} ${business.address || ''} Lagos de Moreno Jalisco`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={e => e.stopPropagation()}
+              className="relative w-full overflow-hidden rounded-full cursor-pointer mt-3.5 mb-1 flex items-center justify-center gap-2 text-[13px] font-bold"
+              style={{
+                height: 40,
+                background: hovered ? '#111111' : '#FFFFFF',
+                border: '1px solid #111111',
+                color: hovered ? '#FFFFFF' : '#111111',
+                transition: 'background 350ms cubic-bezier(0.22,1,0.36,1), color 350ms cubic-bezier(0.22,1,0.36,1)',
+              }}
+            >
+              Ver negocio
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{
+                  transform: hovered ? 'translateX(3px)' : 'translateX(0)',
+                  transition: 'transform 350ms cubic-bezier(0.22,1,0.36,1)',
+                }}
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
           </div>
         </div>
       </Tilt3D>
