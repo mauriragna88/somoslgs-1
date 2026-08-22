@@ -7,12 +7,14 @@ import type { Zone } from '@/lib/tourism'
 
 /* ═══════════════════════════════════════════════════════════
    DestinationTicketCard — card vertical tipo "ticket" premium
-   Referencia: docs/ui-flight-cards-reference.md
-   - Entrada escalonada: fade + translateY(20px), 0/100/200ms
-   - Hover: elevación -8px + zoom imagen 4%
-   - Botón píldora blanco→negro con flecha deslizante
-   - Favorito glassmorphism con heart-pop
-   - Curva: cubic-bezier(0.22, 1, 0.36, 1) · respeta reduced-motion
+   Réplica fiel de la captura Dribbble (docs/ui-flight-cards-reference.md)
+   ─ Estructura:
+     1. Imagen casi cuadrada (sin título encima)
+     2. Título grande NEGRO debajo
+     3. Subtítulo gris pequeño (tipo "Economy")
+     4. Fila compacta: 🏷️ "Gratis" · ✈️ "CÓDIGO" (estilo JFK/SFO)
+     5. Botón píldora ancho "Explorar" con flecha
+   ─ Animaciones: entrada escalonada, hover -8px, zoom 4%, botón blanco→negro
    ═══════════════════════════════════════════════════════════ */
 
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -22,11 +24,39 @@ interface DestinationTicketCardProps {
   index?: number
 }
 
+/* Genera un "código de aeropuerto" de 3 letras desde el id de la zona
+   (ej: templo-calvario → "CAL", centro-historico → "CTR") */
+function airportCode(id: string): string {
+  const words = id.replace(/-/g, ' ').split(' ')
+  if (words.length >= 3) {
+    return (words[0][0] + words[1][0] + words[2][0]).toUpperCase()
+  }
+  return (id.replace(/[^a-z]/g, '').slice(0, 3)).toUpperCase()
+}
+
+/* Etiqueta tipo "Economy/Premium economy" según la zona */
+function zoneTag(zone: Zone): string {
+  const tag: Record<string, string> = {
+    'templo-calvario': 'Mirador panorámico',
+    'centro-historico': 'Patrimonio UNESCO',
+    'puente-rio': 'Monumento histórico',
+    'parroquia-asuncion': 'Barroco mexicano',
+    'teatro-rosas-moreno': 'Escenario cultural',
+    'museo-arte-sacro': 'Arte sacro',
+    'presa-cuarenta': 'Naturaleza',
+    'haciendas': 'Historia viva',
+    'jardin-constituyentes': 'Vida local',
+    'casa-cultura': 'Arte y talleres',
+  }
+  return tag[zone.id] || 'Pueblo Mágico'
+}
+
 export default function DestinationTicketCard({ zone, index = 0 }: DestinationTicketCardProps) {
   const [hovered, setHovered] = useState(false)
   const [faved, setFaved] = useState(false)
 
   const delay = Math.min(index * 100, 300)
+  const code = airportCode(zone.id)
 
   return (
     <motion.article
@@ -36,10 +66,11 @@ export default function DestinationTicketCard({ zone, index = 0 }: DestinationTi
       transition={{ duration: 0.42, ease: EASE, delay }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="h-full"
     >
       {/* Card exterior — doble marco sutil + sombra difusa */}
       <motion.div
-        className="relative rounded-[28px] p-[7px]"
+        className="relative rounded-[24px] p-[6px] h-full"
         style={{
           background: '#FFFFFF',
           border: '1px solid rgba(31,41,55,0.06)',
@@ -53,39 +84,35 @@ export default function DestinationTicketCard({ zone, index = 0 }: DestinationTi
         transition={{ duration: 0.4, ease: EASE }}
       >
         {/* Marco interior */}
-        <div className="relative rounded-[21px] p-[9px]" style={{ border: '1px solid rgba(31,41,55,0.05)' }}>
-          {/* Imagen superior casi cuadrada */}
-          <div className="relative overflow-hidden rounded-[15px]" style={{ aspectRatio: '1 / 1' }}>
-            <motion.div
-              className="absolute inset-0"
-              animate={{ scale: hovered ? 1.04 : 1 }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
+        <div className="relative rounded-[18px] p-[8px]" style={{ border: '1px solid rgba(31,41,55,0.05)' }}>
+          {/* 1. Imagen casi cuadrada */}
+          <div className="relative overflow-hidden rounded-[13px]" style={{ aspectRatio: '1 / 1' }}>
+            <motion.div className="absolute inset-0" animate={{ scale: hovered ? 1.04 : 1 }} transition={{ duration: 0.6, ease: EASE }}>
               <Image
                 src={zone.image}
                 alt={zone.name}
                 fill
-                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 22vw"
                 className="object-cover"
               />
             </motion.div>
 
-            {/* Overlay degradado inferior para lectura del título */}
+            {/* Overlay inferior sutil */}
             <div
               className="absolute inset-x-0 bottom-0 pointer-events-none"
               style={{
-                height: '45%',
-                background: 'linear-gradient(to top, rgba(15,15,15,0.48) 0%, rgba(15,15,15,0.14) 55%, transparent 100%)',
+                height: '30%',
+                background: 'linear-gradient(to top, rgba(15,15,15,0.28) 0%, transparent 100%)',
               }}
             />
 
-            {/* Favorito glassmorphism — esquina superior derecha */}
+            {/* Favorito glassmorphism */}
             <motion.button
               type="button"
               aria-label={faved ? 'Quitar de favoritos' : 'Agregar a favoritos'}
               aria-pressed={faved}
               onClick={() => setFaved(v => !v)}
-              className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center cursor-pointer"
+              className="absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
               style={{
                 background: 'rgba(255,255,255,0.28)',
                 backdropFilter: 'blur(8px)',
@@ -98,72 +125,65 @@ export default function DestinationTicketCard({ zone, index = 0 }: DestinationTi
               transition={{ duration: 0.3, ease: EASE }}
             >
               <motion.svg
-                width="16"
-                height="16"
+                width="15"
+                height="15"
                 viewBox="0 0 24 24"
                 fill={faved ? '#FF4D67' : 'none'}
                 stroke={faved ? '#FF4D67' : '#FFFFFF'}
                 strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                animate={
-                  faved
-                    ? { scale: [1, 1.25, 1.12] }
-                    : { scale: 1 }
-                }
+                animate={faved ? { scale: [1, 1.25, 1.12] } : { scale: 1 }}
                 transition={{ duration: 0.3, ease: EASE }}
                 aria-hidden="true"
               >
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </motion.svg>
             </motion.button>
-
-            {/* Título superpuesto en el límite inferior de la imagen */}
-            <div className="absolute inset-x-0 bottom-0 p-4">
-              <h3
-                className="text-white font-extrabold leading-tight truncate"
-                style={{
-                  fontFamily: 'var(--display)',
-                  fontSize: '1.3rem',
-                  letterSpacing: '-0.01em',
-                  textShadow: '0 1px 8px rgba(0,0,0,0.35)',
-                }}
-              >
-                {zone.name}
-              </h3>
-            </div>
           </div>
 
-          {/* Subtítulo gris pequeño */}
-          <p
-            className="mt-3 px-1 text-[11px] font-semibold uppercase truncate"
-            style={{ color: '#9CA3AF', letterSpacing: '0.14em' }}
+          {/* 2. Título grande NEGRO debajo de la imagen */}
+          <h3
+            className="mt-3.5 px-1 font-extrabold leading-tight truncate"
+            style={{
+              fontFamily: 'var(--display)',
+              fontSize: '1.35rem',
+              letterSpacing: '-0.015em',
+              color: '#111111',
+            }}
           >
-            Pueblo Mágico · Lagos de Moreno
+            {zone.name}
+          </h3>
+
+          {/* 3. Subtítulo gris pequeño (tipo "Economy") */}
+          <p className="mt-0.5 px-1 text-[11px] font-semibold uppercase truncate" style={{ color: '#9CA3AF', letterSpacing: '0.12em' }}>
+            {zoneTag(zone)}
           </p>
 
-          {/* Fila compacta: etiqueta + tipo / avión + zona */}
-          <div className="flex items-center justify-between mt-2 px-1">
+          {/* 4. Fila compacta: 🏷️ Gratis · ✈️ CÓDIGO */}
+          <div className="flex items-center justify-between mt-3 px-1">
             <span className="inline-flex items-center gap-1.5 min-w-0">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+              {/* Icono etiqueta */}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#111111" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
                 <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
                 <line x1="7" y1="7" x2="7.01" y2="7" />
               </svg>
-              <span className="text-sm font-bold truncate" style={{ color: '#111111' }}>
-                {zone.icon} Imperdible
+              <span className="text-sm font-extrabold truncate" style={{ color: '#111111' }}>
+                Gratis
               </span>
             </span>
             <span className="inline-flex items-center gap-1.5 flex-shrink-0 ml-2">
+              {/* Icono avión */}
               <svg width="13" height="13" viewBox="0 0 24 24" fill="#6B7280" aria-hidden="true" style={{ flexShrink: 0 }}>
                 <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
               </svg>
-              <span className="text-xs font-semibold" style={{ color: '#6B7280' }}>
-                {zone.coordinates ? 'Con mapa' : 'Centro'}
+              <span className="text-xs font-extrabold tracking-widest" style={{ color: '#6B7280' }}>
+                {code}
               </span>
             </span>
           </div>
 
-          {/* Botón píldora inferior — blanco→negro con flecha */}
+          {/* 5. Botón píldora ancho — blanco→negro con flecha */}
           <a
             href={
               zone.coordinates
@@ -182,7 +202,7 @@ export default function DestinationTicketCard({ zone, index = 0 }: DestinationTi
             }
             className="relative w-full overflow-hidden rounded-full cursor-pointer mt-4 mb-1 flex items-center justify-center gap-2 text-sm font-bold"
             style={{
-              height: 44,
+              height: 42,
               background: hovered ? '#111111' : '#FFFFFF',
               border: '1px solid #111111',
               color: hovered ? '#FFFFFF' : '#111111',
