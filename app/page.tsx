@@ -17,6 +17,8 @@ import EventsSection from '@/components/home/EventsSection'
 import FeaturedSection from '@/components/home/FeaturedSection'
 import MarketplaceStrip from '@/components/home/MarketplaceStrip'
 import CategoryGrid from '@/components/home/CategoryGrid'
+import BlogCard from '@/components/blog/BlogCard'
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
 import SectionReveal from '@/components/animations/SectionReveal'
 import ScrollWrapper from '@/components/animations/ScrollWrapper'
 
@@ -744,41 +746,13 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {latestPosts.map((post) => (
-                  <Link
-                    key={post.id}
-                    href={`/blog/${post.slug}`}
-                    className="group bg-white rounded-2xl overflow-hidden transition-all hover:-translate-y-1"
-                    style={{ boxShadow: 'var(--shadow-card)' }}
-                  >
-                    <div className="h-44 bg-gray-100 overflow-hidden">
-                      {post.featured_image_url ? (
-                        <img
-                          src={post.featured_image_url}
-                          alt={post.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl" style={{ background: 'linear-gradient(135deg, var(--coral), var(--gold))' }}>
-                          📝
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-5">
-                      <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--coral)' }}>
-                        {post.category?.replace(/-/g, ' ')}
-                      </span>
-                      <h3 className="font-bold mt-1 mb-2 line-clamp-2 group-hover:text-[var(--coral)] transition-colors" style={{ color: 'var(--ink)' }}>
-                        {post.title}
-                      </h3>
-                      {post.excerpt && (
-                        <p className="text-sm line-clamp-2" style={{ color: 'var(--muted)' }}>{post.excerpt}</p>
-                      )}
-                    </div>
-                  </Link>
+              <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {latestPosts.map((post, index) => (
+                  <StaggerItem key={post.id} className="h-full">
+                    <BlogCard post={post} index={index} />
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerGroup>
 
               <div className="text-center mt-8 sm:hidden">
                 <Link
