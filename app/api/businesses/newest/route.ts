@@ -8,7 +8,7 @@ export async function GET() {
     const { data } = await supabase
       .from('businesses')
       .select(`
-        id, name, slug, description, logo_url, cover_url, address,
+        id, name, slug, description, logo_url, cover_url, address, neighborhood, phone,
         subscription_tier, is_featured, business_hours, rating, total_reviews, created_at,
         category:categories(name, icon),
         business_photos(image_url)

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import FavoriteButton from '@/components/shared/FavoriteButton'
 import StarRating from '@/components/reviews/StarRating'
-import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
+import { isBusinessOpen } from '@/lib/constants'
 import type { BusinessHours } from '@/lib/constants'
 
 /* ═══════════════════════════════════════════════════════════
@@ -137,18 +137,23 @@ function RatingBadge({ rating, count }: { rating: number; count: number }) {
   )
 }
 
-/* ── Abierto Ahora con punto verde pulsante ── */
+/* ── Abierto ahora — chip verde discreto, solo si está abierto ── */
 function OpenNowBadge({ businessHours }: { businessHours: BusinessHours | null }) {
   if (!hasCompleteBusinessHours(businessHours)) return null
+  try {
+    if (!isBusinessOpen(businessHours)) return null // No mostrar nada si está cerrado
+  } catch {
+    return null
+  }
   return (
     <span
       className="inline-flex items-center gap-1.5 text-[10px] font-bold text-green-700 px-2 py-1 rounded-full"
       style={{
-        background: 'rgba(255,255,255,0.85)',
+        background: 'rgba(255,255,255,0.82)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
-        border: '1px solid rgba(255,255,255,0.5)',
-        boxShadow: '0 2px 8px rgba(31,41,55,0.15)',
+        border: '1px solid rgba(34,197,94,0.35)',
+        boxShadow: '0 2px 8px rgba(31,41,55,0.12)',
         letterSpacing: '0.02em',
       }}
     >

@@ -11,6 +11,8 @@ interface BusinessRow {
   logo_url: string | null
   cover_url: string | null
   address: string | null
+  neighborhood: string | null
+  phone: string | null
   subscription_tier: string
   is_featured: boolean
   business_hours: BusinessHours | null
@@ -27,7 +29,7 @@ export async function GET() {
     const { data } = await supabase
       .from('businesses')
       .select(`
-        id, name, slug, description, logo_url, cover_url, address,
+        id, name, slug, description, logo_url, cover_url, address, neighborhood, phone,
         subscription_tier, is_featured, business_hours, rating, total_reviews,
         category:categories(name, icon),
         business_photos(image_url)
