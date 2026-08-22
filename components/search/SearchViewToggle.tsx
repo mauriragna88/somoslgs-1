@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 import BusinessCard from '@/components/shared/BusinessCard'
 import BannerDisplay from '@/components/ads/BannerDisplay'
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
 import type { BusinessHours } from '@/lib/constants'
 
 const SearchResultsMap = dynamic(() => import('./SearchResultsMap'), {
@@ -110,27 +111,31 @@ export default function SearchViewToggle({ businesses, query }: SearchViewToggle
       </div>
 
       {view === 'lista' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {businesses.map((business, index) => (
             <React.Fragment key={business.id}>
               {index > 0 && index % 8 === 0 && (
-                <div
-                  className="rounded-2xl overflow-hidden relative"
-                  style={{ background: 'var(--ivory)', border: '1px solid rgba(31,41,55,0.08)' }}
-                >
+                <StaggerItem className="col-span-full">
                   <div
-                    className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded text-xs font-medium"
-                    style={{ background: 'rgba(31,41,55,0.07)', color: 'var(--muted)' }}
+                    className="rounded-2xl overflow-hidden relative"
+                    style={{ background: 'var(--ivory)', border: '1px solid rgba(31,41,55,0.08)' }}
                   >
-                    Patrocinado
+                    <div
+                      className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded text-xs font-medium"
+                      style={{ background: 'rgba(31,41,55,0.07)', color: 'var(--muted)' }}
+                    >
+                      Patrocinado
+                    </div>
+                    <BannerDisplay placement="search_inline" />
                   </div>
-                  <BannerDisplay placement="search_inline" />
-                </div>
+                </StaggerItem>
               )}
-              <BusinessCard business={business} />
+              <StaggerItem className="h-full">
+                <BusinessCard business={business} />
+              </StaggerItem>
             </React.Fragment>
           ))}
-        </div>
+        </StaggerGroup>
       ) : (
         <SearchResultsMap businesses={businesses} />
       )}

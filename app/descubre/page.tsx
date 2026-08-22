@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import BusinessCard from '@/components/shared/BusinessCard'
 import PremiumSlider from '@/components/shared/PremiumSlider'
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
 
 export const revalidate = 1800
 
@@ -107,11 +108,13 @@ export default async function DescubrePage() {
               </div>
             </div>
             <div className="pueblo-divider mb-8" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {newest.map(b => (
-                <BusinessCard key={b.id} business={b} />
+                <StaggerItem key={b.id} className="h-full">
+                  <BusinessCard business={b} />
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGroup>
           </section>
         )}
 
@@ -127,11 +130,13 @@ export default async function DescubrePage() {
             <div className="pueblo-divider mb-8" />
             <PremiumSlider businesses={avanzado} />
             {avanzado.length > 1 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                 {avanzado.map(b => (
-                  <BusinessCard key={b.id} business={b} />
+                  <StaggerItem key={b.id} className="h-full">
+                    <BusinessCard business={b} />
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerGroup>
             )}
           </section>
         )}
@@ -146,11 +151,13 @@ export default async function DescubrePage() {
               </h2>
             </div>
             <div className="pueblo-divider mb-8" />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <StaggerGroup className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {pro.map(b => (
-                <BusinessCard key={b.id} business={b} />
+                <StaggerItem key={b.id} className="h-full">
+                  <BusinessCard business={b} />
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGroup>
           </section>
         )}
 
@@ -167,11 +174,13 @@ export default async function DescubrePage() {
               Encuentra de todo en Lagos de Moreno — conoce lo que ofrecen
             </p>
             <div className="pueblo-divider mb-8" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {gratis.map(b => (
-                <BusinessCard key={b.id} business={b} />
+                <StaggerItem key={b.id} className="h-full">
+                  <BusinessCard business={b} />
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGroup>
           </section>
         )}
 

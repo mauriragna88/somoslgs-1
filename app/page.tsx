@@ -16,6 +16,8 @@ import BannerDisplay from '@/components/ads/BannerDisplay'
 import EventsSection from '@/components/home/EventsSection'
 import FeaturedSection from '@/components/home/FeaturedSection'
 import MarketplaceStrip from '@/components/home/MarketplaceStrip'
+import SectionReveal from '@/components/animations/SectionReveal'
+import ScrollWrapper from '@/components/animations/ScrollWrapper'
 
 export const revalidate = 3600
 
@@ -285,6 +287,7 @@ export default async function HomePage() {
   }
 
   return (
+    <ScrollWrapper>
     <main className="min-h-screen overflow-x-clip">
       <script
         type="application/ld+json"
@@ -300,13 +303,15 @@ export default async function HomePage() {
       />
 
       {/* ═══════════════════════════════════════════════════════════
-          1. HERO — Scroll-synced video
+          1. HERO — Scroll-synced video (con transición de salida)
       ═══════════════════════════════════════════════════════════ */}
-      <HeroVideoScroll
-        categories={categories}
-        businessCount={businessDisplayCount}
-        catCount={catCount}
-      />
+      <SectionReveal entryY={40} amount={0.5}>
+        <HeroVideoScroll
+          categories={categories}
+          businessCount={businessDisplayCount}
+          catCount={catCount}
+        />
+      </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
           1b. (Marquee removido — texto en movimiento eliminado)
@@ -319,7 +324,8 @@ export default async function HomePage() {
       <div className="pueblo-divider" />
 
       {categories.length > 0 && (
-        <section
+        <SectionReveal>
+          <section
           className="py-20"
           style={{
             background: `
@@ -400,6 +406,7 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+        </SectionReveal>
       )}
 
       {/* ═══════════════════════════════════════════════════════════
@@ -410,13 +417,16 @@ export default async function HomePage() {
           3. FEATURED BUSINESSES
       ═══════════════════════════════════════════════════════════ */}
       {featuredBusinesses && featuredBusinesses.length > 0 && (
-        <FeaturedSection initialBusinesses={featuredBusinesses} />
+        <SectionReveal>
+          <FeaturedSection initialBusinesses={featuredBusinesses} />
+        </SectionReveal>
       )}
 
       {/* ═══════════════════════════════════════════════════════════
           4. HOW IT WORKS
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-20" style={{ background: '#FFFDF8' }}>
+      <SectionReveal>
+        <section className="py-20" style={{ background: '#FFFDF8' }}>
         <div className="container mx-auto px-4">
           <ScrollReveal direction="up">
             <div className="text-center mb-12">
@@ -501,7 +511,8 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
           5. (Sección B2B movida a /para-negocios — fuera de la vista
@@ -511,12 +522,16 @@ export default async function HomePage() {
       {/* ═══════════════════════════════════════════════════════════
           6. DESCUBRE LAGOS — Bento editorial
       ═══════════════════════════════════════════════════════════ */}
-      <DescubreLagos />
+      <SectionReveal>
+        <DescubreLagos />
+      </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
           6b. EVENTOS Y FECHAS ESPECIALES
       ═══════════════════════════════════════════════════════════ */}
-      <EventsSection />
+      <SectionReveal>
+        <EventsSection />
+      </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
           6c. BANNER — home_middle (solo si hay banner activo)
@@ -526,7 +541,9 @@ export default async function HomePage() {
       {/* ═══════════════════════════════════════════════════════════
           6d. MARKETPLACE STRIP — últimas 4 publicaciones
       ═══════════════════════════════════════════════════════════ */}
-      <MarketplaceStrip listings={latestListings || []} />
+      <SectionReveal>
+        <MarketplaceStrip listings={latestListings || []} />
+      </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
           7. (Chatbot WhatsApp Devogatec movido a /para-negocios)
@@ -535,11 +552,14 @@ export default async function HomePage() {
       {/* ═══════════════════════════════════════════════════════════
           9. INTERACTIVE MAP
       ═══════════════════════════════════════════════════════════ */}
-      <InteractiveMap />
+      <SectionReveal>
+        <InteractiveMap />
+      </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
           10. TRUST / TESTIMONIALS
       ═══════════════════════════════════════════════════════════ */}
+      <SectionReveal>
       <section className="py-20" style={{ background: '#FFFDF8' }}>
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
@@ -671,10 +691,12 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
           11. CONTACTO
       ═══════════════════════════════════════════════════════════ */}
+      <SectionReveal>
       <section className="py-20" style={{ background: 'var(--cream)' }}>
         <div className="container mx-auto px-4">
           <ScrollReveal direction="up">
@@ -743,11 +765,13 @@ export default async function HomePage() {
           </ScrollReveal>
         </div>
       </section>
+      </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
           12. BLOG — últimas entradas
       ═══════════════════════════════════════════════════════════ */}
       {latestPosts.length > 0 && (
+        <SectionReveal>
         <section className="py-16" style={{ background: 'var(--ivory)' }}>
           <div className="container mx-auto px-4">
             <ScrollReveal direction="up">
@@ -818,11 +842,13 @@ export default async function HomePage() {
             </ScrollReveal>
           </div>
         </section>
+        </SectionReveal>
       )}
 
       {/* ═══════════════════════════════════════════════════════════
           13. FINAL CTA
       ═══════════════════════════════════════════════════════════ */}
+      <SectionReveal>
       <section className="py-16 bg-pueblo-noche">
         <div className="container mx-auto px-4">
           <ScrollReveal direction="up">
@@ -864,7 +890,9 @@ export default async function HomePage() {
           </ScrollReveal>
         </div>
       </section>
+      </SectionReveal>
 
     </main>
+    </ScrollWrapper>
   )
 }

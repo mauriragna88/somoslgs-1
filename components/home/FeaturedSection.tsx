@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import StarRating from '@/components/reviews/StarRating'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
 import type { BusinessHours } from '@/lib/constants'
 
 interface Business {
@@ -205,11 +206,13 @@ function BusinessGrid({ businesses, tab, loading }: {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {businesses.map((business) => (
-        <PremiumCard key={business.id} business={business} tab={tab} />
+        <StaggerItem key={business.id} className="h-full">
+          <PremiumCard business={business} tab={tab} />
+        </StaggerItem>
       ))}
-    </div>
+    </StaggerGroup>
   )
 }
 

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import BusinessCard from '@/components/shared/BusinessCard'
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -81,11 +82,13 @@ export default async function FavoritosPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {businesses.map((business: any) => (
-              <BusinessCard key={business.id} business={business} showCategory />
+              <StaggerItem key={business.id} className="h-full">
+                <BusinessCard business={business} showCategory />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGroup>
         )}
       </div>
     </main>

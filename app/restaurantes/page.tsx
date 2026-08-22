@@ -4,6 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 import { TIER_ORDER } from '@/lib/constants'
 import BusinessCard from '@/components/shared/BusinessCard'
 import BannerDisplay from '@/components/ads/BannerDisplay'
+import SectionReveal from '@/components/animations/SectionReveal'
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
 
 export const revalidate = 1800
 
@@ -188,12 +190,13 @@ export default async function RestaurantesPage() {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: '#FFFDF8' }}>
+    <main className="min-h-screen overflow-x-clip" style={{ background: '#FFFDF8' }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* ═══ HERO — Restaurantes en Lagos ═══ */}
+      <SectionReveal entryY={40} amount={0.5}>
       <section className="relative overflow-hidden pt-28 pb-16 md:pt-32 md:pb-20">
         {/* Blobs decorativos */}
         <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(255,107,53,0.12)' }} />
@@ -278,8 +281,10 @@ export default async function RestaurantesPage() {
           </div>
         </div>
       </section>
+      </SectionReveal>
 
       {/* ═══ GRID DE RESTAURANTES ═══ */}
+      <SectionReveal>
       <section className="pb-16">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-8">
@@ -304,11 +309,13 @@ export default async function RestaurantesPage() {
           </div>
 
           {businesses.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {businesses.map((business, i) => (
-                <BusinessCard key={business.id} business={business} showCategory={false} index={i} />
+            <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {businesses.map((business) => (
+                <StaggerItem key={business.id} className="h-full">
+                  <BusinessCard business={business} showCategory={false} />
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGroup>
           ) : (
             <div
               className="rounded-3xl p-12 text-center"
@@ -330,8 +337,10 @@ export default async function RestaurantesPage() {
           )}
         </div>
       </section>
+      </SectionReveal>
 
       {/* ═══ SEO EXTRA — texto rico en keywords ═══ */}
+      <SectionReveal>
       <section className="pb-16">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="rounded-3xl p-8 md:p-10" style={{ background: 'var(--ink)', color: 'var(--cream)' }}>
@@ -357,11 +366,13 @@ export default async function RestaurantesPage() {
           </div>
         </div>
       </section>
+      </SectionReveal>
 
       {/* ═══ BANNER ═══ */}
       <BannerDisplay placement="home_middle" />
 
       {/* ═══ CTA FINAL ═══ */}
+      <SectionReveal>
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div
@@ -383,15 +394,16 @@ export default async function RestaurantesPage() {
                 Registrar mi restaurante
               </Link>
               <Link
-                href="/planes"
+                href="/para-negocios"
                 className="inline-flex items-center justify-center px-8 py-4 font-semibold rounded-full border-2 border-white text-white transition-all hover:bg-white/10"
               >
-                Ver planes
+                Para negocios
               </Link>
             </div>
           </div>
         </div>
       </section>
+      </SectionReveal>
     </main>
   )
 }
