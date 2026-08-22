@@ -16,6 +16,7 @@ import BannerDisplay from '@/components/ads/BannerDisplay'
 import EventsSection from '@/components/home/EventsSection'
 import FeaturedSection from '@/components/home/FeaturedSection'
 import MarketplaceStrip from '@/components/home/MarketplaceStrip'
+import CategoryGrid from '@/components/home/CategoryGrid'
 import SectionReveal from '@/components/animations/SectionReveal'
 import ScrollWrapper from '@/components/animations/ScrollWrapper'
 
@@ -69,24 +70,6 @@ interface BusinessCard {
   total_reviews: number
   category: { name: string; icon: string } | null
   business_photos: BusinessPhoto[]
-}
-
-const CAT_COLORS: Record<string, string> = {
-  'comida': 'var(--coral)', 'comer': 'var(--coral)',
-  'compras': 'var(--gold)', 'comprar': 'var(--gold)',
-  'servicios': 'var(--turquoise)',
-  'salud': 'var(--green)',
-  'belleza': 'var(--buga)',
-  'hospedaje': 'var(--turquoise)',
-  'turismo': 'var(--terracotta)',
-  'entretenimiento': 'var(--blue)',
-}
-
-function getCatColor(slug: string): string {
-  for (const key of Object.keys(CAT_COLORS)) {
-    if (slug.toLowerCase().includes(key)) return CAT_COLORS[key]
-  }
-  return 'var(--ink)'
 }
 
 export default async function HomePage() {
@@ -357,40 +340,7 @@ export default async function HomePage() {
               </div>
             </ScrollReveal>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-10">
-              {categories.map((cat, i) => {
-                const color = getCatColor(cat.slug)
-                return (
-                  <ScrollReveal key={cat.id} direction="up" delay={i * 40}>
-                    <Link
-                      href={`/categorias/${cat.slug}`}
-                      className="flex flex-col items-center gap-3 p-5 rounded-2xl transition-all duration-300 hover:scale-[1.05] group"
-                      style={{
-                        background: 'rgba(255,253,248,0.78)',
-                        backdropFilter: 'blur(14px)',
-                        WebkitBackdropFilter: 'blur(14px)',
-                        border: `1px solid rgba(255,253,248,0.6)`,
-                        borderLeft: `4px solid ${color}`,
-                        boxShadow: `0 2px 20px rgba(31,41,55,0.07), inset 0 1px 0 rgba(255,255,255,0.7)`,
-                      }}
-                    >
-                      <span
-                        className="text-3xl transition-transform duration-300 group-hover:scale-110"
-                        style={{ filter: `drop-shadow(0 0 8px ${color}55)` }}
-                      >
-                        {cat.icon || '📦'}
-                      </span>
-                      <span
-                        className="text-sm font-semibold text-center leading-tight"
-                        style={{ color: 'var(--ink)' }}
-                      >
-                        {cat.name}
-                      </span>
-                    </Link>
-                  </ScrollReveal>
-                )
-              })}
-            </div>
+            <CategoryGrid categories={categories} />
 
             <div className="text-center">
               <Link
