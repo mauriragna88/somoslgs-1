@@ -10,7 +10,6 @@ import { TIER_ORDER } from '@/lib/constants'
 import type { BlogPost } from '@/types/database.types'
 import type { BusinessHours } from '@/lib/constants'
 import HeroVideoScroll from '@/components/home/HeroVideoScroll'
-import MarqueeTicker from '@/components/home/MarqueeTicker'
 import InteractiveMap from '@/components/home/InteractiveMap'
 import DescubreLagos from '@/components/home/DescubreLagos'
 import BannerDisplay from '@/components/ads/BannerDisplay'
@@ -310,10 +309,8 @@ export default async function HomePage() {
       />
 
       {/* ═══════════════════════════════════════════════════════════
-          1b. MARQUEE TICKER
+          1b. (Marquee removido — texto en movimiento eliminado)
       ═══════════════════════════════════════════════════════════ */}
-      <MarqueeTicker />
-
 
       {/* ═══════════════════════════════════════════════════════════
           2. CATEGORIES — What are you looking for?
@@ -406,41 +403,8 @@ export default async function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════════════════════
-          2b. STATS STRIP
+          2b. (Franja de contadores removida — contadores en 0+ eliminados)
       ═══════════════════════════════════════════════════════════ */}
-      <section
-        className="py-12"
-        style={{
-          background: `
-            radial-gradient(ellipse at 20% 50%, rgba(255,107,53,0.18) 0%, transparent 55%),
-            radial-gradient(ellipse at 80% 50%, rgba(245,185,66,0.15) 0%, transparent 50%),
-            var(--ink)
-          `,
-        }}
-      >
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {[
-              { target: businessDisplayCount, suffix: '+', label: 'Negocios registrados', color: 'var(--coral)' },
-              { target: catCount, suffix: '+', label: 'Categorías', color: 'var(--gold)' },
-              { target: 1, suffix: '', label: 'Pueblo Mágico', color: 'var(--turquoise)' },
-              { target: 100, suffix: '%', label: 'Lagos de Moreno', color: 'rgba(255,253,248,0.9)' },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p
-                  className="text-5xl md:text-6xl font-black mb-1 tabular-nums"
-                  style={{ color: stat.color, fontFamily: 'var(--display)', lineHeight: 1 }}
-                >
-                  <AnimatedCounter target={stat.target} suffix={stat.suffix} />
-                </p>
-                <p className="text-sm mt-2" style={{ color: 'rgba(255,253,248,0.45)' }}>
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ═══════════════════════════════════════════════════════════
           3. FEATURED BUSINESSES
@@ -540,96 +504,9 @@ export default async function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          5. GROW / OWNER CTA
+          5. (Sección B2B movida a /para-negocios — fuera de la vista
+          del consumidor)
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-20 bg-pueblo-noche relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 md:w-[30rem] md:h-[30rem] bg-pueblo-barroco/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-56 h-56 md:w-[24rem] md:h-[24rem] bg-pueblo-cantera/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="container mx-auto px-4 relative z-10">
-          <ScrollReveal direction="scale">
-            <div className="max-w-5xl mx-auto rounded-3xl border border-white/10 overflow-hidden grid md:grid-cols-2 gap-0 bg-pueblo-noche">
-              {/* Left column */}
-              <div className="p-10 md:p-14 flex flex-col justify-center">
-                <span className="pueblo-eyebrow inline-block px-4 py-1.5 text-[10px] font-bold rounded-full mb-6">
-                  Para Negocios
-                </span>
-                <h2 className="text-4xl md:text-5xl font-black text-pueblo-crema mb-6 leading-[0.95] tracking-tight">
-                  Te encontramos.<br />
-                  Te contactan.<br />
-                  <span className="text-pueblo-barroco">Te administras.</span>
-                </h2>
-                <ul className="space-y-3 mb-8">
-                  {[
-                    'Te encuentran: directorio, mapa y perfil',
-                    'Te contactan: WhatsApp, llamada y catalogo',
-                    'Te administras: herramientas de DEVOGATEC',
-                    'Estadisticas de visitas y clics',
-                    'Catálogo y pedidos con plan Vende en Linea',
-                  ].map(benefit => (
-                    <li key={benefit} className="flex items-start gap-3 text-sm text-pueblo-crema/80">
-                      <span className="text-pueblo-barroco mt-0.5 text-base">✓</span>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/registrar-negocio"
-                    className="px-8 py-3.5 rounded-full font-bold text-pueblo-noche text-center transition-all hover:opacity-90"
-                    style={{ background: 'linear-gradient(to right, var(--gold), var(--terracotta))' }}
-                  >
-                    Registrar gratis
-                  </Link>
-                  <Link
-                    href="/planes"
-                    className="px-8 py-3.5 rounded-full font-semibold text-center border-2 transition-all hover:opacity-80"
-                    style={{ borderColor: 'var(--gold)', color: 'var(--gold)' }}
-                  >
-                    Ver planes
-                  </Link>
-                </div>
-              </div>
-
-              {/* Right column: animated shop preview */}
-              <div className="p-10 md:p-14 flex items-center justify-center">
-                <div className="relative w-full max-w-xs">
-                  <div
-                    className="rounded-2xl p-6 relative"
-                    style={{ background: 'white', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
-                  >
-                    <div className="h-24 rounded-xl bg-gradient-to-br from-pueblo-barroco/20 to-pueblo-cantera/10 mb-4 flex items-center justify-center">
-                      <span className="text-4xl">🏪</span>
-                    </div>
-                    <h4 className="font-bold text-pueblo-noche mb-1">Mi Negocio Lagos</h4>
-                    <div className="flex items-center gap-1 mb-3">
-                      {[...Array(5)].map((_, i) => (
-                        <svg key={i} className="w-3.5 h-3.5 text-pueblo-barroco" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                      <span className="text-xs text-pueblo-terracotta/60 ml-1">5.0</span>
-                    </div>
-                    <div className="h-2 rounded-full bg-pueblo-noche/10 mb-2" style={{ width: '85%' }} />
-                    <div className="h-2 rounded-full bg-pueblo-noche/10" style={{ width: '65%' }} />
-
-                    {/* Notification badge 1 */}
-                    <div className="absolute -top-3 -right-3 bg-green-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg animate-bounce">
-                      📩 Nuevo pedido
-                    </div>
-                    {/* Notification badge 2 */}
-                    <div
-                      className="absolute -bottom-3 -left-3 text-pueblo-noche text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse"
-                      style={{ background: 'var(--gold)' }}
-                    >
-                      ⭐ Nueva reseña
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
 
       {/* ═══════════════════════════════════════════════════════════
           6. DESCUBRE LAGOS — Bento editorial
@@ -652,167 +529,8 @@ export default async function HomePage() {
       <MarketplaceStrip listings={latestListings || []} />
 
       {/* ═══════════════════════════════════════════════════════════
-          7. WHATSAPP COMMERCE — strip opcional
+          7. (Chatbot WhatsApp Devogatec movido a /para-negocios)
       ═══════════════════════════════════════════════════════════ */}
-      <section
-        className="py-12"
-        style={{
-          background: '#0a1a0e',
-          borderTop: '1px solid rgba(37,211,102,0.1)',
-          borderBottom: '1px solid rgba(37,211,102,0.1)',
-        }}
-      >
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-            {/* Icon */}
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
-              style={{ background: 'rgba(37,211,102,0.15)', border: '1px solid rgba(37,211,102,0.25)' }}
-            >
-              <svg className="w-7 h-7" fill="#25D366" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-              </svg>
-            </div>
-
-            {/* Text */}
-            <div className="flex-1">
-              <p
-                className="font-black text-lg md:text-xl mb-1"
-                style={{ color: 'var(--ivory)', fontFamily: 'var(--display)' }}
-              >
-                ¿Te interesa un chatbot de WhatsApp personalizado para tu negocio?
-              </p>
-              <p className="text-sm" style={{ color: 'rgba(255,253,248,0.45)' }}>
-                Menú digital, pedidos automáticos y atención 24/7 — lo configuramos para ti.
-              </p>
-            </div>
-
-            {/* CTA */}
-            <a
-              href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20un%20chatbot%20de%20WhatsApp%20para%20mi%20negocio%20en%20Lagos"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white transition-all hover:opacity-90 hover:scale-[1.02] flex-shrink-0"
-              style={{ background: '#25D366', boxShadow: '0 6px 20px rgba(37,211,102,0.3)' }}
-            >
-              Escríbenos →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════════
-          8. PLANS
-      ═══════════════════════════════════════════════════════════ */}
-      <section className="py-20" style={{ background: '#FFFDF8' }}>
-        <div className="container mx-auto px-4">
-          <ScrollReveal direction="up">
-            <div className="text-center mb-12">
-              <span
-                className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4"
-                style={{ background: 'rgba(245,185,66,0.15)', color: 'var(--gold)' }}
-              >
-                ✨ Planes
-              </span>
-              <h2
-                className="text-3xl md:text-4xl font-black mb-2"
-                style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
-              >
-                Elige tu plan
-              </h2>
-              <p className="text-base" style={{ color: 'var(--ink-soft)' }}>
-                Empieza gratis. Escala cuando quieras.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-start mb-8">
-            {/* Gratis */}
-            <ScrollReveal direction="up" delay={0}>
-              <div className="rounded-2xl p-6 flex flex-col bg-white border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Gratis</p>
-                <p className="text-4xl font-extrabold mb-0.5" style={{ color: 'var(--ink)' }}>$0</p>
-                <p className="text-xs text-gray-400 mb-6">para siempre</p>
-                <ul className="space-y-2.5 text-sm text-gray-600 flex-1 mb-6">
-                  {['Buscador y mapa', 'WhatsApp directo', 'Horarios y opiniones', 'Hasta 3 fotos', 'Reclamar negocio'].map(f => (
-                    <li key={f} className="flex items-start gap-2">
-                      <span className="text-gray-400 text-xs mt-0.5">✓</span> {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/registrar-negocio"
-                  className="block text-center py-2.5 rounded-xl border font-semibold text-sm transition-all hover:opacity-80"
-                  style={{ borderColor: 'var(--coral)', color: 'var(--coral)' }}
-                >
-                  Empezar Gratis
-                </Link>
-              </div>
-            </ScrollReveal>
-
-            {/* Negocio Destacado — FEATURED */}
-            <ScrollReveal direction="up" delay={100}>
-              <div
-                className="rounded-2xl p-6 flex flex-col relative sm:scale-105 shadow-2xl"
-                style={{ background: 'var(--ink)', color: 'var(--cream)' }}
-              >
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                  <span
-                    className="text-pueblo-noche text-[10px] font-bold px-4 py-1 rounded-full shadow-lg tracking-wide uppercase"
-                    style={{ background: 'linear-gradient(to right, var(--gold), #EAB308)' }}
-                  >
-                    Mas Popular
-                  </span>
-                </div>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--gold)' }}>Destacado</p>
-                <p className="text-4xl font-extrabold mb-0.5 text-pueblo-crema">$149</p>
-                <p className="text-xs text-pueblo-crema/40 mb-6">MXN/mes · $1,490/año</p>
-                <ul className="space-y-2.5 text-sm text-pueblo-crema/80 flex-1 mb-6">
-                  {['Todo Gratis +', 'Portada personalizada', 'Posicion destacada', 'Badge verificado', 'Estadisticas', 'Hasta 10 fotos'].map(f => (
-                    <li key={f} className="flex items-start gap-2">
-                      <span className="text-xs mt-0.5" style={{ color: 'var(--gold)' }}>✓</span> {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/planes"
-                  className="block text-center py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90"
-                  style={{ background: 'linear-gradient(to right, var(--gold), var(--terracotta))', color: 'var(--ink)' }}
-                >
-                  Ver detalles →
-                </Link>
-              </div>
-            </ScrollReveal>
-
-            {/* Vende en Linea */}
-            <ScrollReveal direction="up" delay={200}>
-              <div className="rounded-2xl p-6 flex flex-col bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" style={{ border: '1px solid rgba(20,184,166,0.3)' }}>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-3 text-teal-500">Vende en Linea</p>
-                <p className="text-4xl font-extrabold mb-0.5" style={{ color: 'var(--ink)' }}>desde $299</p>
-                <p className="text-xs text-gray-400 mb-6">MXN/mes</p>
-                <ul className="space-y-2.5 text-sm text-gray-600 flex-1 mb-6">
-                  {['Todo Destacado +', 'Catalogo de productos', 'Pedidos en linea', 'Pago o transferencia', 'Soporte productos', 'Hasta 20 fotos'].map(f => (
-                    <li key={f} className="flex items-start gap-2">
-                      <span className="text-xs mt-0.5 text-teal-500">✓</span> {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/planes"
-                  className="block text-center py-2.5 rounded-xl font-semibold text-sm transition-all hover:opacity-90 text-teal-600"
-                  style={{ background: 'rgba(20,184,166,0.1)' }}
-                >
-                  Ver detalles
-                </Link>
-              </div>
-            </ScrollReveal>
-          </div>
-
-          <p className="text-center text-sm" style={{ color: 'var(--muted)' }}>
-            Sin contratos · Cancela cuando quieras · El plan Gratis es para siempre
-          </p>
-        </div>
-      </section>
 
       {/* ═══════════════════════════════════════════════════════════
           9. INTERACTIVE MAP
@@ -1136,10 +854,10 @@ export default async function HomePage() {
                   Explorar negocios
                 </Link>
                 <Link
-                  href="/planes"
+                  href="/para-negocios"
                   className="inline-flex items-center justify-center text-sm text-white/70 underline hover:text-white self-center"
                 >
-                  Ver planes
+                  Para negocios
                 </Link>
               </div>
             </div>

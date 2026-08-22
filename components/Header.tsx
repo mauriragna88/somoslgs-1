@@ -22,14 +22,27 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const lastScrollY = useRef(0)
 
-  // Scroll listener for transparent → frosted glass transition
+  // Scroll listener: frosted glass + smart hide/show (hide down, show up ≥10px)
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 24)
+      const delta = y - lastScrollY.current
+      if (y > 120) {
+        if (delta > 10 && !hidden) setHidden(true)
+        else if (delta < -10 && hidden) setHidden(false)
+      } else if (hidden) {
+        setHidden(false)
+      }
+      lastScrollY.current = y
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [hidden])
 
   useEffect(() => {
     const supabase = createClient()
@@ -118,8 +131,8 @@ export default function Header() {
 
   const NAV_LINKS = [
     { label: 'Buscar negocios', href: '/buscar' },
+    { label: 'Restaurantes', href: '/restaurantes' },
     { label: 'Que hacer', href: '/que-hacer-en-lagos-de-moreno' },
-    { label: 'Comer en Lagos', href: '/categorias/comida' },
     { label: 'Registrar mi negocio', href: '/registrar-negocio' },
   ]
 
@@ -127,6 +140,8 @@ export default function Header() {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          hidden ? '-translate-y-full' : 'translate-y-0'
+        } ${
           scrolled
             ? 'bg-[rgba(255,253,248,0.88)] backdrop-blur-xl shadow-sm py-3'
             : 'bg-transparent py-4'
@@ -491,12 +506,12 @@ export default function Header() {
                   <span className="text-lg">🗺️</span> Qué Hacer
                 </Link>
                 <Link
-                  href="/planes"
+                  href="/para-negocios"
                   className="flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors hover:bg-black/5"
                   style={{ color: 'var(--ink)' }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <span className="text-lg">💎</span> Planes
+                  <span className="text-lg">💎</span> Para negocios
                 </Link>
                 {user && (
                   <>

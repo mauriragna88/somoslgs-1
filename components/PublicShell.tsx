@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 import ScrollToTop from '@/components/shared/ScrollToTop'
+import SmoothScroll from '@/components/SmoothScroll'
 
 const INTERNAL_PREFIXES = ['/admin', '/dashboard']
 
@@ -24,9 +25,11 @@ export default function PublicShell({ children }: { children: React.ReactNode })
   return (
     <>
       <Header />
-      <div className={needsOffset ? 'pt-24' : ''}>
-        {children}
-      </div>
+      <SmoothScroll>
+        <div className={needsOffset ? 'pt-24' : ''}>
+          {children}
+        </div>
+      </SmoothScroll>
       <Footer />
       <WhatsAppFloat />
       <ScrollToTop />
