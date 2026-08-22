@@ -17,6 +17,7 @@ import EventsSection from '@/components/home/EventsSection'
 import FeaturedSection from '@/components/home/FeaturedSection'
 import MarketplaceStrip from '@/components/home/MarketplaceStrip'
 import CategoryGrid from '@/components/home/CategoryGrid'
+import HowItWorks from '@/components/home/HowItWorks'
 import BlogCard from '@/components/blog/BlogCard'
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
 import SectionReveal from '@/components/animations/SectionReveal'
@@ -369,95 +370,10 @@ export default async function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════════════════════
-          4. HOW IT WORKS
+          4. HOW IT WORKS — animación interactiva tipo app
       ═══════════════════════════════════════════════════════════ */}
       <SectionReveal>
-        <section className="py-20" style={{ background: '#FFFDF8' }}>
-        <div className="container mx-auto px-4">
-          <ScrollReveal direction="up">
-            <div className="text-center mb-12">
-              <span
-                className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4"
-                style={{ background: 'rgba(245,185,66,0.15)', color: 'var(--gold)' }}
-              >
-                ¿Cómo funciona?
-              </span>
-              <h2
-                className="text-3xl md:text-4xl font-black mb-3"
-                style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
-              >
-                Así funciona SomosLagos
-              </h2>
-              <p className="text-base max-w-lg mx-auto" style={{ color: 'var(--ink-soft)' }}>
-                Conectar con negocios locales nunca fue tan fácil.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              {
-                num: '1',
-                color: 'var(--coral)',
-                title: 'Busca',
-                body: 'Encuentra negocios locales por categoría, nombre o ubicación.',
-                mock: (
-                  <div className="mt-4 p-3 rounded-xl" style={{ background: 'rgba(255,107,53,0.07)' }}>
-                    <div className="h-2.5 rounded-full bg-current opacity-20 mb-2" style={{ color: 'var(--coral)', width: '80%' }} />
-                    <div className="h-2 rounded-full bg-current opacity-10" style={{ color: 'var(--coral)', width: '60%' }} />
-                  </div>
-                ),
-              },
-              {
-                num: '2',
-                color: 'var(--gold)',
-                title: 'Conecta',
-                body: 'Llama, manda WhatsApp o visita el negocio directo desde su perfil.',
-                mock: (
-                  <div className="mt-4 flex gap-2">
-                    <div className="flex-1 h-8 rounded-lg" style={{ background: 'rgba(245,185,66,0.2)' }} />
-                    <div className="flex-1 h-8 rounded-lg" style={{ background: '#25D36633' }} />
-                  </div>
-                ),
-              },
-              {
-                num: '3',
-                color: 'var(--ink)',
-                title: 'Pide',
-                body: 'Ordena productos en línea si el negocio tiene Plan Pro activado.',
-                mock: (
-                  <div className="mt-4 p-3 rounded-xl" style={{ background: 'rgba(31,41,55,0.06)' }}>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="h-2 w-16 rounded bg-current opacity-20" style={{ color: 'var(--ink)' }} />
-                      <div className="h-5 w-5 rounded-full" style={{ background: 'var(--coral)' }} />
-                    </div>
-                    <div className="h-2 w-24 rounded bg-current opacity-10" style={{ color: 'var(--ink)' }} />
-                  </div>
-                ),
-              },
-            ].map((step, i) => (
-              <ScrollReveal key={step.num} direction="up" delay={i * 100}>
-                <div
-                  className="p-6 rounded-2xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group"
-                  style={{ background: 'white', boxShadow: '0 2px 12px rgba(31,41,55,0.06)' }}
-                >
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center font-black text-xl text-white mb-4 transition-transform duration-300 group-hover:scale-110"
-                    style={{ background: step.color, boxShadow: `0 4px 14px ${step.color}55` }}
-                  >
-                    {step.num}
-                  </div>
-                  <h3 className="font-black text-xl mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
-                    {step.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>{step.body}</p>
-                  {step.mock}
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-        </section>
+        <HowItWorks />
       </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
