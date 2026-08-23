@@ -173,7 +173,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
 
   const dropdownClasses = {
     header: 'absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50 w-[420px]',
-    hero: 'absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50',
+    hero: 'absolute left-0 right-0 bottom-full mb-3 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50',
     mobile: 'absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50',
   }
 
@@ -233,7 +233,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
             exit={{ opacity: 0, y: 6, scale: 0.98 }}
             transition={{ duration: 0.22, ease: EASE }}
             className={dropdownClasses[variant]}
-            style={{ transformOrigin: 'top center' }}
+            style={{ transformOrigin: variant === 'hero' ? 'bottom center' : 'top center' }}
           >
             {/* Header del dropdown */}
             <div className="px-4 py-2.5 border-b border-gray-100 flex items-center justify-between">
@@ -247,7 +247,7 @@ export default function SmartSearch({ variant, onNavigate }: SmartSearchProps) {
               )}
             </div>
 
-            <div className="max-h-80 overflow-y-auto">
+            <div className={`${variant === 'hero' ? 'max-h-[55vh]' : 'max-h-80'} overflow-y-auto`}>
               {showingResults ? (
                 /* Resultados de negocios — stagger al aparecer */
                 results.map((biz, index) => (
