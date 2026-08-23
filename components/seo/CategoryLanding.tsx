@@ -26,6 +26,7 @@ interface LandingConfig {
   categorySlugs: string[]    // slugs de categorías a incluir
   schemaType: string         // 'Restaurant' | 'Hotel' | 'CafeOrCoffeeShop' | 'BarOrPub'
   schemaCuisine?: string
+  heroImage?: string         // imagen de fondo del hero (local /tourism)
 }
 
 export default async function CategoryLanding({ config }: { config: LandingConfig }) {
@@ -118,22 +119,25 @@ export default async function CategoryLanding({ config }: { config: LandingConfi
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
-      {/* HERO */}
+      {/* HERO — con fondo parallax de imagen local */}
       <SectionReveal entryY={30} amount={0.4} blur={false}>
         <section className="relative overflow-hidden pt-28 pb-14 md:pt-32 md:pb-16">
-          <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(217,110,51,0.12)' }} />
-          <div className="absolute bottom-0 left-10 w-72 h-72 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(14,155,163,0.12)' }} />
+          {/* Fondo con imagen de tourism + parallax */}
+          <div className="absolute inset-0 z-0">
+            <img src={config.heroImage} alt="" aria-hidden className="w-full h-full object-cover" />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(6,15,30,0.55) 0%, rgba(6,15,30,0.55) 60%, #FBF0E5 100%)' }} />
+          </div>
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-5" style={{ background: 'rgba(217,110,51,0.1)', color: 'var(--coral)' }}>
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-5" style={{ background: 'rgba(251,240,229,0.92)', color: 'var(--coral)', boxShadow: '0 2px 12px rgba(6,60,103,0.12)' }}>
                 <span className="text-sm">{config.emoji}</span> {config.eyebrow} · Pueblo Mágico
               </span>
-              <h1 className="text-4xl md:text-6xl font-black leading-[1.02] tracking-tight mb-5" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
+              <h1 className="text-4xl md:text-6xl font-black leading-[1.02] tracking-tight mb-5" style={{ fontFamily: 'var(--display)', color: 'white', textShadow: '0 4px 24px rgba(6,15,30,0.5)' }}>
                 {config.h1}
               </h1>
               {/* Texto SEO intro */}
-              <div className="space-y-4 text-base md:text-lg leading-relaxed mb-8" style={{ color: 'var(--ink-soft)' }}>
-                {config.intro.map((p, i) => (<p key={i}>{p}</p>))}
+              <div className="space-y-4 text-base md:text-lg leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.92)', textShadow: '0 2px 12px rgba(6,15,30,0.4)' }}>
+                {config.intro.map((p, i) => (<p key={i} dangerouslySetInnerHTML={{ __html: p }} />))}
               </div>
             </div>
           </div>

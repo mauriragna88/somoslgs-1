@@ -41,6 +41,7 @@ export default function SaludPage() {
         ],
         categorySlugs: ['salud', 'medicos', 'dentistas', 'farmacias', 'nutriologos', 'psicologos', 'fisioterapia', 'yoga-meditacion'],
         schemaType: 'MedicalClinic',
+        heroImage: '/tourism/jardin-constituyentes.jpg',
       }}
     />
   )

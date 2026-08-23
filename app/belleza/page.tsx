@@ -41,6 +41,7 @@ export default function BellezaPage() {
         ],
         categorySlugs: ['belleza', 'esteticas', 'barberias', 'unas-nail-salon', 'maquillaje-profesional', 'spa', 'cuidado-piel', 'cejas-pestanas', 'tatuajes-piercings'],
         schemaType: 'BeautySalon',
+        heroImage: '/tourism/museo-arte-sacro.jpg',
       }}
     />
   )

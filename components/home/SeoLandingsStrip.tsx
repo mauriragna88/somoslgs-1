@@ -16,6 +16,7 @@ const LINKS = [
   { href: '/bares', label: 'Bares', emoji: '🍸' },
   { href: '/salud', label: 'Salud', emoji: '⚕️' },
   { href: '/belleza', label: 'Belleza', emoji: '💅' },
+  { href: '/donde-comer-en-lagos', label: 'Dónde comer', emoji: '🌮' },
   { href: '/que-hacer-en-lagos-de-moreno', label: 'Qué hacer', emoji: '🗺️' },
 ]
 

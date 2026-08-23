@@ -40,6 +40,7 @@ export default function HotelesPage() {
         ],
         categorySlugs: ['hospedaje', 'hoteles', 'posadas'],
         schemaType: 'Hotel',
+        heroImage: '/tourism/panoramica-lagos.jpg',
       }}
     />
   )

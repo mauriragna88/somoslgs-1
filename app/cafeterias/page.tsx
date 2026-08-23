@@ -41,6 +41,7 @@ export default function CafeteriasPage() {
         categorySlugs: ['cafeterias', 'cafes', 'desayunos'],
         schemaType: 'CafeOrCoffeeShop',
         schemaCuisine: 'Café y desayunos',
+        heroImage: '/tourism/centro-historico.jpg',
       }}
     />
   )

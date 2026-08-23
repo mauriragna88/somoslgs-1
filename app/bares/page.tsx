@@ -40,6 +40,7 @@ export default function BaresPage() {
         ],
         categorySlugs: ['bares', 'cantinas', 'centros-nocturnos', 'entretenimiento'],
         schemaType: 'BarOrPub',
+        heroImage: '/tourism/calvario-panoramica.jpg',
       }}
     />
   )

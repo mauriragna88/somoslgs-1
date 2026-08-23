@@ -41,6 +41,7 @@ export default function TaqueriasPage() {
         categorySlugs: ['taquerias', 'tacos', 'comida'],
         schemaType: 'Restaurant',
         schemaCuisine: 'Mexicana, Tacos',
+        heroImage: '/tourism/callelagos1.jpg',
       }}
     />
   )
