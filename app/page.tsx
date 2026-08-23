@@ -17,6 +17,7 @@ import EventsSection from '@/components/home/EventsSection'
 import FeaturedSection from '@/components/home/FeaturedSection'
 import MarketplaceStrip from '@/components/home/MarketplaceStrip'
 import CategoryGrid from '@/components/home/CategoryGrid'
+import SeoLandingsStrip from '@/components/home/SeoLandingsStrip'
 import HowItWorks from '@/components/home/HowItWorks'
 import BlogCard from '@/components/blog/BlogCard'
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
@@ -339,6 +340,8 @@ export default async function HomePage() {
             </ScrollReveal>
 
             <CategoryGrid categories={categories} />
+
+            <SeoLandingsStrip />
 
             <div className="text-center">
               <Link
