@@ -75,8 +75,16 @@ Por eso el dashboard de pedidos que usa `transfer`, `pending_verification`, `ver
 - **Dónde:** `components/admin/BannerForm.tsx` enviaba `description`, pero `app/api/admin/banners/route.ts` no lo validaba ni insertaba.
 - **Solución aplicada:** ✅ agregado `description` y `display_mode` al schema y al INSERT de la API (commiteado).
 
-### ⚠️ 4. Verificar `emprendedor` y `chatbot` en la BD
-- El frontend usa `emprendedor` y `chatbot` como tiers, pero la migración `013` solo renombró a `gratis/pro/avanzado`. Confirmar en Supabase si esos dos valores son válidos en el CHECK real.
+### ✅ 4. El CHECK de la tabla `transactions` está desalineado — CORREGIDO (migración creada)
+- **Dónde:** `app/api/payments/transfer/route.ts:18,84`, `app/api/payments/agreement/route.ts:18,70`, y webhooks de `conekta`/`mercadopago` que insertan en `transactions`.
+- **Problema:** la tabla `transactions` (definida en `supabase-transactions-table.sql`) tiene CHECK antiguos `subscription_tier IN ('basico','productos','ventas','premium')` y `payment_method IN ('transfer','mercadopago','stripe')`. El frontend inserta `pro/avanzado` y `payment_method: 'conekta'` → **violación de CHECK → los pagos fallan**. Ninguna migración previa actualizaba `transactions`.
+- **Solución aplicada:** ✅ creado `supabase/migrations/021_align_transactions_tier_check.sql` que alinea `subscription_tier` a `gratis/emprendedor/pro/avanzado/chatbot` y agrega `conekta` a `payment_method`. **Requiere ejecutarse en Supabase** (no pude correrlo sin red).
+
+### 🛠️ CÓMO APLICAR LA MIGRACIÓN (accionable)
+En el SQL Editor de Supabase, ejecuta el contenido de `supabase/migrations/021_align_transactions_tier_check.sql`.
+
+### ⚠️ 5. Verificar `emprendedor` y `chatbot` en la BD
+- El frontend usa `emprendedor` y `chatbot` como tiers, pero la migración `013` solo renombró a `gratis/pro/avanzado`. Confirmar en Supabase si esos dos valores son válidos en el CHECK real de `businesses` (la migración 021 ya los agrega a `transactions`).
 
 ### ✅ 5. Confirmado que el resto del frontend está sincronizado (falsos positivos descartados)
 Con evidencia de migraciones: `delivering` (008), `order_customers` (003), `payment_receipt_url` + `payment_method='transfer'` + `payment_status` ampliado (004), `products.type` + `business_type` (012, 017), redes sociales (016), `total_views` (020). Todos existen en la BD real, así que el dashboard, admin y queries públicas están correctamente alineados.
