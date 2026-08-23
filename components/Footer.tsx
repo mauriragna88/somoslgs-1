@@ -86,13 +86,23 @@ export default function Footer() {
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <Image
-                src="/logo.png"
-                alt="SomosLagos"
-                width={32}
-                height={32}
-                className="rounded-lg"
-              />
+              <div
+                className="rounded-full overflow-hidden flex-shrink-0 ring-1"
+                style={{
+                  width: 36,
+                  height: 36,
+                  background: '#FBF0E5',
+                  '--tw-ring-color': 'rgba(255,253,248,0.15)',
+                } as React.CSSProperties}
+              >
+                <Image
+                  src="/logo-symbol.png"
+                  alt="SomosLagos"
+                  width={36}
+                  height={36}
+                  className="object-cover"
+                />
+              </div>
               <span
                 className="text-white font-bold text-lg"
                 style={{ fontFamily: 'var(--display)' }}

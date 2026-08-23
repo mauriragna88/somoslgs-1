@@ -49,7 +49,12 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
       {/* Header */}
       <div className="p-5 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <Link href="/admin" className="flex items-center gap-3">
-          <Image src="/logo.png" alt="SomosLagos" width={36} height={36} className="w-9 h-9" />
+          <div
+            className="rounded-full overflow-hidden flex-shrink-0 ring-1"
+            style={{ width: 36, height: 36, background: '#FBF0E5', '--tw-ring-color': 'rgba(255,255,255,0.15)' } as React.CSSProperties}
+          >
+            <Image src="/logo-symbol.png" alt="SomosLagos" width={36} height={36} className="object-cover" />
+          </div>
           <div>
             <h1 className="text-sm font-bold text-white" style={{ fontFamily: 'var(--display)' }}>Admin Panel</h1>
             <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.45)' }}>SomosLagos</p>

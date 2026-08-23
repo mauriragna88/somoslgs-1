@@ -20,34 +20,34 @@
   --pueblo-noche: #2C1810;
   --pueblo-cantera-light: #F1D2C7;
 
-  /* New design system — coral + gold */
-  --ivory:      #FFFDF8;
-  --cream:      #F8F1E7;
+  /* New design system — marca 2026 (puente que conecta) */
+  --ivory:      #FBF0E5;
+  --cream:      #F5F3EB;
   --sand:       #EED9B7;
   --sand-deep:  #E2C28E;
   --stone:      #D8C19A;
 
-  --ink:           #1F2937;
-  --ink-soft:      #334155;
-  --muted:         #64748B;
-  --hairline:      rgba(31, 41, 55, 0.10);
-  --hairline-soft: rgba(31, 41, 55, 0.06);
+  --ink:           #063C67;
+  --ink-soft:      #1B4A78;
+  --muted:         #5B7288;
+  --hairline:      rgba(6, 60, 103, 0.10);
+  --hairline-soft: rgba(6, 60, 103, 0.06);
 
-  --coral:      #FF6B35;
-  --coral-deep: #E2541F;
-  --gold:       #F5B942;
-  --gold-deep:  #E09A1B;
+  --coral:      #D96E33;
+  --coral-deep: #B85526;
+  --gold:       #E6872E;
+  --gold-deep:  #D9772B;
 
-  --turquoise:  #22B8CF;
-  --blue:       #2F80ED;
+  --turquoise:  #0E9BA3;
+  --blue:       #014072;
   --green:      #22C55E;
   --green-deep: #16A34A;
   --terracotta: #C86B4A;
   --buga:       #D946EF;
 
-  --shadow-card:       0 1px 0 rgba(31,41,55,0.04), 0 8px 24px -8px rgba(31,41,55,0.12), 0 24px 48px -24px rgba(31,41,55,0.18);
-  --shadow-card-hover: 0 1px 0 rgba(31,41,55,0.04), 0 14px 32px -8px rgba(31,41,55,0.18), 0 36px 72px -24px rgba(31,41,55,0.22);
-  --shadow-soft:       0 1px 2px rgba(31,41,55,0.06), 0 8px 24px -10px rgba(31,41,55,0.10);
+  --shadow-card:       0 1px 0 rgba(6,60,103,0.04), 0 8px 24px -8px rgba(6,60,103,0.12), 0 24px 48px -24px rgba(6,60,103,0.18);
+  --shadow-card-hover: 0 1px 0 rgba(6,60,103,0.04), 0 14px 32px -8px rgba(6,60,103,0.18), 0 36px 72px -24px rgba(6,60,103,0.22);
+  --shadow-soft:       0 1px 2px rgba(6,60,103,0.06), 0 8px 24px -10px rgba(6,60,103,0.10);
 
   --r-sm:  12px;
   --r-md:  18px;

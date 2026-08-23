@@ -139,223 +139,242 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           hidden ? '-translate-y-full' : 'translate-y-0'
-        } ${
-          scrolled
-            ? 'bg-[rgba(255,253,248,0.88)] backdrop-blur-xl shadow-sm py-3'
-            : 'bg-transparent py-4'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-6">
-
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-            <Image
-              src="/logo.png"
-              alt="SomosLagos"
-              width={64}
-              height={64}
-              className="rounded-xl"
-              priority
-            />
-            <div className="flex flex-col leading-none">
-              <span
-                className="font-bold tracking-tight"
-                style={{ fontFamily: 'var(--display)', color: 'var(--ink)', fontSize: '22px' }}
+        {/* Barra flotante pill glass */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4">
+          <div
+            className="mx-auto flex items-center gap-4 sm:gap-6 rounded-full border px-3 sm:px-4 py-2 transition-all duration-500"
+            style={{
+              background: scrolled
+                ? 'rgba(251,240,229,0.92)'
+                : 'rgba(255,255,255,0.42)',
+              backdropFilter: 'blur(18px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(18px) saturate(160%)',
+              borderColor: scrolled ? 'rgba(6,60,103,0.10)' : 'rgba(255,255,255,0.55)',
+              boxShadow: scrolled
+                ? '0 12px 40px -12px rgba(6,60,103,0.25), 0 2px 8px rgba(6,60,103,0.06)'
+                : '0 4px 20px -8px rgba(6,60,103,0.18)',
+            }}
+          >
+            {/* Logo — imagen */}
+            <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
+              <div
+                className="rounded-full overflow-hidden flex-shrink-0 ring-1"
+                style={{
+                  width: 46,
+                  height: 46,
+                  background: 'white',
+                  boxShadow: '0 2px 10px rgba(6,60,103,0.12)',
+                  '--tw-ring-color': 'rgba(6,60,103,0.10)',
+                } as React.CSSProperties}
               >
-                Somos<span style={{ color: 'var(--coral)' }}>Lagos</span>
-              </span>
-              <span
-                className="font-semibold uppercase"
-                style={{ color: 'var(--muted)', fontSize: '9px', letterSpacing: '0.12em' }}
-              >
-                Pueblo mágico · MX
-              </span>
-            </div>
-          </Link>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map(link => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="px-3.5 py-2 rounded-full text-sm font-medium transition-colors hover:bg-black/5"
-                style={{ color: 'var(--ink-soft)' }}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Desktop Auth Actions */}
-          <div className="hidden md:flex items-center gap-2">
-            {loading ? (
-              <div className="w-24 h-9 bg-black/10 animate-pulse rounded-full" />
-            ) : user && profile ? (
-              <div className="relative" ref={menuRef}>
-                <button
-                  onClick={() => setShowMenu(!showMenu)}
-                  className="flex items-center gap-2 px-2 py-1.5 rounded-full hover:bg-black/5 transition-colors"
+                <Image src="/logo-symbol.png" alt="SomosLagos" width={46} height={46} className="object-cover" priority />
+              </div>
+              <div className="hidden sm:flex flex-col leading-none">
+                <span
+                  className="font-bold tracking-tight"
+                  style={{ fontFamily: 'var(--display)', color: 'var(--ink)', fontSize: '20px' }}
                 >
-                  <div
-                    className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
-                    style={{ background: 'var(--coral)' }}
-                  >
-                    {getInitials(profile.full_name)}
-                  </div>
-                  <span className="text-sm font-medium max-w-[100px] truncate" style={{ color: 'var(--ink)' }}>
-                    {profile.full_name.split(' ')[0]}
-                  </span>
-                  <svg
-                    className={`w-4 h-4 transition-transform ${showMenu ? 'rotate-180' : ''}`}
-                    style={{ color: 'var(--ink-soft)' }}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
+                  Somos<span style={{ color: 'var(--coral)' }}>Lagos</span>
+                </span>
+                <span
+                  className="font-semibold uppercase"
+                  style={{ color: 'var(--muted)', fontSize: '8px', letterSpacing: '0.12em' }}
+                >
+                  Pueblo mágico · MX
+                </span>
+              </div>
+            </Link>
 
-                {showMenu && (
-                  <>
-                    <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center gap-1 ml-auto">
+              {NAV_LINKS.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="group relative px-3.5 py-2 rounded-full text-sm font-medium transition-colors hover:bg-white/60"
+                  style={{ color: 'var(--ink-soft)' }}
+                >
+                  {link.label}
+                  <span
+                    className="absolute left-3.5 right-3.5 -bottom-0.5 h-0.5 rounded-full origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                    style={{ background: 'linear-gradient(90deg, var(--coral), var(--gold))' }}
+                  />
+                </Link>
+              ))}
+            </nav>
+
+            {/* Desktop Auth Actions */}
+            <div className="hidden md:flex items-center gap-2 ml-2">
+              {loading ? (
+                <div className="w-24 h-9 bg-black/10 animate-pulse rounded-full" />
+              ) : user && profile ? (
+                <div className="relative" ref={menuRef}>
+                  <button
+                    onClick={() => setShowMenu(!showMenu)}
+                    className="flex items-center gap-2 px-2 py-1.5 rounded-full hover:bg-white/60 transition-colors"
+                  >
                     <div
-                      className="absolute right-0 mt-2 w-56 py-1 z-50"
-                      style={{
-                        background: 'white',
-                        border: '1px solid var(--hairline)',
-                        boxShadow: 'var(--shadow-card)',
-                        borderRadius: '16px',
-                      }}
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
+                      style={{ background: 'var(--coral)' }}
                     >
-                      <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--hairline)' }}>
-                        <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{profile.full_name}</p>
-                        <p className="text-xs capitalize" style={{ color: 'var(--muted)' }}>{profile.role.replace('_', ' ')}</p>
-                      </div>
+                      {getInitials(profile.full_name)}
+                    </div>
+                    <span className="text-sm font-medium max-w-[100px] truncate" style={{ color: 'var(--ink)' }}>
+                      {profile.full_name.split(' ')[0]}
+                    </span>
+                    <svg
+                      className={`w-4 h-4 transition-transform ${showMenu ? 'rotate-180' : ''}`}
+                      style={{ color: 'var(--ink-soft)' }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
 
-                      <Link
-                        href={getDashboardLink()}
-                        className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
-                        style={{ color: 'var(--ink)' }}
-                        onClick={() => setShowMenu(false)}
+                  {showMenu && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
+                      <div
+                        className="absolute right-0 mt-2 w-56 py-1 z-50"
+                        style={{
+                          background: 'rgba(251,240,229,0.98)',
+                          backdropFilter: 'blur(12px)',
+                          border: '1px solid rgba(6,60,103,0.10)',
+                          boxShadow: 'var(--shadow-card)',
+                          borderRadius: '16px',
+                        }}
                       >
-                        <span className="mr-3">{profile.role === 'admin' ? '⚙️' : profile.role === 'business_owner' ? '📊' : '👤'}</span>
-                        {profile.role === 'admin' ? 'Admin Panel' :
-                         profile.role === 'business_owner' ? 'Mi Dashboard' :
-                         'Mi Perfil'}
-                      </Link>
+                        <div className="px-4 py-3 border-b" style={{ borderColor: 'rgba(6,60,103,0.08)' }}>
+                          <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{profile.full_name}</p>
+                          <p className="text-xs capitalize" style={{ color: 'var(--muted)' }}>{profile.role.replace('_', ' ')}</p>
+                        </div>
 
-                      {profile.role === 'customer' && (
                         <Link
-                          href="/registrar-negocio"
-                          className="flex items-center px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-black/5"
-                          style={{ color: 'var(--coral)' }}
+                          href={getDashboardLink()}
+                          className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
+                          style={{ color: 'var(--ink)' }}
                           onClick={() => setShowMenu(false)}
                         >
-                          <span className="mr-3">✨</span>
-                          Registra tu Negocio GRATIS
+                          <span className="mr-3">{profile.role === 'admin' ? '⚙️' : profile.role === 'business_owner' ? '📊' : '👤'}</span>
+                          {profile.role === 'admin' ? 'Admin Panel' :
+                           profile.role === 'business_owner' ? 'Mi Dashboard' :
+                           'Mi Perfil'}
                         </Link>
-                      )}
 
-                      <Link
-                        href="/mis-pedidos"
-                        className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
-                        style={{ color: 'var(--ink)' }}
-                        onClick={() => setShowMenu(false)}
-                      >
-                        <span className="mr-3">📦</span>
-                        Mis Pedidos
-                      </Link>
+                        {profile.role === 'customer' && (
+                          <Link
+                            href="/registrar-negocio"
+                            className="flex items-center px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-black/5"
+                            style={{ color: 'var(--coral)' }}
+                            onClick={() => setShowMenu(false)}
+                          >
+                            <span className="mr-3">✨</span>
+                            Registra tu Negocio GRATIS
+                          </Link>
+                        )}
 
-                      <Link
-                        href="/favoritos"
-                        className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
-                        style={{ color: 'var(--ink)' }}
-                        onClick={() => setShowMenu(false)}
-                      >
-                        <span className="mr-3">🤍</span>
-                        Mis Favoritos
-                      </Link>
+                        <Link
+                          href="/mis-pedidos"
+                          className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
+                          style={{ color: 'var(--ink)' }}
+                          onClick={() => setShowMenu(false)}
+                        >
+                          <span className="mr-3">📦</span>
+                          Mis Pedidos
+                        </Link>
 
-                      <Link
-                        href="/profile"
-                        className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
-                        style={{ color: 'var(--ink)' }}
-                        onClick={() => setShowMenu(false)}
-                      >
-                        <span className="mr-3">⚙️</span>
-                        Configuracion
-                      </Link>
+                        <Link
+                          href="/favoritos"
+                          className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
+                          style={{ color: 'var(--ink)' }}
+                          onClick={() => setShowMenu(false)}
+                        >
+                          <span className="mr-3">🤍</span>
+                          Mis Favoritos
+                        </Link>
 
-                      <div className="border-t my-1" style={{ borderColor: 'var(--hairline)' }} />
+                        <Link
+                          href="/profile"
+                          className="flex items-center px-4 py-2.5 text-sm transition-colors hover:bg-black/5"
+                          style={{ color: 'var(--ink)' }}
+                          onClick={() => setShowMenu(false)}
+                        >
+                          <span className="mr-3">⚙️</span>
+                          Configuracion
+                        </Link>
 
-                      <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                      >
-                        <span className="mr-3">🚪</span>
-                        Cerrar Sesion
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="px-4 py-2 rounded-full text-sm font-medium border transition-colors hover:bg-black/5"
-                  style={{ borderColor: 'var(--hairline)', color: 'var(--ink-soft)' }}
-                >
-                  Iniciar sesión
-                </Link>
-                <Link
-                  href="/registrar-negocio"
-                  className="px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:opacity-90"
+                        <div className="border-t my-1" style={{ borderColor: 'rgba(6,60,103,0.08)' }} />
+
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          <span className="mr-3">🚪</span>
+                          Cerrar Sesion
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="px-4 py-2 rounded-full text-sm font-medium border transition-colors hover:bg-white/60"
+                    style={{ borderColor: 'rgba(6,60,103,0.15)', color: 'var(--ink-soft)' }}
+                  >
+                    Iniciar sesión
+                  </Link>
+                  <Link
+                    href="/registrar-negocio"
+                    className="px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:opacity-90 hover:scale-[1.03]"
+                    style={{ background: 'var(--coral)', boxShadow: '0 6px 18px rgba(217,110,51,0.35)' }}
+                  >
+                    + Registrar negocio
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Mobile bar */}
+            <div className="flex md:hidden items-center gap-2 ml-auto">
+              {loading ? (
+                <div className="w-8 h-8 rounded-full bg-black/10 animate-pulse" />
+              ) : user ? (
+                <button
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
                   style={{ background: 'var(--coral)' }}
                 >
-                  + Registrar negocio
+                  {getInitials(profile?.full_name || '')}
+                </button>
+              ) : (
+                <Link
+                  href="/registrar-negocio"
+                  className="px-3.5 py-2 rounded-full text-sm font-semibold text-white"
+                  style={{ background: 'var(--coral)' }}
+                >
+                  Registrar
                 </Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile bar */}
-          <div className="flex md:hidden items-center gap-2">
-            {loading ? (
-              <div className="w-8 h-8 rounded-full bg-black/10 animate-pulse" />
-            ) : user ? (
+              )}
               <button
                 onClick={() => setMobileMenuOpen(true)}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
-                style={{ background: 'var(--coral)' }}
+                className="p-2 rounded-full hover:bg-white/60 transition-colors"
+                style={{ color: 'var(--ink)' }}
+                aria-label="Menú"
               >
-                {getInitials(profile?.full_name || '')}
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+                </svg>
               </button>
-            ) : (
-              <Link
-                href="/registrar-negocio"
-                className="px-3.5 py-2 rounded-full text-sm font-semibold text-white"
-                style={{ background: 'var(--coral)' }}
-              >
-                Registrar
-              </Link>
-            )}
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="p-2 rounded-full hover:bg-black/5 transition-colors"
-              style={{ color: 'var(--ink)' }}
-              aria-label="Menú"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-              </svg>
-            </button>
+            </div>
           </div>
-
         </div>
       </header>
 
@@ -370,7 +389,7 @@ export default function Header() {
           {/* Drawer panel */}
           <div
             className="md:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm z-[70] shadow-2xl flex flex-col"
-            style={{ background: '#FFFDF8' }}
+            style={{ background: '#FBF0E5' }}
           >
             {/* Drawer header */}
             <div
