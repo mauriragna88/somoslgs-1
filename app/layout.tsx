@@ -30,11 +30,20 @@ export const metadata: Metadata = {
     title: 'SomosLagos - Encuentra negocios en Lagos de Moreno',
     description: 'La plataforma digital de Lagos de Moreno. Descubre negocios locales, pide productos y conecta con tu comunidad.',
     url: 'https://www.somoslagos.com.mx',
+    images: [
+      {
+        url: 'https://www.somoslagos.com.mx/tourism/panoramica-lagos.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Lagos de Moreno, Pueblo Mágico de Jalisco',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'SomosLagos - Encuentra negocios en Lagos de Moreno',
     description: 'La plataforma digital de Lagos de Moreno. Descubre negocios locales, pide productos y conecta con tu comunidad.',
+    images: ['https://www.somoslagos.com.mx/tourism/panoramica-lagos.jpg'],
   },
   manifest: '/manifest.json',
   appleWebApp: {
@@ -43,7 +52,7 @@ export const metadata: Metadata = {
     title: 'SomosLagos',
   },
   other: {
-    'theme-color': '#0F766E',
+    'theme-color': '#D96E33',
     'mobile-web-app-capable': 'yes',
   },
 }

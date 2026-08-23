@@ -61,6 +61,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
+    alternates: {
+      canonical: `https://www.somoslagos.com.mx/negocios-en/${rawColonia}`,
+    },
     openGraph: {
       title: `${title} | SomosLagos`,
       description,
