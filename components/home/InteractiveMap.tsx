@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface Zone {
   id: string
@@ -12,6 +13,8 @@ interface Zone {
   cy: number
 }
 
+const EASE = [0.16, 1, 0.3, 1] as const
+
 const TICKER_EVENTS = [
   'Negocio registrado en Lagos de Moreno',
   'Nueva reseña 5⭐ en el directorio',
@@ -21,15 +24,30 @@ const TICKER_EVENTS = [
   'Cliente encontró lo que buscaba',
 ]
 
+const BUSINESS_EMOJIS = ['🏪', '🍽️', '☕', '🛍️', '💇', '🏨', '🔧', '🍦', '🎨', '📦']
+
+/* Genera posiciones pseudoaleatorias deterministas alrededor de una zona */
+function generatePositions(cx: number, cy: number, count: number) {
+  const positions: { x: number; y: number; e: number }[] = []
+  for (let i = 0; i < count; i++) {
+    const angle = (i / Math.max(count, 1)) * Math.PI * 2 + (i % 3) * 0.35
+    const radius = 26 + ((i * 37) % 40)
+    const x = cx + Math.cos(angle) * radius
+    const y = cy + Math.sin(angle) * radius * 0.72
+    positions.push({ x, y, e: (i + (cx + cy) % 5) % BUSINESS_EMOJIS.length })
+  }
+  return positions
+}
+
 export default function InteractiveMap() {
   const [activeZone, setActiveZone] = useState<string | null>(null)
   const [tickerIdx, setTickerIdx] = useState(0)
-  const [dotPos, setDotPos] = useState({ x: 300, y: 200 })
   const [zones, setZones] = useState<Zone[]>([])
   const [totalActive, setTotalActive] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [growth, setGrowth] = useState(0) // 0..1 progreso de llenado global
+  const maxTotalRef = useRef(1)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const dotRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
     fetch('/api/map/zones')
@@ -37,13 +55,16 @@ export default function InteractiveMap() {
       .then((data: Zone[]) => {
         if (Array.isArray(data) && data.length > 0) {
           setZones(data)
-          setTotalActive(data.reduce((acc, z) => acc + z.businesses, 0))
+          const total = data.reduce((acc, z) => acc + z.businesses, 0)
+          setTotalActive(total)
+          maxTotalRef.current = total
         }
       })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
 
+  // Ticker de eventos
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setTickerIdx(i => (i + 1) % TICKER_EVENTS.length)
@@ -51,14 +72,31 @@ export default function InteractiveMap() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
   }, [])
 
+  // Animación de "crecimiento": el mapa se va llenando de negocios en bucle
   useEffect(() => {
-    if (zones.length === 0) return
-    dotRef.current = setInterval(() => {
-      const zone = zones[Math.floor(Math.random() * zones.length)]
-      setDotPos({ x: zone.cx + (Math.random() - 0.5) * 40, y: zone.cy + (Math.random() - 0.5) * 40 })
-    }, 1800)
-    return () => { if (dotRef.current) clearInterval(dotRef.current) }
-  }, [zones])
+    if (totalActive === 0) return
+    let raf: number
+    let start: number | null = null
+    const duration = 4200 // ms por ciclo de crecimiento
+
+    const tick = (t: number) => {
+      if (start === null) start = t
+      const p = (t - start) / duration
+      const eased = Math.min(1, p)
+      setGrowth(eased)
+      if (eased < 1) {
+        raf = requestAnimationFrame(tick)
+      } else {
+        // Pausa breve y reinicio
+        setTimeout(() => {
+          start = performance.now()
+          raf = requestAnimationFrame(tick)
+        }, 1400)
+      }
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [totalActive])
 
   const active = zones.find(z => z.id === activeZone)
 
@@ -84,10 +122,10 @@ export default function InteractiveMap() {
             className="text-4xl md:text-5xl font-bold mb-3"
             style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
           >
-            Tu ciudad, en un solo mapa
+            La ciudad se llena de <span style={{ color: 'var(--coral)' }}>negocios</span>
           </h2>
           <p className="text-lg max-w-xl mx-auto" style={{ color: 'var(--ink-soft)' }}>
-            Explora negocios por colonia y encuentra lo que necesitas cerca de ti.
+            Mira cómo las colonias de Lagos de Moreno cobran vida, negocio a negocio.
           </p>
         </div>
 
@@ -106,9 +144,7 @@ export default function InteractiveMap() {
                   <button
                     key={z.id}
                     onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}
-                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveZone(activeZone === z.id ? null : z.id) } }}
-                    tabIndex={0}
-                    className="px-4 py-2 rounded-full text-sm font-semibold transition-all"
+                    className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
                     style={{
                       background: activeZone === z.id ? z.color : 'rgba(31,41,55,0.06)',
                       color: activeZone === z.id ? 'white' : 'var(--ink-soft)',
@@ -121,9 +157,13 @@ export default function InteractiveMap() {
               </div>
             )}
 
-            {/* Detail panel */}
+            {/* Detail panel o stats */}
             {active ? (
-              <div className="rounded-2xl p-6 mb-6" style={{ background: 'white', boxShadow: 'var(--shadow-card)' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-2xl p-6 mb-6" style={{ background: 'white', boxShadow: 'var(--shadow-card)' }}
+              >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-3 h-3 rounded-full" style={{ background: active.color }} />
                   <h3 className="font-bold text-lg" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>{active.label}</h3>
@@ -137,12 +177,21 @@ export default function InteractiveMap() {
                 >
                   Ver negocios en {active.label} →
                 </Link>
-              </div>
+              </motion.div>
             ) : (
               <div className="grid grid-cols-2 gap-3 mb-6">
                 {STATS.map(s => (
                   <div key={s.label} className="rounded-2xl p-4" style={{ background: 'white', boxShadow: 'var(--shadow-soft)' }}>
-                    <p className="text-2xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--coral)' }}>{s.value}</p>
+                    <motion.p
+                      key={s.value}
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.4, ease: EASE }}
+                      className="text-2xl font-bold"
+                      style={{ fontFamily: 'var(--display)', color: 'var(--coral)' }}
+                    >
+                      {s.value}
+                    </motion.p>
                     <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>{s.label}</p>
                   </div>
                 ))}
@@ -155,66 +204,100 @@ export default function InteractiveMap() {
               style={{ background: 'rgba(31,41,55,0.05)' }}
             >
               <span className="w-2 h-2 rounded-full flex-shrink-0 animate-pulse" style={{ background: 'var(--green)' }} />
-              <span className="truncate" style={{ color: 'var(--ink-soft)' }}>{TICKER_EVENTS[tickerIdx]}</span>
+              <AnimatePresence mode="popLayout">
+                <motion.span
+                  key={tickerIdx}
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -10, opacity: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="truncate"
+                  style={{ color: 'var(--ink-soft)' }}
+                >
+                  {TICKER_EVENTS[tickerIdx]}
+                </motion.span>
+              </AnimatePresence>
             </div>
           </div>
 
-          {/* Right: SVG map */}
+          {/* Right: SVG map con llenado de negocios */}
           <div className="rounded-3xl overflow-hidden" style={{ background: '#e8f4f0', boxShadow: 'var(--shadow-card)' }}>
-            <svg viewBox="0 0 540 380" className="w-full" style={{ display: 'block' }}>
+            <svg viewBox="0 0 540 400" className="w-full" style={{ display: 'block' }}>
+              {/* Grid */}
               {[100, 200, 300, 400].map(x => (
-                <line key={`v${x}`} x1={x} y1={0} x2={x} y2={380} stroke="rgba(31,41,55,0.06)" strokeWidth="1" />
+                <line key={`v${x}`} x1={x} y1={0} x2={x} y2={400} stroke="rgba(31,41,55,0.06)" strokeWidth="1" />
               ))}
               {[80, 160, 240, 320].map(y => (
                 <line key={`h${y}`} x1={0} y1={y} x2={540} y2={y} stroke="rgba(31,41,55,0.06)" strokeWidth="1" />
               ))}
 
+              {/* Conexiones entre zonas */}
               {zones.slice(0, -1).map((z, i) => (
-                <line
+                <motion.line
                   key={i}
                   x1={z.cx} y1={z.cy}
                   x2={zones[i + 1].cx} y2={zones[i + 1].cy}
-                  stroke="rgba(255,107,53,0.15)"
+                  stroke="rgba(255,107,53,0.18)"
                   strokeWidth="1.5"
                   strokeDasharray="6 4"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: EASE, delay: i * 0.15 }}
                 />
               ))}
 
-              <circle cx={dotPos.x} cy={dotPos.y} r="5" fill="var(--green)" opacity="0.9">
-                <animate attributeName="r" values="4;6;4" dur="1.5s" repeatCount="indefinite" />
-              </circle>
+              {zones.map((z, zi) => {
+                const fillCount = Math.round(z.businesses * growth)
+                const positions = generatePositions(z.cx, z.cy, Math.min(z.businesses, 14))
+                const isActive = activeZone === z.id
+                return (
+                  <g key={z.id}>
+                    {/* Halo pulsante cuando la zona está activa o llena */}
+                    {(isActive || fillCount >= z.businesses) && (
+                      <circle cx={z.cx} cy={z.cy} r="16" fill={z.color} opacity="0.15">
+                        <animate attributeName="r" values="16;30;16" dur="2.2s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.22;0;0.22" dur="2.2s" repeatCount="indefinite" />
+                      </circle>
+                    )}
 
-              {zones.map(z => (
-                <g
-                  key={z.id}
-                  onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}
-                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveZone(activeZone === z.id ? null : z.id) } }}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`${z.label}: ${z.businesses} negocios`}
-                  style={{ cursor: 'pointer', outline: 'none' }}
-                >
-                  {activeZone === z.id && (
-                    <circle cx={z.cx} cy={z.cy} r="24" fill={z.color} opacity="0.15">
-                      <animate attributeName="r" values="16;28;16" dur="2s" repeatCount="indefinite" />
-                      <animate attributeName="opacity" values="0.2;0;0.2" dur="2s" repeatCount="indefinite" />
-                    </circle>
-                  )}
-                  <circle cx={z.cx} cy={z.cy} r="14" fill={z.color} opacity="0.9" />
-                  <circle cx={z.cx} cy={z.cy} r="6" fill="white" />
-                  <text
-                    x={z.cx}
-                    y={z.cy + 26}
-                    textAnchor="middle"
-                    fontSize="10"
-                    fill="var(--ink)"
-                    fontFamily="var(--body)"
-                    fontWeight="600"
-                  >
-                    {z.label.split(' ')[0]}
-                  </text>
-                </g>
-              ))}
+                    {/* Iconos de negocios que aparecen progresivamente */}
+                    {positions.slice(0, fillCount).map((p, i) => (
+                      <motion.g
+                        key={`${z.id}-${i}`}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.05 * i, duration: 0.35, ease: EASE }}
+                      >
+                        <circle cx={p.x} cy={p.y} r="11" fill="white" stroke={z.color} strokeWidth="1.2" opacity="0.95" />
+                        <text x={p.x} y={p.y + 3} textAnchor="middle" fontSize="9" style={{ pointerEvents: 'none' }}>
+                          {BUSINESS_EMOJIS[p.e]}
+                        </text>
+                      </motion.g>
+                    ))}
+
+                    {/* Nodo principal de la zona */}
+                    <g
+                      onClick={() => setActiveZone(isActive ? null : z.id)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <motion.circle
+                        cx={z.cx} cy={z.cy} r="15" fill={z.color}
+                        animate={{ scale: isActive ? 1.25 : 1 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+                        opacity="0.95"
+                      />
+                      <circle cx={z.cx} cy={z.cy} r="6" fill="white" />
+                      <text
+                        x={z.cx} y={z.cy + 28}
+                        textAnchor="middle" fontSize="10"
+                        fill="var(--ink)" fontFamily="var(--body)" fontWeight="600"
+                      >
+                        {z.label.split(' ')[0]}
+                      </text>
+                    </g>
+                  </g>
+                )
+              })}
             </svg>
           </div>
         </div>
