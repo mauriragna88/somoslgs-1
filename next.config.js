@@ -16,6 +16,22 @@ const nextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
     ],
   },
+  async redirects() {
+    return [
+      // Categorías ocultas (duplicadas) → listado limpio de categorías
+      {
+        source: '/categorias/__hidden__(.*)',
+        destination: '/categorias',
+        permanent: true,
+      },
+      // Páginas keyword de categorías ocultas → categorías
+      {
+        source: '/__hidden__(.*)',
+        destination: '/categorias',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {
