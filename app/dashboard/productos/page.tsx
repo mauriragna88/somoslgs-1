@@ -20,9 +20,8 @@ interface Product {
   description: string | null
   price: number
   images: string[] | null
-  is_active: boolean
   is_available: boolean
-  stock_quantity: number | null
+  stock: number | null
   type: 'producto' | 'servicio'
 }
 
@@ -192,8 +191,8 @@ export default async function ProductsPage() {
                         <p className="text-2xl font-bold" style={{ color: 'var(--coral)' }}>
                           {formatCurrency(product.price)}
                         </p>
-                        {product.stock_quantity !== null && (
-                          <p className="text-xs" style={{ color: 'var(--muted)' }}>Stock: {product.stock_quantity}</p>
+                        {product.stock !== null && (
+                          <p className="text-xs" style={{ color: 'var(--muted)' }}>Stock: {product.stock}</p>
                         )}
                       </div>
                       <div className="flex gap-2">
