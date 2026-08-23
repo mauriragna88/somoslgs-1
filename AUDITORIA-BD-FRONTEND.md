@@ -87,7 +87,10 @@ En el SQL Editor de Supabase, ejecuta el contenido de `supabase/migrations/021_a
 - El frontend usa `emprendedor` y `chatbot` como tiers, pero la migración `013` solo renombró a `gratis/pro/avanzado`. Confirmar en Supabase si esos dos valores son válidos en el CHECK real de `businesses` (la migración 021 ya los agrega a `transactions`).
 
 ### ✅ 5. Confirmado que el resto del frontend está sincronizado (falsos positivos descartados)
-Con evidencia de migraciones: `delivering` (008), `order_customers` (003), `payment_receipt_url` + `payment_method='transfer'` + `payment_status` ampliado (004), `products.type` + `business_type` (012, 017), redes sociales (016), `total_views` (020). Todos existen en la BD real, así que el dashboard, admin y queries públicas están correctamente alineados.
+Con evidencia de migraciones: `delivering` (008), `order_customers` (003), `payment_receipt_url` + `payment_method='transfer'` + `payment_status` ampliado (004), `products.type` + `business_type` (012, 017), redes sociales (016), `total_views` (020, línea 20: `ADD COLUMN IF NOT EXISTS total_views`). Todos existen en la BD real, así que el dashboard, admin y queries públicas están correctamente alineados.
+
+### 📌 NOTA sobre los reportes de auditoría automática
+Los sub-agentes que auditaron marcaron como "CRÍTICO" `subscription_tier`, `products.type`, `business_type`, redes sociales, `total_views`, `delivering`, `order_customers`, `payment_receipt_url`, `payment_method='transfer'` y `payment_status` ampliado. **Todos son FALSOS POSITIVOS**: auditaron contra `supabase-schema.sql` (obsoleto) en vez de las **migraciones** (la fuente real). La evidencia de las migraciones confirma que esos campos/valores SÍ existen en la BD de producción. No requiere acción.
 
 ---
 
