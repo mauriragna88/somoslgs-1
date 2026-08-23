@@ -52,9 +52,20 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
     }
   }
 
+  const hasSearch = Boolean(query || categoriaId || resolvedSearchParams.colonia || resolvedSearchParams.tipo || resolvedSearchParams.orden || resolvedSearchParams.abierto)
+
   return {
     title,
     description,
+    // Las páginas de resultados de búsqueda con params NO deben indexarse por separado
+    // (evita decenas de URLs duplicadas "sin canónica"). La página base /buscar sí se indexa.
+    ...(hasSearch
+      ? { robots: { index: false, follow: true } as const }
+      : {
+          alternates: {
+            canonical: 'https://www.somoslagos.com.mx/buscar',
+          },
+        }),
     openGraph: {
       title: `${title} | SomosLagos`,
       description,
