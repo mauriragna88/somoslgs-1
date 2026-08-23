@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/server'
 import { TIER_ORDER } from '@/lib/constants'
 import BusinessCard from '@/components/shared/BusinessCard'
 import BannerDisplay from '@/components/ads/BannerDisplay'
+import CategorySeoContent from '@/components/seo/CategorySeoContent'
 
 export const revalidate = 1800
 
@@ -60,7 +61,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title,
     description,
     alternates: {
-      canonical: `https://www.somoslagos.com.mx/categorias/${category.slug}`,
+      // Consolidar con la landing keyword más rica (evita duplicado)
+      canonical: `https://www.somoslagos.com.mx/${category.slug}-en-lagos-de-moreno`,
     },
     openGraph: {
       title: `${category.name} en Lagos de Moreno | SomosLagos`,
@@ -160,6 +162,11 @@ export default async function CategoriaPage({ params }: PageProps) {
     .not('slug', 'like', '__hidden__%')
     .order('display_order')
     .limit(12) as unknown as { data: Category[] | null }
+
+  // Colonias únicas con negocios en esta categoría (para SEO interno)
+  const neighborhoods = Array.from(
+    new Set((businesses || []).map((b) => b.neighborhood).filter(Boolean) as string[])
+  )
 
   // JSON-LD: ItemList
   const itemListJsonLd = {
@@ -469,6 +476,14 @@ export default async function CategoriaPage({ params }: PageProps) {
             ))}
           </div>
         </div>
+
+        {/* ── SEO content — texto descriptivo local ── */}
+        <CategorySeoContent
+          categoryName={category.name}
+          categorySlug={category.slug}
+          businessCount={businesses.length}
+          neighborhoods={neighborhoods}
+        />
 
         {/* ── CTA ── */}
         <div
