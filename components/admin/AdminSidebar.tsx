@@ -50,10 +50,10 @@ export default function AdminSidebar({ userName }: AdminSidebarProps) {
       <div className="p-5 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <Link href="/admin" className="flex items-center gap-3">
           <div
-            className="rounded-full overflow-hidden flex-shrink-0 ring-1"
-            style={{ width: 36, height: 36, background: '#FBF0E5', '--tw-ring-color': 'rgba(255,255,255,0.15)' } as React.CSSProperties}
+            className="rounded-lg overflow-hidden flex-shrink-0 ring-1"
+            style={{ width: 44, height: 29, background: '#FBF0E5', '--tw-ring-color': 'rgba(255,255,255,0.15)' } as React.CSSProperties}
           >
-            <Image src="/logo-symbol.png" alt="SomosLagos" width={36} height={36} className="object-cover" />
+            <Image src="/logo-symbol.png" alt="SomosLagos" width={44} height={29} className="object-cover" />
           </div>
           <div>
             <h1 className="text-sm font-bold text-white" style={{ fontFamily: 'var(--display)' }}>Admin Panel</h1>

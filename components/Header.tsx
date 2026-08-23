@@ -159,19 +159,19 @@ export default function Header() {
                 : '0 4px 20px -8px rgba(6,60,103,0.18)',
             }}
           >
-            {/* Logo — imagen */}
+            {/* Logo — símbolo completo en proporción (no recortado a círculo) */}
             <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
               <div
-                className="rounded-full overflow-hidden flex-shrink-0 ring-1"
+                className="rounded-xl overflow-hidden flex-shrink-0 ring-1"
                 style={{
-                  width: 46,
-                  height: 46,
-                  background: 'white',
+                  width: 56,
+                  height: 37,
+                  background: '#FBF0E5',
                   boxShadow: '0 2px 10px rgba(6,60,103,0.12)',
                   '--tw-ring-color': 'rgba(6,60,103,0.10)',
                 } as React.CSSProperties}
               >
-                <Image src="/logo-symbol.png" alt="SomosLagos" width={46} height={46} className="object-cover" priority />
+                <Image src="/logo-symbol.png" alt="SomosLagos" width={56} height={37} className="object-cover" priority />
               </div>
               <div className="hidden sm:flex flex-col leading-none">
                 <span

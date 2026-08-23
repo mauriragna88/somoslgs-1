@@ -286,7 +286,7 @@ export default async function HomePage() {
       {/* ═══════════════════════════════════════════════════════════
           1. HERO — Scroll-synced video (con transición de salida)
       ═══════════════════════════════════════════════════════════ */}
-      <SectionReveal entryY={40} amount={0.5}>
+      <SectionReveal entryY={40} amount={0.5} blur={false}>
         <HeroVideoScroll
           categories={categories}
           businessCount={businessDisplayCount}
@@ -681,46 +681,57 @@ export default async function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════════════════════
-          13. FINAL CTA
+          13. FINAL CTA — escenario dramático con parallax
       ═══════════════════════════════════════════════════════════ */}
-      <SectionReveal>
-      <section className="py-16 bg-pueblo-noche">
-        <div className="container mx-auto px-4">
-          <ScrollReveal direction="up">
+      <SectionReveal dramatic>
+      <section className="relative py-24 overflow-hidden">
+        {/* Fondo parallax de la ciudad */}
+        <div className="absolute inset-0 z-0">
+          <img src="/tourism/panoramica-lagos.jpg" alt="" aria-hidden className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(6,15,30,0.72) 0%, rgba(6,15,30,0.85) 100%)' }} />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <ScrollReveal direction="scale">
             <div
-              className="max-w-4xl mx-auto rounded-3xl p-12 text-center"
-              style={{ background: 'linear-gradient(to bottom right, var(--coral), var(--gold))' }}
+              className="max-w-4xl mx-auto rounded-3xl p-12 text-center relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(to bottom right, rgba(217,110,51,0.92), rgba(230,135,46,0.92))',
+                boxShadow: '0 30px 80px -20px rgba(6,15,30,0.6)',
+                border: '1px solid rgba(255,255,255,0.15)',
+              }}
             >
+              {/* Resplandor superior */}
+              <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-64 h-32 rounded-full blur-3xl" style={{ background: 'rgba(255,255,255,0.28)' }} />
               <h2
-                className="text-3xl md:text-5xl font-black text-white mb-4"
+                className="text-3xl md:text-5xl font-black text-white mb-4 relative"
                 style={{ fontFamily: 'var(--display)' }}
               >
-                ¿Listo para ser parte de SomosLagos?
+                ¿Listo para ser parte de <span className="drop-shadow">SomosLagos</span>?
               </h2>
-              <p className="text-white/80 text-lg mb-10 max-w-xl mx-auto">
+              <p className="text-white/85 text-lg mb-10 max-w-xl mx-auto relative">
                 Únete gratis hoy y empieza a conectar con tu comunidad.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center relative">
                 <Link
                   href="/registrar-negocio"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white font-bold rounded-full transition-all hover:opacity-90"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-white font-bold rounded-full transition-all hover:scale-[1.04] hover:shadow-xl"
                   style={{ color: 'var(--coral)' }}
                 >
                   Registrar mi negocio
                 </Link>
                 <Link
                   href="/buscar"
-                  className="inline-flex items-center justify-center px-8 py-4 font-semibold rounded-full border-2 border-white text-white transition-all hover:bg-white/10"
+                  className="inline-flex items-center justify-center px-8 py-4 font-semibold rounded-full border-2 border-white/70 text-white transition-all hover:bg-white/10 hover:scale-[1.02]"
                 >
                   Explorar negocios
                 </Link>
-                <Link
-                  href="/para-negocios"
-                  className="inline-flex items-center justify-center text-sm text-white/70 underline hover:text-white self-center"
-                >
-                  Para negocios
-                </Link>
               </div>
+              <Link
+                href="/para-negocios"
+                className="inline-block text-sm text-white/70 underline hover:text-white self-center mt-6 relative"
+              >
+                Para negocios
+              </Link>
             </div>
           </ScrollReveal>
         </div>

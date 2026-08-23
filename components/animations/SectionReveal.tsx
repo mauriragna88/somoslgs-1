@@ -4,15 +4,16 @@ import { useRef, type ReactNode } from 'react'
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 
 /* ═══════════════════════════════════════════════════════════
-   SectionReveal — transición inter-sección estilo Outcrowd
-   (sticky scale & parallax, efecto de capas apiladas)
+   SectionReveal — revelado cinematográfico "tipo historia"
+   Cada sección entra como una escena (fade + slide + scale +
+   blur) y se hunde al salir. En bloques clave (dramatic) la
+   salida oscurece y hace zoom para enfatizar.
 
-   Comportamiento (contenedor en scroll normal, no sticky):
-   - Al bajar, la sección que sale: scale 1 → 0.95, opacidad 1 → 0.4
-   - La sección que entra: scale 0.92 → 1, y: 60px → 0px
-   - Se siente como capas que se apilan (stacking effect)
-   - Usa useScroll con target ref → animación vinculada al scroll
-   - Respeta prefers-reduced-motion (sin animación si el usuario la pide)
+   - Entrada: opacity 0→1, y 80→0, scale 0.94→1, blur(8px)→0
+   - Salida: se hunde (y 0→40, scale 1→0.96, opacity→0.4)
+   - dramatic: la sección se oscurece y hace zoom al cerrar
+     (efecto espectacular para CTAs y momentos clave)
+   - Respeta prefers-reduced-motion
    ═══════════════════════════════════════════════════════════ */
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -26,36 +27,47 @@ interface SectionRevealProps {
   exitScale?: number
   /* Cuánto del scroll de la sección se usa para el efecto (0-1) */
   amount?: number
+  /* Modo dramático (oscurece + zoom al salir) */
+  dramatic?: boolean
+  /* Aplica blur en la entrada */
+  blur?: boolean
 }
 
 export default function SectionReveal({
   children,
   className = '',
-  entryY = 60,
-  exitScale = 0.95,
-  amount = 0.35,
+  entryY = 80,
+  exitScale = 0.96,
+  amount = 0.22,
+  dramatic = false,
+  blur = true,
 }: SectionRevealProps) {
   const ref = useRef<HTMLDivElement>(null)
   const prefersReduced = useReducedMotion()
 
-  // Vinculado al scroll de la sección: 0 = arriba, 1 = abajo
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
   })
 
-  // Sección que entra (aparece en viewport): scale up 0.92→1, y 60→0
-  const enterScale = useTransform(scrollYProgress, [0, 0.35], [0.92, 1])
-  const enterY = useTransform(scrollYProgress, [0, 0.35], [entryY, 0])
+  // Entrada: la escena aparece en viewport
+  const enterOpacity = useTransform(scrollYProgress, [0, amount], [0, 1])
+  const enterY = useTransform(scrollYProgress, [0, amount], [entryY, 0])
+  const enterScale = useTransform(scrollYProgress, [0, amount], [0.94, 1])
+  const enterBlur = useTransform(scrollYProgress, [0, amount], ['blur(8px)', 'blur(0px)'])
 
-  // Sección que sale (sale de viewport): scale 1→0.95, opacity 1→0.4
-  const exitScaleSpring = useTransform(scrollYProgress, [0.75, 1], [1, exitScale])
-  const exitOpacity = useTransform(scrollYProgress, [0.75, 1], [1, 0.4])
+  // Salida: la escena se hunde al salir de viewport
+  const exitOpacity = useTransform(scrollYProgress, [0.72, 1], [1, dramatic ? 0 : 0.4])
+  const exitY = useTransform(scrollYProgress, [0.72, 1], [0, dramatic ? -70 : 50])
+  const exitScaleSpring = useTransform(scrollYProgress, [0.72, 1], [1, exitScale])
 
-  // Composición final (entrada + salida)
-  const scale = useTransform(
-    [enterScale, exitScaleSpring],
-    (values: number[]) => values[0] * values[1]
+  // Modo dramático: oscurecer + realce de color al cerrar
+  const dramaticFilter = useTransform(
+    scrollYProgress,
+    [0.55, 0.8, 1],
+    dramatic
+      ? ['brightness(1) saturate(1)', 'brightness(0.8) saturate(1.25)', 'brightness(0.4) saturate(1.4)']
+      : ['brightness(1)', 'brightness(1)', 'brightness(1)']
   )
 
   if (prefersReduced) {
@@ -66,15 +78,30 @@ export default function SectionReveal({
     <motion.div
       ref={ref}
       className={className}
-      style={{
-        scale,
-        y: enterY,
-        opacity: exitOpacity,
-        transformOrigin: 'center top',
-        willChange: 'transform, opacity',
-      }}
+      style={{ willChange: 'transform, opacity, filter' }}
     >
-      {children}
+      <motion.div
+        style={{
+          opacity: enterOpacity,
+          y: enterY,
+          scale: enterScale,
+          filter: blur ? enterBlur : undefined,
+          transformOrigin: 'center top',
+          willChange: 'transform, opacity, filter',
+        }}
+      >
+        <motion.div
+          style={{
+            opacity: exitOpacity,
+            y: exitY,
+            scale: exitScaleSpring,
+            filter: dramaticFilter,
+            willChange: 'transform, opacity, filter',
+          }}
+        >
+          {children}
+        </motion.div>
+      </motion.div>
     </motion.div>
   )
 }
