@@ -50,31 +50,30 @@ export default async function ListingDetailPage({ params }: PageProps) {
   const { id } = await params
   const supabase = createServiceClient()
 
-  // Try with FK join first, fallback without it
+  // Obtener listing sin depender de la FK a profiles (más robusto)
   let listing: any = null
   const { data, error } = await supabase
     .from('marketplace_listings')
-    .select('*, category:marketplace_categories(*), seller:profiles!marketplace_listings_seller_id_fkey(full_name, created_at)')
+    .select('*, category:marketplace_categories(*)')
     .eq('id', id)
     .single()
 
-  if (error) {
-    // Fallback: query without FK hint (in case FK doesn't exist)
-    const { data: fallback } = await supabase
-      .from('marketplace_listings')
-      .select('*, category:marketplace_categories(*)')
-      .eq('id', id)
-      .single()
+  if (error || !data) {
+    notFound()
+  }
+  listing = data
+  if (listing.status === 'removed') notFound()
 
-    if (!fallback || fallback.status === 'removed') {
-      notFound()
-    }
-    listing = { ...fallback, seller: null }
+  // Rellenar seller consultando profiles por seller_id (id == auth.users.id)
+  if (listing.seller_id) {
+    const { data: seller } = await supabase
+      .from('profiles')
+      .select('full_name, created_at')
+      .eq('id', listing.seller_id)
+      .maybeSingle()
+    listing.seller = seller || null
   } else {
-    if (!data || data.status === 'removed') {
-      notFound()
-    }
-    listing = data
+    listing.seller = null
   }
 
   // Increment views

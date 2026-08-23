@@ -39,7 +39,7 @@ export async function GET(request: Request) {
     if (listingIds.length > 0) {
       const { data: listingsData } = await supabase
         .from('marketplace_listings')
-        .select('*, seller:profiles!marketplace_listings_seller_id_fkey(full_name)')
+        .select('*')
         .in('id', listingIds)
 
       if (listingsData) {
@@ -58,7 +58,7 @@ export async function GET(request: Request) {
   // All listings tab
   let query = supabase
     .from('marketplace_listings')
-    .select('*, category:marketplace_categories(*), seller:profiles!marketplace_listings_seller_id_fkey(full_name)')
+    .select('*, category:marketplace_categories(*)')
     .order('created_at', { ascending: false })
 
   if (search) {

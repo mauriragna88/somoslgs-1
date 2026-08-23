@@ -93,10 +93,10 @@ export async function GET(
     listing.featured_until &&
     new Date(listing.featured_until) > new Date()
 
-  // Get leads with buyer info
+  // Get leads with buyer info (fallback: si la relación a profiles no existe, buyer=null y se muestra 'Usuario')
   const { data: leads } = await supabase
     .from('marketplace_leads')
-    .select('id, message, created_at, buyer:profiles!marketplace_leads_buyer_id_fkey(full_name, phone)')
+    .select('id, message, created_at, buyer:profiles(full_name, phone)')
     .eq('listing_id', id)
     .order('created_at', { ascending: false })
 

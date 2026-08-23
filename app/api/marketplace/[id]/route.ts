@@ -26,7 +26,7 @@ export async function GET(
 
   const { data, error } = await supabase
     .from('marketplace_listings')
-    .select('*, category:marketplace_categories(*), seller:profiles!marketplace_listings_seller_id_fkey(full_name, created_at)')
+    .select('*, category:marketplace_categories(*)')
     .eq('id', id)
     .single()
 

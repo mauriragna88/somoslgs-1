@@ -62,7 +62,7 @@ export async function GET(request: Request) {
 
   let query = supabase
     .from('marketplace_listings')
-    .select('*, category:marketplace_categories(*), seller:profiles!marketplace_listings_seller_id_fkey(full_name, created_at)', { count: 'exact' })
+    .select('*, category:marketplace_categories(*)', { count: 'exact' })
     .eq('status', 'active')
     .gte('expires_at', new Date().toISOString())
 
