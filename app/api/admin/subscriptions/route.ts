@@ -99,7 +99,10 @@ export async function POST(request: Request) {
         break
 
       case 'pause':
-        updateData.subscription_status = 'paused'
+        // 'paused' no está en el CHECK de subscription_status de la BD
+        // (solo active|inactive|suspended). Se mapea a 'suspended' para
+        // que el UPDATE no falle; 'resume' lo devuelve a 'active'.
+        updateData.subscription_status = 'suspended'
         break
 
       case 'resume':

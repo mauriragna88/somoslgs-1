@@ -13,6 +13,8 @@ const bannerSchema = z.object({
   is_active: z.boolean().default(true),
   start_date: z.string().datetime().optional(),
   end_date: z.string().datetime().nullable().optional(),
+  description: z.string().max(120).nullable().optional(),
+  display_mode: z.enum(['image_text', 'image_only', 'text_only']).default('image_text'),
 }).refine(
   (data) => !data.end_date || !data.start_date || new Date(data.end_date) > new Date(data.start_date),
   { message: 'La fecha de fin debe ser posterior a la de inicio', path: ['end_date'] }
@@ -86,6 +88,8 @@ export async function POST(request: Request) {
         is_active: validated.is_active,
         start_date: validated.start_date || new Date().toISOString(),
         end_date: validated.end_date || null,
+        description: validated.description || null,
+        display_mode: validated.display_mode,
       })
       .select()
       .single()
