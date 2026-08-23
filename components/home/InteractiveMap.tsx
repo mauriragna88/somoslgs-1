@@ -100,13 +100,6 @@ export default function InteractiveMap() {
 
   const active = zones.find(z => z.id === activeZone)
 
-  const STATS = [
-    { value: totalActive > 0 ? `${totalActive}+` : '—', label: 'Negocios registrados' },
-    { value: zones.length > 0 ? `${zones.length}` : '—', label: 'Colonias con negocios' },
-    { value: '24/7', label: 'Disponibilidad' },
-    { value: '100%', label: 'Gratis para buscar' },
-  ]
-
   return (
     <section className="py-24" style={{ background: 'var(--cream)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -152,6 +145,7 @@ export default function InteractiveMap() {
                     }}
                   >
                     {z.label}
+                    <span style={{ marginLeft: 6, fontSize: 11, opacity: 0.8 }}>· {z.businesses}</span>
                   </button>
                 ))}
               </div>
@@ -179,22 +173,45 @@ export default function InteractiveMap() {
                 </Link>
               </motion.div>
             ) : (
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                {STATS.map(s => (
-                  <div key={s.label} className="rounded-2xl p-4" style={{ background: 'white', boxShadow: 'var(--shadow-soft)' }}>
-                    <motion.p
-                      key={s.value}
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.4, ease: EASE }}
-                      className="text-2xl font-bold"
-                      style={{ fontFamily: 'var(--display)', color: 'var(--coral)' }}
+              <div className="rounded-2xl p-5 mb-6" style={{ background: 'white', boxShadow: 'var(--shadow-card)' }}>
+                <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: 'var(--muted)' }}>
+                  Negocios por colonia
+                </p>
+                <div className="space-y-2.5">
+                  {/* Top 3 destacadas */}
+                  {zones.slice(0, 3).map(z => (
+                    <Link
+                      key={z.id}
+                      href={`/negocios-en/${z.slug}`}
+                      className="flex items-center justify-between p-3 rounded-xl transition-all hover:-translate-y-0.5"
+                      style={{ background: 'rgba(255,107,53,0.05)', border: '1px solid rgba(255,107,53,0.12)' }}
                     >
-                      {s.value}
-                    </motion.p>
-                    <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>{s.label}</p>
-                  </div>
-                ))}
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: z.color }} />
+                        <span className="font-bold text-sm truncate" style={{ color: 'var(--ink)' }}>{z.label}</span>
+                      </div>
+                      <span className="font-extrabold text-sm flex-shrink-0" style={{ color: 'var(--coral)', fontFamily: 'var(--display)' }}>
+                        +{z.businesses}
+                      </span>
+                    </Link>
+                  ))}
+                  {/* Resto en lista compacta */}
+                  {zones.slice(3).map(z => (
+                    <div key={z.id} className="flex items-center justify-between px-3 py-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: z.color }} />
+                        <span className="text-sm truncate" style={{ color: 'var(--ink-soft)' }}>{z.label}</span>
+                      </div>
+                      <span className="text-sm font-bold flex-shrink-0" style={{ color: 'var(--muted)' }}>{z.businesses}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2 mt-4 pt-4 border-t" style={{ borderColor: 'rgba(6,60,103,0.08)' }}>
+                  <span className="text-2xl font-extrabold" style={{ color: 'var(--coral)', fontFamily: 'var(--display)' }}>
+                    {totalActive}+
+                  </span>
+                  <span className="text-xs" style={{ color: 'var(--muted)' }}>negocios en {zones.length} colonias de Lagos</span>
+                </div>
               </div>
             )}
 

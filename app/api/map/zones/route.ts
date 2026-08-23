@@ -1,15 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
-const ZONE_COLORS = [
-  'var(--coral)',
-  'var(--gold)',
-  '#22B8CF',
-  '#22C55E',
-  '#D946EF',
-  '#2F80ED',
-]
-
 export async function GET() {
   try {
     const supabase = await createClient()
@@ -32,30 +23,32 @@ export async function GET() {
       counts[n] = (counts[n] ?? 0) + 1
     }
 
-    // Return top 6 by count with SVG positions and colors
-    const SVG_POSITIONS = [
-      { cx: 300, cy: 200 },
-      { cx: 180, cy: 150 },
-      { cx: 420, cy: 140 },
-      { cx: 240, cy: 280 },
-      { cx: 380, cy: 300 },
-      { cx: 120, cy: 260 },
-    ]
+    // Return top zones by count with auto-distributed SVG positions
+    const PALETTE = ['var(--coral)', 'var(--gold)', '#22B8CF', '#22C55E', '#D946EF', '#2F80ED', '#14B8A6', '#F59E0B']
 
-    const zones = Object.entries(counts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 6)
-      .map(([label, businesses], i) => ({
+    const zonesData = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 12)
+
+    // Posiciones distribuidas en un patrón de cuadrícula radial
+    const total = zonesData.length
+    const CX = 270, CY = 200
+    const zones = zonesData.map(([label, businesses], i) => {
+      // Distribuir en espiral/óvalo para evitar solapamiento
+      const angle = (i / Math.max(total, 1)) * Math.PI * 2 - Math.PI / 2
+      const radiusX = 200, radiusY = 150
+      const cx = CX + Math.cos(angle) * radiusX * (i % 2 === 0 ? 1 : 0.8)
+      const cy = CY + Math.sin(angle) * radiusY * (i % 2 === 0 ? 1 : 0.8)
+      return {
         id: label.toLowerCase().replace(/\s+/g, '-').replace(/[áéíóú]/g, (c) =>
           ({ á: 'a', é: 'e', í: 'i', ó: 'o', ú: 'u' }[c] ?? c)
         ),
         label,
         businesses,
         slug: encodeURIComponent(label),
-        color: ZONE_COLORS[i],
-        cx: SVG_POSITIONS[i].cx,
-        cy: SVG_POSITIONS[i].cy,
-      }))
+        color: PALETTE[i % PALETTE.length],
+        cx,
+        cy,
+      }
+    })
 
     return NextResponse.json(zones)
   } catch {

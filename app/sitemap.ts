@@ -124,12 +124,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   // Keyword landing pages — these are the highest-SEO-value pages
-  const keywordRoutes: MetadataRoute.Sitemap = (categories || []).map((cat: any) => ({
-    url: `${BASE_URL}/${cat.slug}-en-lagos-de-moreno`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.85,
-  }))
+  const keywordRoutes: MetadataRoute.Sitemap = (categories || [])
+    .filter((cat: any) => !String(cat.slug).startsWith('__hidden__'))
+    .map((cat: any) => ({
+      url: `${BASE_URL}/${cat.slug}-en-lagos-de-moreno`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    }))
 
   // ── Blog posts ─────────────────────────────────────────────────────────────
   const { data: blogPosts } = await supabase
@@ -158,20 +160,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }))
 
-  // ── Neighborhood pages ──────────────────────────────────────────────────────
+  // ── Neighborhood pages (solo colonias con suficiente contenido) ─────────────
   const { data: neighborhoodData } = await supabase
     .from('businesses')
     .select('neighborhood')
     .eq('is_active', true)
     .not('neighborhood', 'is', null)
 
-  const uniqueNeighborhoods = Array.from(
-    new Set(
-      (neighborhoodData || [])
-        .map((b: { neighborhood: string | null }) => b.neighborhood)
-        .filter(Boolean) as string[]
-    )
-  )
+  const neighborhoodCounts: Record<string, number> = {}
+  for (const b of (neighborhoodData || [])) {
+    const n = (b.neighborhood || '').trim()
+    if (n) neighborhoodCounts[n] = (neighborhoodCounts[n] ?? 0) + 1
+  }
+
+  // Solo indexar colonias con al menos 2 negocios (evita páginas flacas "rastreadas sin indexar")
+  const uniqueNeighborhoods = Object.entries(neighborhoodCounts)
+    .filter(([, count]) => count >= 2)
+    .map(([name]) => name)
 
   const neighborhoodRoutes: MetadataRoute.Sitemap = uniqueNeighborhoods.map(colonia => ({
     url: `${BASE_URL}/negocios-en/${encodeURIComponent(colonia)}`,
