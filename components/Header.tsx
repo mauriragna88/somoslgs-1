@@ -132,6 +132,8 @@ export default function Header() {
   const NAV_LINKS = [
     { label: 'Buscar negocios', href: '/buscar' },
     { label: 'Restaurantes', href: '/restaurantes' },
+    { label: 'Taquerías', href: '/taquerias' },
+    { label: 'Hoteles', href: '/hoteles' },
     { label: 'Que hacer', href: '/que-hacer-en-lagos-de-moreno' },
     { label: 'Registrar mi negocio', href: '/registrar-negocio' },
   ]
