@@ -67,6 +67,7 @@ interface Category {
   id: string
   name: string
   icon: string
+  slug: string
 }
 
 interface Business {
@@ -126,7 +127,8 @@ export default async function BuscarPage({
   const [{ data: categories }, { data: businessCategoryData }, { data: neighborhoodData }] = await Promise.all([
     supabase
       .from('categories')
-      .select('id, name, icon')
+      .select('id, name, icon, slug')
+      .not('slug', 'like', '__hidden__%')
       .order('name') as unknown as Promise<{ data: Category[] | null }>,
     supabase
       .from('businesses')

@@ -98,6 +98,7 @@ export default async function HomePage() {
       .select('id, name, icon, slug')
       .is('parent_id', null)
       .in('id', activeCatIds)
+      .not('slug', 'like', '__hidden__%')
       .limit(12)
       .order('display_order') as { data: HomeCategory[] | null }
     categories = data || []

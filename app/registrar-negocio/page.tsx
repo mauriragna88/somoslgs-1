@@ -65,6 +65,7 @@ export default async function RegistrarNegocioPage() {
     .from('categories')
     .select('id, name, icon')
     .is('parent_id', null)
+    .not('slug', 'like', '__hidden__%')
     .order('display_order')
 
   // Get real business count for display

@@ -42,6 +42,7 @@ export default async function CategoriasPage() {
       .from('categories')
       .select('id, name, icon, slug')
       .is('parent_id', null)
+      .not('slug', 'like', '__hidden__%')
       .order('display_order') as unknown as Promise<{ data: Category[] | null }>,
     supabase
       .from('businesses')

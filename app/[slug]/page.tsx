@@ -92,6 +92,7 @@ export async function generateStaticParams() {
     .from('categories')
     .select('slug')
     .not('slug', 'is', null)
+    .not('slug', 'like', '__hidden__%')
 
   return (categories || []).map((cat: { slug: string }) => ({
     slug: `${cat.slug}${SUFFIX}`,

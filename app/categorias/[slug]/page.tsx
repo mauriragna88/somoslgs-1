@@ -157,6 +157,7 @@ export default async function CategoriaPage({ params }: PageProps) {
     .select('id, name, icon, slug')
     .is('parent_id', null)
     .neq('id', category.id)
+    .not('slug', 'like', '__hidden__%')
     .order('display_order')
     .limit(12) as unknown as { data: Category[] | null }
 

@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
     .from('categories')
     .select('id, name, icon, slug')
     .is('parent_id', null)
+    .not('slug', 'like', '__hidden__%')
     .order('display_order')
     .limit(Math.min(parseInt(limitParam, 10) || 8, 12))
 
