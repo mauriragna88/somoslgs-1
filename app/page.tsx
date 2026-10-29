@@ -444,30 +444,31 @@ export default async function HomePage() {
           10. TRUST / TESTIMONIALS
       ═══════════════════════════════════════════════════════════ */}
       <SectionReveal>
-      <section className="py-20" style={{ background: '#FFFDF8' }}>
-        <div className="container mx-auto px-4">
+      <section className="py-20 md:py-28 relative overflow-hidden" style={{ background: 'linear-gradient(180deg,#fbeee3,#f8e4d3)' }}>
+        <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full blur-3xl" style={{ background: 'rgba(14,152,171,0.14)' }} />
+        <div className="container mx-auto px-4 relative">
           <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Left */}
             <ScrollReveal direction="left">
               <div className="flex flex-col justify-center h-full">
                 <span
                   className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4"
-                  style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
+                  style={{ background: 'rgba(217,110,51,0.12)', color: 'var(--logo-terracotta)', border: '1px solid rgba(217,110,51,0.28)' }}
                 >
                   Comunidad
                 </span>
                 <h2
                   className="text-3xl md:text-4xl font-black mb-6"
-                  style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
+                  style={{ fontFamily: 'var(--display)', color: 'var(--logo-navy-deep)' }}
                 >
                   Hecho con Lagos,<br />
-                  <span style={{ color: 'var(--coral)' }}>para Lagos</span>
+                  <em style={{ color: 'var(--logo-terracotta)', fontFamily: 'var(--font-serif), Georgia, serif', fontWeight: 400 }}>para Lagos</em>
                 </h2>
                 <div className="flex gap-8 mb-6">
                   <div>
                     <p
                       className="text-4xl font-black mb-1"
-                      style={{ color: 'var(--coral)', fontFamily: 'var(--display)' }}
+                      style={{ color: 'var(--logo-terracotta)', fontFamily: 'var(--display)' }}
                     >
                       <AnimatedCounter target={businessDisplayCount} suffix="+" />
                     </p>
@@ -476,7 +477,7 @@ export default async function HomePage() {
                   <div>
                     <p
                       className="text-4xl font-black mb-1"
-                      style={{ color: 'var(--gold)', fontFamily: 'var(--display)' }}
+                      style={{ color: 'var(--logo-teal)', fontFamily: 'var(--display)' }}
                     >
                       <AnimatedCounter target={catCount} suffix="+" />
                     </p>
@@ -503,13 +504,13 @@ export default async function HomePage() {
                     return (
                       <div
                         key={review.id}
-                        className="rounded-xl p-3"
-                        style={{ background: 'white', boxShadow: '0 1px 6px rgba(31,41,55,0.07)', border: '1px solid rgba(255,253,248,0.6)' }}
+                        className="sl-lift rounded-xl p-3"
+                        style={{ background: 'rgba(255,255,255,0.85)', boxShadow: '0 1px 6px rgba(10,65,114,0.08)', border: '1px solid rgba(10,65,114,0.1)', borderTop: '3px solid var(--logo-amber)' }}
                       >
                         <div className="flex items-center gap-2 mb-2">
                           <div
                             className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0"
-                            style={{ background: 'linear-gradient(to br, var(--coral), var(--gold))' }}
+                            style={{ background: 'linear-gradient(135deg, var(--logo-terracotta), var(--logo-amber))' }}
                           >
                             {initials}
                           </div>
@@ -554,8 +555,8 @@ export default async function HomePage() {
                 </div>
               ) : (
                 <div
-                  className="rounded-2xl p-8 text-center"
-                  style={{ background: 'white', boxShadow: '0 2px 12px rgba(31,41,55,0.06)' }}
+                  className="sl-lift rounded-2xl p-8 text-center"
+                  style={{ background: 'rgba(255,255,255,0.85)', boxShadow: '0 2px 12px rgba(10,65,114,0.08)', border: '1px solid rgba(10,65,114,0.1)' }}
                 >
                   <span className="text-4xl mb-4 block">💬</span>
                   <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--ink)' }}>Sé el primero en opinar</h3>
@@ -564,8 +565,8 @@ export default async function HomePage() {
                   </p>
                   <Link
                     href="/buscar"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm text-white"
-                    style={{ background: 'var(--coral)' }}
+                    className="inline-flex items-center gap-2 px-5 min-h-11 rounded-full font-semibold text-sm text-white"
+                    style={{ background: 'var(--logo-terracotta)' }}
                   >
                     Explorar negocios
                   </Link>
@@ -581,31 +582,35 @@ export default async function HomePage() {
           11. CONTACTO
       ═══════════════════════════════════════════════════════════ */}
       <SectionReveal>
-      <section className="py-20" style={{ background: 'var(--cream)' }}>
-        <div className="container mx-auto px-4">
+      <section className="py-20 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg,#0a4172,#072d52 70%)' }}>
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(600px 300px at 15% 10%,rgba(14,152,171,.25),transparent 65%), radial-gradient(500px 280px at 90% 90%,rgba(229,148,56,.18),transparent 65%)' }} />
+        <div className="container mx-auto px-4 relative">
           <ScrollReveal direction="up">
             <div className="max-w-2xl mx-auto text-center">
               <span
                 className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4"
-                style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
+                style={{ background: 'rgba(229,148,56,0.14)', color: 'var(--logo-amber)', border: '1px solid rgba(229,148,56,0.35)' }}
               >
                 Contacto
               </span>
               <h2
                 className="text-3xl md:text-4xl font-black mb-3"
-                style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
+                style={{ fontFamily: 'var(--display)', color: '#fbeee3' }}
               >
-                ¿Tienes dudas o quieres registrar tu negocio?
+                ¿Tienes dudas o quieres <em style={{ color: 'var(--logo-amber)', fontFamily: 'var(--font-serif), Georgia, serif', fontWeight: 400 }}>registrar tu negocio?</em>
               </h2>
-              <p className="text-base mb-10" style={{ color: 'var(--ink-soft)' }}>
+              <p className="text-base mb-10" style={{ color: '#c9d8e6' }}>
                 Escríbenos directo por WhatsApp. Te respondemos personalmente.
               </p>
 
               <div
-                className="rounded-3xl p-8 md:p-10 flex flex-col sm:flex-row items-center gap-6"
+                className="sl-lift rounded-3xl p-8 md:p-10 flex flex-col sm:flex-row items-center gap-6"
                 style={{
-                  background: 'white',
-                  boxShadow: '0 2px 24px rgba(31,41,55,0.08), 0 0 0 1px rgba(31,41,55,0.05)',
+                  background: 'rgba(251,238,227,0.08)',
+                  backdropFilter: 'blur(14px)',
+                  WebkitBackdropFilter: 'blur(14px)',
+                  border: '1px solid rgba(251,238,227,0.2)',
+                  boxShadow: '0 30px 60px -30px rgba(0,0,0,0.5)',
                 }}
               >
                 {/* WA icon */}
@@ -620,13 +625,13 @@ export default async function HomePage() {
 
                 {/* Info */}
                 <div className="flex-1 text-left">
-                  <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: 'var(--muted)' }}>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#c9d8e6' }}>
                     WhatsApp directo
                   </p>
-                  <p className="text-xl font-black mb-0.5" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>
+                  <p className="text-xl font-black mb-0.5" style={{ color: '#fbeee3', fontFamily: 'var(--display)' }}>
                     +52 474 108 2768
                   </p>
-                  <p className="text-sm" style={{ color: 'var(--ink-soft)' }}>
+                  <p className="text-sm" style={{ color: '#c9d8e6' }}>
                     Lun–Vie · 9:00 am – 7:00 pm
                   </p>
                 </div>
@@ -636,7 +641,7 @@ export default async function HomePage() {
                   href="https://wa.me/524741082768?text=Hola%2C%20me%20interesa%20saber%20m%C3%A1s%20sobre%20SomosLagos"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full font-bold text-white transition-all hover:opacity-90 hover:scale-[1.02] flex-shrink-0"
+                  className="inline-flex items-center gap-2.5 px-7 min-h-12 rounded-full font-bold text-white transition-all hover:opacity-90 hover:scale-[1.02] flex-shrink-0"
                   style={{ background: '#25D366', boxShadow: '0 8px 24px rgba(37,211,102,0.3)' }}
                 >
                   Escribir ahora
@@ -656,20 +661,20 @@ export default async function HomePage() {
       ═══════════════════════════════════════════════════════════ */}
       {latestPosts.length > 0 && (
         <SectionReveal>
-        <section className="py-16" style={{ background: 'var(--ivory)' }}>
+        <section className="py-16 md:py-24" style={{ background: 'linear-gradient(180deg,#fbeee3,#fdf6ee)' }}>
           <div className="container mx-auto px-4">
             <ScrollReveal direction="up">
               <div className="flex items-end justify-between mb-10">
                 <div>
-                  <span className="text-sm font-semibold uppercase tracking-widest" style={{ color: 'var(--coral)' }}>Blog</span>
-                  <h2 className="text-3xl md:text-4xl font-black mt-1" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
-                    Lo último de Lagos
+                  <span className="text-sm font-semibold uppercase tracking-widest" style={{ color: 'var(--logo-terracotta)' }}>Blog</span>
+                  <h2 className="text-3xl md:text-4xl font-black mt-1" style={{ fontFamily: 'var(--display)', color: 'var(--logo-navy-deep)' }}>
+                    Lo último de <em style={{ color: 'var(--logo-terracotta)', fontFamily: 'var(--font-serif), Georgia, serif', fontWeight: 400 }}>Lagos</em>
                   </h2>
                 </div>
                 <Link
                   href="/blog"
                   className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold transition-colors"
-                  style={{ color: 'var(--coral)' }}
+                  style={{ color: 'var(--logo-terracotta)' }}
                 >
                   Ver todo
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -689,8 +694,8 @@ export default async function HomePage() {
               <div className="text-center mt-8 sm:hidden">
                 <Link
                   href="/blog"
-                  className="inline-flex items-center gap-1 text-sm font-semibold"
-                  style={{ color: 'var(--coral)' }}
+                  className="inline-flex items-center gap-1 text-sm font-semibold min-h-11"
+                  style={{ color: 'var(--logo-terracotta)' }}
                 >
                   Ver todos los artículos →
                 </Link>
@@ -716,7 +721,7 @@ export default async function HomePage() {
             <div
               className="max-w-4xl mx-auto rounded-3xl p-12 text-center relative overflow-hidden"
               style={{
-                background: 'linear-gradient(to bottom right, rgba(217,110,51,0.92), rgba(230,135,46,0.92))',
+                background: 'linear-gradient(to bottom right, rgba(217,110,51,0.95), rgba(229,148,56,0.95))',
                 boxShadow: '0 30px 80px -20px rgba(6,15,30,0.6)',
                 border: '1px solid rgba(255,255,255,0.15)',
               }}
@@ -736,7 +741,7 @@ export default async function HomePage() {
                 <Link
                   href="/registrar-negocio"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white font-bold rounded-full transition-all hover:scale-[1.04] hover:shadow-xl"
-                  style={{ color: 'var(--coral)' }}
+                  style={{ color: 'var(--logo-terracotta)' }}
                 >
                   Registrar mi negocio
                 </Link>

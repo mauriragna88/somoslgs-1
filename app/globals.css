@@ -817,3 +817,9 @@ header[data-hero-dark='true'] .hdr-ghost{border-color:rgba(246,241,230,.3)!impor
 .sl-home-v2 .sl-devogatec-v2,.sl-home-v2 .sl-city-story,.sl-home-v2 .sl-events-v2,.sl-home-v2 .sl-discover-v2{--sl-deep:#050d1a;--sl-blue:#0a1c33;--sl-coral:#f0b84f}
 .sl-home-v2 .sl-devogatec-v2{background:radial-gradient(900px 420px at 18% 30%,rgba(240,184,79,.1),transparent 60%),linear-gradient(180deg,#071426,#0a1c33)!important}
 .sl-home-v2 .sl-city-story{background:linear-gradient(180deg,#0a1c33,#050d1a)!important}
+
+/* Paleta del logo SomosLagos (puente, rio y arcos) */
+:root{--logo-navy:#0a4172;--logo-navy-deep:#072d52;--logo-terracotta:#d96e33;--logo-amber:#e59438;--logo-teal:#0e98ab;--logo-cream:#fbeee3}
+.sl-lift{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s cubic-bezier(.22,1,.36,1)}
+.sl-lift:hover{transform:translateY(-4px);box-shadow:0 18px 40px -18px rgba(10,65,114,.35)!important}
+@media(prefers-reduced-motion:reduce){.sl-lift{transition:none}.sl-lift:hover{transform:none}}
