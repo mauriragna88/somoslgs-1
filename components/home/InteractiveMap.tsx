@@ -101,34 +101,35 @@ export default function InteractiveMap() {
   const active = zones.find(z => z.id === activeZone)
 
   return (
-    <section className="py-24" style={{ background: 'var(--cream)' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 md:py-28 relative overflow-hidden" style={{ background: 'linear-gradient(180deg,#050d1a,#0a1c33 55%,#050d1a)' }}>
+      <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(700px 380px at 82% 45%,rgba(240,184,79,.09),transparent 65%)' }} />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-14">
           <span
             className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4"
-            style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
+            style={{ background: 'rgba(240,184,79,0.12)', color: '#f0b84f', border: '1px solid rgba(240,184,79,0.3)' }}
           >
             Zonas de Lagos
           </span>
           <h2
             className="text-4xl md:text-5xl font-bold mb-3"
-            style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
+            style={{ fontFamily: 'var(--display)', color: '#f6f1e6' }}
           >
-            La ciudad se llena de <span style={{ color: 'var(--coral)' }}>negocios</span>
+            La ciudad se llena de <em style={{ color: '#f0b84f', fontFamily: 'var(--font-serif), Georgia, serif', fontWeight: 400 }}>negocios</em>
           </h2>
-          <p className="text-lg max-w-xl mx-auto" style={{ color: 'var(--ink-soft)' }}>
+          <p className="text-lg max-w-xl mx-auto" style={{ color: '#b9c6d4' }}>
             Mira cómo las colonias de Lagos de Moreno cobran vida, negocio a negocio.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10 items-start">
+        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-8 lg:gap-12 items-center">
           {/* Left: zone chips + stats + ticker */}
           <div>
             {loading ? (
               <div className="flex flex-wrap gap-2 mb-8">
                 {[1,2,3,4,5,6].map(i => (
-                  <div key={i} className="h-9 w-28 rounded-full animate-pulse" style={{ background: 'rgba(31,41,55,0.08)' }} />
+                  <div key={i} className="h-9 w-28 rounded-full animate-pulse" style={{ background: 'rgba(246,241,230,0.08)' }} />
                 ))}
               </div>
             ) : (
@@ -137,11 +138,12 @@ export default function InteractiveMap() {
                   <button
                     key={z.id}
                     onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}
-                    className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
+                    aria-pressed={activeZone === z.id}
+                    className="px-4 min-h-11 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5"
                     style={{
-                      background: activeZone === z.id ? z.color : 'rgba(31,41,55,0.06)',
-                      color: activeZone === z.id ? 'white' : 'var(--ink-soft)',
-                      border: `2px solid ${activeZone === z.id ? z.color : 'transparent'}`,
+                      background: activeZone === z.id ? z.color : 'rgba(246,241,230,0.06)',
+                      color: activeZone === z.id ? '#050d1a' : '#f6f1e6',
+                      border: `1px solid ${activeZone === z.id ? z.color : 'rgba(246,241,230,0.16)'}`,
                     }}
                   >
                     {z.label}
@@ -156,26 +158,26 @@ export default function InteractiveMap() {
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl p-6 mb-6" style={{ background: 'white', boxShadow: 'var(--shadow-card)' }}
+                className="rounded-2xl p-6 mb-6" style={{ background: 'rgba(246,241,230,0.05)', border: '1px solid rgba(246,241,230,0.12)', backdropFilter: 'blur(12px)' }}
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-3 h-3 rounded-full" style={{ background: active.color }} />
-                  <h3 className="font-bold text-lg" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>{active.label}</h3>
+                  <h3 className="font-bold text-lg" style={{ fontFamily: 'var(--display)', color: '#f6f1e6' }}>{active.label}</h3>
                 </div>
                 <p className="text-3xl font-bold mb-1" style={{ color: active.color, fontFamily: 'var(--display)' }}>{active.businesses}</p>
-                <p className="text-sm mb-4" style={{ color: 'var(--muted)' }}>negocios registrados</p>
+                <p className="text-sm mb-4" style={{ color: '#b9c6d4' }}>negocios registrados</p>
                 <Link
                   href={`/negocios-en/${active.slug}`}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white transition-all hover:opacity-90"
-                  style={{ background: active.color }}
+                  className="inline-flex items-center gap-2 px-5 min-h-11 rounded-full text-sm font-semibold transition-all hover:opacity-90"
+                  style={{ background: active.color, color: '#050d1a' }}
                 >
                   Ver negocios en {active.label} →
                 </Link>
               </motion.div>
             ) : (
-              <div className="rounded-2xl p-5 mb-6" style={{ background: 'white', boxShadow: 'var(--shadow-card)' }}>
-                <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: 'var(--muted)' }}>
-                  Negocios por colonia
+              <div className="rounded-2xl p-5 mb-6" style={{ background: 'rgba(246,241,230,0.05)', border: '1px solid rgba(246,241,230,0.12)', backdropFilter: 'blur(12px)' }}>
+                <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: '#b9c6d4' }}>
+                  Las más activas
                 </p>
                 <div className="space-y-2.5">
                   {/* Top 3 destacadas */}
@@ -184,33 +186,23 @@ export default function InteractiveMap() {
                       key={z.id}
                       href={`/negocios-en/${z.slug}`}
                       className="flex items-center justify-between p-3 rounded-xl transition-all hover:-translate-y-0.5"
-                      style={{ background: 'rgba(255,107,53,0.05)', border: '1px solid rgba(255,107,53,0.12)' }}
+                      style={{ background: 'rgba(240,184,79,0.07)', border: '1px solid rgba(240,184,79,0.22)' }}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: z.color }} />
-                        <span className="font-bold text-sm truncate" style={{ color: 'var(--ink)' }}>{z.label}</span>
+                        <span className="font-bold text-sm truncate" style={{ color: '#f6f1e6' }}>{z.label}</span>
                       </div>
-                      <span className="font-extrabold text-sm flex-shrink-0" style={{ color: 'var(--coral)', fontFamily: 'var(--display)' }}>
+                      <span className="font-extrabold text-sm flex-shrink-0" style={{ color: '#f0b84f', fontFamily: 'var(--display)' }}>
                         +{z.businesses}
                       </span>
                     </Link>
                   ))}
-                  {/* Resto en lista compacta */}
-                  {zones.slice(3).map(z => (
-                    <div key={z.id} className="flex items-center justify-between px-3 py-2">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: z.color }} />
-                        <span className="text-sm truncate" style={{ color: 'var(--ink-soft)' }}>{z.label}</span>
-                      </div>
-                      <span className="text-sm font-bold flex-shrink-0" style={{ color: 'var(--muted)' }}>{z.businesses}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex items-center gap-2 mt-4 pt-4 border-t" style={{ borderColor: 'rgba(6,60,103,0.08)' }}>
-                  <span className="text-2xl font-extrabold" style={{ color: 'var(--coral)', fontFamily: 'var(--display)' }}>
+                  </div>
+                <div className="flex items-center gap-2 mt-4 pt-4 border-t" style={{ borderColor: 'rgba(246,241,230,0.12)' }}>
+                  <span className="text-2xl font-extrabold" style={{ color: '#f0b84f', fontFamily: 'var(--display)' }}>
                     {totalActive}+
                   </span>
-                  <span className="text-xs" style={{ color: 'var(--muted)' }}>negocios en {zones.length} colonias de Lagos</span>
+                  <span className="text-xs" style={{ color: '#b9c6d4' }}>negocios en {zones.length} colonias de Lagos</span>
                 </div>
               </div>
             )}
@@ -218,7 +210,7 @@ export default function InteractiveMap() {
             {/* Live ticker */}
             <div
               className="flex items-center gap-3 px-4 py-3 rounded-full text-sm overflow-hidden"
-              style={{ background: 'rgba(31,41,55,0.05)' }}
+              style={{ background: 'rgba(246,241,230,0.05)', border: '1px solid rgba(246,241,230,0.1)' }}
             >
               <span className="w-2 h-2 rounded-full flex-shrink-0 animate-pulse" style={{ background: 'var(--green)' }} />
               <AnimatePresence mode="popLayout">
@@ -229,7 +221,7 @@ export default function InteractiveMap() {
                   exit={{ y: -10, opacity: 0 }}
                   transition={{ duration: 0.35 }}
                   className="truncate"
-                  style={{ color: 'var(--ink-soft)' }}
+                  style={{ color: '#f6f1e6' }}
                 >
                   {TICKER_EVENTS[tickerIdx]}
                 </motion.span>
@@ -238,14 +230,14 @@ export default function InteractiveMap() {
           </div>
 
           {/* Right: SVG map con llenado de negocios */}
-          <div className="rounded-3xl overflow-hidden" style={{ background: '#e8f4f0', boxShadow: 'var(--shadow-card)' }}>
+          <div className="rounded-3xl overflow-hidden" style={{ background: 'linear-gradient(160deg,#0a1c33,#071426)', border: '1px solid rgba(240,184,79,0.2)', boxShadow: '0 30px 80px -30px rgba(0,0,0,.7), 0 0 60px -20px rgba(240,184,79,.25)' }}>
             <svg viewBox="0 0 540 400" className="w-full" style={{ display: 'block' }}>
               {/* Grid */}
               {[100, 200, 300, 400].map(x => (
-                <line key={`v${x}`} x1={x} y1={0} x2={x} y2={400} stroke="rgba(31,41,55,0.06)" strokeWidth="1" />
+                <line key={`v${x}`} x1={x} y1={0} x2={x} y2={400} stroke="rgba(246,241,230,0.06)" strokeWidth="1" />
               ))}
               {[80, 160, 240, 320].map(y => (
-                <line key={`h${y}`} x1={0} y1={y} x2={540} y2={y} stroke="rgba(31,41,55,0.06)" strokeWidth="1" />
+                <line key={`h${y}`} x1={0} y1={y} x2={540} y2={y} stroke="rgba(246,241,230,0.06)" strokeWidth="1" />
               ))}
 
               {/* Conexiones entre zonas */}
@@ -254,7 +246,7 @@ export default function InteractiveMap() {
                   key={i}
                   x1={z.cx} y1={z.cy}
                   x2={zones[i + 1].cx} y2={zones[i + 1].cy}
-                  stroke="rgba(255,107,53,0.18)"
+                  stroke="rgba(240,184,79,0.3)"
                   strokeWidth="1.5"
                   strokeDasharray="6 4"
                   initial={{ pathLength: 0 }}
@@ -285,7 +277,7 @@ export default function InteractiveMap() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.05 * i, duration: 0.35, ease: EASE }}
                       >
-                        <circle cx={p.x} cy={p.y} r="11" fill="white" stroke={z.color} strokeWidth="1.2" opacity="0.95" />
+                        <circle cx={p.x} cy={p.y} r="11" fill="#0a1c33" stroke={z.color} strokeWidth="1.4" opacity="0.95" />
                         <text x={p.x} y={p.y + 3} textAnchor="middle" fontSize="9" style={{ pointerEvents: 'none' }}>
                           {BUSINESS_EMOJIS[p.e]}
                         </text>
@@ -303,11 +295,11 @@ export default function InteractiveMap() {
                         transition={{ type: 'spring', stiffness: 300, damping: 18 }}
                         opacity="0.95"
                       />
-                      <circle cx={z.cx} cy={z.cy} r="6" fill="white" />
+                      <circle cx={z.cx} cy={z.cy} r="6" fill="#050d1a" />
                       <text
                         x={z.cx} y={z.cy + 28}
                         textAnchor="middle" fontSize="10"
-                        fill="var(--ink)" fontFamily="var(--body)" fontWeight="600"
+                        fill="#f6f1e6" fontFamily="var(--font-body)" fontWeight="600"
                       >
                         {z.label.split(' ')[0]}
                       </text>

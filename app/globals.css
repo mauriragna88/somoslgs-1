@@ -812,3 +812,8 @@ header[data-hero-dark='true'] .hdr-ghost{border-color:rgba(246,241,230,.3)!impor
 .sl-home-v2{background:#050d1a}
 .sl-home-v2 .sl-discover-v2,.sl-home-v2 .sl-events-v2{background:linear-gradient(180deg,#0a1c33,#071426)!important}
 .sl-home-v2 .sl-discover-v2 h2 em,.sl-home-v2 .sl-events-v2 h2 em{color:#f0b84f!important;font-family:var(--font-serif),Georgia,serif;font-weight:400}
+
+/* Home oscura: Devogatec, CityStory, Eventos y Descubre heredan la paleta night + oro */
+.sl-home-v2 .sl-devogatec-v2,.sl-home-v2 .sl-city-story,.sl-home-v2 .sl-events-v2,.sl-home-v2 .sl-discover-v2{--sl-deep:#050d1a;--sl-blue:#0a1c33;--sl-coral:#f0b84f}
+.sl-home-v2 .sl-devogatec-v2{background:radial-gradient(900px 420px at 18% 30%,rgba(240,184,79,.1),transparent 60%),linear-gradient(180deg,#071426,#0a1c33)!important}
+.sl-home-v2 .sl-city-story{background:linear-gradient(180deg,#0a1c33,#050d1a)!important}
