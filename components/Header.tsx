@@ -141,6 +141,7 @@ export default function Header() {
   return (
     <>
       <header
+        data-hero-dark={pathname === '/' && !scrolled ? 'true' : undefined}
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           hidden ? '-translate-y-full' : 'translate-y-0'
         }`}
@@ -148,7 +149,7 @@ export default function Header() {
         {/* Barra flotante pill glass */}
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4">
           <div
-            className="mx-auto flex items-center gap-4 sm:gap-6 rounded-full border px-3 sm:px-4 py-2 transition-all duration-500"
+            className="hdr-pill mx-auto flex items-center gap-4 sm:gap-6 rounded-full border px-3 sm:px-4 py-2 transition-all duration-500"
             style={{
               background: scrolled
                 ? 'rgba(251,240,229,0.92)'
@@ -177,13 +178,13 @@ export default function Header() {
               </div>
               <div className="hidden sm:flex flex-col leading-none">
                 <span
-                  className="font-bold tracking-tight"
+                  className="hdr-ink font-bold tracking-tight"
                   style={{ fontFamily: 'var(--display)', color: 'var(--ink)', fontSize: '20px' }}
                 >
                   Somos<span style={{ color: 'var(--coral)' }}>Lagos</span>
                 </span>
                 <span
-                  className="font-semibold uppercase"
+                  className="hdr-muted font-semibold uppercase"
                   style={{ color: 'var(--muted)', fontSize: '8px', letterSpacing: '0.12em' }}
                 >
                   Pueblo mágico · MX
@@ -197,7 +198,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="group relative px-3.5 py-2 rounded-full text-sm font-medium transition-colors hover:bg-white/60"
+                  className="hdr-link group relative px-3.5 py-2 rounded-full text-sm font-medium transition-colors hover:bg-white/60"
                   style={{ color: 'var(--ink-soft)' }}
                 >
                   {link.label}
@@ -328,7 +329,7 @@ export default function Header() {
                 <>
                   <Link
                     href="/login"
-                    className="px-4 py-2 rounded-full text-sm font-medium border transition-colors hover:bg-white/60"
+                    className="hdr-link hdr-ghost px-4 py-2 rounded-full text-sm font-medium border transition-colors hover:bg-white/60"
                     style={{ borderColor: 'rgba(6,60,103,0.15)', color: 'var(--ink-soft)' }}
                   >
                     Iniciar sesión
@@ -367,7 +368,7 @@ export default function Header() {
               )}
               <button
                 onClick={() => setMobileMenuOpen(true)}
-                className="p-2 rounded-full hover:bg-white/60 transition-colors"
+                className="hdr-ink p-2 rounded-full hover:bg-white/60 transition-colors"
                 style={{ color: 'var(--ink)' }}
                 aria-label="Menú"
               >

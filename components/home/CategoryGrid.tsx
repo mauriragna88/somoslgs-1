@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { useReducedMotion } from 'framer-motion'
 import {
   UtensilsCrossed, Store, Wrench, User, Bike, Beef, Pizza, Salad,
   Coffee, Cake, ShoppingBag, Shirt, BookOpen, Clock, Briefcase, Sparkles,
@@ -10,6 +10,7 @@ import {
   Car, Truck, Gauge, Landmark, Trees, MapPin, Phone, Dog, Apple, Wifi,
 } from 'lucide-react'
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
+import styles from './CategoryGrid.module.css'
 
 /* Tipo unificado para iconos (Lucide o SVG manuales) */
 type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>
@@ -193,7 +194,24 @@ function catColor(slug: string): { bg: string; iconBg: string; text: string } {
   return { bg: 'linear-gradient(135deg, #EFF8F7 0%, #F5FBFA 100%)', iconBg: 'linear-gradient(135deg, #0D9488, #14B8A6)', text: '#0F766E' }
 }
 
+function tilt(e: React.PointerEvent<HTMLAnchorElement>) {
+  const el = e.currentTarget
+  const r = el.getBoundingClientRect()
+  const x = (e.clientX - r.left) / r.width
+  const y = (e.clientY - r.top) / r.height
+  el.style.setProperty('--gx', `${x * 100}%`)
+  el.style.setProperty('--gy', `${y * 100}%`)
+  el.style.setProperty('--ry', `${(x * 2 - 1) * 6}deg`)
+  el.style.setProperty('--rx', `${(y * 2 - 1) * -6}deg`)
+}
+
+function untilt(e: React.PointerEvent<HTMLAnchorElement>) {
+  e.currentTarget.style.setProperty('--rx', '0deg')
+  e.currentTarget.style.setProperty('--ry', '0deg')
+}
+
 export default function CategoryGrid({ categories }: CategoryGridProps) {
+  const reduced = useReducedMotion()
   return (
     <StaggerGroup className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       {categories.map((cat) => {
@@ -201,52 +219,21 @@ export default function CategoryGrid({ categories }: CategoryGridProps) {
         const color = catColor(cat.slug)
         return (
           <StaggerItem key={cat.id} className="h-full">
-            <motion.div
-              whileHover={{ y: -6 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="group h-full"
+            <Link
+              href={`/categorias/${cat.slug}`}
+              className={styles.tile}
+              onPointerMove={reduced ? undefined : tilt}
+              onPointerLeave={reduced ? undefined : untilt}
             >
-              <Link
-                href={`/categorias/${cat.slug}`}
-                className="relative block h-full rounded-2xl p-5 overflow-hidden transition-shadow duration-300"
-                style={{
-                  background: color.bg,
-                  border: '1px solid rgba(31,41,55,0.06)',
-                  boxShadow: '0 2px 16px rgba(31,41,55,0.05)',
-                }}
-              >
-                {/* Glow al hover */}
-                <div
-                  className="absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none"
-                  style={{ background: color.iconBg }}
-                />
-
-                {/* Icono en contenedor con gradiente */}
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-3"
-                  style={{ background: color.iconBg, boxShadow: `0 8px 20px ${color.iconBg.replace('linear-gradient(135deg, ', '').replace(')', '').split(',')[0]}40` }}
-                >
-                  <Icon width={26} height={26} strokeWidth={2} />
-                </div>
-
-                {/* Nombre */}
-                <h3 className="font-extrabold text-[15px] leading-tight mb-3" style={{ color: 'var(--ink)', fontFamily: 'var(--display)' }}>
-                  {cat.name}
-                </h3>
-
-                {/* Flecha + "Explorar" al hover */}
-                <span
-                  className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300"
-                  style={{ color: color.text }}
-                >
-                  Explorar
-                  <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </Link>
-            </motion.div>
+              <span className={styles.glow} aria-hidden="true" />
+              <span className={styles.icon} style={{ background: color.iconBg }}>
+                <Icon width={26} height={26} strokeWidth={2} />
+              </span>
+              <span className={styles.name}>{cat.name}</span>
+              <span className={styles.go}>
+                Explorar <span aria-hidden="true">→</span>
+              </span>
+            </Link>
           </StaggerItem>
         )
       })}

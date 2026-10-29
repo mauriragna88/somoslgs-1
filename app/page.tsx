@@ -9,7 +9,7 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import { TIER_ORDER } from '@/lib/constants'
 import type { BlogPost } from '@/types/database.types'
 import type { BusinessHours } from '@/lib/constants'
-import HeroV2 from '@/components/home/HeroV2'
+import HeroCinematic, { type HeroSpotlight } from '@/components/home/HeroCinematic'
 import InteractiveMap from '@/components/home/InteractiveMap'
 import DescubreLagos from '@/components/home/DescubreLagos'
 import BannerDisplay from '@/components/ads/BannerDisplay'
@@ -223,6 +223,20 @@ export default async function HomePage() {
 
   const catCount = Math.max(1, totalCategories || categories.length)
 
+  // Tarjetas vivas del hero: destacados primero, luego los mas recientes con foto
+  const heroSpotlight: HeroSpotlight[] = [...(featuredBusinesses || []), ...discoverBusinesses]
+    .filter((b, i, all) => all.findIndex(x => x.id === b.id) === i)
+    .map(b => ({
+      id: b.id,
+      name: b.name,
+      slug: b.slug,
+      category: b.category?.name ?? null,
+      image: b.cover_url || b.business_photos?.[0]?.image_url || b.logo_url || null,
+      hours: b.business_hours,
+    }))
+    .filter(b => b.image)
+    .slice(0, 3)
+
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -289,13 +303,12 @@ export default async function HomePage() {
       {/* ═══════════════════════════════════════════════════════════
           1. HERO — Scroll-synced video (con transición de salida)
       ═══════════════════════════════════════════════════════════ */}
-      <SectionReveal entryY={40} amount={0.5} blur={false}>
-        <HeroV2
-          categories={categories}
-          businessCount={businessDisplayCount}
-          catCount={catCount}
-        />
-      </SectionReveal>
+      <HeroCinematic
+        categories={categories}
+        spotlight={heroSpotlight}
+        businessCount={businessDisplayCount}
+        catCount={catCount}
+      />
 
       {/* ═══════════════════════════════════════════════════════════
           1b. (Marquee removido — texto en movimiento eliminado)
@@ -310,32 +323,33 @@ export default async function HomePage() {
       {categories.length > 0 && (
         <SectionReveal>
           <section
-          className="py-20"
+          className="py-20 md:py-28"
           style={{
             background: `
-              radial-gradient(ellipse at 8% 40%, rgba(255,107,53,0.08) 0%, transparent 48%),
-              radial-gradient(ellipse at 92% 15%, rgba(245,185,66,0.10) 0%, transparent 42%),
-              radial-gradient(ellipse at 55% 95%, rgba(34,184,207,0.05) 0%, transparent 38%),
-              #FFFDF8
+              radial-gradient(60% 45% at 8% 30%, rgba(240,184,79,0.10), transparent 70%),
+              radial-gradient(50% 40% at 95% 80%, rgba(59,130,246,0.10), transparent 70%),
+              linear-gradient(180deg, #050d1a, #0a1c33)
             `,
+            color: '#f6f1e6',
           }}
         >
           <div className="container mx-auto px-4">
             <ScrollReveal direction="up">
               <div className="text-center mb-12">
                 <span
-                  className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4"
-                  style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--coral)' }}
+                  className="inline-block text-[12px] font-semibold uppercase tracking-[0.16em] mb-4"
+                  style={{ color: '#f0b84f' }}
                 >
                   Categorías
                 </span>
                 <h2
-                  className="text-4xl md:text-5xl font-black mb-3"
-                  style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}
+                  className="text-4xl md:text-6xl font-bold mb-4"
+                  style={{ fontFamily: 'var(--display)', color: '#f6f1e6', letterSpacing: '-0.04em' }}
                 >
-                  ¿Qué buscas hoy?
+                  ¿Qué buscas{' '}
+                  <em style={{ fontFamily: 'var(--font-serif), Georgia, serif', fontWeight: 400, color: '#f0b84f' }}>hoy?</em>
                 </h2>
-                <p className="text-base max-w-lg mx-auto" style={{ color: 'var(--ink-soft)' }}>
+                <p className="text-base md:text-lg max-w-lg mx-auto" style={{ color: '#b9c6d4' }}>
                   Encuentra exactamente lo que necesitas en Lagos de Moreno.
                 </p>
               </div>
@@ -348,8 +362,8 @@ export default async function HomePage() {
             <div className="text-center">
               <Link
                 href="/categorias"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all hover:opacity-90"
-                style={{ background: 'var(--coral)', color: 'white' }}
+                className="inline-flex items-center gap-2 px-6 min-h-11 rounded-full font-semibold text-sm transition-all hover:-translate-y-0.5"
+                style={{ background: '#f0b84f', color: '#1a1204' }}
               >
                 Ver todas las categorías
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

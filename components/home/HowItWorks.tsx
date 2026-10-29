@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 /* ═══════════════════════════════════════════════════════════
    HowItWorks — "Así funciona SomosLagos" con animación interactiva
@@ -62,6 +62,7 @@ function useTypewriter(text: string, active: boolean, speed = 90) {
 }
 
 export default function HowItWorks() {
+  const reducedMotion = useReducedMotion()
   const [step, setStep] = useState(1)
   const [paused, setPaused] = useState(false)
   const [searchDone, setSearchDone] = useState(false)
@@ -108,20 +109,20 @@ export default function HowItWorks() {
   }, [step])
 
   return (
-    <section className="py-20 relative overflow-hidden" style={{ background: '#FFFDF8' }}>
-      {/* Blobs decorativos */}
-      <div className="absolute -top-16 -right-20 w-72 h-72 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(255,107,53,0.07)' }} />
-      <div className="absolute -bottom-20 -left-16 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(245,185,66,0.1)' }} />
+    <section className="py-20 md:py-28 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #0a1c33 0%, #050d1a 100%)', color: '#f6f1e6' }}>
+      {/* Resplandores de fondo */}
+      <div className="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(240,184,79,0.12)' }} />
+      <div className="absolute -bottom-32 -left-24 w-[30rem] h-[30rem] rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(59,130,246,0.10)' }} />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-14">
-          <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4" style={{ background: 'rgba(245,185,66,0.15)', color: 'var(--gold)' }}>
+          <span className="inline-block text-[12px] font-semibold uppercase tracking-[0.16em] mb-4" style={{ color: '#f0b84f' }}>
             ¿Cómo funciona?
           </span>
-          <h2 className="text-3xl md:text-5xl font-black mb-3" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
-            Así funciona <span style={{ color: 'var(--coral)' }}>SomosLagos</span>
+          <h2 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight" style={{ fontFamily: 'var(--display)', color: '#f6f1e6', letterSpacing: '-0.04em' }}>
+            Así funciona <em style={{ fontFamily: 'var(--font-serif), Georgia, serif', fontWeight: 400, color: '#f0b84f' }}>SomosLagos</em>
           </h2>
-          <p className="text-base max-w-lg mx-auto" style={{ color: 'var(--ink-soft)' }}>
+          <p className="text-base md:text-lg max-w-lg mx-auto" style={{ color: '#b9c6d4' }}>
             Conectar con negocios locales nunca fue tan fácil.
           </p>
         </div>
@@ -137,13 +138,14 @@ export default function HowItWorks() {
                   key={s.id}
                   animate={{
                     scale: active ? 1.02 : 1,
-                    boxShadow: active ? `0 12px 32px -8px ${s.color}44` : '0 2px 12px rgba(31,41,55,0.06)',
+                    boxShadow: active ? `0 16px 40px -12px ${s.color}66` : '0 0 0 rgba(0,0,0,0)',
                   }}
                   transition={{ duration: 0.4, ease: EASE }}
                   className="flex items-start gap-4 p-5 rounded-2xl border cursor-default"
                   style={{
-                    background: 'white',
-                    borderColor: active ? `${s.color}55` : 'rgba(31,41,55,0.06)',
+                    background: active ? 'rgba(246,241,230,0.09)' : 'rgba(246,241,230,0.04)',
+                    backdropFilter: 'blur(10px)',
+                    borderColor: active ? `${s.color}99` : 'rgba(246,241,230,0.14)',
                   }}
                 >
                   {/* Número */}
@@ -160,10 +162,10 @@ export default function HowItWorks() {
                   </motion.div>
 
                   <div className="min-w-0">
-                    <h3 className="font-black text-xl mb-1" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>
+                    <h3 className="font-bold text-xl mb-1" style={{ fontFamily: 'var(--display)', color: '#f6f1e6' }}>
                       {s.title}
                     </h3>
-                    <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>{s.body}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#b9c6d4' }}>{s.body}</p>
                   </div>
                 </motion.div>
               )
@@ -171,10 +173,12 @@ export default function HowItWorks() {
           </div>
 
           {/* ── Teléfono mockup ── */}
-          <div className="flex justify-center">
-            <div
-              className="relative rounded-[38px] p-3 bg-white"
-              style={{ boxShadow: '0 24px 64px -16px rgba(31,41,55,0.25), 0 0 0 1px rgba(31,41,55,0.06)', width: 300 }}
+          <div className="flex justify-center" style={{ perspective: 1200 }}>
+            <motion.div
+              className="relative rounded-[38px] p-3"
+              animate={reducedMotion ? undefined : { y: [0, -12, 0], rotateY: [-8, -3, -8], rotateX: [2, 0, 2] }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ background: '#0b1424', boxShadow: '0 40px 90px -20px rgba(0,0,0,0.8), 0 0 80px -10px rgba(240,184,79,0.25), 0 0 0 1px rgba(246,241,230,0.18)', width: 300, transformStyle: 'preserve-3d' }}
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
             >
@@ -197,7 +201,7 @@ export default function HowItWorks() {
                   )}
                 </AnimatePresence>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

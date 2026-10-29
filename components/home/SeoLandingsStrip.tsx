@@ -23,7 +23,7 @@ const LINKS = [
 export default function SeoLandingsStrip() {
   return (
     <div className="mt-8">
-      <p className="text-[11px] font-bold uppercase tracking-widest text-center mb-4" style={{ color: 'var(--muted)' }}>
+      <p className="text-[11px] font-bold uppercase tracking-widest text-center mb-4" style={{ color: '#b9c6d4' }}>
         Explora por guía
       </p>
       <div className="flex flex-wrap gap-2 justify-center">
@@ -31,14 +31,13 @@ export default function SeoLandingsStrip() {
           <Link
             key={l.href}
             href={l.href}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg"
+            className="inline-flex items-center gap-1.5 px-4 min-h-11 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5 hover:border-[#f0b84f]"
             style={{
-              background: 'rgba(255,255,255,0.75)',
+              background: 'rgba(246,241,230,0.06)',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
-              border: '1px solid rgba(6,60,103,0.10)',
-              color: 'var(--ink)',
-              boxShadow: '0 2px 10px rgba(6,60,103,0.05)',
+              border: '1px solid rgba(246,241,230,0.16)',
+              color: '#f6f1e6',
             }}
           >
             <span>{l.emoji}</span>
