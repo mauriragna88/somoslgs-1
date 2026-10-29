@@ -75,8 +75,9 @@ export default function HeroCinematic({ categories, spotlight, businessCount, ca
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
-    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData
-    if (reduced || saveData) {
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
+    const slow = conn?.saveData || conn?.effectiveType === 'slow-2g' || conn?.effectiveType === '2g' || conn?.effectiveType === '3g'
+    if (reduced || slow) {
       setVideoFailed(true)
       return
     }

@@ -713,7 +713,7 @@ export default async function HomePage() {
       <section className="relative py-24 overflow-hidden">
         {/* Fondo parallax de la ciudad */}
         <div className="absolute inset-0 z-0">
-          <img src="/lagos-hero.jpg" alt="" aria-hidden className="w-full h-full object-cover" />
+          <img src="/lagos-hero.jpg" alt="" aria-hidden loading="lazy" decoding="async" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(6,15,30,0.72) 0%, rgba(6,15,30,0.85) 100%)' }} />
         </div>
         <div className="container mx-auto px-4 relative z-10">
