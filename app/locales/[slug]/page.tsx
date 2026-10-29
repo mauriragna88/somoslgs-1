@@ -133,7 +133,7 @@ export default async function LocalPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen sl-editorial-v2" style={{ background: 'var(--ivory)' }}>
       <LocalPageViewTracker localPageId={pageData.id} />
 
       {/* Hero */}

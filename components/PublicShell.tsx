@@ -26,7 +26,7 @@ export default function PublicShell({ children }: { children: React.ReactNode })
     <>
       <Header />
       <SmoothScroll>
-        <div className={needsOffset ? 'pt-24' : ''}>
+        <div className={`sl-public-v2 ${needsOffset ? 'pt-24' : ''}`}>
           {children}
         </div>
       </SmoothScroll>

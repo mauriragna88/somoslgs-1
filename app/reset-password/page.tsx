@@ -43,7 +43,7 @@ export default function ResetPasswordPage() {
 
   if (sent) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--cream)' }}>
+      <div className="min-h-screen flex items-center justify-center px-4 sl-auth-v2" style={{ background: 'var(--cream)' }}>
         <div className="max-w-md w-full">
           <div className="bg-white rounded-2xl p-8 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -69,7 +69,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--cream)' }}>
+    <div className="min-h-screen flex items-center justify-center px-4 sl-auth-v2" style={{ background: 'var(--cream)' }}>
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>SomosLagos</h1>

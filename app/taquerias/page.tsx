@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import CategoryLanding from '@/components/seo/CategoryLanding'
 
 export const metadata: Metadata = {
-  title: 'Taquerías y dónde comer tacos en Lagos de Moreno, Jalisco | SomosLagos',
+  title: 'Taquerías y tacos en Lagos de Moreno',
   description:
-    'Las mejores taquerías para comer tacos en Lagos de Moreno: tacos de birria, al pastor, de guisado y más. Horarios, ubicación, opiniones y WhatsApp directo en el Pueblo Mágico.',
+    'Consulta taquerías en Lagos de Moreno, Jalisco. Revisa ubicación, horarios y opciones de tacos de birria, al pastor y de guisado.',
   keywords: [
     'taquerías en lagos de moreno',
     'tacos en lagos de moreno',

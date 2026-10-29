@@ -296,7 +296,7 @@ export default async function BuscarPage({
   )
 
   return (
-    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen sl-list-page" style={{ background: 'var(--ivory)' }}>
       {/* ── Search Header ── */}
       <div
         className="border-b py-8"

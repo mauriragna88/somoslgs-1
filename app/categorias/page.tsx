@@ -67,7 +67,7 @@ export default async function CategoriasPage() {
     .sort((a, b) => b.businessCount - a.businessCount)
 
   return (
-    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen sl-category-page" style={{ background: 'var(--ivory)' }}>
 
       {/* ── Hero / Header ── */}
       <section

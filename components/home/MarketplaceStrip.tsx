@@ -21,7 +21,7 @@ function ListingMiniCard({ listing }: { listing: MarketplaceListing }) {
   return (
     <Link
       href={`/marketplace/${listing.id}`}
-      className="group relative flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+      className="sl-listing-mini group relative flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
       style={{
         background: 'rgba(255,253,248,0.05)',
         border: '1px solid rgba(255,253,248,0.1)',
@@ -117,7 +117,7 @@ export default function MarketplaceStrip({ listings }: MarketplaceStripProps) {
 
   return (
     <section
-      className="py-16"
+      className="sl-marketplace-v2 py-16"
       style={{
         background: `
           radial-gradient(ellipse at 20% 50%, rgba(245,185,66,0.07) 0%, transparent 55%),
@@ -182,7 +182,7 @@ export default function MarketplaceStrip({ listings }: MarketplaceStripProps) {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="sl-marketplace-grid grid grid-cols-2 md:grid-cols-4 gap-3">
           {listings.map((listing) => (
             <ListingMiniCard key={listing.id} listing={listing} />
           ))}

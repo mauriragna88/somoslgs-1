@@ -77,14 +77,24 @@ CREATE POLICY "Admin can update claim fields"
     SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'
   ));
 
--- 5. Actualizar negocios existentes: los que tienen owner_id = NULL o no asignado
--- quedan como 'unclaimed'. Los que tienen owner_id quedan como 'claimed'.
+-- 5. Normalizar owner_id vacios a NULL (antes del UPDATE final)
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM businesses WHERE owner_id::text = '') THEN
+    UPDATE businesses
+    SET owner_id = NULL
+    WHERE owner_id::text = '';
+    RAISE NOTICE 'Filas con owner_id vacio convertidas a NULL';
+  END IF;
+END $$;
+
+-- 6. Actualizar negocios existentes: los que tienen owner_id valido quedan como 'claimed'
 UPDATE businesses
 SET is_claimed = true,
     claim_status = 'claimed',
     claimed_by = owner_id,
     claimed_at = COALESCE(created_at, NOW())
-WHERE owner_id IS NOT NULL AND owner_id != '';
+WHERE owner_id IS NOT NULL;
 
 -- Verificación
 -- SELECT COUNT(*) FROM businesses WHERE is_claimed = false;

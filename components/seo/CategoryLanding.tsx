@@ -115,7 +115,7 @@ export default async function CategoryLanding({ config }: { config: LandingConfi
   }
 
   return (
-    <main className="min-h-screen overflow-x-clip" style={{ background: '#FBF0E5' }}>
+    <main className="min-h-screen overflow-x-clip sl-food-landing-v2" style={{ background: '#FBF0E5' }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 

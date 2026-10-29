@@ -155,7 +155,7 @@ export default async function QueHacerPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--ivory)]">
+    <main className="min-h-screen bg-[var(--ivory)] sl-editorial-v2">
       {/* JSON-LD */}
       <script
         type="application/ld+json"

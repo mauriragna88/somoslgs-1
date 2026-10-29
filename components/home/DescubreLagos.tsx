@@ -175,7 +175,7 @@ function PlaceCard({ place }: { place: Place }) {
 
 export default function DescubreLagos() {
   return (
-    <section style={{ background: 'var(--ink)' }} className="py-20">
+    <section style={{ background: 'var(--ink)' }} className="sl-discover-v2 py-20">
       <div className="container mx-auto px-4">
 
         {/* Editorial header */}

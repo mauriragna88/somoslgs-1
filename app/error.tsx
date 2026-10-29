@@ -15,7 +15,7 @@ export default function GlobalError({
   }, [error])
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen flex items-center justify-center px-4 sl-state-v2" style={{ background: 'var(--ivory)' }}>
       <div className="text-center max-w-md">
         <div className="text-6xl font-bold mb-4" style={{ color: 'var(--coral)' }}>Oops</div>
         <h1 className="text-2xl font-bold mb-3" style={{ color: 'var(--ink)' }}>

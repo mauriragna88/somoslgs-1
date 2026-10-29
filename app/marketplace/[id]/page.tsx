@@ -158,7 +158,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
+      <main className="min-h-screen sl-market-detail-page" style={{ background: 'var(--ivory)' }}>
         {/* Breadcrumb */}
         <div className="bg-white" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
           <div className="container mx-auto px-4 py-3">

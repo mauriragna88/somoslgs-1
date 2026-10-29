@@ -115,7 +115,7 @@ export default function MisArticulosPage() {
   )}`
 
   return (
-    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen sl-market-owner-v2" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>

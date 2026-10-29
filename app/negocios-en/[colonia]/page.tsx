@@ -184,7 +184,7 @@ export default async function NegociosEnColoniaPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen sl-neighborhood-page-v2" style={{ background: 'var(--ivory)' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}

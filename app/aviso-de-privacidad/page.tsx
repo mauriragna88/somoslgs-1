@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function AvisoDePrivacidadPage() {
   return (
-    <main className="min-h-screen py-12" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen py-12 sl-legal-v2" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="bg-white rounded-2xl p-8 md:p-12" style={{ boxShadow: 'var(--shadow-card)', border: '1px solid rgba(0,0,0,0.06)' }}>
           <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Aviso de Privacidad</h1>

@@ -114,7 +114,7 @@ export default function FeaturedSection({ initialBusinesses }: Props) {
   }, [activeTab, cache])
 
   return (
-    <section className="py-20 relative overflow-hidden" style={{ background: '#F8F1E7' }}>
+    <section className="sl-featured-v2 py-20 relative overflow-hidden" style={{ background: '#F8F1E7' }}>
       {/* Blobs decorativos de fondo */}
       <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(255,107,53,0.08)' }} />
       <div className="absolute -bottom-24 -right-16 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(245,185,66,0.12)' }} />

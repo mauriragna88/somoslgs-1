@@ -317,7 +317,7 @@ export default function CheckoutForm({ business, conektaEnabled = false, mercado
   const hasBankData = business.bankData.bank_clabe
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="sl-checkout-form space-y-6">
       {/* 1. Order Summary */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h2 className="text-lg font-bold text-gray-900 mb-4">Resumen del Pedido</h2>

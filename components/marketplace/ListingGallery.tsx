@@ -43,8 +43,17 @@ export default function ListingGallery({ images, title }: ListingGalleryProps) {
     <>
       {/* Main Image */}
       <div
-        className="aspect-square relative rounded-2xl overflow-hidden cursor-pointer bg-gray-100"
+        className="sl-listing-gallery-main aspect-square relative rounded-2xl overflow-hidden cursor-pointer bg-gray-100"
+        role="button"
+        tabIndex={0}
+        aria-label="Abrir galería de imágenes"
         onClick={() => setLightboxOpen(true)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            setLightboxOpen(true)
+          }
+        }}
       >
         <Image
           src={images[activeIndex]}
@@ -68,6 +77,7 @@ export default function ListingGallery({ images, title }: ListingGalleryProps) {
             <button
               key={idx}
               onClick={() => setActiveIndex(idx)}
+               aria-current={idx === activeIndex ? 'true' : undefined}
               className={`w-16 h-16 relative rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all ${
                 idx === activeIndex
                   ? 'border-[#FF6B35] ring-1 ring-[rgba(255,107,53,0.3)]'

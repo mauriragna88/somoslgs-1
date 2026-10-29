@@ -213,7 +213,7 @@ export default function EventsGrid({ events }: EventsGridProps) {
 
   return (
     <section
-      className="py-20"
+      className="sl-events-v2 py-20"
       style={{
         background: `
           radial-gradient(ellipse at 15% 20%, rgba(255,107,53,0.08) 0%, transparent 50%),
@@ -269,7 +269,7 @@ export default function EventsGrid({ events }: EventsGridProps) {
 
         <div
           className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-10"
-          style={{ gridAutoRows: '240px' }}
+          style={{ gridAutoRows: 'minmax(240px, auto)' }}
         >
           {items.map((event) => (
             <EventCard key={event.name} event={event} />

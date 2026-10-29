@@ -9,13 +9,15 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import { TIER_ORDER } from '@/lib/constants'
 import type { BlogPost } from '@/types/database.types'
 import type { BusinessHours } from '@/lib/constants'
-import HeroVideoScroll from '@/components/home/HeroVideoScroll'
+import HeroV2 from '@/components/home/HeroV2'
 import InteractiveMap from '@/components/home/InteractiveMap'
 import DescubreLagos from '@/components/home/DescubreLagos'
 import BannerDisplay from '@/components/ads/BannerDisplay'
 import EventsSection from '@/components/home/EventsSection'
 import FeaturedSection from '@/components/home/FeaturedSection'
 import MarketplaceStrip from '@/components/home/MarketplaceStrip'
+import DevogatecSpotlight from '@/components/home/DevogatecSpotlight'
+import CityStoryV2 from '@/components/home/CityStoryV2'
 import CategoryGrid from '@/components/home/CategoryGrid'
 import SeoLandingsStrip from '@/components/home/SeoLandingsStrip'
 import HowItWorks from '@/components/home/HowItWorks'
@@ -230,7 +232,7 @@ export default async function HomePage() {
         name: '¿Cómo registro mi negocio en SomosLagos?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Entra a somoslagos.com.mx, haz clic en "Registrar negocio" y completa el formulario gratuito. Tu negocio aparecerá en el directorio en minutos.',
+          text: 'Entra a somoslagos.com.mx, haz clic en "Registrar negocio" y completa el formulario. Tu negocio queda publicado en el directorio al enviarlo.',
         },
       },
       {
@@ -238,7 +240,7 @@ export default async function HomePage() {
         name: '¿Es gratis registrar mi negocio en SomosLagos?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Sí, el plan Gratis es para siempre. Incluye perfil con fotos, WhatsApp directo, horarios y aparición en el mapa. Existen planes de pago para negocios que quieren mayor visibilidad.',
+          text: 'Sí, existe un plan gratuito con perfil, fotos, WhatsApp directo, horarios y aparición en el mapa. Existen planes de pago para negocios que quieren mayor visibilidad.',
         },
       },
       {
@@ -246,7 +248,7 @@ export default async function HomePage() {
         name: '¿Qué es Lagos de Moreno Pueblo Mágico?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Lagos de Moreno es un Pueblo Mágico de Jalisco, México, famoso por su arquitectura barroca, gastronomía, artesanías y tradiciones. SomosLagos es la plataforma digital oficial de su comunidad de negocios.',
+          text: 'Lagos de Moreno es un Pueblo Mágico de Jalisco, México, famoso por su arquitectura barroca, gastronomía, artesanías y tradiciones. SomosLagos es un directorio digital de su comunidad de negocios.',
         },
       },
       {
@@ -270,7 +272,7 @@ export default async function HomePage() {
 
   return (
     <ScrollWrapper>
-    <main className="min-h-screen overflow-x-clip">
+    <main id="sl-home" className="min-h-screen overflow-x-clip sl-public-v2 sl-home-v2">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
@@ -288,7 +290,7 @@ export default async function HomePage() {
           1. HERO — Scroll-synced video (con transición de salida)
       ═══════════════════════════════════════════════════════════ */}
       <SectionReveal entryY={40} amount={0.5} blur={false}>
-        <HeroVideoScroll
+        <HeroV2
           categories={categories}
           businessCount={businessDisplayCount}
           catCount={catCount}
@@ -303,7 +305,7 @@ export default async function HomePage() {
           2. CATEGORIES — What are you looking for?
       ═══════════════════════════════════════════════════════════ */}
       {/* Divider coral→gold */}
-      <div className="pueblo-divider" />
+      <div id="sl-discovery" className="pueblo-divider" />
 
       {categories.length > 0 && (
         <SectionReveal>
@@ -409,6 +411,8 @@ export default async function HomePage() {
       ═══════════════════════════════════════════════════════════ */}
       <SectionReveal>
         <MarketplaceStrip listings={latestListings || []} />
+         <DevogatecSpotlight />
+       <CityStoryV2 />
       </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════
@@ -690,7 +694,7 @@ export default async function HomePage() {
       <section className="relative py-24 overflow-hidden">
         {/* Fondo parallax de la ciudad */}
         <div className="absolute inset-0 z-0">
-          <img src="/tourism/panoramica-lagos.jpg" alt="" aria-hidden className="w-full h-full object-cover" />
+          <img src="/lagos-hero.jpg" alt="" aria-hidden className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(6,15,30,0.72) 0%, rgba(6,15,30,0.85) 100%)' }} />
         </div>
         <div className="container mx-auto px-4 relative z-10">

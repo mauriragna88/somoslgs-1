@@ -42,7 +42,7 @@ export default async function BlogPage() {
   }))
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gray-50 sl-blog-index-v2">
       {/* Header */}
       <SectionReveal entryY={30} amount={0.5}>
       <section className="bg-white border-b border-gray-100">

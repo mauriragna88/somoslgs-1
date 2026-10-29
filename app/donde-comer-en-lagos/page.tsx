@@ -7,9 +7,9 @@ import SectionReveal from '@/components/animations/SectionReveal'
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup'
 
 export const metadata: Metadata = {
-  title: '¿Dónde comer en Lagos de Moreno? Guía de comida, tacos y más | SomosLagos',
+  title: 'Restaurantes y dónde comer en Lagos de Moreno',
   description:
-    'Guía completa para saber dónde comer en Lagos de Moreno, Jalisco: comida típica, tacos, birria, carnitas, cafeterías y restaurantes del Pueblo Mágico. Horarios y contacto.',
+    'Explora restaurantes, taquerías y cafeterías en Lagos de Moreno. Consulta ubicación, horarios y contacto directo en SomosLagos.',
   keywords: [
     'dónde comer en lagos de moreno',
     'comida en lagos de moreno',
@@ -96,7 +96,7 @@ export default async function DondeComerPage() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-clip" style={{ background: '#FBF0E5' }}>
+    <main className="min-h-screen overflow-x-clip sl-editorial-v2" style={{ background: '#FBF0E5' }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* HERO */}

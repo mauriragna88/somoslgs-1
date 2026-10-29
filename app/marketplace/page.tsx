@@ -129,7 +129,7 @@ export default async function MarketplacePage({
   if (order) currentParams.order = order
 
   return (
-    <main className="min-h-screen bg-[var(--ivory)]">
+    <main className="min-h-screen bg-[var(--ivory)] sl-market-page">
       {/* ── HEADER ──────────────────────────────────────────────── */}
       <div className="bg-white border-b border-[var(--hairline)] py-10">
         <div className="container mx-auto px-4">

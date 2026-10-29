@@ -35,7 +35,7 @@ export default async function LocalesIndexPage() {
   const list = pages || []
 
   return (
-    <main className="min-h-screen py-16" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen py-16 sl-editorial-index-v2" style={{ background: 'var(--ivory)' }}>
       <section className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <span

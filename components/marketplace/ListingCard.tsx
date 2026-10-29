@@ -31,7 +31,7 @@ export default function ListingCard({ listing }: ListingCardProps) {
   return (
     <Link
       href={`/marketplace/${listing.id}`}
-      className={`pueblo-card rounded-2xl hover:shadow-pueblo transition-all overflow-hidden group border hover:-translate-y-1 ${
+      className={`sl-market-listing-card pueblo-card rounded-2xl hover:shadow-pueblo transition-all overflow-hidden group border hover:-translate-y-1 ${
         listing.is_featured
           ? 'border-pueblo-barroco/40 ring-1 ring-pueblo-barroco/20'
           : 'border-pueblo-canteraLight/60 hover:border-pueblo-cantera/40'

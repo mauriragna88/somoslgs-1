@@ -54,12 +54,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Categoria no encontrada' }
   }
 
-  const title = `${category.name} en Lagos de Moreno`
   const description = `Encuentra los mejores ${category.name.toLowerCase()} en Lagos de Moreno, Jalisco. Directorio completo con horarios, ubicacion, opiniones y contacto.`
+  const isPizzerias = category.slug === 'pizzerias'
+  const title = isPizzerias
+    ? 'Pizza y pizzerías en Lagos de Moreno'
+    : `${category.name} en Lagos de Moreno`
+  const metaDescription = isPizzerias
+    ? 'Consulta pizzerías en Lagos de Moreno, Jalisco. Revisa la información disponible sobre ubicación y horarios en SomosLagos.'
+    : description
 
   return {
     title,
-    description,
+    description: metaDescription,
     alternates: {
       // Consolidar con la landing keyword más rica (evita duplicado)
       canonical: `https://www.somoslagos.com.mx/${category.slug}-en-lagos-de-moreno`,
@@ -240,7 +246,7 @@ export default async function CategoriaPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen sl-category-detail-page" style={{ background: 'var(--ivory)' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}

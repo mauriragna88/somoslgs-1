@@ -135,7 +135,7 @@ function RegisterForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12" style={{ background: 'var(--ivory)' }}>
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 sl-auth-v2" style={{ background: 'var(--ivory)' }}>
       <div className="max-w-md w-full">
         {/* Logo/Brand */}
         <div className="text-center mb-8">

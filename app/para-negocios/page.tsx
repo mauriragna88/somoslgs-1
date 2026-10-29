@@ -110,7 +110,7 @@ const stripeClass = [
 
 export default function PlanesPage() {
   return (
-    <main className="min-h-screen pueblo-shell">
+    <main className="min-h-screen pueblo-shell sl-biz-v2">
 
       {/* ── Hero B2B: Te encontramos / Te contactan / Te administras ── */}
       <section className="py-20 bg-pueblo-noche relative overflow-hidden">

@@ -89,7 +89,7 @@ export default async function RegistrarNegocioPage() {
   // If logged in, show the form directly
   if (user) {
     return (
-      <div className="min-h-screen py-12 px-4" style={{ background: 'var(--ivory)' }}>
+      <div className="min-h-screen py-12 px-4 sl-register-v2" style={{ background: 'var(--ivory)' }}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--ink)' }}>
@@ -108,7 +108,7 @@ export default async function RegistrarNegocioPage() {
 
   // Not logged in: show persuasive landing
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen sl-register-v2">
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, var(--ink) 0%, var(--coral) 100%)' }}>
         <div className="absolute inset-0 bg-[url('/lagos-hero.jpg')] bg-cover bg-center opacity-15"></div>

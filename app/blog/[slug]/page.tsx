@@ -58,9 +58,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!post) return { title: 'Post no encontrado' }
   const postIndex = (postOrder || []).findIndex((entry: { slug: string }) => entry.slug === slug)
   const postImage = resolveBlogImage(post.featured_image_url, postIndex)
+  const isFoodGuide = slug === 'mejores-lugares-comer-lagos-de-moreno'
+  const title = isFoodGuide ? 'Los mejores lugares para comer en Lagos de Moreno' : post.title
+  const description = isFoodGuide
+    ? 'Desde carnitas y birria hasta cafeterías y restaurantes de autor. Descubre dónde comer bien en Lagos de Moreno, Jalisco.'
+    : post.excerpt || `Lee ${post.title} en el blog de SomosLagos`
   return {
-    title: post.title,
-    description: post.excerpt || `Lee ${post.title} en el blog de SomosLagos`,
+    title,
+    description,
     alternates: {
       canonical: `https://www.somoslagos.com.mx/blog/${slug}`,
     },
@@ -122,7 +127,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white sl-blog-detail-v2">
       <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }} />
 

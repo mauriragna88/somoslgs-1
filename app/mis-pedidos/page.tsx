@@ -58,7 +58,7 @@ export default async function MisPedidosPage() {
   const pastOrders = orders?.filter(o => !activeStatuses.includes(o.status)) || []
 
   return (
-    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen sl-orders-v2" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Mis Pedidos</h1>
         <p className="mb-8" style={{ color: 'var(--muted)' }}>Historial de todos tus pedidos</p>

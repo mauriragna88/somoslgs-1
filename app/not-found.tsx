@@ -2,9 +2,9 @@ import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen flex items-center justify-center px-4 sl-state-v2" style={{ background: 'var(--ivory)' }}>
       <div className="text-center max-w-md">
-        <div className="text-8xl mb-6">🔍</div>
+        <div className="sl-state-code mb-6" aria-hidden="true">404</div>
         <h1 className="text-4xl font-bold mb-3" style={{ color: 'var(--ink)' }}>
           Pagina no encontrada
         </h1>

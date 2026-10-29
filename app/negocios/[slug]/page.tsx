@@ -252,7 +252,7 @@ export default async function BusinessPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--ivory)]">
+    <main className="min-h-screen bg-[var(--ivory)] sl-business-detail-v2">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}

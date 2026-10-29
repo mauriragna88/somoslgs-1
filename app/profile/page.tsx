@@ -29,7 +29,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
   }
 
   return (
-    <main className="min-h-screen" style={{ background: 'var(--ivory)' }}>
+    <main className="min-h-screen sl-profile-v2" style={{ background: 'var(--ivory)' }}>
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'var(--display)', color: 'var(--ink)' }}>Configuracion</h1>
         <p className="mb-8" style={{ color: 'var(--muted)' }}>Administra tu cuenta y preferencias</p>

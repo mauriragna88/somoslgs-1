@@ -59,7 +59,7 @@ export default function ClaimBusinessButton({
       {/* Botón flotante — solo si no está reclamado */}
       <button
         onClick={() => setShowModal(true)}
-        className="w-full mt-4 flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-[1.02]"
+        className="sl-claim-action w-full mt-4 flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-[1.02]"
         style={{
           background: 'rgba(245, 185, 66, 0.12)',
           color: 'var(--gold)',

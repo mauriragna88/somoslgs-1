@@ -64,7 +64,7 @@ export default async function DescubrePage() {
   const newest = all.filter(b => new Date(b.created_at) > twoWeeksAgo)
 
   return (
-    <main className="min-h-screen pueblo-shell">
+    <main className="min-h-screen pueblo-shell sl-list-page">
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[var(--terracotta)] via-[var(--coral)] to-[var(--gold)]">

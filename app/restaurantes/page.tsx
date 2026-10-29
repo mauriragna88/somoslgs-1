@@ -190,7 +190,7 @@ export default async function RestaurantesPage() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-clip" style={{ background: '#FFFDF8' }}>
+    <main className="min-h-screen overflow-x-clip sl-food-landing-v2" style={{ background: '#FFFDF8' }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />

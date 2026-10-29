@@ -62,7 +62,15 @@ SET category_id = (SELECT id FROM categories WHERE name ILIKE '%motomandados%' A
 WHERE category_id = (SELECT id FROM categories WHERE name ILIKE '%moto-mandado%' OR name ILIKE '%mensajeria%' LIMIT 1);
 
 -- Eliminar o desactivar la categoría duplicada
-UPDATE categories SET parent_id = '00000000-0000-0000-0000-000000000000'
+-- 3.1 — Motomandados: mantener "Motomandados", mover negocios de "Moto-mandados y Mensajería"
+UPDATE businesses
+SET category_id = (SELECT id FROM categories WHERE name ILIKE '%motomandados%' AND name NOT ILIKE '%mensajeria%' LIMIT 1),
+    updated_at = NOW()
+WHERE category_id = (SELECT id FROM categories WHERE name ILIKE '%moto-mandado%' OR name ILIKE '%mensajeria%' LIMIT 1);
+
+UPDATE categories SET name = '[OCULTA] ' || name,
+                       slug = '__hidden__' || slug || '-' || id::text,
+                       display_order = -9999
 WHERE name ILIKE '%moto-mandado%' OR name ILIKE '%mensajeria%';
 
 -- 3.2 — Uñas: mantener "Uñas y Belleza", mover de "Uñas y Nail Salon"
@@ -71,7 +79,9 @@ SET category_id = (SELECT id FROM categories WHERE name ILIKE '%uña% y belleza%
     updated_at = NOW()
 WHERE category_id = (SELECT id FROM categories WHERE name ILIKE '%uña% nail%' OR name ILIKE '%nail salon%' LIMIT 1);
 
-UPDATE categories SET parent_id = '00000000-0000-0000-0000-000000000000'
+UPDATE categories SET name = '[OCULTA] ' || name,
+                       slug = '__hidden__' || slug || '-' || id::text,
+                       display_order = -9999
 WHERE name ILIKE '%uña% nail%' OR name ILIKE '%nail salon%';
 
 -- 3.3 — Fiestas: mantener "Decoración de Fiestas", mover de "Decoraciones y Fiestas"
@@ -80,7 +90,9 @@ SET category_id = (SELECT id FROM categories WHERE name ILIKE '%decoración% de 
     updated_at = NOW()
 WHERE category_id = (SELECT id FROM categories WHERE name ILIKE '%decoraciones% y fiestas%' LIMIT 1);
 
-UPDATE categories SET parent_id = '00000000-0000-0000-0000-000000000000'
+UPDATE categories SET name = '[OCULTA] ' || name,
+                       slug = '__hidden__' || slug || '-' || id::text,
+                       display_order = -9999
 WHERE name ILIKE '%decoraciones% y fiestas%';
 
 -- 3.4 — Profesionales: mantener "Servicios Profesionales", mover de "Profesionales"
@@ -89,7 +101,9 @@ SET category_id = (SELECT id FROM categories WHERE name ILIKE '%servicios profes
     updated_at = NOW()
 WHERE category_id = (SELECT id FROM categories WHERE name ILIKE '%profesionales%' AND name NOT ILIKE '%servicios%' LIMIT 1);
 
-UPDATE categories SET parent_id = '00000000-0000-0000-0000-000000000000'
+UPDATE categories SET name = '[OCULTA] ' || name,
+                       slug = '__hidden__' || slug || '-' || id::text,
+                       display_order = -9999
 WHERE name ILIKE '%profesionales%' AND name NOT ILIKE '%servicios%';
 
 -- ════════════════════════════════════════════════════════════════

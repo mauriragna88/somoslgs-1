@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import CategoryLanding from '@/components/seo/CategoryLanding'
 
 export const metadata: Metadata = {
-  title: 'Cafeterías para desayunar y café en Lagos de Moreno | SomosLagos',
+  title: 'Cafeterías y café en Lagos de Moreno',
   description:
-    'Las mejores cafeterías en Lagos de Moreno, Jalisco: café de especialidad, desayunos, panadería y lugares para trabajar. Horarios, ubicación y contacto.',
+    'Consulta cafeterías en Lagos de Moreno, Jalisco. Revisa opciones de café y desayuno, junto con ubicación y horarios disponibles en SomosLagos.',
   keywords: [
     'cafeterías en lagos de moreno',
     'desayunos en lagos de moreno',
