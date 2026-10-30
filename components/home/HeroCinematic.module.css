@@ -41,15 +41,15 @@
   object-fit: cover;
   object-position: 50% 20%;
   transform-origin: 50% 65%;
-  animation: kenburns 28s ease-in-out infinite alternate;
+  animation: kenburns 20s ease-in-out infinite alternate;
   will-change: transform;
 }
 @keyframes kenburns {
   from {
-    transform: scale(1.02) translate3d(0, 0, 0);
+    transform: scale(1.04) translate3d(1.5%, 0, 0);
   }
   to {
-    transform: scale(1.13) translate3d(-1.4%, -1%, 0);
+    transform: scale(1.22) translate3d(-2.5%, -2%, 0);
   }
 }
 
@@ -57,14 +57,14 @@
 .dusk {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #0b2347 0%, #234a7a 28%, #c98a52 58%, #ffc874 100%);
+  background: linear-gradient(180deg, #1d4f8a 0%, #4a7db0 24%, #e8a45a 58%, #ffd08a 100%);
   mix-blend-mode: multiply;
   opacity: 0;
   animation: dusk 3.6s 0.5s var(--hc-ease) forwards;
 }
 @keyframes dusk {
   to {
-    opacity: 0.86;
+    opacity: 0.7;
   }
 }
 
@@ -72,7 +72,7 @@
 .sunGlow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(50% 42% at 50% 52%, rgba(255, 200, 110, 0.7), rgba(255, 150, 80, 0.26) 55%, transparent 78%);
+  background: radial-gradient(58% 48% at 50% 50%, rgba(255, 205, 120, 0.9), rgba(255, 150, 80, 0.34) 55%, transparent 80%);
   mix-blend-mode: screen;
   opacity: 0;
   animation:
@@ -81,13 +81,13 @@
 }
 @keyframes glowIn {
   to {
-    opacity: 0.75;
+    opacity: 0.9;
   }
 }
 @keyframes breathe {
   0%,
   100% {
-    opacity: 0.75;
+    opacity: 0.9;
     transform: scale(1);
   }
   50% {
@@ -103,16 +103,16 @@
   background: conic-gradient(
     from 180deg at 50% 58%,
     transparent 0deg,
-    rgba(255, 205, 120, 0.2) 14deg,
+    rgba(255, 215, 140, 0.34) 14deg,
     transparent 28deg,
-    rgba(255, 205, 120, 0.12) 46deg,
+    rgba(255, 215, 140, 0.22) 46deg,
     transparent 60deg,
-    rgba(255, 205, 120, 0.16) 80deg,
+    rgba(255, 215, 140, 0.28) 80deg,
     transparent 96deg,
     transparent 360deg
   );
   mix-blend-mode: screen;
-  filter: blur(18px);
+  filter: blur(10px);
   opacity: 0;
   transform-origin: 50% 58%;
   animation:
@@ -121,7 +121,26 @@
 }
 @keyframes raysIn {
   to {
-    opacity: 0.7;
+    opacity: 1;
+  }
+}
+
+/* Destello de luz que cruza la fachada cada pocos segundos */
+.shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 230, 175, 0.42) 50%, transparent 62%);
+  mix-blend-mode: screen;
+  transform: translate3d(-120%, 0, 0);
+  animation: shine 8s 3.5s ease-in-out infinite;
+}
+@keyframes shine {
+  0% {
+    transform: translate3d(-120%, 0, 0);
+  }
+  35%,
+  100% {
+    transform: translate3d(120%, 0, 0);
   }
 }
 @keyframes sweep {
@@ -185,7 +204,8 @@
   width: var(--s);
   height: var(--s);
   border-radius: 50%;
-  background: radial-gradient(circle, #ffe0a0 0%, rgba(240, 184, 79, 0.55) 40%, rgba(240, 184, 79, 0) 72%);
+  background: radial-gradient(circle, #fff1c8 0%, #ffcf7a 38%, rgba(240, 184, 79, 0) 72%);
+  box-shadow: 0 0 12px 3px rgba(255, 196, 100, 0.55);
   opacity: 0;
   animation: rise var(--d) linear var(--delay) infinite;
 }
@@ -198,7 +218,7 @@
     opacity: var(--o);
   }
   100% {
-    transform: translate3d(var(--dx), -88vh, 0);
+    transform: translate3d(var(--dx), -80vh, 0);
     opacity: 0;
   }
 }
@@ -520,7 +540,7 @@
   }
   .grade {
     background:
-      linear-gradient(0deg, rgba(5, 13, 26, 0.9) 0%, rgba(5, 13, 26, 0.5) 42%, rgba(5, 13, 26, 0.14) 100%);
+      linear-gradient(0deg, rgba(5, 13, 26, 0.86) 0%, rgba(5, 13, 26, 0.38) 40%, rgba(5, 13, 26, 0.04) 100%);
   }
   .photo {
     object-position: 50% 34%;
@@ -529,8 +549,7 @@
   .lede {
     text-shadow: 0 2px 18px rgba(5, 13, 26, 0.65);
   }
-  .ember:nth-child(n + 13),
-  .mistB {
+  .ember:nth-child(n + 19) {
     display: none;
   }
   .foot span {
@@ -551,12 +570,16 @@
   .photo,
   .mist,
   .rays,
+  .shine,
   .sunGlow {
     animation: none;
   }
+  .shine {
+    display: none;
+  }
   .dusk {
     animation: none;
-    opacity: 0.86;
+    opacity: 0.7;
   }
   .sunGlow {
     opacity: 0.75;

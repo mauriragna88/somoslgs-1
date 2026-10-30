@@ -39,11 +39,11 @@ const WORDS_TOP = ['Todo', 'Lagos']
 /* Brasas del atardecer: valores fijos (sin Math.random) para no romper la hidratacion */
 const EMBERS = Array.from({ length: 22 }, (_, i) => ({
   x: `${(i * 37 + 11) % 100}%`,
-  size: `${3 + ((i * 5) % 6)}px`,
-  dx: `${((i * 53) % 90) - 45}px`,
-  dur: `${9 + ((i * 7) % 9)}s`,
-  delay: `${-((i * 1.7) % 14)}s`,
-  alpha: (0.45 + ((i * 3) % 5) * 0.11).toFixed(2),
+  size: `${5 + ((i * 5) % 9)}px`,
+  dx: `${((i * 53) % 120) - 60}px`,
+  dur: `${7 + ((i * 7) % 8)}s`,
+  delay: `${-((i * 1.3) % 12)}s`,
+  alpha: (0.7 + ((i * 3) % 4) * 0.1).toFixed(2),
 }))
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -164,6 +164,7 @@ export default function HeroCinematic({ categories, spotlight, businessCount, ca
           <div className={styles.dusk} aria-hidden="true" />
           <div className={styles.sunGlow} aria-hidden="true" />
           <div className={styles.rays} aria-hidden="true" />
+          <div className={styles.shine} aria-hidden="true" />
           <div className={`${styles.mist} ${styles.mistA}`} aria-hidden="true" />
           <div className={`${styles.mist} ${styles.mistB}`} aria-hidden="true" />
           <div className={styles.embers} aria-hidden="true">
