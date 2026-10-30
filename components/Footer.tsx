@@ -15,6 +15,7 @@ const FOOTER_LINKS = {
   negocios: [
     { label: 'Registrar mi negocio', href: '/registrar-negocio' },
     { label: 'Para negocios', href: '/para-negocios' },
+    { label: 'Anúnciate', href: '/anunciate' },
     { label: 'Iniciar sesion', href: '/login' },
     { label: 'Marketplace', href: '/marketplace' },
   ],

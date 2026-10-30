@@ -118,6 +118,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/anunciate`,
+      lastModified: new Date('2026-10-30'),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
       url: `${BASE_URL}/registrar-negocio`,
       lastModified: new Date('2025-01-01'),
       changeFrequency: 'monthly',
