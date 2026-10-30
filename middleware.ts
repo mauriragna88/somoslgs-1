@@ -54,8 +54,7 @@ export async function middleware(request: NextRequest) {
 
   // Webhook paths that come from external servers (no origin header)
   const isWebhook = path.startsWith('/api/conekta/webhook') ||
-    path.startsWith('/api/mercadopago/webhook') ||
-    path.startsWith('/api/notifications/whatsapp')
+    path.startsWith('/api/mercadopago/webhook')
 
   if (path.startsWith('/api/')) {
     // Reject oversized requests (10MB max, upload routes get 5MB limit in their own handlers)
