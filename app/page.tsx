@@ -12,6 +12,9 @@ import type { Metadata } from 'next'
 import type { BlogPost } from '@/types/database.types'
 import { HOME_FAQ } from '@/lib/home/faq'
 import HomeFaq from '@/components/home/HomeFaq'
+import TrendingSection from '@/components/home/TrendingSection'
+import InviteBanner from '@/components/shared/InviteBanner'
+import { getTrending } from '@/lib/trending'
 import type { BusinessHours } from '@/lib/constants'
 import HeroCinematic, { type HeroSpotlight } from '@/components/home/HeroCinematic'
 import InteractiveMap from '@/components/home/InteractiveMap'
@@ -105,6 +108,7 @@ interface BusinessCard {
 export default async function HomePage() {
   // Home publica: sin cookies y con cache de datos para que se pre-genere (ISR cada hora)
   const supabase = createPublicClient(revalidate)
+  const trending = await getTrending(revalidate)
 
   // Get category IDs from active businesses (for category filtering)
   const { data: businessCats, error: businessCatsError } = await supabase
@@ -386,6 +390,10 @@ export default async function HomePage() {
           4. HOW IT WORKS — animación interactiva tipo app
       ═══════════════════════════════════════════════════════════ */}
       <SectionReveal>
+        <TrendingSection trending={trending} />
+      </SectionReveal>
+
+      <SectionReveal>
         <HowItWorks />
       </SectionReveal>
 
@@ -412,6 +420,7 @@ export default async function HomePage() {
           6c. BANNER — home_middle (solo si hay banner activo)
       ═══════════════════════════════════════════════════════════ */}
       <BannerDisplay placement="home_middle" />
+      <InviteBanner variant="hoteles" />
 
       {/* ═══════════════════════════════════════════════════════════
           6d. MARKETPLACE STRIP — últimas 4 publicaciones
@@ -574,6 +583,8 @@ export default async function HomePage() {
       {/* ═══════════════════════════════════════════════════════════
           10b. PREGUNTAS FRECUENTES — visibles y con el mismo texto del JSON-LD
       ═══════════════════════════════════════════════════════════ */}
+      <InviteBanner variant="paisano" />
+
       <SectionReveal>
         <HomeFaq />
       </SectionReveal>

@@ -4,6 +4,7 @@ import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { after } from 'next/server'
 import { logSearch } from '@/lib/search-log'
+import InviteBanner from '@/components/shared/InviteBanner'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { stemSpanish } from '@/lib/utils'
 import { TIER_ORDER, isBusinessOpen } from '@/lib/constants'
@@ -742,6 +743,8 @@ export default async function BuscarPage({
           </div>
         </div>
       </div>
+
+      <InviteBanner variant="restaurantes" />
 
       {/* Hidden skeleton grid — available for Suspense wrappers */}
       <div className="hidden" aria-hidden="true">{skeletonGrid}</div>
