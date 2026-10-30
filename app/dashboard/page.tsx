@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import Image from 'next/image'
 import { cookies } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { formatDaysRemaining } from '@/lib/utils'
 import BankDataAlert from '@/components/dashboard/BankDataAlert'
 import UpgradeBanner from '@/components/dashboard/UpgradeBanner'
@@ -37,7 +37,7 @@ export default async function BusinessDashboard() {
   }
 
   // Obtener todos los negocios del dueño
-  const { data: businesses } = await supabase
+  const { data: businesses } = await createServiceClient()
     .from('businesses')
     .select(`
       *,

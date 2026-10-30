@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { getUser } from '@/lib/supabase/server'
 import ProductForm from '@/components/dashboard/ProductForm'
 
@@ -28,7 +28,7 @@ export default async function NuevoProductoPage() {
   const supabase = await createClient()
 
   // Get user's businesses
-  const { data: allBusinesses } = await supabase
+  const { data: allBusinesses } = await createServiceClient()
     .from('businesses')
     .select('*')
     .eq('owner_id', user.id) as { data: NuevoBusiness[] | null }

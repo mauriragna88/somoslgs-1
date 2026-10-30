@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { getUser } from '@/lib/supabase/server'
 import { formatCurrency } from '@/lib/utils'
 import { ORDER_ENABLED_TIERS } from '@/lib/constants'
@@ -72,7 +72,7 @@ export default async function OrdersPage({
   const supabase = await createClient()
 
   // Get user's businesses
-  const { data: businesses } = await supabase
+  const { data: businesses } = await createServiceClient()
     .from('businesses')
     .select('id, name, subscription_tier, bank_clabe')
     .eq('owner_id', user.id)

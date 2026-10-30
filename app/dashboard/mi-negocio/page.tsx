@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 import Image from 'next/image'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { getUser } from '@/lib/supabase/server'
 import { formatCurrency, formatDaysRemaining } from '@/lib/utils'
 import { GALLERY_PHOTO_LIMITS, PRODUCTS_ENABLED_TIERS, type SubscriptionTier } from '@/lib/constants'
@@ -68,7 +68,7 @@ export default async function MiNegocioPage({
   const supabase = await createClient()
 
   // Get user's businesses
-  const { data: businesses } = await supabase
+  const { data: businesses } = await createServiceClient()
     .from('businesses')
     .select(`
       *,

@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
 import { isConektaConfigured } from '@/lib/conekta'
 import { isMercadoPagoConfigured } from '@/lib/mercadopago'
 import CheckoutForm from '@/components/checkout/CheckoutForm'
@@ -26,7 +26,7 @@ interface CheckoutBusiness {
 
 export default async function CheckoutPage({ params }: PageProps) {
   const { slug } = await params
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
   const { data: business } = await supabase
     .from('businesses')

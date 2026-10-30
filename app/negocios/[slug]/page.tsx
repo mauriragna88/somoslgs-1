@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/business-columns'
 import { ORDER_ENABLED_TIERS, WHATSAPP_ENABLED_TIERS, MAP_ENABLED_TIERS, SOCIAL_LINKS_TIERS, FEATURED_TIERS, COVER_ENABLED_TIERS, normalizeBusinessHours } from '@/lib/constants'
 import type { BusinessHours } from '@/lib/constants'
 import ProductList from '@/components/public/ProductList'
@@ -100,7 +101,7 @@ export default async function BusinessPage({ params }: PageProps) {
   const { data: business, error } = await supabase
     .from('businesses')
     .select(`
-      *,
+      ${PUBLIC_BUSINESS_COLUMNS},
       category:categories(id, name, icon)
     `)
     .eq('slug', slug)

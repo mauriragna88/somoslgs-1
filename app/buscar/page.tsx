@@ -1,6 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
 import { Metadata } from 'next'
+import { headers } from 'next/headers'
+import { after } from 'next/server'
+import { logSearch } from '@/lib/search-log'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { stemSpanish } from '@/lib/utils'
 import { TIER_ORDER, isBusinessOpen } from '@/lib/constants'
@@ -238,6 +241,12 @@ export default async function BuscarPage({
 
   const { data: rawBusinesses, count: totalBusinessCount, error } = await businessQuery.range(pageStart, pageEnd) as { data: Business[] | null; count: number | null; error: any }
   const totalPages = Math.ceil((totalBusinessCount || 0) / PAGE_SIZE)
+
+  // Registro anonimo de lo que la gente busca (solo la primera pagina de una busqueda con texto)
+  if (query && tipo === 'negocios' && currentPage === 1) {
+    const userAgent = (await headers()).get('user-agent')
+    after(() => logSearch(query, totalBusinessCount || 0, userAgent))
+  }
 
   // Sort by tier order client-side (Supabase sorts TEXT alphabetically which gives wrong order)
   const sortedBusinesses = orden !== 'rating' && rawBusinesses
