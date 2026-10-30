@@ -42,7 +42,7 @@ export default async function OgImage({
 
   const { count } = await supabase
     .from('businesses')
-    .select('*', { count: 'exact', head: true })
+    .select('id', { count: 'exact', head: true })
     .eq('is_active', true)
     .eq('category_id', category.id)
 
