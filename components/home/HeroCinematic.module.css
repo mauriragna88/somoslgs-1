@@ -36,34 +36,190 @@
   inset: 0;
   transform: translate3d(calc(var(--px) * -18px), calc(var(--py) * -10px), 0);
 }
-.fallbackImg {
+/* La foto se ve completa desde el primer cuadro; el zoom lento le da vida */
+.photo {
   object-fit: cover;
-  object-position: 50% 45%;
-  filter: brightness(0.42) saturate(0.7) hue-rotate(-8deg);
+  object-position: 50% 20%;
+  transform-origin: 50% 65%;
+  animation: kenburns 28s ease-in-out infinite alternate;
+  will-change: transform;
 }
-.video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 1.2s var(--hc-ease);
-}
-.videoOn {
-  opacity: 1;
+@keyframes kenburns {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.13) translate3d(-1.4%, -1%, 0);
+  }
 }
 
-/* Grade cinematografico: oscurece a la izquierda para el texto y aporta calidez */
+/* De luz de dia a hora dorada: el cielo azul se vuelve atardecer y la piedra se calienta */
+.dusk {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #0b2347 0%, #234a7a 28%, #c98a52 58%, #ffc874 100%);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  animation: dusk 3.6s 0.5s var(--hc-ease) forwards;
+}
+@keyframes dusk {
+  to {
+    opacity: 0.86;
+  }
+}
+
+/* Luz calida detras del templo que respira */
+.sunGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(50% 42% at 50% 52%, rgba(255, 200, 110, 0.7), rgba(255, 150, 80, 0.26) 55%, transparent 78%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation:
+    glowIn 3.6s 0.5s var(--hc-ease) forwards,
+    breathe 7s 4s ease-in-out infinite;
+}
+@keyframes glowIn {
+  to {
+    opacity: 0.75;
+  }
+}
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+/* Haces de luz que barren lentamente la fachada */
+.rays {
+  position: absolute;
+  inset: -25%;
+  background: conic-gradient(
+    from 180deg at 50% 58%,
+    transparent 0deg,
+    rgba(255, 205, 120, 0.2) 14deg,
+    transparent 28deg,
+    rgba(255, 205, 120, 0.12) 46deg,
+    transparent 60deg,
+    rgba(255, 205, 120, 0.16) 80deg,
+    transparent 96deg,
+    transparent 360deg
+  );
+  mix-blend-mode: screen;
+  filter: blur(18px);
+  opacity: 0;
+  transform-origin: 50% 58%;
+  animation:
+    raysIn 4s 1s ease-out forwards,
+    sweep 22s 1s ease-in-out infinite alternate;
+}
+@keyframes raysIn {
+  to {
+    opacity: 0.7;
+  }
+}
+@keyframes sweep {
+  from {
+    transform: rotate(-7deg);
+  }
+  to {
+    transform: rotate(7deg);
+  }
+}
+
+/* Bruma que cruza al pie del templo */
+.mist {
+  position: absolute;
+  left: -30%;
+  width: 160%;
+  pointer-events: none;
+  opacity: 0.9;
+}
+.mistA {
+  bottom: 8%;
+  height: 38%;
+  background: radial-gradient(ellipse at 30% 60%, rgba(255, 214, 160, 0.22), transparent 62%);
+  animation: driftA 46s ease-in-out infinite alternate;
+}
+.mistB {
+  bottom: 22%;
+  height: 30%;
+  background: radial-gradient(ellipse at 70% 50%, rgba(255, 190, 130, 0.14), transparent 60%);
+  animation: driftB 64s ease-in-out infinite alternate;
+}
+@keyframes driftA {
+  from {
+    transform: translate3d(-6%, 0, 0);
+  }
+  to {
+    transform: translate3d(10%, 0, 0);
+  }
+}
+@keyframes driftB {
+  from {
+    transform: translate3d(8%, 0, 0);
+  }
+  to {
+    transform: translate3d(-9%, 0, 0);
+  }
+}
+
+/* Brasas doradas que suben (en escritorio las reemplaza la escena WebGL) */
+.embers {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 1.2s var(--hc-ease);
+}
+.ember {
+  position: absolute;
+  bottom: -2%;
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe0a0 0%, rgba(240, 184, 79, 0.55) 40%, rgba(240, 184, 79, 0) 72%);
+  opacity: 0;
+  animation: rise var(--d) linear var(--delay) infinite;
+}
+@keyframes rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--o);
+  }
+  100% {
+    transform: translate3d(var(--dx), -88vh, 0);
+    opacity: 0;
+  }
+}
+.webgl .embers {
+  opacity: 0;
+}
+
+.paused .media *,
+.paused .media {
+  animation-play-state: paused !important;
+}
+
+/* Legibilidad del texto sin tapar el templo */
 .grade {
   position: absolute;
   inset: 0;
   z-index: -3;
   background:
-    radial-gradient(120% 90% at 85% 30%, rgba(255, 143, 77, 0.16), transparent 55%),
-    linear-gradient(95deg, rgba(5, 13, 26, 0.92) 0%, rgba(5, 13, 26, 0.62) 42%, rgba(5, 13, 26, 0.18) 100%),
-    linear-gradient(0deg, rgba(5, 13, 26, 0.95) 0%, transparent 38%),
-    linear-gradient(180deg, rgba(5, 13, 26, 0.6) 0%, transparent 22%);
+    linear-gradient(95deg, rgba(5, 13, 26, 0.7) 0%, rgba(5, 13, 26, 0.32) 36%, rgba(5, 13, 26, 0) 64%),
+    linear-gradient(0deg, rgba(5, 13, 26, 0.92) 0%, rgba(5, 13, 26, 0.35) 22%, transparent 42%),
+    linear-gradient(180deg, rgba(5, 13, 26, 0.5) 0%, transparent 20%);
 }
 .spot {
   position: absolute;
@@ -364,7 +520,18 @@
   }
   .grade {
     background:
-      linear-gradient(0deg, rgba(5, 13, 26, 0.96) 0%, rgba(5, 13, 26, 0.55) 55%, rgba(5, 13, 26, 0.45) 100%);
+      linear-gradient(0deg, rgba(5, 13, 26, 0.9) 0%, rgba(5, 13, 26, 0.5) 42%, rgba(5, 13, 26, 0.14) 100%);
+  }
+  .photo {
+    object-position: 50% 34%;
+  }
+  .title,
+  .lede {
+    text-shadow: 0 2px 18px rgba(5, 13, 26, 0.65);
+  }
+  .ember:nth-child(n + 13),
+  .mistB {
+    display: none;
   }
   .foot span {
     display: none;
@@ -380,8 +547,25 @@
     transform: none;
   }
   .pulse,
-  .cue span {
+  .cue span,
+  .photo,
+  .mist,
+  .rays,
+  .sunGlow {
     animation: none;
+  }
+  .dusk {
+    animation: none;
+    opacity: 0.86;
+  }
+  .sunGlow {
+    opacity: 0.75;
+  }
+  .rays {
+    opacity: 0.5;
+  }
+  .embers {
+    display: none;
   }
   .card {
     transform: none;

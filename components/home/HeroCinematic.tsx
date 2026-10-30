@@ -35,6 +35,16 @@ interface HeroCinematicProps {
 }
 
 const WORDS_TOP = ['Todo', 'Lagos']
+
+/* Brasas del atardecer: valores fijos (sin Math.random) para no romper la hidratacion */
+const EMBERS = Array.from({ length: 22 }, (_, i) => ({
+  x: `${(i * 37 + 11) % 100}%`,
+  size: `${3 + ((i * 5) % 6)}px`,
+  dx: `${((i * 53) % 90) - 45}px`,
+  dur: `${9 + ((i * 7) % 9)}s`,
+  delay: `${-((i * 1.7) % 14)}s`,
+  alpha: (0.45 + ((i * 3) % 5) * 0.11).toFixed(2),
+}))
 const EASE = [0.22, 1, 0.36, 1] as const
 
 function canUseWebGL(): boolean {
@@ -49,11 +59,8 @@ function canUseWebGL(): boolean {
 export default function HeroCinematic({ categories, spotlight, businessCount, catCount }: HeroCinematicProps) {
   const reduced = useReducedMotion()
   const sectionRef = useRef<HTMLElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
   const pointer = useRef({ x: 0, y: 0 })
   const [inView, setInView] = useState(true)
-  const [videoReady, setVideoReady] = useState(false)
-  const [videoFailed, setVideoFailed] = useState(false)
   const [scene, setScene] = useState<'off' | 'loading' | 'ready'>('off')
   const [finePointer, setFinePointer] = useState(false)
 
@@ -62,7 +69,7 @@ export default function HeroCinematic({ categories, spotlight, businessCount, ca
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, reduced ? 1 : 0])
   const mediaScale = useTransform(scrollYProgress, [0, 1], [1.06, reduced ? 1.06 : 1.22])
 
-  // Pausa video + WebGL cuando el hero sale de pantalla
+  // Pausa animaciones CSS + WebGL cuando el hero sale de pantalla
   useEffect(() => {
     const node = sectionRef.current
     if (!node) return
@@ -70,23 +77,6 @@ export default function HeroCinematic({ categories, spotlight, businessCount, ca
     io.observe(node)
     return () => io.disconnect()
   }, [])
-
-  // Video: solo si el usuario no pidio menos movimiento ni ahorro de datos
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-    const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
-    const slow = conn?.saveData || conn?.effectiveType === 'slow-2g' || conn?.effectiveType === '2g' || conn?.effectiveType === '3g'
-    if (reduced || slow) {
-      setVideoFailed(true)
-      return
-    }
-    if (inView) {
-      video.play().catch(() => setVideoFailed(true))
-    } else {
-      video.pause()
-    }
-  }, [inView, reduced])
 
   // Escena WebGL: solo escritorio con puntero fino, sin reduced-motion y con GPU
   useEffect(() => {
@@ -154,35 +144,46 @@ export default function HeroCinematic({ categories, spotlight, businessCount, ca
   })
 
   return (
-    <section ref={sectionRef} className={styles.hero} aria-labelledby="hc-title">
-      {/* Capa 0: fondo (foto con grade nocturno como respaldo + video) */}
+    <section
+      ref={sectionRef}
+      className={`${styles.hero} ${inView ? '' : styles.paused} ${scene === 'ready' ? styles.webgl : ''}`}
+      aria-labelledby="hc-title"
+    >
+      {/* Capa 0: fondo (foto del Calvario animada como una sola escena) */}
       <motion.div className={styles.media} style={{ scale: mediaScale }}>
         <div className={styles.mediaShift}>
           <Image
-            src="/tourism/calvario-panoramica.jpg"
+            src="/tourism/calvario-hero.jpg"
             alt=""
             fill
             priority
             sizes="100vw"
-            className={styles.fallbackImg}
+            className={styles.photo}
           />
-          {!videoFailed && (
-            <video
-              ref={videoRef}
-              className={`${styles.video} ${videoReady ? styles.videoOn : ''}`}
-              muted
-              loop
-              playsInline
-              preload="auto"
-              autoPlay
-              aria-hidden="true"
-              tabIndex={-1}
-              onCanPlay={() => setVideoReady(true)}
-              onError={() => setVideoFailed(true)}
-            >
-              <source src="/assets/lagos-city-build.mp4" type="video/mp4" />
-            </video>
-          )}
+          {/* Escena unica: el templo pasa de luz de dia a hora dorada y la luz se mueve */}
+          <div className={styles.dusk} aria-hidden="true" />
+          <div className={styles.sunGlow} aria-hidden="true" />
+          <div className={styles.rays} aria-hidden="true" />
+          <div className={`${styles.mist} ${styles.mistA}`} aria-hidden="true" />
+          <div className={`${styles.mist} ${styles.mistB}`} aria-hidden="true" />
+          <div className={styles.embers} aria-hidden="true">
+            {EMBERS.map((e, i) => (
+              <span
+                key={i}
+                className={styles.ember}
+                style={
+                  {
+                    '--x': e.x,
+                    '--s': e.size,
+                    '--dx': e.dx,
+                    '--d': e.dur,
+                    '--delay': e.delay,
+                    '--o': e.alpha,
+                  } as React.CSSProperties
+                }
+              />
+            ))}
+          </div>
         </div>
       </motion.div>
       <div className={styles.grade} aria-hidden="true" />
