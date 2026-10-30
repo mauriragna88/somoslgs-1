@@ -191,7 +191,7 @@ function QuickActions({ phone, address, name }: { phone?: string | null; address
         target="_blank"
         rel="noopener noreferrer"
         onClick={e => e.stopPropagation()}
-        className="flex-1 inline-flex items-center justify-center gap-1.5 h-10 rounded-full text-[13px] font-bold shadow-lg transition-transform hover:scale-[1.03]"
+        className="flex-1 inline-flex items-center justify-center gap-1.5 h-11 rounded-full text-[13px] font-bold shadow-lg transition-transform hover:scale-[1.03]"
         style={{ background: 'rgba(255,255,255,0.92)', color: '#111111' }}
       >
         {PIN_SVG} Cómo llegar
@@ -497,7 +497,7 @@ function CompactGlassCard({ business, showCategory }: { business: BusinessCardPr
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
-            className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-full text-xs font-bold transition-transform hover:scale-[1.02]"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 h-11 rounded-full text-xs font-bold transition-transform hover:scale-[1.02]"
             style={{ background: 'var(--ink)', color: 'white' }}
           >
             {PIN_SVG} Cómo llegar

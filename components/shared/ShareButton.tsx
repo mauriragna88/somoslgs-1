@@ -38,7 +38,7 @@ export default function ShareButton({ title, text, url }: ShareButtonProps) {
     <button
       onClick={handleShare}
       title="Compartir"
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all hover:bg-black/5"
+      className="flex items-center gap-1.5 px-3 min-h-11 rounded-full text-sm font-medium transition-all hover:bg-black/5"
       style={{ color: 'var(--muted)', border: '1px solid var(--hairline)' }}
     >
       {copied ? (

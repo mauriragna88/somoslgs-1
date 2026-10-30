@@ -191,8 +191,8 @@ export default function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm transition-colors hover:text-white"
-                    style={{ color: 'rgba(255,253,248,0.60)' }}
+                    className="inline-flex items-center min-h-11 text-sm transition-colors hover:text-white"
+                    style={{ color: 'rgba(255,253,248,0.74)' }}
                   >
                     {l.label}
                   </Link>
@@ -214,8 +214,8 @@ export default function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm transition-colors hover:text-white"
-                    style={{ color: 'rgba(255,253,248,0.60)' }}
+                    className="inline-flex items-center min-h-11 text-sm transition-colors hover:text-white"
+                    style={{ color: 'rgba(255,253,248,0.74)' }}
                   >
                     {l.label}
                   </Link>
@@ -237,8 +237,8 @@ export default function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm transition-colors hover:text-white"
-                    style={{ color: 'rgba(255,253,248,0.60)' }}
+                    className="inline-flex items-center min-h-11 text-sm transition-colors hover:text-white"
+                    style={{ color: 'rgba(255,253,248,0.74)' }}
                   >
                     {l.label}
                   </Link>
@@ -261,7 +261,7 @@ export default function Footer() {
               <Link
                 key={z.slug}
                 href={`/negocios-en/${z.slug}`}
-                className="text-xs px-3 py-1.5 rounded-full transition-colors hover:text-white"
+                className="inline-flex items-center min-h-10 text-xs px-3 rounded-full transition-colors hover:text-white"
                 style={{
                   background: 'rgba(255,253,248,0.06)',
                   color: 'rgba(255,253,248,0.55)',

@@ -595,3 +595,15 @@
     transition: none;
   }
 }
+
+/* Celular: texto del hero mas claro y con mas sombra para que se lea sobre la foto */
+@media (max-width: 720px) {
+  .lede {
+    color: #f6f1e6;
+    text-shadow: 0 1px 3px rgba(5, 13, 26, 0.9), 0 2px 18px rgba(5, 13, 26, 0.85);
+  }
+  .eyebrow {
+    background: rgba(5, 13, 26, 0.6);
+    color: #f6f1e6;
+  }
+}

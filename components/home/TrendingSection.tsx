@@ -33,8 +33,8 @@ export default function TrendingSection({ trending }: { trending: Trending }) {
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-          <ol className="grid gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.4fr_1fr]">
+          <ol className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
             {businesses.map((b, i) => (
               <li key={b.id}>
                 <Link
@@ -66,7 +66,7 @@ export default function TrendingSection({ trending }: { trending: Trending }) {
             ))}
           </ol>
 
-          <div className="space-y-8">
+          <div className="min-w-0 space-y-8">
             {categories.length > 0 && (
               <div>
                 <h3 className="font-bold mb-3">Categorías que más se visitan</h3>

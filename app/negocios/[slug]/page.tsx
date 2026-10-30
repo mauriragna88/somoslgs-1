@@ -279,7 +279,7 @@ export default async function BusinessPage({ params }: PageProps) {
 
       {/* Hero Header */}
       <div className="bg-white border-b" style={{ borderColor: 'var(--hairline)' }}>
-        <div className="container mx-auto px-4 py-8">
+        <div className={`container mx-auto px-4 pb-8 ${canCover && business.cover_url ? 'pt-8' : 'pt-28'}`}>
           <div className="flex flex-col md:flex-row gap-6 items-start">
             {/* Logo */}
             <div className={`w-32 h-32 rounded-xl overflow-hidden flex-shrink-0 relative ${business.cover_url ? '-mt-20 ring-4 ring-white shadow-xl' : ''}`} style={{ background: 'var(--cream)' }}>
@@ -338,7 +338,7 @@ export default async function BusinessPage({ params }: PageProps) {
                 {business.phone && (
                   <a
                     href={`tel:${business.phone}`}
-                    className="flex items-center text-[var(--coral)] hover:underline"
+                    className="flex items-center min-h-11 text-[var(--coral)] hover:underline"
                   >
                     <span className="mr-2">📞</span>
                     {business.phone}
@@ -349,7 +349,7 @@ export default async function BusinessPage({ params }: PageProps) {
                     href={business.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center text-[var(--coral)] hover:underline"
+                    className="flex items-center min-h-11 text-[var(--coral)] hover:underline"
                   >
                     <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
@@ -594,7 +594,7 @@ export default async function BusinessPage({ params }: PageProps) {
               </p>
               <Link
                 href="/registrar-negocio"
-                className="inline-block px-5 py-2 bg-[var(--coral)] hover:bg-[var(--coral-deep)] text-white text-sm font-semibold rounded-full transition-colors"
+                className="inline-flex items-center min-h-11 px-5 bg-[var(--coral)] hover:bg-[var(--coral-deep)] text-white text-sm font-semibold rounded-full transition-colors"
               >
                 Ver planes
               </Link>
@@ -639,7 +639,7 @@ export default async function BusinessPage({ params }: PageProps) {
         <div className="mt-8 text-center">
           <Link
             href="/buscar"
-            className="text-[var(--coral)] hover:underline"
+            className="inline-flex items-center min-h-11 text-[var(--coral)] hover:underline"
           >
             ← Volver a la búsqueda
           </Link>

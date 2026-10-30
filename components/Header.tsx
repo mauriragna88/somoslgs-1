@@ -360,7 +360,7 @@ export default function Header() {
               ) : (
                 <Link
                   href="/registrar-negocio"
-                  className="px-3.5 py-2 rounded-full text-sm font-semibold text-white"
+                  className="inline-flex items-center min-h-11 px-4 rounded-full text-sm font-semibold text-white"
                   style={{ background: 'var(--coral)' }}
                 >
                   Registrar
