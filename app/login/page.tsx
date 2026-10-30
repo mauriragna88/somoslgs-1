@@ -138,7 +138,7 @@ function LoginForm() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none focus:ring-1 transition-colors"
+                className="w-full min-h-12 px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none focus:ring-1 transition-colors"
                 style={{
                   borderColor: 'var(--hairline)',
                 }}
@@ -166,7 +166,7 @@ function LoginForm() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none focus:ring-1 transition-colors"
+                className="w-full min-h-12 px-4 py-3 bg-white border rounded-[var(--r-md)] focus:outline-none focus:ring-1 transition-colors"
                 style={{
                   borderColor: 'var(--hairline)',
                 }}
@@ -195,7 +195,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-full text-white font-semibold py-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full min-h-12 rounded-full text-white font-semibold py-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ backgroundColor: 'var(--coral)' }}
               onMouseEnter={(e) => { if (!loading) (e.target as HTMLButtonElement).style.backgroundColor = 'var(--coral-deep)' }}
               onMouseLeave={(e) => { (e.target as HTMLButtonElement).style.backgroundColor = 'var(--coral)' }}

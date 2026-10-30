@@ -133,7 +133,7 @@ export default async function MarketplacePage({
       {/* ── HEADER ──────────────────────────────────────────────── */}
       <div className="bg-white border-b border-[var(--hairline)] py-10">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
             <div>
               <span className="pueblo-eyebrow mb-2 inline-block">Marketplace · Lagos de Moreno</span>
               <h1 className="text-2xl md:text-3xl font-[family-name:var(--font-display)] font-bold text-[var(--ink)]">
@@ -143,7 +143,7 @@ export default async function MarketplacePage({
             </div>
             <Link
               href="/marketplace/publicar"
-              className="rounded-full bg-[var(--coral)] text-white px-6 py-3 font-semibold hover:bg-[var(--coral-deep)] transition-colors shadow-lg shadow-[var(--coral)]/20 text-sm"
+              className="inline-flex items-center justify-center min-h-11 rounded-full bg-[var(--coral)] text-white px-6 font-semibold hover:bg-[var(--coral-deep)] transition-colors shadow-lg shadow-[var(--coral)]/20 text-sm self-start"
             >
               + Publicar artículo
             </Link>

@@ -5,7 +5,7 @@ export default function Loading() {
       <div className="bg-white border-b border-gray-200 px-4 py-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="h-8 w-48 bg-gray-200 rounded animate-pulse" />
-          <div className="h-10 w-80 bg-gray-200 rounded-lg animate-pulse" />
+          <div className="h-10 w-full max-w-xs bg-gray-200 rounded-lg animate-pulse" />
         </div>
       </div>
 
@@ -30,9 +30,9 @@ export default function Loading() {
           </div>
 
           {/* Main content skeleton */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {/* Filter bar */}
-            <div className="flex gap-3 mb-6">
+            <div className="flex flex-wrap gap-3 mb-6">
               <div className="h-10 w-40 bg-gray-200 rounded-lg animate-pulse" />
               <div className="h-10 w-32 bg-gray-200 rounded-lg animate-pulse" />
               <div className="h-10 w-32 bg-gray-200 rounded-lg animate-pulse ml-auto" />

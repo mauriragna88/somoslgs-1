@@ -217,7 +217,7 @@ export default async function RegistrarNegocioPage() {
         <div className="container mx-auto px-4 text-center">
           <p className="text-sm" style={{ color: 'var(--muted)' }}>
             ¿Quieres más visibilidad? Hay funciones opcionales para crecer a tu ritmo.{' '}
-            <Link href="/planes" className="font-medium underline underline-offset-2" style={{ color: 'var(--coral)' }}>
+            <Link href="/planes" className="inline-flex items-center min-h-11 font-medium underline underline-offset-2" style={{ color: 'var(--coral)' }}>
               Ver opciones →
             </Link>
           </p>

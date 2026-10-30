@@ -163,7 +163,7 @@ export default function Header() {
             }}
           >
             {/* Logo — símbolo completo en proporción (no recortado a círculo) */}
-            <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
+            <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 min-h-11">
               <div
                 className="rounded-xl overflow-hidden flex-shrink-0 ring-1"
                 style={{
@@ -368,7 +368,7 @@ export default function Header() {
               )}
               <button
                 onClick={() => setMobileMenuOpen(true)}
-                className="hdr-ink p-2 rounded-full hover:bg-white/60 transition-colors"
+                className="hdr-ink inline-flex items-center justify-center min-w-11 min-h-11 rounded-full hover:bg-white/60 transition-colors"
                 style={{ color: 'var(--ink)' }}
                 aria-label="Menú"
               >
