@@ -211,6 +211,19 @@ interface EventsGridProps {
 export default function EventsGrid({ events }: EventsGridProps) {
   const items = events.map(mapEvent)
 
+  // La grilla es de 3 columnas: si la ultima fila queda incompleta, la ultima tarjeta
+  // ocupa el espacio libre para no dejar un hueco (los spans vienen de la base de datos).
+  const cells = items.reduce(
+    (sum, e) => sum + (e.colSpan.includes('col-span-2') ? 2 : 1) * (e.rowSpan.includes('row-span-2') ? 2 : 1),
+    0,
+  )
+  const free = (3 - (cells % 3)) % 3
+  const last = items[items.length - 1]
+  if (free > 0 && last && last.rowSpan.includes('row-span-1')) {
+    const base = last.colSpan.includes('col-span-2') ? 2 : 1
+    last.colSpan = base + free >= 3 ? 'md:col-span-3' : 'md:col-span-2'
+  }
+
   return (
     <section
       className="sl-events-v2 py-20"
