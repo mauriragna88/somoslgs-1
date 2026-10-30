@@ -280,6 +280,9 @@ export default function Footer() {
         >
           <span>© 2026 SomosLagos · Hecho con 💛 en Lagos de Moreno, Jal.</span>
           <span>Pueblo mágico · México</span>
+          {process.env.NEXT_PUBLIC_BUILD_ENV === 'preview' && (
+            <span style={{ color: '#f0b84f' }}>Preview {process.env.NEXT_PUBLIC_BUILD_SHA}</span>
+          )}
         </div>
 
       </div>
