@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createPublicServiceClient } from '@/lib/supabase/server'
 import EventsGrid from './EventsGrid'
 import type { SiteEvent } from '@/types/database.types'
 
@@ -116,7 +116,7 @@ const FALLBACK_EVENTS: SiteEvent[] = [
 ]
 
 export default async function EventsSection() {
-  const supabase = createServiceClient()
+  const supabase = createPublicServiceClient()
   const { data, error } = await supabase
     .from('events')
     .select('*')

@@ -1,13 +1,17 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { createClient, createServiceClient } from '@/lib/supabase/server'
+import { unstable_noStore as noStore } from 'next/cache'
+import { createPublicClient, createPublicServiceClient } from '@/lib/supabase/server'
 import SearchForm from '@/components/home/SearchForm'
 import OpenClosedBadge from '@/components/shared/OpenClosedBadge'
 import StarRating from '@/components/reviews/StarRating'
 import AnimatedCounter from '@/components/shared/AnimatedCounter'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import { TIER_ORDER } from '@/lib/constants'
+import type { Metadata } from 'next'
 import type { BlogPost } from '@/types/database.types'
+import { HOME_FAQ } from '@/lib/home/faq'
+import HomeFaq from '@/components/home/HomeFaq'
 import type { BusinessHours } from '@/lib/constants'
 import HeroCinematic, { type HeroSpotlight } from '@/components/home/HeroCinematic'
 import InteractiveMap from '@/components/home/InteractiveMap'
@@ -28,6 +32,32 @@ import ScrollWrapper from '@/components/animations/ScrollWrapper'
 import { resolveBlogImage } from '@/lib/blog-image-fallbacks'
 
 export const revalidate = 3600
+
+const HOME_TITLE = 'SomosLagos | Directorio de negocios en Lagos de Moreno, Jalisco'
+const HOME_DESCRIPTION =
+  'Encuentra restaurantes, taquerías, cafeterías, hoteles, servicios y más negocios locales en Lagos de Moreno, Jalisco. Horarios, ubicación y contacto directo por WhatsApp.'
+const HOME_OG_IMAGE = 'https://www.somoslagos.com.mx/og-somoslagos.jpg'
+
+export const metadata: Metadata = {
+  title: { absolute: HOME_TITLE },
+  description: HOME_DESCRIPTION,
+  alternates: { canonical: 'https://www.somoslagos.com.mx' },
+  openGraph: {
+    type: 'website',
+    locale: 'es_MX',
+    siteName: 'SomosLagos',
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    url: 'https://www.somoslagos.com.mx',
+    images: [{ url: HOME_OG_IMAGE, width: 1200, height: 630, alt: 'Templo de El Calvario en Lagos de Moreno, Jalisco' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    images: [HOME_OG_IMAGE],
+  },
+}
 
 interface HomeCategory {
   id: string
@@ -73,14 +103,21 @@ interface BusinessCard {
 }
 
 export default async function HomePage() {
-  const supabase = await createClient()
+  // Home publica: sin cookies y con cache de datos para que se pre-genere (ISR cada hora)
+  const supabase = createPublicClient(revalidate)
 
   // Get category IDs from active businesses (for category filtering)
-  const { data: businessCats } = await supabase
+  const { data: businessCats, error: businessCatsError } = await supabase
     .from('businesses')
     .select('category_id')
     .eq('is_active', true)
     .not('category_id', 'is', null)
+
+  // Si la consulta base falla (p. ej. sin variables de entorno en el build), no
+  // congelar una home vacia: renderizar dinamicamente en esa visita
+  if (businessCatsError || !businessCats || businessCats.length === 0) {
+    noStore()
+  }
 
   // Count active businesses per category (for >=2 filter)
   const catCountMap = new Map<string, number>()
@@ -170,7 +207,7 @@ export default async function HomePage() {
     .limit(16) as { data: BusinessCard[] | null }
 
   // Fetch latest marketplace listings for homepage strip
-  const marketplaceSupabase = createServiceClient()
+  const marketplaceSupabase = createPublicServiceClient(revalidate)
   const { data: latestListings } = await marketplaceSupabase
     .from('marketplace_listings')
     .select('*')
@@ -186,26 +223,23 @@ export default async function HomePage() {
     return tierB - tierA
   })
 
-  // JSON-LD structured data
-  const websiteJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'SomosLagos',
-    url: 'https://www.somoslagos.com.mx',
-    description: 'La plataforma digital de Lagos de Moreno. Descubre negocios locales, pide productos y conecta con tu comunidad.',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://www.somoslagos.com.mx/buscar?q={search_term_string}',
-      'query-input': 'required name=search_term_string',
-    },
-  }
-
+  // JSON-LD structured data (el WebSite lo emite el layout para todo el sitio)
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': 'https://www.somoslagos.com.mx/#organization',
     name: 'SomosLagos',
     url: 'https://www.somoslagos.com.mx',
-    logo: 'https://www.somoslagos.com.mx/logo.png',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.somoslagos.com.mx/logo.png',
+    },
+    sameAs: [
+      'https://www.facebook.com/profile.php?id=61588240258457',
+      'https://instagram.com/somoslagos',
+      'https://x.com/somoslagos',
+      'https://youtube.com/@somoslagos',
+    ],
     description: 'Plataforma digital de negocios locales en Lagos de Moreno, Jalisco, México.',
     areaServed: {
       '@type': 'City',
@@ -240,57 +274,16 @@ export default async function HomePage() {
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '¿Cómo registro mi negocio en SomosLagos?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Entra a somoslagos.com.mx, haz clic en "Registrar negocio" y completa el formulario. Tu negocio queda publicado en el directorio al enviarlo.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '¿Es gratis registrar mi negocio en SomosLagos?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Sí, existe un plan gratuito con perfil, fotos, WhatsApp directo, horarios y aparición en el mapa. Existen planes de pago para negocios que quieren mayor visibilidad.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '¿Qué es Lagos de Moreno Pueblo Mágico?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Lagos de Moreno es un Pueblo Mágico de Jalisco, México, famoso por su arquitectura barroca, gastronomía, artesanías y tradiciones. SomosLagos es un directorio digital de su comunidad de negocios.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '¿Puedo pedir a un negocio local por WhatsApp desde SomosLagos?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Sí. Desde el perfil de cada negocio puedes contactarlos directamente por WhatsApp. Los negocios con Plan Pro además tienen catálogo de productos y pedidos en línea.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '¿SomosLagos tiene app móvil?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'SomosLagos funciona como una Progressive Web App (PWA). Puedes instalarla en tu celular desde el navegador, sin necesidad de descargarla en la tienda de apps.',
-        },
-      },
-    ],
+    mainEntity: HOME_FAQ.map(item => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
   }
 
   return (
     <ScrollWrapper>
     <main id="sl-home" className="min-h-screen overflow-x-clip sl-public-v2 sl-home-v2">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
@@ -576,6 +569,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      </SectionReveal>
+
+      {/* ═══════════════════════════════════════════════════════════
+          10b. PREGUNTAS FRECUENTES — visibles y con el mismo texto del JSON-LD
+      ═══════════════════════════════════════════════════════════ */}
+      <SectionReveal>
+        <HomeFaq />
       </SectionReveal>
 
       {/* ═══════════════════════════════════════════════════════════

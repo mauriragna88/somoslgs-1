@@ -32,9 +32,9 @@ export const metadata: Metadata = {
     url: 'https://www.somoslagos.com.mx',
     images: [
       {
-        url: 'https://www.somoslagos.com.mx/lagos-hero.jpg',
-        width: 2272,
-        height: 1480,
+        url: 'https://www.somoslagos.com.mx/og-somoslagos.jpg',
+        width: 1200,
+        height: 630,
         alt: 'Templo de El Calvario en Lagos de Moreno, Jalisco',
       },
     ],
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'SomosLagos - Encuentra negocios en Lagos de Moreno',
     description: 'La plataforma digital de Lagos de Moreno. Descubre negocios locales, pide productos y conecta con tu comunidad.',
-    images: ['https://www.somoslagos.com.mx/lagos-hero.jpg'],
+    images: ['https://www.somoslagos.com.mx/og-somoslagos.jpg'],
   },
   manifest: '/manifest.json',
   appleWebApp: {

@@ -7,6 +7,37 @@ import type { Database } from '@/types/database.types'
 const noCacheFetch = (url: RequestInfo | URL, options?: RequestInit) =>
   fetch(url, { ...options, cache: 'no-store' })
 
+// Fetch con cache de datos de Next (ISR): las paginas publicas se generan una vez
+// y se revalidan cada `revalidate` segundos en lugar de renderizarse en cada visita
+const revalidatingFetch = (revalidate: number) => (url: RequestInfo | URL, options?: RequestInit) =>
+  fetch(url, { ...options, next: { revalidate } })
+
+// Solo lectura, sin cookies ni sesion: para paginas publicas pre-generadas (home).
+// No usar en rutas que dependan del usuario autenticado.
+export function createPublicClient(revalidate = 3600) {
+  return createSupabaseClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      auth: { autoRefreshToken: false, persistSession: false },
+      global: { fetch: revalidatingFetch(revalidate) },
+    }
+  )
+}
+
+// Igual que createServiceClient pero con cache de datos, para secciones publicas
+// (eventos, marketplace) dentro de paginas pre-generadas.
+export function createPublicServiceClient(revalidate = 3600) {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      auth: { autoRefreshToken: false, persistSession: false },
+      global: { fetch: revalidatingFetch(revalidate) },
+    }
+  )
+}
+
 export async function createClient() {
   const cookieStore = await cookies()
 

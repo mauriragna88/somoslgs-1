@@ -214,7 +214,7 @@ export default function HeroCinematic({ categories, spotlight, businessCount, ca
                   animate={{ y: '0%' }}
                   transition={{ duration: 0.7, delay: 0.15 + i * 0.09, ease: EASE }}
                 >
-                  {word}
+                  {word}{' '}
                 </motion.span>
               </span>
             ))}
@@ -227,7 +227,7 @@ export default function HeroCinematic({ categories, spotlight, businessCount, ca
                 animate={{ y: '0%' }}
                 transition={{ duration: 0.8, delay: 0.38, ease: EASE }}
               >
-                vive
+                vive{' '}
               </motion.em>
             </span>
             <span className={styles.mask}>
@@ -241,6 +241,7 @@ export default function HeroCinematic({ categories, spotlight, businessCount, ca
               </motion.span>
             </span>
           </span>
+          <span className="sr-only"> Directorio de negocios en Lagos de Moreno, Jalisco</span>
         </h1>
 
         <motion.p className={styles.lede} {...reveal(0.65)}>
