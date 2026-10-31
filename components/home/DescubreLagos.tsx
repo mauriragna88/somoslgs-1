@@ -230,7 +230,7 @@ export default function DescubreLagos() {
 
         {/* Bento grid */}
         <div
-          className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-10"
+          className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-10 max-md:[&>*:nth-child(n+5)]:hidden"
           style={{ gridAutoRows: '220px' }}
         >
           {PLACES.map((place) => (

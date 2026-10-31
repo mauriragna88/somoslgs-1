@@ -41,8 +41,7 @@ function EventCard({ event }: { event: EventItem }) {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl ${event.colSpan} ${event.rowSpan}`}
-      style={{ minHeight: isTall ? 500 : 240 }}
+      className={`relative overflow-hidden rounded-2xl ${event.colSpan} ${event.rowSpan} ${isTall ? 'min-h-[260px] md:min-h-[500px]' : 'min-h-[200px] md:min-h-[240px]'}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -282,7 +281,7 @@ export default function EventsGrid({ events }: EventsGridProps) {
 
         <div
           className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-10"
-          style={{ gridAutoRows: 'minmax(240px, auto)' }}
+          style={{ gridAutoRows: 'minmax(200px, auto)' }}
         >
           {items.map((event) => (
             <EventCard key={event.name} event={event} />
